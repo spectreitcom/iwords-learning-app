@@ -8,13 +8,6 @@ export class PrismaExpressionRepository implements ExpressionRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async save(expression: Expression): Promise<void> {
-    if (expression.shouldBeDeleted()) {
-      await this.prismaService.expression.delete({
-        where: { id: expression.getExpressionId().value },
-      });
-      return;
-    }
-
     await this.prismaService.expression.upsert({
       where: { id: expression.getExpressionId().value },
       update: {
