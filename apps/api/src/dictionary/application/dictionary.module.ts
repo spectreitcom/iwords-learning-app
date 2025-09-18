@@ -5,6 +5,7 @@ import { ExpressionDeletedEventHandler } from './event-handlers/expression-delet
 import { ExpressionPhraseUpdatedEventHandler } from './event-handlers/expression-phrase-updated.event-handler';
 import { CreateExpressionCommandHandler } from './command-handlers/create-expression.command-handler';
 import { DeleteExpressionCommandHandler } from './command-handlers/delete-expression.command-handler';
+import { UpdateExpressionCommandHandler } from './command-handlers/update-expression.command-handler';
 
 const EVENT_HANDLERS = [
   ExpressionCreatedEventHandler,
@@ -15,6 +16,7 @@ const EVENT_HANDLERS = [
 const COMMAND_HANDLERS = [
   CreateExpressionCommandHandler,
   DeleteExpressionCommandHandler,
+  UpdateExpressionCommandHandler,
 ];
 
 const QUERY_HANDLERS = [];

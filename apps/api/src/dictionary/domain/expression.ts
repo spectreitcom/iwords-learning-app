@@ -7,7 +7,6 @@ import { ExpressionDeletedEvent } from './events/expression-deleted.event';
 export class Expression extends AggregateRoot {
   private readonly expressionId: ExpressionId;
   private phrase: string;
-  private deleted = false;
 
   constructor(expressionId: string, phrase: string) {
     super();
@@ -37,7 +36,6 @@ export class Expression extends AggregateRoot {
   }
 
   delete() {
-    this.deleted = true;
     this.apply(new ExpressionDeletedEvent(this.expressionId.value));
   }
 
@@ -47,9 +45,5 @@ export class Expression extends AggregateRoot {
 
   getPhrase(): string {
     return this.phrase;
-  }
-
-  shouldBeDeleted() {
-    return this.deleted;
   }
 }

@@ -3,247 +3,235 @@ import { ExpressionId } from '../value-objects/expression-id';
 import { ExpressionCreatedEvent } from '../events/expression-created.event';
 import { ExpressionPhraseUpdatedEvent } from '../events/expression-phrase-updated.event';
 import { ExpressionDeletedEvent } from '../events/expression-deleted.event';
-import { randomUUID } from 'node:crypto';
 
 describe('Expression', () => {
   describe('constructor', () => {
     it('should create an expression with valid id and phrase', () => {
-      const expressionId = randomUUID();
-      const phrase = 'hello world';
+      // Arrange
+      const expressionId = 'f47ac10b-58cc-4372-a567-0e02b2c3d479';
+      const phrase = 'Hello world';
 
+      // Act
       const expression = new Expression(expressionId, phrase);
 
+      // Assert
       expect(expression.getExpressionId().value).toBe(expressionId);
       expect(expression.getPhrase()).toBe(phrase);
-      expect(expression.shouldBeDeleted()).toBe(false);
+    });
+
+    it('should throw error when invalid UUID is provided', () => {
+      // Arrange
+      const invalidId = 'invalid-uuid';
+      const phrase = 'Hello world';
+
+      // Act & Assert
+      expect(() => new Expression(invalidId, phrase)).toThrow(
+        'ExpressionId is not valid',
+      );
     });
   });
 
   describe('create', () => {
-    it('should create a new expression and apply ExpressionCreatedEvent', () => {
-      const phrase = 'test phrase';
+    it('should create expression with generated ID and emit ExpressionCreatedEvent', () => {
+      // Arrange
+      const phrase = 'Test phrase';
 
-      const applySpy = jest.spyOn(Expression.prototype, 'apply');
+      // Act
       const expression = Expression.create(phrase);
 
+      // Assert
       expect(expression.getPhrase()).toBe(phrase);
-      expect(expression.shouldBeDeleted()).toBe(false);
-      expect(applySpy).toHaveBeenCalledWith(expect.any(ExpressionCreatedEvent));
+      expect(expression.getExpressionId().value).toBeDefined();
+      expect(expression.getExpressionId().value).toMatch(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+      );
 
-      const appliedEvent = applySpy.mock.calls[0][0] as ExpressionCreatedEvent;
-      expect(appliedEvent.expressionId).toBe(
+      const events = expression.getUncommittedEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(ExpressionCreatedEvent);
+      expect((events[0] as ExpressionCreatedEvent).expressionId).toBe(
         expression.getExpressionId().value,
       );
-      expect(appliedEvent.phrase).toBe(phrase);
-
-      applySpy.mockRestore();
-    });
-
-    it('should generate unique expression IDs for different expressions', () => {
-      const expression1 = Expression.create('phrase 1');
-      const expression2 = Expression.create('phrase 2');
-
-      expect(expression1.getExpressionId().value).not.toBe(
-        expression2.getExpressionId().value,
-      );
+      expect((events[0] as ExpressionCreatedEvent).phrase).toBe(phrase);
     });
   });
 
   describe('updatePhrase', () => {
-    it('should update phrase and apply ExpressionPhraseUpdatedEvent', () => {
-      const initialPhrase = 'initial phrase';
-      const newPhrase = 'updated phrase';
-      const expression = new Expression(randomUUID(), initialPhrase);
-      const applySpy = jest.spyOn(expression, 'apply');
+    it('should update phrase and emit ExpressionPhraseUpdatedEvent', () => {
+      // Arrange
+      const expression = Expression.create('Original phrase');
+      expression.commit(); // Clear creation event
+      const newPhrase = 'Updated phrase';
 
+      // Act
       expression.updatePhrase(newPhrase);
 
+      // Assert
       expect(expression.getPhrase()).toBe(newPhrase);
-      expect(applySpy).toHaveBeenCalledWith(
-        expect.any(ExpressionPhraseUpdatedEvent),
-      );
 
-      const appliedEvent = applySpy.mock
-        .calls[0][0] as ExpressionPhraseUpdatedEvent;
-      expect(appliedEvent.expressionId).toBe(
+      const events = expression.getUncommittedEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(ExpressionPhraseUpdatedEvent);
+      expect((events[0] as ExpressionPhraseUpdatedEvent).expressionId).toBe(
         expression.getExpressionId().value,
       );
-      expect(appliedEvent.oldPhrase).toBe(initialPhrase);
-      expect(appliedEvent.newPhrase).toBe(newPhrase);
-
-      applySpy.mockRestore();
+      expect((events[0] as ExpressionPhraseUpdatedEvent).oldPhrase).toBe(
+        'Original phrase',
+      );
+      expect((events[0] as ExpressionPhraseUpdatedEvent).newPhrase).toBe(
+        newPhrase,
+      );
     });
 
-    it('should handle empty phrase update', () => {
-      const initialPhrase = 'initial phrase';
+    it('should handle empty string phrase update', () => {
+      // Arrange
+      const expression = Expression.create('Original phrase');
+      expression.commit();
       const newPhrase = '';
-      const expression = new Expression(randomUUID(), initialPhrase);
-      const applySpy = jest.spyOn(expression, 'apply');
 
+      // Act
       expression.updatePhrase(newPhrase);
 
+      // Assert
       expect(expression.getPhrase()).toBe(newPhrase);
-      expect(applySpy).toHaveBeenCalledWith(
-        expect.any(ExpressionPhraseUpdatedEvent),
-      );
 
-      applySpy.mockRestore();
+      const events = expression.getUncommittedEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(ExpressionPhraseUpdatedEvent);
     });
 
-    it('should handle updating to the same phrase', () => {
-      const phrase = 'same phrase';
-      const expression = new Expression(randomUUID(), phrase);
-      const applySpy = jest.spyOn(expression, 'apply');
+    it('should handle updating to same phrase', () => {
+      // Arrange
+      const phrase = 'Same phrase';
+      const expression = Expression.create(phrase);
+      expression.commit();
 
+      // Act
       expression.updatePhrase(phrase);
 
+      // Assert
       expect(expression.getPhrase()).toBe(phrase);
-      expect(applySpy).toHaveBeenCalledWith(
-        expect.any(ExpressionPhraseUpdatedEvent),
+
+      const events = expression.getUncommittedEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(ExpressionPhraseUpdatedEvent);
+      expect((events[0] as ExpressionPhraseUpdatedEvent).oldPhrase).toBe(
+        phrase,
       );
-
-      const appliedEvent = applySpy.mock
-        .calls[0][0] as ExpressionPhraseUpdatedEvent;
-      expect(appliedEvent.oldPhrase).toBe(phrase);
-      expect(appliedEvent.newPhrase).toBe(phrase);
-
-      applySpy.mockRestore();
+      expect((events[0] as ExpressionPhraseUpdatedEvent).newPhrase).toBe(
+        phrase,
+      );
     });
   });
 
   describe('delete', () => {
-    it('should mark expression as deleted and apply ExpressionDeletedEvent', () => {
-      const expression = new Expression(randomUUID(), 'test phrase');
-      const applySpy = jest.spyOn(expression, 'apply');
+    it('should emit ExpressionDeletedEvent', () => {
+      // Arrange
+      const expression = Expression.create('Test phrase');
+      expression.commit(); // Clear creation event
 
-      expect(expression.shouldBeDeleted()).toBe(false);
-
+      // Act
       expression.delete();
 
-      expect(expression.shouldBeDeleted()).toBe(true);
-      expect(applySpy).toHaveBeenCalledWith(expect.any(ExpressionDeletedEvent));
-
-      const appliedEvent = applySpy.mock.calls[0][0] as ExpressionDeletedEvent;
-      expect(appliedEvent.expressionId).toBe(
+      // Assert
+      const events = expression.getUncommittedEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(ExpressionDeletedEvent);
+      expect((events[0] as ExpressionDeletedEvent).expressionId).toBe(
         expression.getExpressionId().value,
       );
-
-      applySpy.mockRestore();
-    });
-
-    it('should remain deleted after multiple delete calls', () => {
-      const expression = new Expression(randomUUID(), 'test phrase');
-      const applySpy = jest.spyOn(expression, 'apply');
-
-      expression.delete();
-      expression.delete();
-
-      expect(expression.shouldBeDeleted()).toBe(true);
-      expect(applySpy).toHaveBeenCalledTimes(2);
-
-      applySpy.mockRestore();
     });
   });
 
   describe('getExpressionId', () => {
-    it('should return the correct ExpressionId instance', () => {
-      const expressionIdString = randomUUID();
-      const expression = new Expression(expressionIdString, 'test phrase');
+    it('should return the expression ID', () => {
+      // Arrange
+      const expressionId = 'f47ac10b-58cc-4372-a567-0e02b2c3d479';
+      const expression = new Expression(expressionId, 'Test phrase');
 
-      const expressionId = expression.getExpressionId();
+      // Act
+      const result = expression.getExpressionId();
 
-      expect(expressionId).toBeInstanceOf(ExpressionId);
-      expect(expressionId.value).toBe(expressionIdString);
+      // Assert
+      expect(result).toBeInstanceOf(ExpressionId);
+      expect(result.value).toBe(expressionId);
     });
   });
 
   describe('getPhrase', () => {
-    it('should return the current phrase', () => {
-      const phrase = 'test phrase';
-      const expression = new Expression(randomUUID(), phrase);
+    it('should return the phrase', () => {
+      // Arrange
+      const phrase = 'Test phrase';
+      const expression = Expression.create(phrase);
 
-      expect(expression.getPhrase()).toBe(phrase);
-    });
+      // Act
+      const result = expression.getPhrase();
 
-    it('should return updated phrase after update', () => {
-      const initialPhrase = 'initial phrase';
-      const newPhrase = 'updated phrase';
-      const expression = new Expression(randomUUID(), initialPhrase);
-
-      expression.updatePhrase(newPhrase);
-
-      expect(expression.getPhrase()).toBe(newPhrase);
+      // Assert
+      expect(result).toBe(phrase);
     });
   });
 
-  describe('shouldBeDeleted', () => {
-    it('should return false for newly created expression', () => {
-      const expression = new Expression(randomUUID(), 'test phrase');
+  describe('edge cases', () => {
+    it('should handle very long phrases', () => {
+      // Arrange
+      const longPhrase = 'a'.repeat(10000);
 
-      expect(expression.shouldBeDeleted()).toBe(false);
+      // Act
+      const expression = Expression.create(longPhrase);
+
+      // Assert
+      expect(expression.getPhrase()).toBe(longPhrase);
+      expect(expression.getPhrase()).toHaveLength(10000);
     });
 
-    it('should return false for expression created via static method', () => {
-      const expression = Expression.create('test phrase');
+    it('should handle phrases with special characters', () => {
+      // Arrange
+      const specialPhrase = 'Hello 世界! @#$%^&*()_+-=[]{}|;:,.<>?';
 
-      expect(expression.shouldBeDeleted()).toBe(false);
+      // Act
+      const expression = Expression.create(specialPhrase);
+
+      // Assert
+      expect(expression.getPhrase()).toBe(specialPhrase);
     });
 
-    it('should return true after deletion', () => {
-      const expression = new Expression(randomUUID(), 'test phrase');
+    it('should handle multiple operations and maintain event order', () => {
+      // Arrange
+      const expression = Expression.create('Initial phrase');
+      const expressionId = expression.getExpressionId().value;
 
+      // Act
+      expression.updatePhrase('Updated phrase');
       expression.delete();
 
-      expect(expression.shouldBeDeleted()).toBe(true);
-    });
-  });
+      // Assert
+      const events = expression.getUncommittedEvents();
+      expect(events).toHaveLength(3);
 
-  describe('integration tests', () => {
-    it('should handle complete lifecycle: create, update, delete', () => {
-      const applySpy = jest.spyOn(Expression.prototype, 'apply');
-
-      // Create
-      const expression = Expression.create('initial phrase');
-      expect(expression.getPhrase()).toBe('initial phrase');
-      expect(expression.shouldBeDeleted()).toBe(false);
-
-      // Update
-      expression.updatePhrase('updated phrase');
-      expect(expression.getPhrase()).toBe('updated phrase');
-      expect(expression.shouldBeDeleted()).toBe(false);
-
-      // Delete
-      expression.delete();
-      expect(expression.getPhrase()).toBe('updated phrase');
-      expect(expression.shouldBeDeleted()).toBe(true);
-
-      // Verify all events were applied
-      expect(applySpy).toHaveBeenCalledTimes(3);
-      expect(applySpy).toHaveBeenNthCalledWith(
-        1,
-        expect.any(ExpressionCreatedEvent),
+      expect(events[0]).toBeInstanceOf(ExpressionCreatedEvent);
+      expect((events[0] as ExpressionCreatedEvent).expressionId).toBe(
+        expressionId,
       );
-      expect(applySpy).toHaveBeenNthCalledWith(
-        2,
-        expect.any(ExpressionPhraseUpdatedEvent),
-      );
-      expect(applySpy).toHaveBeenNthCalledWith(
-        3,
-        expect.any(ExpressionDeletedEvent),
+      expect((events[0] as ExpressionCreatedEvent).phrase).toBe(
+        'Initial phrase',
       );
 
-      applySpy.mockRestore();
-    });
+      expect(events[1]).toBeInstanceOf(ExpressionPhraseUpdatedEvent);
+      expect((events[1] as ExpressionPhraseUpdatedEvent).expressionId).toBe(
+        expressionId,
+      );
+      expect((events[1] as ExpressionPhraseUpdatedEvent).oldPhrase).toBe(
+        'Initial phrase',
+      );
+      expect((events[1] as ExpressionPhraseUpdatedEvent).newPhrase).toBe(
+        'Updated phrase',
+      );
 
-    it('should maintain immutable expression ID throughout lifecycle', () => {
-      const expression = Expression.create('test phrase');
-      const originalId = expression.getExpressionId().value;
-
-      expression.updatePhrase('new phrase');
-      expect(expression.getExpressionId().value).toBe(originalId);
-
-      expression.delete();
-      expect(expression.getExpressionId().value).toBe(originalId);
+      expect(events[2]).toBeInstanceOf(ExpressionDeletedEvent);
+      expect((events[2] as ExpressionDeletedEvent).expressionId).toBe(
+        expressionId,
+      );
     });
   });
 });
