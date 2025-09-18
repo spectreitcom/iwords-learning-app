@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
+import { AdminGatewayModule } from './bff/admin-gateway/admin-gateway.module';
 
 @Module({
   imports: [
@@ -8,6 +9,7 @@ import { CqrsModule } from '@nestjs/cqrs';
       isGlobal: true,
     }),
     CqrsModule.forRoot(),
+    AdminGatewayModule,
   ],
   controllers: [],
   providers: [],
