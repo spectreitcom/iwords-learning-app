@@ -25,7 +25,9 @@ describe('Expression', () => {
       const phrase = 'Hello world';
 
       // Act & Assert
-      expect(() => new Expression(invalidId, phrase)).toThrow('ExpressionId is not valid');
+      expect(() => new Expression(invalidId, phrase)).toThrow(
+        'ExpressionId is not valid',
+      );
     });
   });
 
@@ -40,12 +42,16 @@ describe('Expression', () => {
       // Assert
       expect(expression.getPhrase()).toBe(phrase);
       expect(expression.getExpressionId().value).toBeDefined();
-      expect(expression.getExpressionId().value).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
-      
+      expect(expression.getExpressionId().value).toMatch(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+      );
+
       const events = expression.getUncommittedEvents();
       expect(events).toHaveLength(1);
       expect(events[0]).toBeInstanceOf(ExpressionCreatedEvent);
-      expect((events[0] as ExpressionCreatedEvent).expressionId).toBe(expression.getExpressionId().value);
+      expect((events[0] as ExpressionCreatedEvent).expressionId).toBe(
+        expression.getExpressionId().value,
+      );
       expect((events[0] as ExpressionCreatedEvent).phrase).toBe(phrase);
     });
   });
@@ -62,13 +68,19 @@ describe('Expression', () => {
 
       // Assert
       expect(expression.getPhrase()).toBe(newPhrase);
-      
+
       const events = expression.getUncommittedEvents();
       expect(events).toHaveLength(1);
       expect(events[0]).toBeInstanceOf(ExpressionPhraseUpdatedEvent);
-      expect((events[0] as ExpressionPhraseUpdatedEvent).expressionId).toBe(expression.getExpressionId().value);
-      expect((events[0] as ExpressionPhraseUpdatedEvent).oldPhrase).toBe('Original phrase');
-      expect((events[0] as ExpressionPhraseUpdatedEvent).newPhrase).toBe(newPhrase);
+      expect((events[0] as ExpressionPhraseUpdatedEvent).expressionId).toBe(
+        expression.getExpressionId().value,
+      );
+      expect((events[0] as ExpressionPhraseUpdatedEvent).oldPhrase).toBe(
+        'Original phrase',
+      );
+      expect((events[0] as ExpressionPhraseUpdatedEvent).newPhrase).toBe(
+        newPhrase,
+      );
     });
 
     it('should handle empty string phrase update', () => {
@@ -82,7 +94,7 @@ describe('Expression', () => {
 
       // Assert
       expect(expression.getPhrase()).toBe(newPhrase);
-      
+
       const events = expression.getUncommittedEvents();
       expect(events).toHaveLength(1);
       expect(events[0]).toBeInstanceOf(ExpressionPhraseUpdatedEvent);
@@ -99,12 +111,16 @@ describe('Expression', () => {
 
       // Assert
       expect(expression.getPhrase()).toBe(phrase);
-      
+
       const events = expression.getUncommittedEvents();
       expect(events).toHaveLength(1);
       expect(events[0]).toBeInstanceOf(ExpressionPhraseUpdatedEvent);
-      expect((events[0] as ExpressionPhraseUpdatedEvent).oldPhrase).toBe(phrase);
-      expect((events[0] as ExpressionPhraseUpdatedEvent).newPhrase).toBe(phrase);
+      expect((events[0] as ExpressionPhraseUpdatedEvent).oldPhrase).toBe(
+        phrase,
+      );
+      expect((events[0] as ExpressionPhraseUpdatedEvent).newPhrase).toBe(
+        phrase,
+      );
     });
   });
 
@@ -121,7 +137,9 @@ describe('Expression', () => {
       const events = expression.getUncommittedEvents();
       expect(events).toHaveLength(1);
       expect(events[0]).toBeInstanceOf(ExpressionDeletedEvent);
-      expect((events[0] as ExpressionDeletedEvent).expressionId).toBe(expression.getExpressionId().value);
+      expect((events[0] as ExpressionDeletedEvent).expressionId).toBe(
+        expression.getExpressionId().value,
+      );
     });
   });
 
@@ -190,18 +208,30 @@ describe('Expression', () => {
       // Assert
       const events = expression.getUncommittedEvents();
       expect(events).toHaveLength(3);
-      
+
       expect(events[0]).toBeInstanceOf(ExpressionCreatedEvent);
-      expect((events[0] as ExpressionCreatedEvent).expressionId).toBe(expressionId);
-      expect((events[0] as ExpressionCreatedEvent).phrase).toBe('Initial phrase');
-      
+      expect((events[0] as ExpressionCreatedEvent).expressionId).toBe(
+        expressionId,
+      );
+      expect((events[0] as ExpressionCreatedEvent).phrase).toBe(
+        'Initial phrase',
+      );
+
       expect(events[1]).toBeInstanceOf(ExpressionPhraseUpdatedEvent);
-      expect((events[1] as ExpressionPhraseUpdatedEvent).expressionId).toBe(expressionId);
-      expect((events[1] as ExpressionPhraseUpdatedEvent).oldPhrase).toBe('Initial phrase');
-      expect((events[1] as ExpressionPhraseUpdatedEvent).newPhrase).toBe('Updated phrase');
-      
+      expect((events[1] as ExpressionPhraseUpdatedEvent).expressionId).toBe(
+        expressionId,
+      );
+      expect((events[1] as ExpressionPhraseUpdatedEvent).oldPhrase).toBe(
+        'Initial phrase',
+      );
+      expect((events[1] as ExpressionPhraseUpdatedEvent).newPhrase).toBe(
+        'Updated phrase',
+      );
+
       expect(events[2]).toBeInstanceOf(ExpressionDeletedEvent);
-      expect((events[2] as ExpressionDeletedEvent).expressionId).toBe(expressionId);
+      expect((events[2] as ExpressionDeletedEvent).expressionId).toBe(
+        expressionId,
+      );
     });
   });
 });
