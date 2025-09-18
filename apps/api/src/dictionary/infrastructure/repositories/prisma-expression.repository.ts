@@ -38,4 +38,10 @@ export class PrismaExpressionRepository implements ExpressionRepository {
 
     return new Expression(expressionData.id, expressionData.phrase);
   }
+
+  async delete(expressionId: string): Promise<void> {
+    await this.prismaService.expression.delete({
+      where: { id: expressionId },
+    });
+  }
 }
