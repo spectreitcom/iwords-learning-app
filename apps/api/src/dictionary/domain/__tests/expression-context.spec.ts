@@ -10,7 +10,9 @@ describe('ExpressionContext', () => {
     it('should create an ExpressionContext with all properties', () => {
       // Arrange
       const expressionContextId = ExpressionContextId.create();
-      const expressionId = ExpressionId.fromString('550e8400-e29b-41d4-a716-446655440000');
+      const expressionId = ExpressionId.fromString(
+        '550e8400-e29b-41d4-a716-446655440000',
+      );
       const translation = 'test translation';
       const isCountable = true;
       const type = ExpressionType.noun();
@@ -29,7 +31,9 @@ describe('ExpressionContext', () => {
       );
 
       // Assert
-      expect(expressionContext.getExpressionContextId()).toBe(expressionContextId);
+      expect(expressionContext.getExpressionContextId()).toBe(
+        expressionContextId,
+      );
       expect(expressionContext.getExpressionId()).toBe(expressionId);
       expect(expressionContext.getTranslation()).toBe(translation);
       expect(expressionContext.getIsCountable()).toBe(isCountable);
@@ -41,7 +45,9 @@ describe('ExpressionContext', () => {
     it('should create an ExpressionContext with verb forms', () => {
       // Arrange
       const expressionContextId = ExpressionContextId.create();
-      const expressionId = ExpressionId.fromString('550e8400-e29b-41d4-a716-446655440001');
+      const expressionId = ExpressionId.fromString(
+        '550e8400-e29b-41d4-a716-446655440001',
+      );
       const translation = 'test translation';
       const isCountable = false;
       const type = ExpressionType.verb();
@@ -72,7 +78,10 @@ describe('ExpressionContext', () => {
       const expressionId = '550e8400-e29b-41d4-a716-446655440002';
 
       // Act
-      const expressionContext = ExpressionContext.createVerb(translation, expressionId);
+      const expressionContext = ExpressionContext.createVerb(
+        translation,
+        expressionId,
+      );
 
       // Assert
       expect(expressionContext).toBeInstanceOf(ExpressionContext);
@@ -90,7 +99,10 @@ describe('ExpressionContext', () => {
       const expressionId = '550e8400-e29b-41d4-a716-446655440003';
 
       // Act
-      const expressionContext = ExpressionContext.createVerb(translation, expressionId);
+      const expressionContext = ExpressionContext.createVerb(
+        translation,
+        expressionId,
+      );
       const events = expressionContext.getUncommittedEvents();
 
       // Assert
@@ -165,7 +177,10 @@ describe('ExpressionContext', () => {
       const expressionId = '550e8400-e29b-41d4-a716-446655440006';
 
       // Act
-      const expressionContext = ExpressionContext.createAdverb(translation, expressionId);
+      const expressionContext = ExpressionContext.createAdverb(
+        translation,
+        expressionId,
+      );
 
       // Assert
       expect(expressionContext).toBeInstanceOf(ExpressionContext);
@@ -183,7 +198,10 @@ describe('ExpressionContext', () => {
       const expressionId = '550e8400-e29b-41d4-a716-446655440007';
 
       // Act
-      const expressionContext = ExpressionContext.createAdverb(translation, expressionId);
+      const expressionContext = ExpressionContext.createAdverb(
+        translation,
+        expressionId,
+      );
       const events = expressionContext.getUncommittedEvents();
 
       // Assert
@@ -206,7 +224,10 @@ describe('ExpressionContext', () => {
       const expressionId = '550e8400-e29b-41d4-a716-446655440008';
 
       // Act
-      const expressionContext = ExpressionContext.createAdjective(translation, expressionId);
+      const expressionContext = ExpressionContext.createAdjective(
+        translation,
+        expressionId,
+      );
 
       // Assert
       expect(expressionContext).toBeInstanceOf(ExpressionContext);
@@ -224,7 +245,10 @@ describe('ExpressionContext', () => {
       const expressionId = '550e8400-e29b-41d4-a716-446655440009';
 
       // Act
-      const expressionContext = ExpressionContext.createAdjective(translation, expressionId);
+      const expressionContext = ExpressionContext.createAdjective(
+        translation,
+        expressionId,
+      );
       const events = expressionContext.getUncommittedEvents();
 
       // Assert
@@ -315,7 +339,10 @@ describe('ExpressionContext', () => {
       const expressionId = '550e8400-e29b-41d4-a716-446655440013';
 
       // Act
-      const expressionContext = ExpressionContext.createPhrasalVerb(translation, expressionId);
+      const expressionContext = ExpressionContext.createPhrasalVerb(
+        translation,
+        expressionId,
+      );
 
       // Assert
       expect(expressionContext).toBeInstanceOf(ExpressionContext);
@@ -333,7 +360,10 @@ describe('ExpressionContext', () => {
       const expressionId = '550e8400-e29b-41d4-a716-446655440014';
 
       // Act
-      const expressionContext = ExpressionContext.createPhrasalVerb(translation, expressionId);
+      const expressionContext = ExpressionContext.createPhrasalVerb(
+        translation,
+        expressionId,
+      );
       const events = expressionContext.getUncommittedEvents();
 
       // Assert
@@ -361,7 +391,9 @@ describe('ExpressionContext', () => {
 
     beforeEach(() => {
       expressionContextId = ExpressionContextId.create();
-      expressionId = ExpressionId.fromString('550e8400-e29b-41d4-a716-446655440015');
+      expressionId = ExpressionId.fromString(
+        '550e8400-e29b-41d4-a716-446655440015',
+      );
       translation = 'test translation';
       isCountable = true;
       type = ExpressionType.noun();
@@ -380,7 +412,9 @@ describe('ExpressionContext', () => {
     });
 
     it('should return correct expressionContextId', () => {
-      expect(expressionContext.getExpressionContextId()).toBe(expressionContextId);
+      expect(expressionContext.getExpressionContextId()).toBe(
+        expressionContextId,
+      );
     });
 
     it('should return correct expressionId', () => {

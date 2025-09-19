@@ -123,5 +123,4 @@ describe('ExpressionType', () => {
       expect(type1.equals(type2)).toBe(false);
     });
   });
-
 });

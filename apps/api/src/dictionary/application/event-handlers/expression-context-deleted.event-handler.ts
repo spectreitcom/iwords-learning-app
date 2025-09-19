@@ -6,7 +6,9 @@ import { Logger } from '@nestjs/common';
 export class ExpressionContextDeletedEventHandler
   implements IEventHandler<ExpressionContextDeletedEvent>
 {
-  private readonly logger = new Logger(ExpressionContextDeletedEventHandler.name);
+  private readonly logger = new Logger(
+    ExpressionContextDeletedEventHandler.name,
+  );
 
   handle(event: ExpressionContextDeletedEvent) {
     this.logger.debug(JSON.stringify(event));

@@ -6,7 +6,9 @@ import { Logger } from '@nestjs/common';
 export class ExpressionContextUpdatedEventHandler
   implements IEventHandler<ExpressionContextUpdatedEvent>
 {
-  private readonly logger = new Logger(ExpressionContextUpdatedEventHandler.name);
+  private readonly logger = new Logger(
+    ExpressionContextUpdatedEventHandler.name,
+  );
 
   handle(event: ExpressionContextUpdatedEvent) {
     this.logger.debug(JSON.stringify(event));
