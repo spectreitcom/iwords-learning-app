@@ -9,3 +9,9 @@ export class ExpressionPhraseAlreadyTakenError extends Error {
     super(`Expression with phrase ${phrase} already exists.`);
   }
 }
+
+export class ExpressionContextNotFoundError extends Error {
+  constructor(expressionContextId: string) {
+    super(`Expression context with id ${expressionContextId} not found.`);
+  }
+}
