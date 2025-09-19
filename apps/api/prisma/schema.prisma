@@ -51,4 +51,25 @@ model Sentence {
   expressionContext   ExpressionContext @relation(fields: [expressionContextId], references: [id])
 }
 
+model DictionaryReadModel {
+  id                  String   @id @default(uuid())
+  phrase              String
+  expressionId        String
+  expressionContextId String
+  type                String
+  translation         String
+  forms               String[] @default([])
+  isIrregular         Boolean  @default(false)
+  isCountable         Boolean  @default(false)
+  sentences           Json?
+
+  @@unique([expressionId, expressionContextId])
+  @@index([phrase])
+  @@index([forms])
+  @@index([translation])
+  @@index([type])
+  @@index([isIrregular])
+  @@index([isCountable])
+}
+
 //----------------------------------
