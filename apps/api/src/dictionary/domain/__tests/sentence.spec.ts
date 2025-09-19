@@ -3,6 +3,7 @@ import { SentenceId } from '../value-objects/sentence-id';
 import { ExpressionContextId } from '../value-objects/expression-context-id';
 import { SentenceCreatedEvent } from '../events/sentence-created.event';
 import { SentenceDeletedEvent } from '../events/sentence-deleted.event';
+import { SentenceUpdatedEvent } from '../events/sentence-updated.event';
 
 describe('Sentence', () => {
   const mockContent = 'This is a test sentence';
@@ -299,6 +300,162 @@ describe('Sentence', () => {
       const deleteEvent2 = events[2] as SentenceDeletedEvent;
       expect(deleteEvent1.sentenceId).toBe(sentence.getSentenceId().value);
       expect(deleteEvent2.sentenceId).toBe(sentence.getSentenceId().value);
+    });
+  });
+
+  describe('update', () => {
+    it('should update content and translation', () => {
+      // Arrange
+      const sentence = Sentence.create(
+        mockContent,
+        mockTranslation,
+        mockExpressionContextId,
+      );
+      const newContent = 'Updated sentence content';
+      const newTranslation = 'Zaktualizowana treść zdania';
+
+      // Act
+      sentence.update(newContent, newTranslation);
+
+      // Assert
+      expect(sentence.getContent()).toBe(newContent);
+      expect(sentence.getTranslation()).toBe(newTranslation);
+    });
+
+    it('should emit SentenceUpdatedEvent when updated', () => {
+      // Arrange
+      const sentence = Sentence.create(
+        mockContent,
+        mockTranslation,
+        mockExpressionContextId,
+      );
+      const newContent = 'Updated sentence content';
+      const newTranslation = 'Zaktualizowana treść zdania';
+
+      // Act
+      sentence.update(newContent, newTranslation);
+
+      // Assert
+      const events = sentence.getUncommittedEvents();
+      expect(events).toHaveLength(2); // Created + Updated
+      expect(events[0]).toBeInstanceOf(SentenceCreatedEvent);
+      expect(events[1]).toBeInstanceOf(SentenceUpdatedEvent);
+
+      const updateEvent = events[1] as SentenceUpdatedEvent;
+      expect(updateEvent.sentenceId).toBe(sentence.getSentenceId().value);
+      expect(updateEvent['content']).toBe(newContent);
+      expect(updateEvent['translation']).toBe(newTranslation);
+      expect(updateEvent['expressionContextId']).toBe(mockExpressionContextId);
+    });
+
+    it('should update content only while keeping same translation', () => {
+      // Arrange
+      const sentence = Sentence.create(
+        mockContent,
+        mockTranslation,
+        mockExpressionContextId,
+      );
+      const newContent = 'Only content updated';
+
+      // Act
+      sentence.update(newContent, mockTranslation);
+
+      // Assert
+      expect(sentence.getContent()).toBe(newContent);
+      expect(sentence.getTranslation()).toBe(mockTranslation);
+    });
+
+    it('should update translation only while keeping same content', () => {
+      // Arrange
+      const sentence = Sentence.create(
+        mockContent,
+        mockTranslation,
+        mockExpressionContextId,
+      );
+      const newTranslation = 'Tylko tłumaczenie zostało zaktualizowane';
+
+      // Act
+      sentence.update(mockContent, newTranslation);
+
+      // Assert
+      expect(sentence.getContent()).toBe(mockContent);
+      expect(sentence.getTranslation()).toBe(newTranslation);
+    });
+
+    it('should emit multiple SentenceUpdatedEvents when updated multiple times', () => {
+      // Arrange
+      const sentence = Sentence.create(
+        mockContent,
+        mockTranslation,
+        mockExpressionContextId,
+      );
+      const firstUpdate = {
+        content: 'First update',
+        translation: 'Pierwsza aktualizacja',
+      };
+      const secondUpdate = {
+        content: 'Second update',
+        translation: 'Druga aktualizacja',
+      };
+
+      // Act
+      sentence.update(firstUpdate.content, firstUpdate.translation);
+      sentence.update(secondUpdate.content, secondUpdate.translation);
+
+      // Assert
+      const events = sentence.getUncommittedEvents();
+      expect(events).toHaveLength(3); // Created + Updated + Updated
+      expect(events[0]).toBeInstanceOf(SentenceCreatedEvent);
+      expect(events[1]).toBeInstanceOf(SentenceUpdatedEvent);
+      expect(events[2]).toBeInstanceOf(SentenceUpdatedEvent);
+
+      const firstUpdateEvent = events[1] as SentenceUpdatedEvent;
+      const secondUpdateEvent = events[2] as SentenceUpdatedEvent;
+
+      expect(firstUpdateEvent['content']).toBe(firstUpdate.content);
+      expect(firstUpdateEvent['translation']).toBe(firstUpdate.translation);
+      expect(secondUpdateEvent['content']).toBe(secondUpdate.content);
+      expect(secondUpdateEvent['translation']).toBe(secondUpdate.translation);
+
+      // Final state should match the last update
+      expect(sentence.getContent()).toBe(secondUpdate.content);
+      expect(sentence.getTranslation()).toBe(secondUpdate.translation);
+    });
+
+    it('should handle empty strings in update', () => {
+      // Arrange
+      const sentence = Sentence.create(
+        mockContent,
+        mockTranslation,
+        mockExpressionContextId,
+      );
+
+      // Act
+      sentence.update('', '');
+
+      // Assert
+      expect(sentence.getContent()).toBe('');
+      expect(sentence.getTranslation()).toBe('');
+    });
+
+    it('should preserve sentence ID and expression context ID after update', () => {
+      // Arrange
+      const sentence = Sentence.create(
+        mockContent,
+        mockTranslation,
+        mockExpressionContextId,
+      );
+      const originalSentenceId = sentence.getSentenceId();
+      const originalExpressionContextId = sentence.getExpressionContextId();
+
+      // Act
+      sentence.update('New content', 'Nowa treść');
+
+      // Assert
+      expect(sentence.getSentenceId()).toBe(originalSentenceId);
+      expect(sentence.getExpressionContextId()).toBe(
+        originalExpressionContextId,
+      );
     });
   });
 
