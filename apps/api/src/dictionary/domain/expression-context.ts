@@ -4,6 +4,7 @@ import { ExpressionId } from './value-objects/expression-id';
 import { ExpressionType } from './value-objects/expression-type';
 import { ExpressionContextCreatedEvent } from './events/expression-context-created.event';
 import { VerbForms } from './value-objects/verb-forms';
+import { ExpressionContextDeletedEvent } from './events/expression-context-deleted.event';
 
 export class ExpressionContext extends AggregateRoot {
   private readonly expressionContextId: ExpressionContextId;
@@ -197,6 +198,15 @@ export class ExpressionContext extends AggregateRoot {
     );
 
     return expressionContext;
+  }
+
+  delete() {
+    this.apply(
+      new ExpressionContextDeletedEvent(
+        this.expressionContextId.value,
+        this.expressionId.value,
+      ),
+    );
   }
 
   getExpressionContextId() {
