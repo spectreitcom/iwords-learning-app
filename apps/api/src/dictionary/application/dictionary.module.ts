@@ -15,6 +15,7 @@ import { CreateNounExpressionContextCommandHandler } from './command-handlers/cr
 import { CreateAdjectiveExpressionContextCommandHandler } from './command-handlers/create-adjective-expression-context.command-handler';
 import { CreatePhrasalVerbExpressionContextCommandHandler } from './command-handlers/create-phrasal-verb-expression-context.command-handler';
 import { CreateAdverbExpressionContextCommandHandler } from './command-handlers/create-adverb-expression-context.command-handler';
+import { DeleteExpressionContextCommandHandler } from './command-handlers/delete-expression-context.command-handler';
 
 const EVENT_HANDLERS = [
   ExpressionCreatedEventHandler,
@@ -35,6 +36,7 @@ const COMMAND_HANDLERS = [
   CreateAdjectiveExpressionContextCommandHandler,
   CreatePhrasalVerbExpressionContextCommandHandler,
   CreateAdverbExpressionContextCommandHandler,
+  DeleteExpressionContextCommandHandler,
 ];
 
 const QUERY_HANDLERS = [];

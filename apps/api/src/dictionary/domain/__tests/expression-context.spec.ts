@@ -4,6 +4,7 @@ import { ExpressionId } from '../value-objects/expression-id';
 import { ExpressionType } from '../value-objects/expression-type';
 import { VerbForms } from '../value-objects/verb-forms';
 import { ExpressionContextCreatedEvent } from '../events/expression-context-created.event';
+import { ExpressionContextDeletedEvent } from '../events/expression-context-deleted.event';
 
 describe('ExpressionContext', () => {
   describe('constructor', () => {
@@ -376,6 +377,57 @@ describe('ExpressionContext', () => {
       expect(event.isCountable).toBe(false);
       expect(event.forms).toBeNull();
       expect(event.isIrregular).toBe(false);
+    });
+  });
+
+  describe('delete', () => {
+    it('should apply ExpressionContextDeletedEvent when deleting', () => {
+      // Arrange
+      const expressionContextId = ExpressionContextId.create();
+      const expressionId = ExpressionId.fromString(
+        '550e8400-e29b-41d4-a716-446655440016',
+      );
+      const expressionContext = new ExpressionContext(
+        expressionContextId,
+        expressionId,
+        'test translation',
+        true,
+        ExpressionType.noun(),
+        null,
+        false,
+      );
+
+      // Act
+      expressionContext.delete();
+      const events = expressionContext.getUncommittedEvents();
+
+      // Assert
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(ExpressionContextDeletedEvent);
+      const event = events[0] as ExpressionContextDeletedEvent;
+      expect(event.expressionContextId).toBe(expressionContextId.value);
+      expect(event.expressionId).toBe(expressionId.value);
+    });
+
+    it('should apply delete event for expression context created via factory method', () => {
+      // Arrange
+      const translation = 'to run';
+      const expressionId = '550e8400-e29b-41d4-a716-446655440017';
+      const expressionContext = ExpressionContext.createVerb(
+        translation,
+        expressionId,
+      );
+
+      // Act
+      expressionContext.delete();
+      const events = expressionContext.getUncommittedEvents();
+
+      // Assert
+      expect(events).toHaveLength(2); // Creation event + Delete event
+      expect(events[0]).toBeInstanceOf(ExpressionContextCreatedEvent);
+      expect(events[1]).toBeInstanceOf(ExpressionContextDeletedEvent);
+      const deleteEvent = events[1] as ExpressionContextDeletedEvent;
+      expect(deleteEvent.expressionId).toBe(expressionId);
     });
   });
 
