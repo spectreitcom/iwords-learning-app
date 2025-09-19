@@ -14,4 +14,11 @@ export class AppExpressionValidationService
     });
     return expression ? expression.id : null;
   }
+
+  async exists(expressionId: string): Promise<boolean> {
+    const record = await this.prismaService.expression.findUnique({
+      where: { id: expressionId },
+    });
+    return !!record;
+  }
 }
