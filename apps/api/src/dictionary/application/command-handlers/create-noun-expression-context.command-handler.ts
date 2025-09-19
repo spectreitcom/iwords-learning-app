@@ -5,9 +5,17 @@ import { ExpressionValidationService } from '../ports/expression-validation.serv
 import { ExpressionNotFoundError } from '../errors';
 import { ExpressionContext } from '../../domain/expression-context';
 
+export type CreateNounExpressionContextCommandResponse = {
+  id: string;
+};
+
 @CommandHandler(CreateNounExpressionContextCommand)
 export class CreateNounExpressionContextCommandHandler
-  implements ICommandHandler<CreateNounExpressionContextCommand, void>
+  implements
+    ICommandHandler<
+      CreateNounExpressionContextCommand,
+      CreateNounExpressionContextCommandResponse
+    >
 {
   constructor(
     private readonly expressionContextRepository: ExpressionContextRepository,
@@ -15,7 +23,9 @@ export class CreateNounExpressionContextCommandHandler
     private readonly expressionValidationService: ExpressionValidationService,
   ) {}
 
-  async execute(command: CreateNounExpressionContextCommand): Promise<void> {
+  async execute(
+    command: CreateNounExpressionContextCommand,
+  ): Promise<CreateNounExpressionContextCommandResponse> {
     const { expressionId, translation, isCountable } = command;
 
     const expressionExists =
@@ -33,5 +43,7 @@ export class CreateNounExpressionContextCommandHandler
     this.eventPublisher.mergeObjectContext(expressionContext);
     await this.expressionContextRepository.save(expressionContext);
     expressionContext.commit();
+
+    return { id: expressionContext.getExpressionContextId().value };
   }
 }
