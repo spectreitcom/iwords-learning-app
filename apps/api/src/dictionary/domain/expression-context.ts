@@ -5,15 +5,16 @@ import { ExpressionType } from './value-objects/expression-type';
 import { ExpressionContextCreatedEvent } from './events/expression-context-created.event';
 import { VerbForms } from './value-objects/verb-forms';
 import { ExpressionContextDeletedEvent } from './events/expression-context-deleted.event';
+import { ExpressionContextUpdatedEvent } from './events/expression-context-updated.event';
 
 export class ExpressionContext extends AggregateRoot {
   private readonly expressionContextId: ExpressionContextId;
   private readonly expressionId: ExpressionId;
   private translation: string;
   private isCountable: boolean;
-  private type: ExpressionType;
+  private readonly type: ExpressionType;
   private forms: VerbForms | null;
-  private isIrregular: boolean;
+  private readonly isIrregular: boolean;
 
   constructor(
     expressionContextId: ExpressionContextId,
@@ -205,6 +206,98 @@ export class ExpressionContext extends AggregateRoot {
       new ExpressionContextDeletedEvent(
         this.expressionContextId.value,
         this.expressionId.value,
+      ),
+    );
+  }
+
+  updateVerb(translation: string) {
+    this.translation = translation;
+    this.apply(
+      new ExpressionContextUpdatedEvent(
+        this.expressionContextId.value,
+        this.expressionId.value,
+        this.translation,
+        false,
+        this.type.value,
+        null,
+        false,
+      ),
+    );
+  }
+
+  updateIrregularVerb(translation: string, forms: [string, string, string]) {
+    this.translation = translation;
+    this.forms = VerbForms.fromArray(forms);
+    this.apply(
+      new ExpressionContextUpdatedEvent(
+        this.expressionContextId.value,
+        this.expressionId.value,
+        this.translation,
+        false,
+        this.type.value,
+        this.forms.value,
+        true,
+      ),
+    );
+  }
+
+  updateAdverb(translation: string) {
+    this.translation = translation;
+    this.apply(
+      new ExpressionContextUpdatedEvent(
+        this.expressionContextId.value,
+        this.expressionId.value,
+        this.translation,
+        false,
+        this.type.value,
+        null,
+        false,
+      ),
+    );
+  }
+
+  updateAdjective(translation: string) {
+    this.translation = translation;
+    this.apply(
+      new ExpressionContextUpdatedEvent(
+        this.expressionContextId.value,
+        this.expressionId.value,
+        this.translation,
+        false,
+        this.type.value,
+        null,
+        false,
+      ),
+    );
+  }
+
+  updateNoun(translation: string, isCountable: boolean) {
+    this.translation = translation;
+    this.isCountable = isCountable;
+    this.apply(
+      new ExpressionContextUpdatedEvent(
+        this.expressionContextId.value,
+        this.expressionId.value,
+        this.translation,
+        isCountable,
+        this.type.value,
+        null,
+        false,
+      ),
+    );
+  }
+
+  updatePhrasalVerb(translation: string) {
+    this.translation = translation;
+    this.apply(
+      new ExpressionContextUpdatedEvent(
+        this.expressionContextId.value,
+        this.expressionId.value,
+        this.translation,
+        false,
+        this.type.value,
+        null,
+        false,
       ),
     );
   }
