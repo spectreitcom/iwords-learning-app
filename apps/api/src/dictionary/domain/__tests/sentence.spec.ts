@@ -2,6 +2,7 @@ import { Sentence } from '../sentence';
 import { SentenceId } from '../value-objects/sentence-id';
 import { ExpressionContextId } from '../value-objects/expression-context-id';
 import { SentenceCreatedEvent } from '../events/sentence-created.event';
+import { SentenceDeletedEvent } from '../events/sentence-deleted.event';
 
 describe('Sentence', () => {
   const mockContent = 'This is a test sentence';
@@ -225,6 +226,79 @@ describe('Sentence', () => {
       // Act & Assert
       expect(sentence1.getExpressionContextId().value).toBe(contextId1);
       expect(sentence2.getExpressionContextId().value).toBe(contextId2);
+    });
+  });
+
+  describe('delete', () => {
+    it('should emit SentenceDeletedEvent when deleted', () => {
+      // Arrange
+      const sentence = Sentence.create(
+        mockContent,
+        mockTranslation,
+        mockExpressionContextId,
+      );
+
+      // Act
+      sentence.delete();
+
+      // Assert
+      const events = sentence.getUncommittedEvents();
+      expect(events).toHaveLength(2); // Created + Deleted
+      expect(events[0]).toBeInstanceOf(SentenceCreatedEvent);
+      expect(events[1]).toBeInstanceOf(SentenceDeletedEvent);
+
+      const deleteEvent = events[1] as SentenceDeletedEvent;
+      expect(deleteEvent.sentenceId).toBe(sentence.getSentenceId().value);
+    });
+
+    it('should emit SentenceDeletedEvent with correct sentence ID', () => {
+      // Arrange
+      const sentenceId = SentenceId.create();
+      const expressionContextId = ExpressionContextId.fromString(
+        mockExpressionContextId,
+      );
+      const sentence = new Sentence(
+        sentenceId,
+        mockContent,
+        mockTranslation,
+        expressionContextId,
+      );
+
+      // Act
+      sentence.delete();
+
+      // Assert
+      const events = sentence.getUncommittedEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(SentenceDeletedEvent);
+
+      const deleteEvent = events[0] as SentenceDeletedEvent;
+      expect(deleteEvent.sentenceId).toBe(sentenceId.value);
+    });
+
+    it('should emit multiple events when delete is called multiple times', () => {
+      // Arrange
+      const sentence = Sentence.create(
+        mockContent,
+        mockTranslation,
+        mockExpressionContextId,
+      );
+
+      // Act
+      sentence.delete();
+      sentence.delete();
+
+      // Assert
+      const events = sentence.getUncommittedEvents();
+      expect(events).toHaveLength(3); // Created + Deleted + Deleted
+      expect(events[0]).toBeInstanceOf(SentenceCreatedEvent);
+      expect(events[1]).toBeInstanceOf(SentenceDeletedEvent);
+      expect(events[2]).toBeInstanceOf(SentenceDeletedEvent);
+
+      const deleteEvent1 = events[1] as SentenceDeletedEvent;
+      const deleteEvent2 = events[2] as SentenceDeletedEvent;
+      expect(deleteEvent1.sentenceId).toBe(sentence.getSentenceId().value);
+      expect(deleteEvent2.sentenceId).toBe(sentence.getSentenceId().value);
     });
   });
 
