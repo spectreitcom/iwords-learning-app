@@ -38,6 +38,17 @@ model ExpressionContext {
 
   expressionId String
   expression   Expression @relation(fields: [expressionId], references: [id])
+  sentences    Sentence[]
+}
+
+model Sentence {
+  id          String   @id @default(uuid())
+  translation String
+  content     String
+  createdAt   DateTime @default(now())
+
+  expressionContextId String
+  expressionContext   ExpressionContext @relation(fields: [expressionContextId], references: [id])
 }
 
 //----------------------------------

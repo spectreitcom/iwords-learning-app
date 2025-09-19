@@ -6,6 +6,10 @@ import { ExpressionValidationService } from '../application/ports/expression-val
 import { AppExpressionValidationService } from './services/app-expression-validation.service';
 import { ExpressionContextRepository } from '../application/ports/expression-context.repository';
 import { PrismaExpressionContextRepository } from './repositories/prisma-expression-context.repository';
+import { SentenceRepository } from '../application/ports/sentece.repository';
+import { PrismaSentenceRepository } from './repositories/prisma-sentece.repository';
+import { ExpressionContextValidationService } from '../application/ports/expression-context-validation.service';
+import { AppExpressionContextValidationService } from './services/app-expression-context-validation.service';
 
 @Module({
   imports: [PrismaModule],
@@ -22,11 +26,21 @@ import { PrismaExpressionContextRepository } from './repositories/prisma-express
       provide: ExpressionContextRepository,
       useClass: PrismaExpressionContextRepository,
     },
+    {
+      provide: SentenceRepository,
+      useClass: PrismaSentenceRepository,
+    },
+    {
+      provide: ExpressionContextValidationService,
+      useClass: AppExpressionContextValidationService,
+    },
   ],
   exports: [
     ExpressionRepository,
     ExpressionValidationService,
     ExpressionContextRepository,
+    SentenceRepository,
+    ExpressionContextValidationService,
   ],
 })
 export class InfrastructureModule {}
