@@ -3,6 +3,7 @@ import { SentenceId } from './value-objects/sentence-id';
 import { ExpressionContextId } from './value-objects/expression-context-id';
 import { SentenceCreatedEvent } from './events/sentence-created.event';
 import { SentenceDeletedEvent } from './events/sentence-deleted.event';
+import { SentenceUpdatedEvent } from './events/sentence-updated.event';
 
 export class Sentence extends AggregateRoot {
   private readonly sentenceId: SentenceId;
@@ -49,6 +50,19 @@ export class Sentence extends AggregateRoot {
 
   delete() {
     this.apply(new SentenceDeletedEvent(this.sentenceId.value));
+  }
+
+  update(content: string, translation: string) {
+    this.content = content;
+    this.translation = translation;
+    this.apply(
+      new SentenceUpdatedEvent(
+        this.sentenceId.value,
+        this.content,
+        this.translation,
+        this.expressionContextId.value,
+      ),
+    );
   }
 
   getSentenceId(): SentenceId {
