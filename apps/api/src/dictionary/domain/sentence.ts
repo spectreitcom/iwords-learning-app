@@ -2,6 +2,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { SentenceId } from './value-objects/sentence-id';
 import { ExpressionContextId } from './value-objects/expression-context-id';
 import { SentenceCreatedEvent } from './events/sentence-created.event';
+import { SentenceDeletedEvent } from './events/sentence-deleted.event';
 
 export class Sentence extends AggregateRoot {
   private readonly sentenceId: SentenceId;
@@ -44,6 +45,10 @@ export class Sentence extends AggregateRoot {
     );
 
     return sentence;
+  }
+
+  delete() {
+    this.apply(new SentenceDeletedEvent(this.sentenceId.value));
   }
 
   getSentenceId(): SentenceId {

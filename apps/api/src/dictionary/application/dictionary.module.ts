@@ -24,6 +24,8 @@ import { UpdateNounExpressionContextCommandHandler } from './command-handlers/up
 import { UpdatePhrasalVerbExpressionContextCommandHandler } from './command-handlers/update-phrasal-verb-expression-context.command-handler';
 import { SentenceCreatedEventHandler } from './event-handlers/sentence-created.event-handler';
 import { CreateSentenceCommandHandler } from './command-handlers/create-sentence.command-handler';
+import { SentenceDeletedEventHandler } from './event-handlers/sentence-deleted.event-handler';
+import { DeleteSentenceCommandHandler } from './command-handlers/delete-sentence.command-handler';
 
 const EVENT_HANDLERS = [
   ExpressionCreatedEventHandler,
@@ -33,6 +35,7 @@ const EVENT_HANDLERS = [
   ExpressionContextDeletedEventHandler,
   ExpressionContextUpdatedEventHandler,
   SentenceCreatedEventHandler,
+  SentenceDeletedEventHandler,
 ];
 
 const COMMAND_HANDLERS = [
@@ -53,6 +56,7 @@ const COMMAND_HANDLERS = [
   UpdateNounExpressionContextCommandHandler,
   UpdatePhrasalVerbExpressionContextCommandHandler,
   CreateSentenceCommandHandler,
+  DeleteSentenceCommandHandler,
 ];
 
 const QUERY_HANDLERS = [];

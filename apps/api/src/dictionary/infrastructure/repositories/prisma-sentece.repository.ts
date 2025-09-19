@@ -42,4 +42,10 @@ export class PrismaSentenceRepository implements SentenceRepository {
       ExpressionContextId.fromString(sentenceData.expressionContextId),
     );
   }
+
+  async delete(sentenceId: string): Promise<void> {
+    await this.prismaService.sentence.delete({
+      where: { id: sentenceId },
+    });
+  }
 }

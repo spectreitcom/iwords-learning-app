@@ -15,3 +15,9 @@ export class ExpressionContextNotFoundError extends Error {
     super(`Expression context with id ${expressionContextId} not found.`);
   }
 }
+
+export class SentenceNotFoundError extends Error {
+  constructor(sentenceId: string) {
+    super(`Sentence with id ${sentenceId} not found.`);
+  }
+}
