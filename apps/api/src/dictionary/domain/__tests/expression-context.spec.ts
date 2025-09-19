@@ -500,7 +500,7 @@ describe('ExpressionContext', () => {
       // Arrange
       const expressionContext = ExpressionContext.createVerb(
         'to run',
-        '550e8400-e29b-41d4-a716-446655440020'
+        '550e8400-e29b-41d4-a716-446655440020',
       );
       const newTranslation = 'to walk';
 
@@ -509,11 +509,11 @@ describe('ExpressionContext', () => {
 
       // Assert
       expect(expressionContext.getTranslation()).toBe(newTranslation);
-      
+
       const events = expressionContext.getUncommittedEvents();
       expect(events).toHaveLength(2); // Created + Updated
       expect(events[1]).toBeInstanceOf(ExpressionContextUpdatedEvent);
-      
+
       const updateEvent = events[1] as ExpressionContextUpdatedEvent;
       expect(updateEvent.translation).toBe(newTranslation);
       expect(updateEvent.isCountable).toBe(false);
@@ -529,7 +529,7 @@ describe('ExpressionContext', () => {
       const expressionContext = ExpressionContext.createIrregularVerb(
         'to go',
         ['go', 'went', 'gone'],
-        '550e8400-e29b-41d4-a716-446655440021'
+        '550e8400-e29b-41d4-a716-446655440021',
       );
       const newTranslation = 'to come';
       const newForms: [string, string, string] = ['come', 'came', 'come'];
@@ -540,11 +540,11 @@ describe('ExpressionContext', () => {
       // Assert
       expect(expressionContext.getTranslation()).toBe(newTranslation);
       expect(expressionContext.getForms()?.value).toEqual(newForms);
-      
+
       const events = expressionContext.getUncommittedEvents();
       expect(events).toHaveLength(2); // Created + Updated
       expect(events[1]).toBeInstanceOf(ExpressionContextUpdatedEvent);
-      
+
       const updateEvent = events[1] as ExpressionContextUpdatedEvent;
       expect(updateEvent.translation).toBe(newTranslation);
       expect(updateEvent.forms).toEqual(newForms);
@@ -557,7 +557,7 @@ describe('ExpressionContext', () => {
       // Arrange
       const expressionContext = ExpressionContext.createAdverb(
         'quickly',
-        '550e8400-e29b-41d4-a716-446655440022'
+        '550e8400-e29b-41d4-a716-446655440022',
       );
       const newTranslation = 'slowly';
 
@@ -566,11 +566,11 @@ describe('ExpressionContext', () => {
 
       // Assert
       expect(expressionContext.getTranslation()).toBe(newTranslation);
-      
+
       const events = expressionContext.getUncommittedEvents();
       expect(events).toHaveLength(2); // Created + Updated
       expect(events[1]).toBeInstanceOf(ExpressionContextUpdatedEvent);
-      
+
       const updateEvent = events[1] as ExpressionContextUpdatedEvent;
       expect(updateEvent.translation).toBe(newTranslation);
       expect(updateEvent.isCountable).toBe(false);
@@ -585,7 +585,7 @@ describe('ExpressionContext', () => {
       // Arrange
       const expressionContext = ExpressionContext.createAdjective(
         'beautiful',
-        '550e8400-e29b-41d4-a716-446655440023'
+        '550e8400-e29b-41d4-a716-446655440023',
       );
       const newTranslation = 'ugly';
 
@@ -594,11 +594,11 @@ describe('ExpressionContext', () => {
 
       // Assert
       expect(expressionContext.getTranslation()).toBe(newTranslation);
-      
+
       const events = expressionContext.getUncommittedEvents();
       expect(events).toHaveLength(2); // Created + Updated
       expect(events[1]).toBeInstanceOf(ExpressionContextUpdatedEvent);
-      
+
       const updateEvent = events[1] as ExpressionContextUpdatedEvent;
       expect(updateEvent.translation).toBe(newTranslation);
       expect(updateEvent.isCountable).toBe(false);
@@ -614,7 +614,7 @@ describe('ExpressionContext', () => {
       const expressionContext = ExpressionContext.createNoun(
         'book',
         '550e8400-e29b-41d4-a716-446655440024',
-        true
+        true,
       );
       const newTranslation = 'water';
       const newCountability = false;
@@ -625,11 +625,11 @@ describe('ExpressionContext', () => {
       // Assert
       expect(expressionContext.getTranslation()).toBe(newTranslation);
       expect(expressionContext.getIsCountable()).toBe(newCountability);
-      
+
       const events = expressionContext.getUncommittedEvents();
       expect(events).toHaveLength(2); // Created + Updated
       expect(events[1]).toBeInstanceOf(ExpressionContextUpdatedEvent);
-      
+
       const updateEvent = events[1] as ExpressionContextUpdatedEvent;
       expect(updateEvent.translation).toBe(newTranslation);
       expect(updateEvent.isCountable).toBe(newCountability);
@@ -643,7 +643,7 @@ describe('ExpressionContext', () => {
       const expressionContext = ExpressionContext.createNoun(
         'water',
         '550e8400-e29b-41d4-a716-446655440025',
-        false
+        false,
       );
       const newTranslation = 'apple';
       const newCountability = true;
@@ -654,8 +654,9 @@ describe('ExpressionContext', () => {
       // Assert
       expect(expressionContext.getTranslation()).toBe(newTranslation);
       expect(expressionContext.getIsCountable()).toBe(newCountability);
-      
-      const updateEvent = expressionContext.getUncommittedEvents()[1] as ExpressionContextUpdatedEvent;
+
+      const updateEvent =
+        expressionContext.getUncommittedEvents()[1] as ExpressionContextUpdatedEvent;
       expect(updateEvent.isCountable).toBe(newCountability);
     });
   });
@@ -665,7 +666,7 @@ describe('ExpressionContext', () => {
       // Arrange
       const expressionContext = ExpressionContext.createPhrasalVerb(
         'to give up',
-        '550e8400-e29b-41d4-a716-446655440026'
+        '550e8400-e29b-41d4-a716-446655440026',
       );
       const newTranslation = 'to look after';
 
@@ -674,11 +675,11 @@ describe('ExpressionContext', () => {
 
       // Assert
       expect(expressionContext.getTranslation()).toBe(newTranslation);
-      
+
       const events = expressionContext.getUncommittedEvents();
       expect(events).toHaveLength(2); // Created + Updated
       expect(events[1]).toBeInstanceOf(ExpressionContextUpdatedEvent);
-      
+
       const updateEvent = events[1] as ExpressionContextUpdatedEvent;
       expect(updateEvent.translation).toBe(newTranslation);
       expect(updateEvent.isCountable).toBe(false);
