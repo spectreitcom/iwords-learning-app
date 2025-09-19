@@ -16,6 +16,12 @@ import { CreateAdjectiveExpressionContextCommandHandler } from './command-handle
 import { CreatePhrasalVerbExpressionContextCommandHandler } from './command-handlers/create-phrasal-verb-expression-context.command-handler';
 import { CreateAdverbExpressionContextCommandHandler } from './command-handlers/create-adverb-expression-context.command-handler';
 import { DeleteExpressionContextCommandHandler } from './command-handlers/delete-expression-context.command-handler';
+import { UpdateVerbExpressionContextCommandHandler } from './command-handlers/update-verb-expression-context.command-handler';
+import { UpdateIrregularVerbExpressionContextCommandHandler } from './command-handlers/update-irregular-verb-expression-context.command-handler';
+import { UpdateAdjectiveExpressionContextCommandHandler } from './command-handlers/update-adjective-expression-context.command-handler';
+import { UpdateAdverbExpressionContextCommandHandler } from './command-handlers/update-adverb-expression-context.command-handler';
+import { UpdateNounExpressionContextCommandHandler } from './command-handlers/update-noun-expression-context.command-handler';
+import { UpdatePhrasalVerbExpressionContextCommandHandler } from './command-handlers/update-phrasal-verb-expression-context.command-handler';
 
 const EVENT_HANDLERS = [
   ExpressionCreatedEventHandler,
@@ -37,6 +43,12 @@ const COMMAND_HANDLERS = [
   CreatePhrasalVerbExpressionContextCommandHandler,
   CreateAdverbExpressionContextCommandHandler,
   DeleteExpressionContextCommandHandler,
+  UpdateVerbExpressionContextCommandHandler,
+  UpdateIrregularVerbExpressionContextCommandHandler,
+  UpdateAdjectiveExpressionContextCommandHandler,
+  UpdateAdverbExpressionContextCommandHandler,
+  UpdateNounExpressionContextCommandHandler,
+  UpdatePhrasalVerbExpressionContextCommandHandler,
 ];
 
 const QUERY_HANDLERS = [];
