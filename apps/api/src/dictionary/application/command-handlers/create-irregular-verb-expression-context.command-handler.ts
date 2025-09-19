@@ -5,9 +5,17 @@ import { ExpressionValidationService } from '../ports/expression-validation.serv
 import { ExpressionNotFoundError } from '../errors';
 import { ExpressionContext } from '../../domain/expression-context';
 
+export type CreateIrregularVerbExpressionContextCommandResponse = {
+  id: string;
+};
+
 @CommandHandler(CreateIrregularVerbExpressionContextCommand)
 export class CreateIrregularVerbExpressionContextCommandHandler
-  implements ICommandHandler<CreateIrregularVerbExpressionContextCommand, void>
+  implements
+    ICommandHandler<
+      CreateIrregularVerbExpressionContextCommand,
+      CreateIrregularVerbExpressionContextCommandResponse
+    >
 {
   constructor(
     private readonly eventPublisher: EventPublisher,
@@ -17,7 +25,7 @@ export class CreateIrregularVerbExpressionContextCommandHandler
 
   async execute(
     command: CreateIrregularVerbExpressionContextCommand,
-  ): Promise<void> {
+  ): Promise<CreateIrregularVerbExpressionContextCommandResponse> {
     const { expressionId, translation, forms } = command;
 
     const expressionExists =
@@ -35,5 +43,7 @@ export class CreateIrregularVerbExpressionContextCommandHandler
     this.eventPublisher.mergeObjectContext(expressionContext);
     await this.expressionContextRepository.save(expressionContext);
     expressionContext.commit();
+
+    return { id: expressionContext.getExpressionContextId().value };
   }
 }
