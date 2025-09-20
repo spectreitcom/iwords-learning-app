@@ -7,7 +7,7 @@ import { CreateIrregularVerbExpressionContextCommandResponse } from '../command-
 import { CreateNounExpressionContextCommandResponse } from '../command-handlers/create-noun-expression-context.command-handler';
 import { CreatePhrasalVerbExpressionContextCommandResponse } from '../command-handlers/create-phrasal-verb-expression-context.command-handler';
 import { CreateVerbExpressionContextCommandResponse } from '../command-handlers/create-verb-expression-context.command-handler';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 // Command imports
 import { CreateExpressionCommand } from '../commands/create-expression.command';
@@ -29,10 +29,15 @@ import { DeleteExpressionContextCommand } from '../commands/delete-expression-co
 import { CreateSentenceCommand } from '../commands/create-sentence.command';
 import { UpdateSentenceCommand } from '../commands/update-sentence.command';
 import { DeleteSentenceCommand } from '../commands/delete-sentence.command';
+import { SearchDictionaryReadModelQueryResponse } from '../query-handlers/search-dictionary-read-model.query-handler';
+import { SearchDictionaryReadModelQuery } from '../queries/search-dictionary-read-model.query';
 
 @Injectable()
 export class DictionaryApiService implements DictionaryApi {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+  ) {}
 
   createAdjectiveExpressionContext(
     expressionId: string,
@@ -219,5 +224,14 @@ export class DictionaryApiService implements DictionaryApi {
       translation,
     );
     return this.commandBus.execute(command);
+  }
+
+  searchDictionaryReadModel(
+    searchText: string,
+    take: number,
+    page: number,
+  ): Promise<SearchDictionaryReadModelQueryResponse> {
+    const query = new SearchDictionaryReadModelQuery(searchText, take, page);
+    return this.queryBus.execute(query);
   }
 }

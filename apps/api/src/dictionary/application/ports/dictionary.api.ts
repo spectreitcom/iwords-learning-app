@@ -5,6 +5,7 @@ import { CreateAdverbExpressionContextCommandResponse } from '../command-handler
 import { CreateNounExpressionContextCommandResponse } from '../command-handlers/create-noun-expression-context.command-handler';
 import { CreateIrregularVerbExpressionContextCommandResponse } from '../command-handlers/create-irregular-verb-expression-context.command-handler';
 import { CreatePhrasalVerbExpressionContextCommandResponse } from '../command-handlers/create-phrasal-verb-expression-context.command-handler';
+import { SearchDictionaryReadModelQueryResponse } from '../query-handlers/search-dictionary-read-model.query-handler';
 
 export abstract class DictionaryApi {
   abstract createExpression(
@@ -97,4 +98,10 @@ export abstract class DictionaryApi {
   ): Promise<void>;
 
   abstract deleteSentence(sentenceId: string): Promise<void>;
+
+  abstract searchDictionaryReadModel(
+    searchText: string,
+    take: number,
+    page: number,
+  ): Promise<SearchDictionaryReadModelQueryResponse>;
 }

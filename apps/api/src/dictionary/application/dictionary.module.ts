@@ -30,6 +30,7 @@ import { SentenceUpdatedEventHandler } from './event-handlers/sentence-updated.e
 import { UpdateSentenceCommandHandler } from './command-handlers/update-sentence.command-handler';
 import { DictionaryApiService } from './services/dictionary-api.service';
 import { PrismaModule } from '../../common/prisma/prisma.module';
+import { SearchDictionaryReadModelQueryHandler } from './query-handlers/search-dictionary-read-model.query-handler';
 
 const EVENT_HANDLERS = [
   ExpressionCreatedEventHandler,
@@ -65,7 +66,7 @@ const COMMAND_HANDLERS = [
   UpdateSentenceCommandHandler,
 ];
 
-const QUERY_HANDLERS = [];
+const QUERY_HANDLERS = [SearchDictionaryReadModelQueryHandler];
 
 @Module({
   imports: [InfrastructureModule, PrismaModule],

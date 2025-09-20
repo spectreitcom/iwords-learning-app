@@ -1,5 +1,3 @@
-import { SentenceReadModel } from './sentence-read-model';
-
 export class DictionaryReadModel {
   constructor(
     public readonly id: string,
@@ -11,6 +9,5 @@ export class DictionaryReadModel {
     public readonly forms: [string, string, string] | null,
     public readonly isCountable: boolean,
     public readonly isIrregular: boolean,
-    public readonly sentences: SentenceReadModel[],
   ) {}
 }
