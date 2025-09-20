@@ -36,7 +36,7 @@ export class CreateAdjectiveExpressionContextCommandHandler
     }
 
     const expressionContext = ExpressionContext.createAdjective(
-      translation,
+      translation.toLowerCase(),
       expressionId,
     );
     this.eventPublisher.mergeObjectContext(expressionContext);

@@ -23,7 +23,7 @@ export class UpdateVerbExpressionContextCommandHandler
     }
 
     this.eventPublisher.mergeObjectContext(expressionContext);
-    expressionContext.updateVerb(translation);
+    expressionContext.updateVerb(translation.toLowerCase());
     await this.expressionContextRepository.save(expressionContext);
     expressionContext.commit();
   }

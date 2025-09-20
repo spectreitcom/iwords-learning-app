@@ -25,7 +25,10 @@ export class UpdateIrregularVerbExpressionContextCommandHandler
     }
 
     this.eventPublisher.mergeObjectContext(expressionContext);
-    expressionContext.updateIrregularVerb(translation, forms);
+    expressionContext.updateIrregularVerb(
+      translation.toLowerCase(),
+      forms.map((form) => form.toLowerCase()) as [string, string, string],
+    );
     await this.expressionContextRepository.save(expressionContext);
     expressionContext.commit();
   }

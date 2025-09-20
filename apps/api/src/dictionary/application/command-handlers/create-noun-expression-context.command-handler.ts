@@ -36,7 +36,7 @@ export class CreateNounExpressionContextCommandHandler
     }
 
     const expressionContext = ExpressionContext.createNoun(
-      translation,
+      translation.toLowerCase(),
       expressionId,
       isCountable,
     );

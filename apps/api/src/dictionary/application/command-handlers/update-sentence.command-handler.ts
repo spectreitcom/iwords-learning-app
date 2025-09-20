@@ -21,7 +21,7 @@ export class UpdateSentenceCommandHandler
       throw new SentenceNotFoundError(sentenceId);
     }
 
-    sentence.update(content, translation);
+    sentence.update(content.toLowerCase(), translation.toLowerCase());
     this.eventPublisher.mergeObjectContext(sentence);
     await this.sentenceRepository.save(sentence);
     sentence.commit();

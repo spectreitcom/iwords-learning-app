@@ -23,7 +23,7 @@ export class UpdateAdverbExpressionContextCommandHandler
     }
 
     this.eventPublisher.mergeObjectContext(expressionContext);
-    expressionContext.updateAdverb(translation);
+    expressionContext.updateAdverb(translation.toLowerCase());
     await this.expressionContextRepository.save(expressionContext);
     expressionContext.commit();
   }

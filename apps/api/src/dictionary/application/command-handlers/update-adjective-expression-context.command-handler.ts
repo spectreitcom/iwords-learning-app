@@ -25,7 +25,7 @@ export class UpdateAdjectiveExpressionContextCommandHandler
     }
 
     this.eventPublisher.mergeObjectContext(expressionContext);
-    expressionContext.updateAdjective(translation);
+    expressionContext.updateAdjective(translation.toLowerCase());
     await this.expressionContextRepository.save(expressionContext);
     expressionContext.commit();
   }

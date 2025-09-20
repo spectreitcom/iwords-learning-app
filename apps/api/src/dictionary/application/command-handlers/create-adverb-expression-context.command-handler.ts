@@ -36,7 +36,7 @@ export class CreateAdverbExpressionContextCommandHandler
     }
 
     const expressionContext = ExpressionContext.createAdverb(
-      translation,
+      translation.toLowerCase(),
       expressionId,
     );
     this.eventPublisher.mergeObjectContext(expressionContext);

@@ -36,7 +36,7 @@ export class CreateVerbExpressionContextCommandHandler
     }
 
     const expressionContext = ExpressionContext.createVerb(
-      translation,
+      translation.toLowerCase(),
       expressionId,
     );
     this.eventPublisher.mergeObjectContext(expressionContext);

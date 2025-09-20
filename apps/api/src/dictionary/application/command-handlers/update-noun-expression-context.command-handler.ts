@@ -23,7 +23,7 @@ export class UpdateNounExpressionContextCommandHandler
     }
 
     this.eventPublisher.mergeObjectContext(expressionContext);
-    expressionContext.updateNoun(translation, isCountable);
+    expressionContext.updateNoun(translation.toLowerCase(), isCountable);
     await this.expressionContextRepository.save(expressionContext);
     expressionContext.commit();
   }
