@@ -8,8 +8,6 @@ import { CreateNounExpressionContextCommandResponse } from '../command-handlers/
 import { CreatePhrasalVerbExpressionContextCommandResponse } from '../command-handlers/create-phrasal-verb-expression-context.command-handler';
 import { CreateVerbExpressionContextCommandResponse } from '../command-handlers/create-verb-expression-context.command-handler';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-
-// Command imports
 import { CreateExpressionCommand } from '../commands/create-expression.command';
 import { DeleteExpressionCommand } from '../commands/delete-expression.command';
 import { UpdateExpressionCommand } from '../commands/update-expression.command';
@@ -31,6 +29,8 @@ import { UpdateSentenceCommand } from '../commands/update-sentence.command';
 import { DeleteSentenceCommand } from '../commands/delete-sentence.command';
 import { SearchDictionaryReadModelQueryResponse } from '../query-handlers/search-dictionary-read-model.query-handler';
 import { SearchDictionaryReadModelQuery } from '../queries/search-dictionary-read-model.query';
+import { ExpressionView } from '../../views/expression.view';
+import { GetExpressionByIdQuery } from '../queries/get-expression-by-id.query';
 
 @Injectable()
 export class DictionaryApiService implements DictionaryApi {
@@ -232,6 +232,11 @@ export class DictionaryApiService implements DictionaryApi {
     page: number,
   ): Promise<SearchDictionaryReadModelQueryResponse> {
     const query = new SearchDictionaryReadModelQuery(searchText, take, page);
+    return this.queryBus.execute(query);
+  }
+
+  getExpressionById(expressionId: string): Promise<ExpressionView> {
+    const query = new GetExpressionByIdQuery(expressionId);
     return this.queryBus.execute(query);
   }
 }
