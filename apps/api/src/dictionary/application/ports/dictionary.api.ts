@@ -107,4 +107,8 @@ export abstract class DictionaryApi {
   ): Promise<SearchDictionaryReadModelQueryResponse>;
 
   abstract getExpressionById(expressionId: string): Promise<ExpressionView>;
+
+  abstract getExpressionContextById(
+    expressionContextId: string,
+  ): Promise<ExpressionView>;
 }

@@ -32,6 +32,7 @@ import { DictionaryApiService } from './services/dictionary-api.service';
 import { PrismaModule } from '../../common/prisma/prisma.module';
 import { SearchDictionaryReadModelQueryHandler } from './query-handlers/search-dictionary-read-model.query-handler';
 import { GetExpressionByIdQueryHandler } from './query-handlers/get-expression-by-id.query-handler';
+import { GetExpressionContextByIdQueryHandler } from './query-handlers/get-expression-context-by-id.query-handler';
 
 const EVENT_HANDLERS = [
   ExpressionCreatedEventHandler,
@@ -70,6 +71,7 @@ const COMMAND_HANDLERS = [
 const QUERY_HANDLERS = [
   SearchDictionaryReadModelQueryHandler,
   GetExpressionByIdQueryHandler,
+  GetExpressionContextByIdQueryHandler,
 ];
 
 @Module({
