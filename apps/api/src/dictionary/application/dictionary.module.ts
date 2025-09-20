@@ -29,6 +29,7 @@ import { DeleteSentenceCommandHandler } from './command-handlers/delete-sentence
 import { SentenceUpdatedEventHandler } from './event-handlers/sentence-updated.event-handler';
 import { UpdateSentenceCommandHandler } from './command-handlers/update-sentence.command-handler';
 import { DictionaryApiService } from './services/dictionary-api.service';
+import { PrismaModule } from '../../common/prisma/prisma.module';
 
 const EVENT_HANDLERS = [
   ExpressionCreatedEventHandler,
@@ -67,7 +68,7 @@ const COMMAND_HANDLERS = [
 const QUERY_HANDLERS = [];
 
 @Module({
-  imports: [InfrastructureModule],
+  imports: [InfrastructureModule, PrismaModule],
   providers: [
     ...EVENT_HANDLERS,
     ...COMMAND_HANDLERS,
