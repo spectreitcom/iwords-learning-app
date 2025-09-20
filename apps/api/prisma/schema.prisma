@@ -37,7 +37,7 @@ model ExpressionContext {
   createdAt   DateTime @default(now())
 
   expressionId String
-  expression   Expression @relation(fields: [expressionId], references: [id])
+  expression   Expression @relation(fields: [expressionId], references: [id], onDelete: Cascade)
   sentences    Sentence[]
 }
 
@@ -48,20 +48,20 @@ model Sentence {
   createdAt   DateTime @default(now())
 
   expressionContextId String
-  expressionContext   ExpressionContext @relation(fields: [expressionContextId], references: [id])
+  expressionContext   ExpressionContext @relation(fields: [expressionContextId], references: [id], onDelete: Cascade)
 }
 
 model DictionaryReadModel {
   id                  String   @id @default(uuid())
   phrase              String
   expressionId        String
-  expressionContextId String
+  expressionContextId String   @unique
   type                String
   translation         String
   forms               String[] @default([])
   isIrregular         Boolean  @default(false)
   isCountable         Boolean  @default(false)
-  sentences           Json?
+  sentenceIds         String[] @default([])
 
   @@unique([expressionId, expressionContextId])
   @@index([phrase])

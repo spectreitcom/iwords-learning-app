@@ -49,7 +49,12 @@ export class Sentence extends AggregateRoot {
   }
 
   delete() {
-    this.apply(new SentenceDeletedEvent(this.sentenceId.value));
+    this.apply(
+      new SentenceDeletedEvent(
+        this.sentenceId.value,
+        this.expressionContextId.value,
+      ),
+    );
   }
 
   update(content: string, translation: string) {
