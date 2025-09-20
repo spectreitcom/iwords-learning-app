@@ -111,4 +111,6 @@ export abstract class DictionaryApi {
   abstract getExpressionContextById(
     expressionContextId: string,
   ): Promise<ExpressionView>;
+
+  abstract getSentenceById(sentenceId: string): Promise<ExpressionView>;
 }
