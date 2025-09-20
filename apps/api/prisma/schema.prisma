@@ -17,6 +17,13 @@ datasource db {
 //----------------------------------
 
 // Admin Users Bounded Context
+model AdminUser {
+  id       String  @id @default(uuid())
+  email    String  @unique
+  password String?
+  name     String
+}
+
 //----------------------------------
 
 // Dictionary Bounded Context
