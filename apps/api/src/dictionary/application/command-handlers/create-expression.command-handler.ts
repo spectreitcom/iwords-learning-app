@@ -26,7 +26,7 @@ export class CreateExpressionCommandHandler
     const { phrase } = command;
 
     const existingExpressionId =
-      await this.expressionValidationService.checkPhrase(phrase);
+      await this.expressionValidationService.checkPhrase(phrase.toLowerCase());
 
     if (existingExpressionId) {
       return {
@@ -35,7 +35,7 @@ export class CreateExpressionCommandHandler
       };
     }
 
-    const expression = Expression.create(phrase);
+    const expression = Expression.create(phrase.toLowerCase());
     this.eventPublisher.mergeObjectContext(expression);
     await this.expressionRepository.save(expression);
     expression.commit();

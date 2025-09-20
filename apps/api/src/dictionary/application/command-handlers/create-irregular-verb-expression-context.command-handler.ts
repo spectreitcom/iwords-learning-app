@@ -36,8 +36,8 @@ export class CreateIrregularVerbExpressionContextCommandHandler
     }
 
     const expressionContext = ExpressionContext.createIrregularVerb(
-      translation,
-      forms,
+      translation.toLowerCase(),
+      forms.map((form) => form.toLowerCase()) as [string, string, string],
       expressionId,
     );
     this.eventPublisher.mergeObjectContext(expressionContext);

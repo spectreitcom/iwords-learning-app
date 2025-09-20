@@ -36,7 +36,7 @@ export class CreatePhrasalVerbExpressionContextCommandHandler
     }
 
     const expressionContext = ExpressionContext.createPhrasalVerb(
-      translation,
+      translation.toLowerCase(),
       expressionId,
     );
     this.eventPublisher.mergeObjectContext(expressionContext);

@@ -25,7 +25,7 @@ export class UpdatePhrasalVerbExpressionContextCommandHandler
     }
 
     this.eventPublisher.mergeObjectContext(expressionContext);
-    expressionContext.updatePhrasalVerb(translation);
+    expressionContext.updatePhrasalVerb(translation.toLowerCase());
     await this.expressionContextRepository.save(expressionContext);
     expressionContext.commit();
   }

@@ -25,7 +25,11 @@ export class CreateSentenceCommandHandler
       throw new ExpressionContextNotFoundError(expressionContextId);
     }
 
-    const sentence = Sentence.create(content, translation, expressionContextId);
+    const sentence = Sentence.create(
+      content.toLowerCase(),
+      translation.toLowerCase(),
+      expressionContextId,
+    );
     this.eventPublisher.mergeObjectContext(sentence);
     await this.sentenceRepository.save(sentence);
     sentence.commit();
