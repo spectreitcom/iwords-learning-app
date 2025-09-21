@@ -18,11 +18,12 @@ datasource db {
 
 // Admin Users Bounded Context
 model AdminUser {
-  id          String  @id @default(uuid())
-  email       String  @unique
+  id          String   @id @default(uuid())
+  email       String   @unique
   password    String?
   name        String
-  isSuperuser Boolean @default(false)
+  isSuperuser Boolean  @default(false)
+  createdAt   DateTime @default(now())
 }
 
 //----------------------------------
