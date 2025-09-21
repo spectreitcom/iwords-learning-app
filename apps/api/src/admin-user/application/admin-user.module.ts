@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
-import { InfrastructureModule } from '../../dictionary/infrastructure/infrastructure.module';
+import { InfrastructureModule } from '../infrastructure/infrastructure.module';
 import { PrismaModule } from '../../common/prisma/prisma.module';
 import { GetUserByIdQueryHandler } from './query-handlers/get-user-by-id.query-handler';
-import { AdminUserService } from './services/admin-user-api.service';
+import { AdminUserApiService } from './services/admin-user-api.service';
+import { CreateAdminUserCommandHandler } from './command-handlers/create-admin-user.command-handler';
 
 const EVENT_HANDLERS = [];
 
-const COMMAND_HANDLERS = [];
+const COMMAND_HANDLERS = [CreateAdminUserCommandHandler];
 
 const QUERY_HANDLERS = [GetUserByIdQueryHandler];
 
@@ -16,8 +17,8 @@ const QUERY_HANDLERS = [GetUserByIdQueryHandler];
     ...EVENT_HANDLERS,
     ...COMMAND_HANDLERS,
     ...QUERY_HANDLERS,
-    AdminUserService,
+    AdminUserApiService,
   ],
-  exports: [AdminUserService],
+  exports: [AdminUserApiService],
 })
 export class AdminUserModule {}

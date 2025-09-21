@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { AdminGatewayModule } from './bff/admin-gateway/admin-gateway.module';
 import { envSchema } from '../env-schema';
+import { CliModule } from './cli/cli.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { envSchema } from '../env-schema';
     }),
     CqrsModule.forRoot(),
     AdminGatewayModule,
+    CliModule,
   ],
 })
 export class AppModule {}
