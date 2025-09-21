@@ -33,49 +33,65 @@ describe('AdminUserEmail', () => {
     it('should throw error for invalid email format - missing @', () => {
       const invalidEmail = 'adminexample.com';
 
-      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow('Invalid admin user email');
+      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow(
+        'Invalid admin user email',
+      );
     });
 
     it('should throw error for invalid email format - missing domain', () => {
       const invalidEmail = 'admin@';
 
-      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow('Invalid admin user email');
+      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow(
+        'Invalid admin user email',
+      );
     });
 
     it('should throw error for invalid email format - missing local part', () => {
       const invalidEmail = '@example.com';
 
-      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow('Invalid admin user email');
+      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow(
+        'Invalid admin user email',
+      );
     });
 
     it('should throw error for invalid email format - spaces', () => {
       const invalidEmail = 'admin user@example.com';
 
-      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow('Invalid admin user email');
+      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow(
+        'Invalid admin user email',
+      );
     });
 
     it('should throw error for invalid email format - multiple @', () => {
       const invalidEmail = 'admin@@example.com';
 
-      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow('Invalid admin user email');
+      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow(
+        'Invalid admin user email',
+      );
     });
 
     it('should throw error for empty string', () => {
       const invalidEmail = '';
 
-      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow('Invalid admin user email');
+      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow(
+        'Invalid admin user email',
+      );
     });
 
     it('should throw error for whitespace only', () => {
       const invalidEmail = '   ';
 
-      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow('Invalid admin user email');
+      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow(
+        'Invalid admin user email',
+      );
     });
 
     it('should throw error for invalid domain format', () => {
       const invalidEmail = 'admin@.com';
 
-      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow('Invalid admin user email');
+      expect(() => AdminUserEmail.fromString(invalidEmail)).toThrow(
+        'Invalid admin user email',
+      );
     });
   });
 
