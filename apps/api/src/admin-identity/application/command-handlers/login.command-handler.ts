@@ -4,9 +4,13 @@ import { AdminUserView } from '../../views/admin-user.view';
 import { AdminUserRepository } from '../ports/admin-user.repository';
 import { WrongEmailOrPasswordError } from '../errors';
 import { AccessTokenService } from '../ports/access-token.service';
+import { RefreshTokenService } from '../ports/refresh-token.service';
+import { RefreshTokenStorage } from '../ports/refresh-token.storage';
+import { randomUUID } from 'node:crypto';
 
 export type LoginCommandResponse = {
   accessToken: string;
+  refreshToken: string;
   user: AdminUserView;
 };
 
@@ -17,6 +21,8 @@ export class LoginCommandHandler
   constructor(
     private readonly adminUserRepository: AdminUserRepository,
     private readonly accessTokenService: AccessTokenService,
+    private readonly refreshTokenService: RefreshTokenService,
+    private readonly refreshTokenStorage: RefreshTokenStorage,
   ) {}
 
   async execute(command: LoginCommand): Promise<LoginCommandResponse> {
@@ -29,8 +35,19 @@ export class LoginCommandHandler
       adminUser.getAdminUserId().value,
     );
 
+    const refreshToken = this.refreshTokenService.createToken(
+      adminUser.getAdminUserId().value,
+    );
+
+    const refreshTokenId = randomUUID();
+    await this.refreshTokenStorage.insert(
+      adminUser.getAdminUserId().value,
+      refreshTokenId,
+    );
+
     return {
       accessToken,
+      refreshToken,
       user: new AdminUserView(
         adminUser.getAdminUserId().value,
         adminUser.getEmail().value,

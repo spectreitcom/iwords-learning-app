@@ -1,9 +1,22 @@
-import { Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { LocalAuthGuard } from '../auth/local-auth.guard';
 import { AdminIdentityApiService } from '../../../admin-identity/application/services/admin-identity-api.service';
 import { CurrentAdminUserId } from '../auth/current-admin-user-id.decorator';
 import { Public } from '../auth/public.decorator';
 import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
+import { RefreshTokenDto } from '../dtos/refresh-token.dto';
+import {
+  AdminIdentityNotFoundError,
+  InvalidRefreshTokenError,
+} from '../../../admin-identity/application/errors';
 
 @ApiTags('Admin Auth')
 @Public()
@@ -43,8 +56,25 @@ export class AuthController {
     },
   })
   @Post('sign-in')
+  @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
   signIn(@CurrentAdminUserId() userId: string) {
     return this.adminIdentityApiService.signIn(userId);
+  }
+
+  @Post('refresh-token')
+  @HttpCode(HttpStatus.OK)
+  async refreshToken(@Body() payload: RefreshTokenDto) {
+    try {
+      return await this.adminIdentityApiService.refreshToken(
+        payload.refreshToken,
+      );
+    } catch (e) {
+      if (e instanceof InvalidRefreshTokenError)
+        throw new UnauthorizedException();
+      if (e instanceof AdminIdentityNotFoundError)
+        throw new UnauthorizedException();
+      throw e;
+    }
   }
 }

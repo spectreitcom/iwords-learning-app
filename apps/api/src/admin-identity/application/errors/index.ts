@@ -15,3 +15,9 @@ export class WrongEmailOrPasswordError extends Error {
     super('Wrong email or password');
   }
 }
+
+export class InvalidRefreshTokenError extends Error {
+  constructor() {
+    super('Invalid refresh token');
+  }
+}

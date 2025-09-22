@@ -7,6 +7,8 @@ import { CreateAdminUserCommand } from '../commands/create-admin-user.command';
 import { LoginCommandResponse } from '../command-handlers/login.command-handler';
 import { LoginCommand } from '../commands/login.command';
 import { ValidateUserQuery } from '../queries/validate-user.query';
+import { RefreshTokenCommandResponse } from '../command-handlers/refresh-token.command-handler';
+import { RefreshTokenCommand } from '../commands/refresh-token.command';
 
 @Injectable()
 export class AdminIdentityApiService implements AdminIdentityApi {
@@ -15,12 +17,12 @@ export class AdminIdentityApiService implements AdminIdentityApi {
     private commandBus: CommandBus,
   ) {}
 
-  getUserById(adminUserId: string): Promise<AdminUserView> {
+  async getUserById(adminUserId: string): Promise<AdminUserView> {
     const query = new GetUserByIdQuery(adminUserId);
-    return this.queryBus.execute(query);
+    return await this.queryBus.execute(query);
   }
 
-  createAdminUser(
+  async createAdminUser(
     email: string,
     password: string,
     name: string,
@@ -32,16 +34,23 @@ export class AdminIdentityApiService implements AdminIdentityApi {
       name,
       isSuperuser,
     );
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  signIn(userId: string): Promise<LoginCommandResponse> {
+  async signIn(userId: string): Promise<LoginCommandResponse> {
     const command = new LoginCommand(userId);
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  validateUser(email: string, password: string): Promise<AdminUserView> {
+  async validateUser(email: string, password: string): Promise<AdminUserView> {
     const query = new ValidateUserQuery(email, password);
-    return this.queryBus.execute(query);
+    return await this.queryBus.execute(query);
+  }
+
+  async refreshToken(
+    refreshToken: string,
+  ): Promise<RefreshTokenCommandResponse> {
+    const command = new RefreshTokenCommand(refreshToken);
+    return await this.commandBus.execute(command);
   }
 }

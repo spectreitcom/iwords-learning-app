@@ -10,6 +10,10 @@ import { AccessTokenService } from '../application/ports/access-token.service';
 import { JwtAccessTokenService } from './services/jwt-access-token.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { RefreshTokenService } from '../application/ports/refresh-token.service';
+import { JwtRefreshTokenService } from './services/jwt-refresh-token.service';
+import { RefreshTokenStorage } from '../application/ports/refresh-token.storage';
+import { RedisRefreshTokenStorage } from './services/redis-refresh-token.storage';
 
 @Module({
   imports: [
@@ -18,7 +22,7 @@ import { ConfigService } from '@nestjs/config';
       useFactory: (configService: ConfigService) => ({
         secret: configService.get('JWT_SECRET'),
         signOptions: {
-          expiresIn: '10s',
+          expiresIn: '3600s',
         },
       }),
       inject: [ConfigService],
@@ -41,12 +45,22 @@ import { ConfigService } from '@nestjs/config';
       provide: AccessTokenService,
       useClass: JwtAccessTokenService,
     },
+    {
+      provide: RefreshTokenService,
+      useClass: JwtRefreshTokenService,
+    },
+    {
+      provide: RefreshTokenStorage,
+      useClass: RedisRefreshTokenStorage,
+    },
   ],
   exports: [
     HashingService,
     AdminUserValidationService,
     AdminUserRepository,
     AccessTokenService,
+    RefreshTokenService,
+    RefreshTokenStorage,
   ],
 })
 export class InfrastructureModule {}
