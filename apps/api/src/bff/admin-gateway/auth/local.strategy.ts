@@ -1,12 +1,12 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
-import { AdminUserApiService } from '../../../admin-identity/application/services/admin-user-api.service';
+import { AdminIdentityApiService } from '../../../admin-identity/application/services/admin-identity-api.service';
 import { WrongEmailOrPasswordError } from '../../../admin-identity/application/errors';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly adminUserApiService: AdminUserApiService) {
+  constructor(private readonly adminUserApiService: AdminIdentityApiService) {
     super({
       usernameField: 'email',
     });
@@ -14,9 +14,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
   async validate(email: string, password: string): Promise<{ userId: string }> {
     try {
-      const result = await this.adminUserApiService.signIn(email, password);
+      const user = await this.adminUserApiService.validateUser(email, password);
       return {
-        userId: result.user.adminUserId,
+        userId: user.adminUserId,
       };
     } catch (e) {
       if (e instanceof WrongEmailOrPasswordError)

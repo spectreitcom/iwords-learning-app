@@ -1,7 +1,7 @@
 import { AdminUserView } from '../../views/admin-user.view';
 import { LoginCommandResponse } from '../command-handlers/login.command-handler';
 
-export abstract class AdminUserApi {
+export abstract class AdminIdentityApi {
   abstract getUserById(adminUserId: string): Promise<AdminUserView>;
 
   abstract createAdminUser(
@@ -11,8 +11,10 @@ export abstract class AdminUserApi {
     isSuperuser: boolean,
   ): Promise<void>;
 
-  abstract signIn(
+  abstract signIn(userId: string): Promise<LoginCommandResponse>;
+
+  abstract validateUser(
     email: string,
     password: string,
-  ): Promise<LoginCommandResponse>;
+  ): Promise<AdminUserView>;
 }
