@@ -1,10 +1,10 @@
 import { Command, CommandRunner, Option } from 'nest-commander';
 import { isEmail } from 'class-validator';
-import { AdminUserApiService } from '../admin-identity/application/services/admin-user-api.service';
+import { AdminIdentityApiService } from '../admin-identity/application/services/admin-identity-api.service';
 
 @Command({ name: 'create-admin-user', description: 'Create admin user' })
 export class CreateAdminUser extends CommandRunner {
-  constructor(private readonly adminUserApiService: AdminUserApiService) {
+  constructor(private readonly adminUserApiService: AdminIdentityApiService) {
     super();
   }
 

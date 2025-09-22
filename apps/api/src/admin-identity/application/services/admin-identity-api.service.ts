@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { AdminUserApi } from '../ports/admin-user.api';
+import { AdminIdentityApi } from '../ports/admin-identity.api';
 import { AdminUserView } from '../../views/admin-user.view';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetUserByIdQuery } from '../queries/get-user-by-id.query';
 import { CreateAdminUserCommand } from '../commands/create-admin-user.command';
 import { LoginCommandResponse } from '../command-handlers/login.command-handler';
 import { LoginCommand } from '../commands/login.command';
+import { ValidateUserQuery } from '../queries/validate-user.query';
 
 @Injectable()
-export class AdminUserApiService implements AdminUserApi {
+export class AdminIdentityApiService implements AdminIdentityApi {
   constructor(
     private queryBus: QueryBus,
     private commandBus: CommandBus,
@@ -34,8 +35,13 @@ export class AdminUserApiService implements AdminUserApi {
     return this.commandBus.execute(command);
   }
 
-  signIn(email: string, password: string): Promise<LoginCommandResponse> {
-    const command = new LoginCommand(email, password);
+  signIn(userId: string): Promise<LoginCommandResponse> {
+    const command = new LoginCommand(userId);
     return this.commandBus.execute(command);
+  }
+
+  validateUser(email: string, password: string): Promise<AdminUserView> {
+    const query = new ValidateUserQuery(email, password);
+    return this.queryBus.execute(query);
   }
 }

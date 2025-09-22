@@ -28,8 +28,8 @@ export class CreateAdminUserCommandHandler
 
     const adminUser = AdminUser.create(
       email,
-      hashedPassword,
       name,
+      hashedPassword,
       isSuperuser,
     );
     await this.adminUserRepository.save(adminUser);

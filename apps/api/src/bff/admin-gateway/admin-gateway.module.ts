@@ -5,13 +5,16 @@ import { LocalStrategy } from './auth/local.strategy';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { AuthController } from './controllers/auth.controller';
+import { LocalAuthGuard } from './auth/local-auth.guard';
 
 @Module({
   imports: [DictionaryModule, AdminIdentityModule],
-  controllers: [],
+  controllers: [AuthController],
   providers: [
     LocalStrategy,
     JwtStrategy,
+    LocalAuthGuard,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
