@@ -1,5 +1,6 @@
 import { AdminUserView } from '../../views/admin-user.view';
 import { LoginCommandResponse } from '../command-handlers/login.command-handler';
+import { RefreshTokenCommandResponse } from '../command-handlers/refresh-token.command-handler';
 
 export abstract class AdminIdentityApi {
   abstract getUserById(adminUserId: string): Promise<AdminUserView>;
@@ -17,4 +18,8 @@ export abstract class AdminIdentityApi {
     email: string,
     password: string,
   ): Promise<AdminUserView>;
+
+  abstract refreshToken(
+    refreshToken: string,
+  ): Promise<RefreshTokenCommandResponse>;
 }

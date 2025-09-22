@@ -11,4 +11,7 @@ export const envSchema = Joi.object({
 
   // JWT configuration
   JWT_SECRET: Joi.string().required().description('JWT secret key'),
+
+  // Redis configuration
+  REDIS_URI: Joi.string().uri().required().description('Redis connection URL'),
 });

@@ -6,10 +6,15 @@ import { AdminIdentityApiService } from './services/admin-identity-api.service';
 import { CreateAdminUserCommandHandler } from './command-handlers/create-admin-user.command-handler';
 import { LoginCommandHandler } from './command-handlers/login.command-handler';
 import { ValidateUserQueryHandler } from './query-handlers/validate-user.query-handler';
+import { RefreshTokenCommandHandler } from './command-handlers/refresh-token.command-handler';
 
 const EVENT_HANDLERS = [];
 
-const COMMAND_HANDLERS = [CreateAdminUserCommandHandler, LoginCommandHandler];
+const COMMAND_HANDLERS = [
+  CreateAdminUserCommandHandler,
+  LoginCommandHandler,
+  RefreshTokenCommandHandler,
+];
 
 const QUERY_HANDLERS = [GetUserByIdQueryHandler, ValidateUserQueryHandler];
 
