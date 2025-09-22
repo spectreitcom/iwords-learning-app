@@ -8,4 +8,7 @@ export const envSchema = Joi.object({
     })
     .required()
     .description('PostgresSQL database connection URL'),
+
+  // JWT configuration
+  JWT_SECRET: Joi.string().required().description('JWT secret key'),
 });

@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUserByIdQuery } from '../queries/get-user-by-id.query';
 import { AdminUserView } from '../../views/admin-user.view';
 import { PrismaService } from '../../../common/prisma/prisma.service';
-import { AdminUserNotFoundError } from '../errors';
+import { AdminIdentityNotFoundError } from '../errors';
 
 @QueryHandler(GetUserByIdQuery)
 export class GetUserByIdQueryHandler
@@ -19,7 +19,7 @@ export class GetUserByIdQueryHandler
       },
     });
 
-    if (!adminUser) throw new AdminUserNotFoundError(adminUserId);
+    if (!adminUser) throw new AdminIdentityNotFoundError(adminUserId);
 
     return new AdminUserView(adminUser.id, adminUser.email, adminUser.name);
   }

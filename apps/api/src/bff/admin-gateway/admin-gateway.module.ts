@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { DictionaryModule } from '../../dictionary/application/dictionary.module';
-import { AdminUserModule } from '../../admin-user/application/admin-user.module';
+import { AdminIdentityModule } from '../../admin-identity/application/admin-identity.module';
 
 @Module({
-  imports: [DictionaryModule, AdminUserModule],
+  imports: [DictionaryModule, AdminIdentityModule],
 })
 export class AdminGatewayModule {}

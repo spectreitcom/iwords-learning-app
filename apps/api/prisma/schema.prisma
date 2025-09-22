@@ -16,7 +16,7 @@ datasource db {
 // Users Bounded Context
 //----------------------------------
 
-// Admin Users Bounded Context
+// Admin Identity Bounded Context
 model AdminUser {
   id          String   @id @default(uuid())
   email       String   @unique
