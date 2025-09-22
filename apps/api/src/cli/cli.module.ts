@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AdminUserModule } from '../admin-user/application/admin-user.module';
+import { AdminIdentityModule } from '../admin-identity/application/admin-identity.module';
 import { CreateAdminUser } from './create-admin-user';
 
 @Module({
-  imports: [AdminUserModule],
+  imports: [AdminIdentityModule],
   providers: [CreateAdminUser],
 })
 export class CliModule {}

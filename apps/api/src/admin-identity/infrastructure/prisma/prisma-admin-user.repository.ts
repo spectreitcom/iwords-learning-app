@@ -45,4 +45,19 @@ export class PrismaAdminUserRepository implements AdminUserRepository {
       adminUserData.isSuperuser,
     );
   }
+
+  async findByEmail(email: string): Promise<AdminUser | null> {
+    const adminUserData = await this.prismaService.adminUser.findUnique({
+      where: { email },
+    });
+    if (!adminUserData) return null;
+
+    return new AdminUser(
+      AdminUserId.fromString(adminUserData.id),
+      AdminUserEmail.fromString(adminUserData.email),
+      adminUserData.name,
+      adminUserData.password,
+      adminUserData.isSuperuser,
+    );
+  }
 }
