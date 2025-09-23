@@ -6,9 +6,9 @@ export class SearchDictionaryQueryDto {
   @ApiProperty({ required: false, description: 'Search text' })
   @IsOptional()
   @Transform(({ value }: { value: string }) =>
-    value === '' ? undefined : value.toLowerCase().trim(),
+    value === '' ? '' : value.toLowerCase().trim(),
   )
-  readonly searchText: string | undefined;
+  readonly searchText: string;
 
   @ApiProperty({ required: false, description: 'Take count' })
   @IsOptional()

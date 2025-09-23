@@ -49,8 +49,14 @@ import { SearchDictionaryQueryDto } from '../dtos/search-dictionary-query.dto';
 export class DictionaryController {
   constructor(private readonly dictionaryApiService: DictionaryApiService) {}
 
-  // todo: add docs
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Search in dictionary' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns a list of matching expressions',
+  })
   @Get('search')
+  @HttpCode(HttpStatus.OK)
   async searchDictionary(@Query() query: SearchDictionaryQueryDto) {
     return this.dictionaryApiService.searchDictionaryReadModel(
       query.searchText,
