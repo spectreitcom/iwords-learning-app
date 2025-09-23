@@ -2,6 +2,7 @@ import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateIrregularVerbExpressionContextCommand } from '../commands/update-irregular-verb-expression-context.command';
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
 import { ExpressionContextNotFoundError } from '../errors';
+import { IRREGULAR_VERB } from '../../domain/constants';
 
 @CommandHandler(UpdateIrregularVerbExpressionContextCommand)
 export class UpdateIrregularVerbExpressionContextCommandHandler
@@ -18,7 +19,10 @@ export class UpdateIrregularVerbExpressionContextCommandHandler
     const { expressionContextId, translation, forms } = command;
 
     const expressionContext =
-      await this.expressionContextRepository.findById(expressionContextId);
+      await this.expressionContextRepository.findByIdAndType(
+        expressionContextId,
+        IRREGULAR_VERB,
+      );
 
     if (!expressionContext) {
       throw new ExpressionContextNotFoundError(expressionContextId);

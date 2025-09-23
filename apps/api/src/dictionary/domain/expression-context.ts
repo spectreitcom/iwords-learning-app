@@ -73,7 +73,7 @@ export class ExpressionContext extends AggregateRoot {
       ExpressionId.fromString(expressionId),
       translation,
       false,
-      ExpressionType.verb(),
+      ExpressionType.irregularVerb(),
       VerbForms.fromArray(forms),
       true,
     );

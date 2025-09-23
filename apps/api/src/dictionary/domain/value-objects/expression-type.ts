@@ -1,5 +1,12 @@
 import { IsIn, validateSync } from 'class-validator';
-import { ADJECTIVE, ADVERB, NOUN, PHRASAL_VERB, VERB } from '../constants';
+import {
+  ADJECTIVE,
+  ADVERB,
+  IRREGULAR_VERB,
+  NOUN,
+  PHRASAL_VERB,
+  VERB,
+} from '../constants';
 
 export class ExpressionType {
   @IsIn([VERB, NOUN, ADJECTIVE, ADVERB, PHRASAL_VERB])
@@ -19,6 +26,10 @@ export class ExpressionType {
 
   static verb() {
     return new ExpressionType(VERB);
+  }
+
+  static irregularVerb() {
+    return new ExpressionType(IRREGULAR_VERB);
   }
 
   static noun() {

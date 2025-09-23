@@ -35,6 +35,7 @@ import { CreateIrregularVerbExpressionContextDto } from '../dtos/create-irregula
 import { CreateSentenceDto } from '../dtos/create-sentence.dto';
 import { UpdateSentenceDto } from '../dtos/update-sentence.dto';
 import { UpdateVerbExpressionContextDto } from '../dtos/update-verb-expression-context.dto';
+import { UpdateAdjectiveExpressionContextDto } from '../dtos/update-adjective-expression-context.dto';
 
 @ApiTags('Admin Dictionary')
 @Controller('admin/dictionary')
@@ -290,6 +291,30 @@ export class DictionaryController {
   ) {
     try {
       await this.dictionaryApiService.updateVerbExpressionContext(
+        expressionContextId,
+        payload.translation,
+      );
+    } catch (e) {
+      if (e instanceof ExpressionContextNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Update adjective expression context' })
+  @ApiResponse({ status: 200, description: 'Expression context updated' })
+  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @Put('expression-contexts/:expressionContextId/adjective')
+  @HttpCode(HttpStatus.OK)
+  async updateAdjectiveExpressionContext(
+    @Body() payload: UpdateAdjectiveExpressionContextDto,
+    @Param('expressionContextId', new ParseUUIDPipe())
+    expressionContextId: string,
+  ) {
+    try {
+      await this.dictionaryApiService.updateAdjectiveExpressionContext(
         expressionContextId,
         payload.translation,
       );
