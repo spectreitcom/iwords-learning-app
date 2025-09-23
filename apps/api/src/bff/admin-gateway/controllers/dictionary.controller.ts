@@ -23,6 +23,7 @@ import {
   ExpressionNotFoundError,
   ExpressionPhraseAlreadyTakenError,
 } from '../../../dictionary/application/errors';
+import { CreateVerbExpressionContextDto } from '../dtos/create-verb-expression-context.dto';
 
 @ApiTags('Admin Dictionary')
 @Controller('admin/dictionary')
@@ -53,6 +54,8 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Update expression' })
   @ApiResponse({ status: 200, description: 'Expression updated successfully' })
+  @ApiResponse({ status: 404, description: 'Expression not found' })
+  @ApiResponse({ status: 400, description: 'Expression phrase already taken' })
   @Put('expressions/:expressionId')
   @HttpCode(HttpStatus.OK)
   async updateExpression(
@@ -71,6 +74,38 @@ export class DictionaryController {
       if (e instanceof ExpressionPhraseAlreadyTakenError) {
         throw new BadRequestException(e.message);
       }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Create verb expression context' })
+  @ApiResponse({
+    status: 201,
+    description: 'Expression context created successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string', format: 'uuid' },
+      },
+    },
+  })
+  @ApiResponse({ status: 404, description: 'Expression not found' })
+  @Post('expression-contexts/verb')
+  @HttpCode(HttpStatus.CREATED)
+  async createVerbExpressionContext(
+    @Body() payload: CreateVerbExpressionContextDto,
+  ) {
+    try {
+      return await this.dictionaryApiService.createVerbExpressionContext(
+        payload.expressionId,
+        payload.translation,
+      );
+    } catch (e) {
+      if (e instanceof ExpressionNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
     }
   }
 }

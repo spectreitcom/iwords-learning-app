@@ -40,7 +40,7 @@ export class ExpressionContext extends AggregateRoot {
       ExpressionContextId.create(),
       ExpressionId.fromString(expressionId),
       translation,
-      true,
+      false,
       ExpressionType.verb(),
       null,
       false,
