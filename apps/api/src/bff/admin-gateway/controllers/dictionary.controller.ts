@@ -33,6 +33,7 @@ import { CreateAdjectiveExpressionContextDto } from '../dtos/create-adjective-ex
 import { CreateAdverbExpressionContextDto } from '../dtos/create-adverb-expression-context.dto';
 import { CreateIrregularVerbExpressionContextDto } from '../dtos/create-irregular-verb-expression-context.dto';
 import { CreateSentenceDto } from '../dtos/create-sentence.dto';
+import { UpdateSentenceDto } from '../dtos/update-sentence.dto';
 
 @ApiTags('Admin Dictionary')
 @Controller('admin/dictionary')
@@ -335,6 +336,31 @@ export class DictionaryController {
   ) {
     try {
       await this.dictionaryApiService.deleteSentence(sentenceId);
+    } catch (e) {
+      if (e instanceof SentenceNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Update sentence' })
+  @Put('sentences/:sentenceId')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Update sentence' })
+  @ApiResponse({ status: 200, description: 'Sentence updated successfully' })
+  @ApiResponse({ status: 404, description: 'Sentence not found' })
+  async updateSentence(
+    @Body() payload: UpdateSentenceDto,
+    @Param('sentenceId', new ParseUUIDPipe()) sentenceId: string,
+  ) {
+    try {
+      return await this.dictionaryApiService.updateSentence(
+        sentenceId,
+        payload.content,
+        payload.translation,
+      );
     } catch (e) {
       if (e instanceof SentenceNotFoundError) {
         throw new NotFoundException(e.message);
