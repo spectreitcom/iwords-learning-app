@@ -22,4 +22,6 @@ export abstract class AdminIdentityApi {
   abstract refreshToken(
     refreshToken: string,
   ): Promise<RefreshTokenCommandResponse>;
+
+  abstract signOut(userId: string): Promise<void>;
 }

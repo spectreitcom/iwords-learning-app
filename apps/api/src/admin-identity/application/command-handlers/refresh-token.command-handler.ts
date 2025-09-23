@@ -31,18 +31,30 @@ export class RefreshTokenCommandHandler
   async execute(
     command: RefreshTokenCommand,
   ): Promise<RefreshTokenCommandResponse> {
-    const result = this.accessTokenService.verifyToken(command.refreshToken);
+    const result = this.refreshTokenService.verifyToken(command.refreshToken);
 
     if (!result) throw new InvalidRefreshTokenError();
+
+    const isValid = await this.refreshTokenStorage.validate(
+      result.sub,
+      result.refreshTokenId,
+    );
+
+    if (!isValid) throw new InvalidRefreshTokenError();
 
     const adminUser = await this.adminUserRepository.findById(result.sub);
 
     if (!adminUser) throw new AdminIdentityNotFoundError(result.sub);
 
     const accessToken = this.accessTokenService.createToken(result.sub);
-    const refreshToken = this.refreshTokenService.createToken(result.sub);
 
     const refreshTokenId = randomUUID();
+
+    const refreshToken = this.refreshTokenService.createToken(
+      result.sub,
+      refreshTokenId,
+    );
+
     await this.refreshTokenStorage.insert(
       adminUser.getAdminUserId().value,
       refreshTokenId,

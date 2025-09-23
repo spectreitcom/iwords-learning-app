@@ -35,11 +35,13 @@ export class LoginCommandHandler
       adminUser.getAdminUserId().value,
     );
 
+    const refreshTokenId = randomUUID();
+
     const refreshToken = this.refreshTokenService.createToken(
       adminUser.getAdminUserId().value,
+      refreshTokenId,
     );
 
-    const refreshTokenId = randomUUID();
     await this.refreshTokenStorage.insert(
       adminUser.getAdminUserId().value,
       refreshTokenId,
