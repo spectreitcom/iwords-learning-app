@@ -59,7 +59,10 @@ describe('ExpressionContext', () => {
 
   describe('createVerb', () => {
     it('should create a verb ExpressionContext and apply creation event', () => {
-      const context = ExpressionContext.createVerb(mockTranslation, mockExpressionId);
+      const context = ExpressionContext.createVerb(
+        mockTranslation,
+        mockExpressionId,
+      );
 
       expect(context.getTranslation()).toBe(mockTranslation);
       expect(context.getExpressionId().value).toBe(mockExpressionId);
@@ -84,7 +87,11 @@ describe('ExpressionContext', () => {
   describe('createIrregularVerb', () => {
     it('should create an irregular verb ExpressionContext with forms and apply creation event', () => {
       const forms: [string, string, string] = ['go', 'went', 'gone'];
-      const context = ExpressionContext.createIrregularVerb(mockTranslation, forms, mockExpressionId);
+      const context = ExpressionContext.createIrregularVerb(
+        mockTranslation,
+        forms,
+        mockExpressionId,
+      );
 
       expect(context.getTranslation()).toBe(mockTranslation);
       expect(context.getExpressionId().value).toBe(mockExpressionId);
@@ -109,7 +116,10 @@ describe('ExpressionContext', () => {
 
   describe('createAdverb', () => {
     it('should create an adverb ExpressionContext and apply creation event', () => {
-      const context = ExpressionContext.createAdverb(mockTranslation, mockExpressionId);
+      const context = ExpressionContext.createAdverb(
+        mockTranslation,
+        mockExpressionId,
+      );
 
       expect(context.getTranslation()).toBe(mockTranslation);
       expect(context.getExpressionId().value).toBe(mockExpressionId);
@@ -128,7 +138,10 @@ describe('ExpressionContext', () => {
 
   describe('createAdjective', () => {
     it('should create an adjective ExpressionContext and apply creation event', () => {
-      const context = ExpressionContext.createAdjective(mockTranslation, mockExpressionId);
+      const context = ExpressionContext.createAdjective(
+        mockTranslation,
+        mockExpressionId,
+      );
 
       expect(context.getTranslation()).toBe(mockTranslation);
       expect(context.getExpressionId().value).toBe(mockExpressionId);
@@ -147,7 +160,11 @@ describe('ExpressionContext', () => {
 
   describe('createNoun', () => {
     it('should create a countable noun ExpressionContext and apply creation event', () => {
-      const context = ExpressionContext.createNoun(mockTranslation, mockExpressionId, true);
+      const context = ExpressionContext.createNoun(
+        mockTranslation,
+        mockExpressionId,
+        true,
+      );
 
       expect(context.getTranslation()).toBe(mockTranslation);
       expect(context.getExpressionId().value).toBe(mockExpressionId);
@@ -165,7 +182,11 @@ describe('ExpressionContext', () => {
     });
 
     it('should create a non-countable noun ExpressionContext', () => {
-      const context = ExpressionContext.createNoun(mockTranslation, mockExpressionId, false);
+      const context = ExpressionContext.createNoun(
+        mockTranslation,
+        mockExpressionId,
+        false,
+      );
 
       expect(context.getIsCountable()).toBe(false);
 
@@ -177,7 +198,10 @@ describe('ExpressionContext', () => {
 
   describe('createPhrasalVerb', () => {
     it('should create a phrasal verb ExpressionContext and apply creation event', () => {
-      const context = ExpressionContext.createPhrasalVerb(mockTranslation, mockExpressionId);
+      const context = ExpressionContext.createPhrasalVerb(
+        mockTranslation,
+        mockExpressionId,
+      );
 
       expect(context.getTranslation()).toBe(mockTranslation);
       expect(context.getExpressionId().value).toBe(mockExpressionId);
@@ -196,7 +220,10 @@ describe('ExpressionContext', () => {
 
   describe('delete', () => {
     it('should apply deletion event', () => {
-      const context = ExpressionContext.createVerb(mockTranslation, mockExpressionId);
+      const context = ExpressionContext.createVerb(
+        mockTranslation,
+        mockExpressionId,
+      );
       // Clear creation event by creating a fresh context
       const freshContext = new ExpressionContext(
         context.getExpressionContextId(),
@@ -214,13 +241,18 @@ describe('ExpressionContext', () => {
       expect(events).toHaveLength(1);
       expect(events[0]).toBeInstanceOf(ExpressionContextDeletedEvent);
       const event = events[0] as ExpressionContextDeletedEvent;
-      expect(event.expressionContextId).toBe(context.getExpressionContextId().value);
+      expect(event.expressionContextId).toBe(
+        context.getExpressionContextId().value,
+      );
     });
   });
 
   describe('updateVerb', () => {
     it('should update verb translation and apply update event', () => {
-      const context = ExpressionContext.createVerb(mockTranslation, mockExpressionId);
+      const context = ExpressionContext.createVerb(
+        mockTranslation,
+        mockExpressionId,
+      );
       // Clear creation event by creating a fresh context
       const freshContext = new ExpressionContext(
         context.getExpressionContextId(),
@@ -251,7 +283,11 @@ describe('ExpressionContext', () => {
   describe('updateIrregularVerb', () => {
     it('should update irregular verb translation and forms and apply update event', () => {
       const initialForms: [string, string, string] = ['go', 'went', 'gone'];
-      const context = ExpressionContext.createIrregularVerb(mockTranslation, initialForms, mockExpressionId);
+      const context = ExpressionContext.createIrregularVerb(
+        mockTranslation,
+        initialForms,
+        mockExpressionId,
+      );
       // Clear creation event by creating a fresh context
       const freshContext = new ExpressionContext(
         context.getExpressionContextId(),
@@ -282,7 +318,10 @@ describe('ExpressionContext', () => {
 
   describe('updateAdverb', () => {
     it('should update adverb translation and apply update event', () => {
-      const context = ExpressionContext.createAdverb(mockTranslation, mockExpressionId);
+      const context = ExpressionContext.createAdverb(
+        mockTranslation,
+        mockExpressionId,
+      );
       // Clear creation event by creating a fresh context
       const freshContext = new ExpressionContext(
         context.getExpressionContextId(),
@@ -310,7 +349,10 @@ describe('ExpressionContext', () => {
 
   describe('updateAdjective', () => {
     it('should update adjective translation and apply update event', () => {
-      const context = ExpressionContext.createAdjective(mockTranslation, mockExpressionId);
+      const context = ExpressionContext.createAdjective(
+        mockTranslation,
+        mockExpressionId,
+      );
       // Clear creation event by creating a fresh context
       const freshContext = new ExpressionContext(
         context.getExpressionContextId(),
@@ -338,7 +380,11 @@ describe('ExpressionContext', () => {
 
   describe('updateNoun', () => {
     it('should update noun translation and countability and apply update event', () => {
-      const context = ExpressionContext.createNoun(mockTranslation, mockExpressionId, false);
+      const context = ExpressionContext.createNoun(
+        mockTranslation,
+        mockExpressionId,
+        false,
+      );
       // Clear creation event by creating a fresh context
       const freshContext = new ExpressionContext(
         context.getExpressionContextId(),
@@ -368,7 +414,10 @@ describe('ExpressionContext', () => {
 
   describe('updatePhrasalVerb', () => {
     it('should update phrasal verb translation and apply update event', () => {
-      const context = ExpressionContext.createPhrasalVerb(mockTranslation, mockExpressionId);
+      const context = ExpressionContext.createPhrasalVerb(
+        mockTranslation,
+        mockExpressionId,
+      );
       // Clear creation event by creating a fresh context
       const freshContext = new ExpressionContext(
         context.getExpressionContextId(),
