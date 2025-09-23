@@ -25,6 +25,7 @@ import {
 } from '../../../dictionary/application/errors';
 import { CreateVerbExpressionContextDto } from '../dtos/create-verb-expression-context.dto';
 import { CreatePhrasalVerbExpressionContextDto } from '../dtos/create-phrasal-verb-expression-context.dto';
+import { CreateNounExpressionContextDto } from '../dtos/create-noun-expression-context.dto';
 
 @ApiTags('Admin Dictionary')
 @Controller('admin/dictionary')
@@ -132,6 +133,38 @@ export class DictionaryController {
       return await this.dictionaryApiService.createPhrasalVerbExpressionContext(
         payload.expressionId,
         payload.translation,
+      );
+    } catch (e) {
+      if (e instanceof ExpressionNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Create noun expression context' })
+  @ApiResponse({
+    status: 201,
+    description: 'Expression context created successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string', format: 'uuid' },
+      },
+    },
+  })
+  @ApiResponse({ status: 404, description: 'Expression not found' })
+  @Post('expression-contexts/noun')
+  @HttpCode(HttpStatus.CREATED)
+  async createNounExpressionContext(
+    @Body() payload: CreateNounExpressionContextDto,
+  ) {
+    try {
+      return await this.dictionaryApiService.createNounExpressionContext(
+        payload.expressionId,
+        payload.translation,
+        payload.isCountable,
       );
     } catch (e) {
       if (e instanceof ExpressionNotFoundError) {
