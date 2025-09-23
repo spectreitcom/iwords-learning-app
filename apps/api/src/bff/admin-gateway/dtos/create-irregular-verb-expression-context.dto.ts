@@ -1,4 +1,10 @@
-import { IsArray, IsNotEmpty, IsUUID, Length } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsUUID,
+  ArrayMaxSize,
+  ArrayMinSize,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { randomUUID } from 'node:crypto';
@@ -29,6 +35,10 @@ export class CreateIrregularVerbExpressionContextDto {
     required: true,
   })
   @IsArray()
-  @Length(3)
+  @ArrayMaxSize(3)
+  @ArrayMinSize(3)
+  @Transform(({ value }: { value: string[] }) =>
+    value.map((form) => form.toLowerCase().trim()),
+  )
   readonly forms: [string, string, string];
 }
