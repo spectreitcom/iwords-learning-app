@@ -11,7 +11,13 @@ import { LocalAuthGuard } from '../auth/local-auth.guard';
 import { AdminIdentityApiService } from '../../../admin-identity/application/services/admin-identity-api.service';
 import { CurrentAdminUserId } from '../auth/current-admin-user-id.decorator';
 import { Public } from '../auth/public.decorator';
-import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiBody,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { RefreshTokenDto } from '../dtos/refresh-token.dto';
 import {
   AdminIdentityNotFoundError,
@@ -19,13 +25,13 @@ import {
 } from '../../../admin-identity/application/errors';
 
 @ApiTags('Admin Auth')
-@Public()
 @Controller('admin/auth')
 export class AuthController {
   constructor(
     private readonly adminIdentityApiService: AdminIdentityApiService,
   ) {}
 
+  @Public()
   @ApiOperation({ summary: 'Sign in admin user' })
   @ApiResponse({
     status: 200,
@@ -63,6 +69,7 @@ export class AuthController {
     return this.adminIdentityApiService.signIn(userId);
   }
 
+  @Public()
   @ApiOperation({ summary: 'Refresh access token' })
   @ApiResponse({
     status: 200,
@@ -98,5 +105,13 @@ export class AuthController {
         throw new UnauthorizedException();
       throw e;
     }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Sign out admin user' })
+  @Post('sign-out')
+  @HttpCode(HttpStatus.OK)
+  async signOut(@CurrentAdminUserId() userId: string) {
+    return await this.adminIdentityApiService.signOut(userId);
   }
 }

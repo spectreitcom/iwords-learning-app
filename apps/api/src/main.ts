@@ -27,6 +27,17 @@ async function bootstrap() {
     .setDescription('API for the IWords Learning Application')
     .setVersion('1.0')
     .addTag('api')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'admin-auth',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
