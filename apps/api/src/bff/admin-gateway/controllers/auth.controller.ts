@@ -34,6 +34,7 @@ export class AuthController {
       type: 'object',
       properties: {
         accessToken: { type: 'string' },
+        refreshToken: { type: 'string' },
         user: {
           type: 'object',
           properties: {
@@ -62,6 +63,27 @@ export class AuthController {
     return this.adminIdentityApiService.signIn(userId);
   }
 
+  @ApiOperation({ summary: 'Refresh access token' })
+  @ApiResponse({
+    status: 200,
+    description: 'Access token refreshed successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        accessToken: { type: 'string' },
+        refreshToken: { type: 'string' },
+        user: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', format: 'uuid' },
+            email: { type: 'string', format: 'email' },
+            name: { type: 'string', example: 'John Doe' },
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 401, description: 'Invalid refresh token' })
   @Post('refresh-token')
   @HttpCode(HttpStatus.OK)
   async refreshToken(@Body() payload: RefreshTokenDto) {
