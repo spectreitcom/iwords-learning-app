@@ -2,7 +2,7 @@ import { IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 
-export class CreateExpressionDto {
+export class UpdateExpressionDto {
   @ApiProperty({
     type: String,
     required: true,
