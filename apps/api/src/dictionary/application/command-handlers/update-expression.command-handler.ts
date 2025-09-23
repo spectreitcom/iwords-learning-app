@@ -29,7 +29,7 @@ export class UpdateExpressionCommandHandler
     const existingExpressionId =
       await this.expressionValidationService.checkPhrase(phrase.toLowerCase());
 
-    if (existingExpressionId !== expressionId) {
+    if (existingExpressionId && existingExpressionId !== expressionId) {
       throw new ExpressionPhraseAlreadyTakenError(phrase);
     }
 
