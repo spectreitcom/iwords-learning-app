@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   HttpCode,
   HttpStatus,
   NotFoundException,
@@ -20,6 +21,7 @@ import {
 } from '@nestjs/swagger';
 import { UpdateExpressionDto } from '../dtos/update-expression.dto';
 import {
+  ExpressionContextNotFoundError,
   ExpressionNotFoundError,
   ExpressionPhraseAlreadyTakenError,
 } from '../../../dictionary/application/errors';
@@ -265,6 +267,28 @@ export class DictionaryController {
       );
     } catch (e) {
       if (e instanceof ExpressionNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @Delete('expression-contexts/:expressionContextId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Delete expression context' })
+  @ApiResponse({ status: 204, description: 'Expression context deleted' })
+  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  async deleteExpressionContext(
+    @Param('expressionContextId', new ParseUUIDPipe())
+    expressionContextId: string,
+  ) {
+    try {
+      await this.dictionaryApiService.deleteExpressionContext(
+        expressionContextId,
+      );
+    } catch (e) {
+      if (e instanceof ExpressionContextNotFoundError) {
         throw new NotFoundException(e.message);
       }
       throw e;
