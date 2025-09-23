@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   NotFoundException,
@@ -10,6 +11,7 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { CreateExpressionDto } from '../dtos/create-expression.dto';
 import { DictionaryApiService } from '../../../dictionary/application/services/dictionary-api.service';
@@ -40,11 +42,22 @@ import { UpdateNounExpressionContextDto } from '../dtos/update-noun-expression-c
 import { UpdateAdverbExpressionContextDto } from '../dtos/update-adverb-expression-context.dto';
 import { UpdatePhrasalVerbExpressionContextDto } from '../dtos/update-phrasal-verb-expression-context.dto';
 import { UpdateIrregularVerbExpressionContextDto } from '../dtos/update-irregular-verb-expression-context.dto';
+import { SearchDictionaryQueryDto } from '../dtos/search-dictionary-query.dto';
 
 @ApiTags('Admin Dictionary')
 @Controller('admin/dictionary')
 export class DictionaryController {
   constructor(private readonly dictionaryApiService: DictionaryApiService) {}
+
+  // todo: add docs
+  @Get('search')
+  async searchDictionary(@Query() query: SearchDictionaryQueryDto) {
+    return this.dictionaryApiService.searchDictionaryReadModel(
+      query.searchText,
+      query.take,
+      query.page,
+    );
+  }
 
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Create expression' })

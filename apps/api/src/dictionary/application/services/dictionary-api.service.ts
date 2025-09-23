@@ -231,7 +231,7 @@ export class DictionaryApiService implements DictionaryApi {
   }
 
   async searchDictionaryReadModel(
-    searchText: string,
+    searchText: string | undefined,
     take: number,
     page: number,
   ): Promise<SearchDictionaryReadModelQueryResponse> {

@@ -101,7 +101,7 @@ export abstract class DictionaryApi {
   abstract deleteSentence(sentenceId: string): Promise<void>;
 
   abstract searchDictionaryReadModel(
-    searchText: string,
+    searchText: string | undefined,
     take: number,
     page: number,
   ): Promise<SearchDictionaryReadModelQueryResponse>;
