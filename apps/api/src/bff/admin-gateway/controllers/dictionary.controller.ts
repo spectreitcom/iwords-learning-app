@@ -27,6 +27,7 @@ import { CreateVerbExpressionContextDto } from '../dtos/create-verb-expression-c
 import { CreatePhrasalVerbExpressionContextDto } from '../dtos/create-phrasal-verb-expression-context.dto';
 import { CreateNounExpressionContextDto } from '../dtos/create-noun-expression-context.dto';
 import { CreateAdjectiveExpressionContextDto } from '../dtos/create-adjective-expression-context.dto';
+import { CreateAdverbExpressionContextDto } from '../dtos/create-adverb-expression-context.dto';
 
 @ApiTags('Admin Dictionary')
 @Controller('admin/dictionary')
@@ -192,6 +193,37 @@ export class DictionaryController {
   @HttpCode(HttpStatus.CREATED)
   async createAdjectiveExpressionContext(
     @Body() payload: CreateAdjectiveExpressionContextDto,
+  ) {
+    try {
+      return await this.dictionaryApiService.createAdjectiveExpressionContext(
+        payload.expressionId,
+        payload.translation,
+      );
+    } catch (e) {
+      if (e instanceof ExpressionNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Create adverb expression context' })
+  @ApiResponse({
+    status: 201,
+    description: 'Expression context created successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string', format: 'uuid' },
+      },
+    },
+  })
+  @ApiResponse({ status: 404, description: 'Expression not found' })
+  @Post('expression-contexts/adverb')
+  @HttpCode(HttpStatus.CREATED)
+  async createAdverbExpressionContext(
+    @Body() payload: CreateAdverbExpressionContextDto,
   ) {
     try {
       return await this.dictionaryApiService.createAdjectiveExpressionContext(
