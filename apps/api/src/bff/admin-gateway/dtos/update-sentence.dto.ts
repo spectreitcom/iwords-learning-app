@@ -1,17 +1,8 @@
-import { IsNotEmpty, IsUUID } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 
-export class CreateSentenceDto {
-  @ApiProperty({
-    description: 'Expression context id',
-    type: String,
-    required: true,
-  })
-  @IsNotEmpty()
-  @IsUUID()
-  readonly expressionContextId: string;
-
+export class UpdateSentenceDto {
   @ApiProperty({
     description: 'Translation',
     example: 'Some translation',
