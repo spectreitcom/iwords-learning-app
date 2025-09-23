@@ -24,6 +24,7 @@ import {
   ExpressionContextNotFoundError,
   ExpressionNotFoundError,
   ExpressionPhraseAlreadyTakenError,
+  SentenceNotFoundError,
 } from '../../../dictionary/application/errors';
 import { CreateVerbExpressionContextDto } from '../dtos/create-verb-expression-context.dto';
 import { CreatePhrasalVerbExpressionContextDto } from '../dtos/create-phrasal-verb-expression-context.dto';
@@ -314,6 +315,28 @@ export class DictionaryController {
       );
     } catch (e) {
       if (e instanceof ExpressionContextNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Delete sentence from the context' })
+  @ApiResponse({
+    status: 204,
+    description: 'Sentence deleted from the context successfully',
+  })
+  @ApiResponse({ status: 404, description: 'Sentence not found' })
+  @Delete('sentences/:sentenceId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteSentence(
+    @Param('sentenceId', new ParseUUIDPipe()) sentenceId: string,
+  ) {
+    try {
+      await this.dictionaryApiService.deleteSentence(sentenceId);
+    } catch (e) {
+      if (e instanceof SentenceNotFoundError) {
         throw new NotFoundException(e.message);
       }
       throw e;
