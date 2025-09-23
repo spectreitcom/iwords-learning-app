@@ -28,6 +28,7 @@ import { CreatePhrasalVerbExpressionContextDto } from '../dtos/create-phrasal-ve
 import { CreateNounExpressionContextDto } from '../dtos/create-noun-expression-context.dto';
 import { CreateAdjectiveExpressionContextDto } from '../dtos/create-adjective-expression-context.dto';
 import { CreateAdverbExpressionContextDto } from '../dtos/create-adverb-expression-context.dto';
+import { CreateIrregularVerbExpressionContextDto } from '../dtos/create-irregular-verb-expression-context.dto';
 
 @ApiTags('Admin Dictionary')
 @Controller('admin/dictionary')
@@ -229,6 +230,38 @@ export class DictionaryController {
       return await this.dictionaryApiService.createAdjectiveExpressionContext(
         payload.expressionId,
         payload.translation,
+      );
+    } catch (e) {
+      if (e instanceof ExpressionNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Create irregular verb expression context' })
+  @ApiResponse({
+    status: 201,
+    description: 'Expression context created successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string', format: 'uuid' },
+      },
+    },
+  })
+  @ApiResponse({ status: 404, description: 'Expression not found' })
+  @Post('expression-contexts/irregular-verb')
+  @HttpCode(HttpStatus.CREATED)
+  async createIrregularVerbExpressionContext(
+    @Body() payload: CreateIrregularVerbExpressionContextDto,
+  ) {
+    try {
+      return await this.dictionaryApiService.createIrregularVerbExpressionContext(
+        payload.expressionId,
+        payload.translation,
+        payload.forms,
       );
     } catch (e) {
       if (e instanceof ExpressionNotFoundError) {
