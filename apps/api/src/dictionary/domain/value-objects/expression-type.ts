@@ -9,7 +9,7 @@ import {
 } from '../constants';
 
 export class ExpressionType {
-  @IsIn([VERB, NOUN, ADJECTIVE, ADVERB, PHRASAL_VERB])
+  @IsIn([VERB, NOUN, ADJECTIVE, ADVERB, PHRASAL_VERB, IRREGULAR_VERB])
   public readonly value: string;
 
   private constructor(value: string) {
