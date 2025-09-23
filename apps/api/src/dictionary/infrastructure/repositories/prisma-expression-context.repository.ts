@@ -71,4 +71,32 @@ export class PrismaExpressionContextRepository
       where: { id: expressionContextId },
     });
   }
+
+  async findByIdAndType(
+    expressionContextId: string,
+    type: string,
+  ): Promise<ExpressionContext | null> {
+    const record = await this.prismaService.expressionContext.findUnique({
+      where: { id: expressionContextId, type },
+    });
+
+    if (!record) {
+      return null;
+    }
+
+    const forms =
+      record.forms.length > 0
+        ? VerbForms.fromArray(record.forms as [string, string, string])
+        : null;
+
+    return new ExpressionContext(
+      ExpressionContextId.fromString(record.id),
+      ExpressionId.fromString(record.expressionId),
+      record.translation,
+      record.isCountable,
+      ExpressionType.fromString(record.type),
+      forms,
+      record.isIrregular,
+    );
+  }
 }

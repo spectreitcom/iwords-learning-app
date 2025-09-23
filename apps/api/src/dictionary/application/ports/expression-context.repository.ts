@@ -6,4 +6,8 @@ export abstract class ExpressionContextRepository {
     expressionContextId: string,
   ): Promise<ExpressionContext | null>;
   abstract delete(expressionContextId: string): Promise<void>;
+  abstract findByIdAndType(
+    expressionContextId: string,
+    type: string,
+  ): Promise<ExpressionContext | null>;
 }
