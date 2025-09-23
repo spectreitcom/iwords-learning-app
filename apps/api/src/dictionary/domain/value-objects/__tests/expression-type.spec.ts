@@ -1,5 +1,12 @@
 import { ExpressionType } from '../expression-type';
-import { VERB, NOUN, ADJECTIVE, ADVERB, PHRASAL_VERB, IRREGULAR_VERB } from '../../constants';
+import {
+  VERB,
+  NOUN,
+  ADJECTIVE,
+  ADVERB,
+  PHRASAL_VERB,
+  IRREGULAR_VERB,
+} from '../../constants';
 
 describe('ExpressionType', () => {
   describe('static factory methods', () => {
