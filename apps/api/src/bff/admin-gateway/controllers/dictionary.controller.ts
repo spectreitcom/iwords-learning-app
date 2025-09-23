@@ -95,6 +95,26 @@ export class DictionaryController {
   }
 
   @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Delete expression' })
+  @Delete('expressions/:expressionId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth('admin-auth')
+  @ApiResponse({ status: 204, description: 'Expression deleted successfully' })
+  @ApiResponse({ status: 404, description: 'Expression not found' })
+  async deleteExpression(
+    @Param('expressionId', new ParseUUIDPipe()) expressionId: string,
+  ) {
+    try {
+      return await this.dictionaryApiService.deleteExpression(expressionId);
+    } catch (e) {
+      if (e instanceof ExpressionNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Create verb expression context' })
   @ApiResponse({
     status: 201,
