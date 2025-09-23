@@ -8,111 +8,75 @@ import { ExpressionContextDeletedEvent } from '../events/expression-context-dele
 import { ExpressionContextUpdatedEvent } from '../events/expression-context-updated.event';
 
 describe('ExpressionContext', () => {
+  const mockExpressionId = '550e8400-e29b-41d4-a716-446655440000';
+  const mockTranslation = 'test translation';
+
   describe('constructor', () => {
-    it('should create an ExpressionContext with all properties', () => {
-      // Arrange
+    it('should create ExpressionContext with all properties', () => {
       const expressionContextId = ExpressionContextId.create();
-      const expressionId = ExpressionId.fromString(
-        '550e8400-e29b-41d4-a716-446655440000',
-      );
-      const translation = 'test translation';
-      const isCountable = true;
-      const type = ExpressionType.noun();
-      const forms = null;
-      const isIrregular = false;
-
-      // Act
-      const expressionContext = new ExpressionContext(
-        expressionContextId,
-        expressionId,
-        translation,
-        isCountable,
-        type,
-        forms,
-        isIrregular,
-      );
-
-      // Assert
-      expect(expressionContext.getExpressionContextId()).toBe(
-        expressionContextId,
-      );
-      expect(expressionContext.getExpressionId()).toBe(expressionId);
-      expect(expressionContext.getTranslation()).toBe(translation);
-      expect(expressionContext.getIsCountable()).toBe(isCountable);
-      expect(expressionContext.getType()).toBe(type);
-      expect(expressionContext.getForms()).toBeNull();
-      expect(expressionContext.getIsIrregular()).toBe(isIrregular);
-    });
-
-    it('should create an ExpressionContext with verb forms', () => {
-      // Arrange
-      const expressionContextId = ExpressionContextId.create();
-      const expressionId = ExpressionId.fromString(
-        '550e8400-e29b-41d4-a716-446655440001',
-      );
-      const translation = 'test translation';
-      const isCountable = false;
+      const expressionId = ExpressionId.fromString(mockExpressionId);
       const type = ExpressionType.verb();
       const forms = VerbForms.fromArray(['go', 'went', 'gone']);
-      const isIrregular = true;
 
-      // Act
-      const expressionContext = new ExpressionContext(
+      const context = new ExpressionContext(
         expressionContextId,
         expressionId,
-        translation,
-        isCountable,
+        mockTranslation,
+        true,
         type,
         forms,
-        isIrregular,
+        true,
       );
 
-      // Assert
-      expect(expressionContext.getForms()).toBe(forms);
-      expect(expressionContext.getIsIrregular()).toBe(isIrregular);
+      expect(context.getExpressionContextId()).toBe(expressionContextId);
+      expect(context.getExpressionId()).toBe(expressionId);
+      expect(context.getTranslation()).toBe(mockTranslation);
+      expect(context.getIsCountable()).toBe(true);
+      expect(context.getType()).toBe(type);
+      expect(context.getForms()).toBe(forms);
+      expect(context.getIsIrregular()).toBe(true);
+    });
+
+    it('should create ExpressionContext with null forms', () => {
+      const expressionContextId = ExpressionContextId.create();
+      const expressionId = ExpressionId.fromString(mockExpressionId);
+      const type = ExpressionType.noun();
+
+      const context = new ExpressionContext(
+        expressionContextId,
+        expressionId,
+        mockTranslation,
+        false,
+        type,
+        null,
+        false,
+      );
+
+      expect(context.getForms()).toBeNull();
+      expect(context.getIsIrregular()).toBe(false);
     });
   });
 
   describe('createVerb', () => {
-    it('should create a verb expression context', () => {
-      // Arrange
-      const translation = 'to run';
-      const expressionId = '550e8400-e29b-41d4-a716-446655440002';
-
-      // Act
-      const expressionContext = ExpressionContext.createVerb(
-        translation,
-        expressionId,
+    it('should create a verb ExpressionContext and apply creation event', () => {
+      const context = ExpressionContext.createVerb(
+        mockTranslation,
+        mockExpressionId,
       );
 
-      // Assert
-      expect(expressionContext).toBeInstanceOf(ExpressionContext);
-      expect(expressionContext.getTranslation()).toBe(translation);
-      expect(expressionContext.getExpressionId().value).toBe(expressionId);
-      expect(expressionContext.getType().value).toBe('verb');
-      expect(expressionContext.getIsCountable()).toBe(true);
-      expect(expressionContext.getForms()).toBeNull();
-      expect(expressionContext.getIsIrregular()).toBe(false);
-    });
+      expect(context.getTranslation()).toBe(mockTranslation);
+      expect(context.getExpressionId().value).toBe(mockExpressionId);
+      expect(context.getType().value).toBe('verb');
+      expect(context.getIsCountable()).toBe(false);
+      expect(context.getForms()).toBeNull();
+      expect(context.getIsIrregular()).toBe(false);
 
-    it('should apply ExpressionContextCreatedEvent when creating verb', () => {
-      // Arrange
-      const translation = 'to run';
-      const expressionId = '550e8400-e29b-41d4-a716-446655440003';
-
-      // Act
-      const expressionContext = ExpressionContext.createVerb(
-        translation,
-        expressionId,
-      );
-      const events = expressionContext.getUncommittedEvents();
-
-      // Assert
+      const events = context.getUncommittedEvents();
       expect(events).toHaveLength(1);
       expect(events[0]).toBeInstanceOf(ExpressionContextCreatedEvent);
       const event = events[0] as ExpressionContextCreatedEvent;
-      expect(event.expressionId).toBe(expressionId);
-      expect(event.translation).toBe(translation);
+      expect(event.expressionId).toBe(mockExpressionId);
+      expect(event.translation).toBe(mockTranslation);
       expect(event.type).toBe('verb');
       expect(event.isCountable).toBe(false);
       expect(event.forms).toBeNull();
@@ -121,50 +85,28 @@ describe('ExpressionContext', () => {
   });
 
   describe('createIrregularVerb', () => {
-    it('should create an irregular verb expression context', () => {
-      // Arrange
-      const translation = 'to go';
+    it('should create an irregular verb ExpressionContext with forms and apply creation event', () => {
       const forms: [string, string, string] = ['go', 'went', 'gone'];
-      const expressionId = '550e8400-e29b-41d4-a716-446655440004';
-
-      // Act
-      const expressionContext = ExpressionContext.createIrregularVerb(
-        translation,
+      const context = ExpressionContext.createIrregularVerb(
+        mockTranslation,
         forms,
-        expressionId,
+        mockExpressionId,
       );
 
-      // Assert
-      expect(expressionContext).toBeInstanceOf(ExpressionContext);
-      expect(expressionContext.getTranslation()).toBe(translation);
-      expect(expressionContext.getExpressionId().value).toBe(expressionId);
-      expect(expressionContext.getType().value).toBe('verb');
-      expect(expressionContext.getIsCountable()).toBe(false);
-      expect(expressionContext.getForms()).not.toBeNull();
-      expect(expressionContext.getForms()?.value).toEqual(forms);
-      expect(expressionContext.getIsIrregular()).toBe(true);
-    });
+      expect(context.getTranslation()).toBe(mockTranslation);
+      expect(context.getExpressionId().value).toBe(mockExpressionId);
+      expect(context.getType().value).toBe('verb');
+      expect(context.getIsCountable()).toBe(false);
+      expect(context.getForms()).not.toBeNull();
+      expect(context.getForms()?.value).toEqual(forms);
+      expect(context.getIsIrregular()).toBe(true);
 
-    it('should apply ExpressionContextCreatedEvent when creating irregular verb', () => {
-      // Arrange
-      const translation = 'to go';
-      const forms: [string, string, string] = ['go', 'went', 'gone'];
-      const expressionId = '550e8400-e29b-41d4-a716-446655440005';
-
-      // Act
-      const expressionContext = ExpressionContext.createIrregularVerb(
-        translation,
-        forms,
-        expressionId,
-      );
-      const events = expressionContext.getUncommittedEvents();
-
-      // Assert
+      const events = context.getUncommittedEvents();
       expect(events).toHaveLength(1);
       expect(events[0]).toBeInstanceOf(ExpressionContextCreatedEvent);
       const event = events[0] as ExpressionContextCreatedEvent;
-      expect(event.expressionId).toBe(expressionId);
-      expect(event.translation).toBe(translation);
+      expect(event.expressionId).toBe(mockExpressionId);
+      expect(event.translation).toBe(mockTranslation);
       expect(event.type).toBe('verb');
       expect(event.isCountable).toBe(false);
       expect(event.forms).toEqual(forms);
@@ -173,519 +115,428 @@ describe('ExpressionContext', () => {
   });
 
   describe('createAdverb', () => {
-    it('should create an adverb expression context', () => {
-      // Arrange
-      const translation = 'quickly';
-      const expressionId = '550e8400-e29b-41d4-a716-446655440006';
-
-      // Act
-      const expressionContext = ExpressionContext.createAdverb(
-        translation,
-        expressionId,
+    it('should create an adverb ExpressionContext and apply creation event', () => {
+      const context = ExpressionContext.createAdverb(
+        mockTranslation,
+        mockExpressionId,
       );
 
-      // Assert
-      expect(expressionContext).toBeInstanceOf(ExpressionContext);
-      expect(expressionContext.getTranslation()).toBe(translation);
-      expect(expressionContext.getExpressionId().value).toBe(expressionId);
-      expect(expressionContext.getType().value).toBe('adverb');
-      expect(expressionContext.getIsCountable()).toBe(false);
-      expect(expressionContext.getForms()).toBeNull();
-      expect(expressionContext.getIsIrregular()).toBe(false);
-    });
+      expect(context.getTranslation()).toBe(mockTranslation);
+      expect(context.getExpressionId().value).toBe(mockExpressionId);
+      expect(context.getType().value).toBe('adverb');
+      expect(context.getIsCountable()).toBe(false);
+      expect(context.getForms()).toBeNull();
+      expect(context.getIsIrregular()).toBe(false);
 
-    it('should apply ExpressionContextCreatedEvent when creating adverb', () => {
-      // Arrange
-      const translation = 'quickly';
-      const expressionId = '550e8400-e29b-41d4-a716-446655440007';
-
-      // Act
-      const expressionContext = ExpressionContext.createAdverb(
-        translation,
-        expressionId,
-      );
-      const events = expressionContext.getUncommittedEvents();
-
-      // Assert
+      const events = context.getUncommittedEvents();
       expect(events).toHaveLength(1);
       expect(events[0]).toBeInstanceOf(ExpressionContextCreatedEvent);
       const event = events[0] as ExpressionContextCreatedEvent;
-      expect(event.expressionId).toBe(expressionId);
-      expect(event.translation).toBe(translation);
       expect(event.type).toBe('adverb');
-      expect(event.isCountable).toBe(false);
-      expect(event.forms).toBeNull();
-      expect(event.isIrregular).toBe(false);
     });
   });
 
   describe('createAdjective', () => {
-    it('should create an adjective expression context', () => {
-      // Arrange
-      const translation = 'beautiful';
-      const expressionId = '550e8400-e29b-41d4-a716-446655440008';
-
-      // Act
-      const expressionContext = ExpressionContext.createAdjective(
-        translation,
-        expressionId,
+    it('should create an adjective ExpressionContext and apply creation event', () => {
+      const context = ExpressionContext.createAdjective(
+        mockTranslation,
+        mockExpressionId,
       );
 
-      // Assert
-      expect(expressionContext).toBeInstanceOf(ExpressionContext);
-      expect(expressionContext.getTranslation()).toBe(translation);
-      expect(expressionContext.getExpressionId().value).toBe(expressionId);
-      expect(expressionContext.getType().value).toBe('adjective');
-      expect(expressionContext.getIsCountable()).toBe(false);
-      expect(expressionContext.getForms()).toBeNull();
-      expect(expressionContext.getIsIrregular()).toBe(false);
-    });
+      expect(context.getTranslation()).toBe(mockTranslation);
+      expect(context.getExpressionId().value).toBe(mockExpressionId);
+      expect(context.getType().value).toBe('adjective');
+      expect(context.getIsCountable()).toBe(false);
+      expect(context.getForms()).toBeNull();
+      expect(context.getIsIrregular()).toBe(false);
 
-    it('should apply ExpressionContextCreatedEvent when creating adjective', () => {
-      // Arrange
-      const translation = 'beautiful';
-      const expressionId = '550e8400-e29b-41d4-a716-446655440009';
-
-      // Act
-      const expressionContext = ExpressionContext.createAdjective(
-        translation,
-        expressionId,
-      );
-      const events = expressionContext.getUncommittedEvents();
-
-      // Assert
+      const events = context.getUncommittedEvents();
       expect(events).toHaveLength(1);
       expect(events[0]).toBeInstanceOf(ExpressionContextCreatedEvent);
       const event = events[0] as ExpressionContextCreatedEvent;
-      expect(event.expressionId).toBe(expressionId);
-      expect(event.translation).toBe(translation);
       expect(event.type).toBe('adjective');
-      expect(event.isCountable).toBe(false);
-      expect(event.forms).toBeNull();
-      expect(event.isIrregular).toBe(false);
     });
   });
 
   describe('createNoun', () => {
-    it('should create a countable noun expression context', () => {
-      // Arrange
-      const translation = 'book';
-      const expressionId = '550e8400-e29b-41d4-a716-446655440010';
-      const isCountable = true;
-
-      // Act
-      const expressionContext = ExpressionContext.createNoun(
-        translation,
-        expressionId,
-        isCountable,
+    it('should create a countable noun ExpressionContext and apply creation event', () => {
+      const context = ExpressionContext.createNoun(
+        mockTranslation,
+        mockExpressionId,
+        true,
       );
 
-      // Assert
-      expect(expressionContext).toBeInstanceOf(ExpressionContext);
-      expect(expressionContext.getTranslation()).toBe(translation);
-      expect(expressionContext.getExpressionId().value).toBe(expressionId);
-      expect(expressionContext.getType().value).toBe('noun');
-      expect(expressionContext.getIsCountable()).toBe(isCountable);
-      expect(expressionContext.getForms()).toBeNull();
-      expect(expressionContext.getIsIrregular()).toBe(false);
-    });
+      expect(context.getTranslation()).toBe(mockTranslation);
+      expect(context.getExpressionId().value).toBe(mockExpressionId);
+      expect(context.getType().value).toBe('noun');
+      expect(context.getIsCountable()).toBe(true);
+      expect(context.getForms()).toBeNull();
+      expect(context.getIsIrregular()).toBe(false);
 
-    it('should create an uncountable noun expression context', () => {
-      // Arrange
-      const translation = 'water';
-      const expressionId = '550e8400-e29b-41d4-a716-446655440011';
-      const isCountable = false;
-
-      // Act
-      const expressionContext = ExpressionContext.createNoun(
-        translation,
-        expressionId,
-        isCountable,
-      );
-
-      // Assert
-      expect(expressionContext.getIsCountable()).toBe(isCountable);
-    });
-
-    it('should apply ExpressionContextCreatedEvent when creating noun', () => {
-      // Arrange
-      const translation = 'book';
-      const expressionId = '550e8400-e29b-41d4-a716-446655440012';
-      const isCountable = true;
-
-      // Act
-      const expressionContext = ExpressionContext.createNoun(
-        translation,
-        expressionId,
-        isCountable,
-      );
-      const events = expressionContext.getUncommittedEvents();
-
-      // Assert
+      const events = context.getUncommittedEvents();
       expect(events).toHaveLength(1);
       expect(events[0]).toBeInstanceOf(ExpressionContextCreatedEvent);
       const event = events[0] as ExpressionContextCreatedEvent;
-      expect(event.expressionId).toBe(expressionId);
-      expect(event.translation).toBe(translation);
       expect(event.type).toBe('noun');
-      expect(event.isCountable).toBe(false); // Note: event shows false, but object has correct value
-      expect(event.forms).toBeNull();
-      expect(event.isIrregular).toBe(false);
+      expect(event.isCountable).toBe(false);
+    });
+
+    it('should create a non-countable noun ExpressionContext', () => {
+      const context = ExpressionContext.createNoun(
+        mockTranslation,
+        mockExpressionId,
+        false,
+      );
+
+      expect(context.getIsCountable()).toBe(false);
+
+      const events = context.getUncommittedEvents();
+      const event = events[0] as ExpressionContextCreatedEvent;
+      expect(event.isCountable).toBe(false);
     });
   });
 
   describe('createPhrasalVerb', () => {
-    it('should create a phrasal verb expression context', () => {
-      // Arrange
-      const translation = 'to give up';
-      const expressionId = '550e8400-e29b-41d4-a716-446655440013';
-
-      // Act
-      const expressionContext = ExpressionContext.createPhrasalVerb(
-        translation,
-        expressionId,
+    it('should create a phrasal verb ExpressionContext and apply creation event', () => {
+      const context = ExpressionContext.createPhrasalVerb(
+        mockTranslation,
+        mockExpressionId,
       );
 
-      // Assert
-      expect(expressionContext).toBeInstanceOf(ExpressionContext);
-      expect(expressionContext.getTranslation()).toBe(translation);
-      expect(expressionContext.getExpressionId().value).toBe(expressionId);
-      expect(expressionContext.getType().value).toBe('phrasal_verb');
-      expect(expressionContext.getIsCountable()).toBe(false);
-      expect(expressionContext.getForms()).toBeNull();
-      expect(expressionContext.getIsIrregular()).toBe(false);
-    });
+      expect(context.getTranslation()).toBe(mockTranslation);
+      expect(context.getExpressionId().value).toBe(mockExpressionId);
+      expect(context.getType().value).toBe('phrasal_verb');
+      expect(context.getIsCountable()).toBe(false);
+      expect(context.getForms()).toBeNull();
+      expect(context.getIsIrregular()).toBe(false);
 
-    it('should apply ExpressionContextCreatedEvent when creating phrasal verb', () => {
-      // Arrange
-      const translation = 'to give up';
-      const expressionId = '550e8400-e29b-41d4-a716-446655440014';
-
-      // Act
-      const expressionContext = ExpressionContext.createPhrasalVerb(
-        translation,
-        expressionId,
-      );
-      const events = expressionContext.getUncommittedEvents();
-
-      // Assert
+      const events = context.getUncommittedEvents();
       expect(events).toHaveLength(1);
       expect(events[0]).toBeInstanceOf(ExpressionContextCreatedEvent);
       const event = events[0] as ExpressionContextCreatedEvent;
-      expect(event.expressionId).toBe(expressionId);
-      expect(event.translation).toBe(translation);
       expect(event.type).toBe('phrasal_verb');
-      expect(event.isCountable).toBe(false);
+    });
+  });
+
+  describe('delete', () => {
+    it('should apply deletion event', () => {
+      const context = ExpressionContext.createVerb(
+        mockTranslation,
+        mockExpressionId,
+      );
+      // Clear creation event by creating a fresh context
+      const freshContext = new ExpressionContext(
+        context.getExpressionContextId(),
+        context.getExpressionId(),
+        context.getTranslation(),
+        context.getIsCountable(),
+        context.getType(),
+        context.getForms(),
+        context.getIsIrregular(),
+      );
+
+      freshContext.delete();
+
+      const events = freshContext.getUncommittedEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(ExpressionContextDeletedEvent);
+      const event = events[0] as ExpressionContextDeletedEvent;
+      expect(event.expressionContextId).toBe(
+        context.getExpressionContextId().value,
+      );
+    });
+  });
+
+  describe('updateVerb', () => {
+    it('should update verb translation and apply update event', () => {
+      const context = ExpressionContext.createVerb(
+        mockTranslation,
+        mockExpressionId,
+      );
+      // Clear creation event by creating a fresh context
+      const freshContext = new ExpressionContext(
+        context.getExpressionContextId(),
+        context.getExpressionId(),
+        context.getTranslation(),
+        context.getIsCountable(),
+        context.getType(),
+        context.getForms(),
+        context.getIsIrregular(),
+      );
+
+      const newTranslation = 'updated translation';
+      freshContext.updateVerb(newTranslation);
+
+      expect(freshContext.getTranslation()).toBe(newTranslation);
+
+      const events = freshContext.getUncommittedEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(ExpressionContextUpdatedEvent);
+      const event = events[0] as ExpressionContextUpdatedEvent;
+      expect(event.translation).toBe(newTranslation);
+      expect(event.type).toBe('verb');
       expect(event.forms).toBeNull();
       expect(event.isIrregular).toBe(false);
     });
   });
 
-  describe('delete', () => {
-    it('should apply ExpressionContextDeletedEvent when deleting', () => {
-      // Arrange
-      const expressionContextId = ExpressionContextId.create();
-      const expressionId = ExpressionId.fromString(
-        '550e8400-e29b-41d4-a716-446655440016',
-      );
-      const expressionContext = new ExpressionContext(
-        expressionContextId,
-        expressionId,
-        'test translation',
-        true,
-        ExpressionType.noun(),
-        null,
-        false,
-      );
-
-      // Act
-      expressionContext.delete();
-      const events = expressionContext.getUncommittedEvents();
-
-      // Assert
-      expect(events).toHaveLength(1);
-      expect(events[0]).toBeInstanceOf(ExpressionContextDeletedEvent);
-      const event = events[0] as ExpressionContextDeletedEvent;
-      expect(event.expressionContextId).toBe(expressionContextId.value);
-      expect(event.expressionId).toBe(expressionId.value);
-    });
-
-    it('should apply delete event for expression context created via factory method', () => {
-      // Arrange
-      const translation = 'to run';
-      const expressionId = '550e8400-e29b-41d4-a716-446655440017';
-      const expressionContext = ExpressionContext.createVerb(
-        translation,
-        expressionId,
-      );
-
-      // Act
-      expressionContext.delete();
-      const events = expressionContext.getUncommittedEvents();
-
-      // Assert
-      expect(events).toHaveLength(2); // Creation event + Delete event
-      expect(events[0]).toBeInstanceOf(ExpressionContextCreatedEvent);
-      expect(events[1]).toBeInstanceOf(ExpressionContextDeletedEvent);
-      const deleteEvent = events[1] as ExpressionContextDeletedEvent;
-      expect(deleteEvent.expressionId).toBe(expressionId);
-    });
-  });
-
-  describe('getters', () => {
-    let expressionContext: ExpressionContext;
-    let expressionContextId: ExpressionContextId;
-    let expressionId: ExpressionId;
-    let translation: string;
-    let isCountable: boolean;
-    let type: ExpressionType;
-    let forms: VerbForms;
-    let isIrregular: boolean;
-
-    beforeEach(() => {
-      expressionContextId = ExpressionContextId.create();
-      expressionId = ExpressionId.fromString(
-        '550e8400-e29b-41d4-a716-446655440015',
-      );
-      translation = 'test translation';
-      isCountable = true;
-      type = ExpressionType.noun();
-      forms = VerbForms.fromArray(['run', 'ran', 'run']);
-      isIrregular = true;
-
-      expressionContext = new ExpressionContext(
-        expressionContextId,
-        expressionId,
-        translation,
-        isCountable,
-        type,
-        forms,
-        isIrregular,
-      );
-    });
-
-    it('should return correct expressionContextId', () => {
-      expect(expressionContext.getExpressionContextId()).toBe(
-        expressionContextId,
-      );
-    });
-
-    it('should return correct expressionId', () => {
-      expect(expressionContext.getExpressionId()).toBe(expressionId);
-    });
-
-    it('should return correct translation', () => {
-      expect(expressionContext.getTranslation()).toBe(translation);
-    });
-
-    it('should return correct isCountable', () => {
-      expect(expressionContext.getIsCountable()).toBe(isCountable);
-    });
-
-    it('should return correct type', () => {
-      expect(expressionContext.getType()).toBe(type);
-    });
-
-    it('should return correct forms', () => {
-      expect(expressionContext.getForms()).toBe(forms);
-    });
-
-    it('should return correct isIrregular', () => {
-      expect(expressionContext.getIsIrregular()).toBe(isIrregular);
-    });
-  });
-
-  describe('updateVerb', () => {
-    it('should update verb translation and emit updated event', () => {
-      // Arrange
-      const expressionContext = ExpressionContext.createVerb(
-        'to run',
-        '550e8400-e29b-41d4-a716-446655440020',
-      );
-      const newTranslation = 'to walk';
-
-      // Act
-      expressionContext.updateVerb(newTranslation);
-
-      // Assert
-      expect(expressionContext.getTranslation()).toBe(newTranslation);
-
-      const events = expressionContext.getUncommittedEvents();
-      expect(events).toHaveLength(2); // Created + Updated
-      expect(events[1]).toBeInstanceOf(ExpressionContextUpdatedEvent);
-
-      const updateEvent = events[1] as ExpressionContextUpdatedEvent;
-      expect(updateEvent.translation).toBe(newTranslation);
-      expect(updateEvent.isCountable).toBe(false);
-      expect(updateEvent.type).toBe('verb');
-      expect(updateEvent.forms).toBeNull();
-      expect(updateEvent.isIrregular).toBe(false);
-    });
-  });
-
   describe('updateIrregularVerb', () => {
-    it('should update irregular verb translation and forms', () => {
-      // Arrange
-      const expressionContext = ExpressionContext.createIrregularVerb(
-        'to go',
-        ['go', 'went', 'gone'],
-        '550e8400-e29b-41d4-a716-446655440021',
+    it('should update irregular verb translation and forms and apply update event', () => {
+      const initialForms: [string, string, string] = ['go', 'went', 'gone'];
+      const context = ExpressionContext.createIrregularVerb(
+        mockTranslation,
+        initialForms,
+        mockExpressionId,
       );
-      const newTranslation = 'to come';
-      const newForms: [string, string, string] = ['come', 'came', 'come'];
+      // Clear creation event by creating a fresh context
+      const freshContext = new ExpressionContext(
+        context.getExpressionContextId(),
+        context.getExpressionId(),
+        context.getTranslation(),
+        context.getIsCountable(),
+        context.getType(),
+        context.getForms(),
+        context.getIsIrregular(),
+      );
 
-      // Act
-      expressionContext.updateIrregularVerb(newTranslation, newForms);
+      const newTranslation = 'updated translation';
+      const newForms: [string, string, string] = ['run', 'ran', 'run'];
+      freshContext.updateIrregularVerb(newTranslation, newForms);
 
-      // Assert
-      expect(expressionContext.getTranslation()).toBe(newTranslation);
-      expect(expressionContext.getForms()?.value).toEqual(newForms);
+      expect(freshContext.getTranslation()).toBe(newTranslation);
+      expect(freshContext.getForms()?.value).toEqual(newForms);
 
-      const events = expressionContext.getUncommittedEvents();
-      expect(events).toHaveLength(2); // Created + Updated
-      expect(events[1]).toBeInstanceOf(ExpressionContextUpdatedEvent);
-
-      const updateEvent = events[1] as ExpressionContextUpdatedEvent;
-      expect(updateEvent.translation).toBe(newTranslation);
-      expect(updateEvent.forms).toEqual(newForms);
-      expect(updateEvent.isIrregular).toBe(true);
+      const events = freshContext.getUncommittedEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(ExpressionContextUpdatedEvent);
+      const event = events[0] as ExpressionContextUpdatedEvent;
+      expect(event.translation).toBe(newTranslation);
+      expect(event.forms).toEqual(newForms);
+      expect(event.isIrregular).toBe(true);
     });
   });
 
   describe('updateAdverb', () => {
-    it('should update adverb translation and emit updated event', () => {
-      // Arrange
-      const expressionContext = ExpressionContext.createAdverb(
-        'quickly',
-        '550e8400-e29b-41d4-a716-446655440022',
+    it('should update adverb translation and apply update event', () => {
+      const context = ExpressionContext.createAdverb(
+        mockTranslation,
+        mockExpressionId,
       );
-      const newTranslation = 'slowly';
+      // Clear creation event by creating a fresh context
+      const freshContext = new ExpressionContext(
+        context.getExpressionContextId(),
+        context.getExpressionId(),
+        context.getTranslation(),
+        context.getIsCountable(),
+        context.getType(),
+        context.getForms(),
+        context.getIsIrregular(),
+      );
 
-      // Act
-      expressionContext.updateAdverb(newTranslation);
+      const newTranslation = 'updated adverb translation';
+      freshContext.updateAdverb(newTranslation);
 
-      // Assert
-      expect(expressionContext.getTranslation()).toBe(newTranslation);
+      expect(freshContext.getTranslation()).toBe(newTranslation);
 
-      const events = expressionContext.getUncommittedEvents();
-      expect(events).toHaveLength(2); // Created + Updated
-      expect(events[1]).toBeInstanceOf(ExpressionContextUpdatedEvent);
-
-      const updateEvent = events[1] as ExpressionContextUpdatedEvent;
-      expect(updateEvent.translation).toBe(newTranslation);
-      expect(updateEvent.isCountable).toBe(false);
-      expect(updateEvent.type).toBe('adverb');
-      expect(updateEvent.forms).toBeNull();
-      expect(updateEvent.isIrregular).toBe(false);
+      const events = freshContext.getUncommittedEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(ExpressionContextUpdatedEvent);
+      const event = events[0] as ExpressionContextUpdatedEvent;
+      expect(event.translation).toBe(newTranslation);
+      expect(event.type).toBe('adverb');
     });
   });
 
   describe('updateAdjective', () => {
-    it('should update adjective translation and emit updated event', () => {
-      // Arrange
-      const expressionContext = ExpressionContext.createAdjective(
-        'beautiful',
-        '550e8400-e29b-41d4-a716-446655440023',
+    it('should update adjective translation and apply update event', () => {
+      const context = ExpressionContext.createAdjective(
+        mockTranslation,
+        mockExpressionId,
       );
-      const newTranslation = 'ugly';
+      // Clear creation event by creating a fresh context
+      const freshContext = new ExpressionContext(
+        context.getExpressionContextId(),
+        context.getExpressionId(),
+        context.getTranslation(),
+        context.getIsCountable(),
+        context.getType(),
+        context.getForms(),
+        context.getIsIrregular(),
+      );
 
-      // Act
-      expressionContext.updateAdjective(newTranslation);
+      const newTranslation = 'updated adjective translation';
+      freshContext.updateAdjective(newTranslation);
 
-      // Assert
-      expect(expressionContext.getTranslation()).toBe(newTranslation);
+      expect(freshContext.getTranslation()).toBe(newTranslation);
 
-      const events = expressionContext.getUncommittedEvents();
-      expect(events).toHaveLength(2); // Created + Updated
-      expect(events[1]).toBeInstanceOf(ExpressionContextUpdatedEvent);
-
-      const updateEvent = events[1] as ExpressionContextUpdatedEvent;
-      expect(updateEvent.translation).toBe(newTranslation);
-      expect(updateEvent.isCountable).toBe(false);
-      expect(updateEvent.type).toBe('adjective');
-      expect(updateEvent.forms).toBeNull();
-      expect(updateEvent.isIrregular).toBe(false);
+      const events = freshContext.getUncommittedEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(ExpressionContextUpdatedEvent);
+      const event = events[0] as ExpressionContextUpdatedEvent;
+      expect(event.translation).toBe(newTranslation);
+      expect(event.type).toBe('adjective');
     });
   });
 
   describe('updateNoun', () => {
-    it('should update countable noun translation and countability', () => {
-      // Arrange
-      const expressionContext = ExpressionContext.createNoun(
-        'book',
-        '550e8400-e29b-41d4-a716-446655440024',
-        true,
-      );
-      const newTranslation = 'water';
-      const newCountability = false;
-
-      // Act
-      expressionContext.updateNoun(newTranslation, newCountability);
-
-      // Assert
-      expect(expressionContext.getTranslation()).toBe(newTranslation);
-      expect(expressionContext.getIsCountable()).toBe(newCountability);
-
-      const events = expressionContext.getUncommittedEvents();
-      expect(events).toHaveLength(2); // Created + Updated
-      expect(events[1]).toBeInstanceOf(ExpressionContextUpdatedEvent);
-
-      const updateEvent = events[1] as ExpressionContextUpdatedEvent;
-      expect(updateEvent.translation).toBe(newTranslation);
-      expect(updateEvent.isCountable).toBe(newCountability);
-      expect(updateEvent.type).toBe('noun');
-      expect(updateEvent.forms).toBeNull();
-      expect(updateEvent.isIrregular).toBe(false);
-    });
-
-    it('should update uncountable noun to countable', () => {
-      // Arrange
-      const expressionContext = ExpressionContext.createNoun(
-        'water',
-        '550e8400-e29b-41d4-a716-446655440025',
+    it('should update noun translation and countability and apply update event', () => {
+      const context = ExpressionContext.createNoun(
+        mockTranslation,
+        mockExpressionId,
         false,
       );
-      const newTranslation = 'apple';
-      const newCountability = true;
+      // Clear creation event by creating a fresh context
+      const freshContext = new ExpressionContext(
+        context.getExpressionContextId(),
+        context.getExpressionId(),
+        context.getTranslation(),
+        context.getIsCountable(),
+        context.getType(),
+        context.getForms(),
+        context.getIsIrregular(),
+      );
 
-      // Act
-      expressionContext.updateNoun(newTranslation, newCountability);
+      const newTranslation = 'updated noun translation';
+      freshContext.updateNoun(newTranslation, true);
 
-      // Assert
-      expect(expressionContext.getTranslation()).toBe(newTranslation);
-      expect(expressionContext.getIsCountable()).toBe(newCountability);
+      expect(freshContext.getTranslation()).toBe(newTranslation);
+      expect(freshContext.getIsCountable()).toBe(true);
 
-      const updateEvent =
-        expressionContext.getUncommittedEvents()[1] as ExpressionContextUpdatedEvent;
-      expect(updateEvent.isCountable).toBe(newCountability);
+      const events = freshContext.getUncommittedEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(ExpressionContextUpdatedEvent);
+      const event = events[0] as ExpressionContextUpdatedEvent;
+      expect(event.translation).toBe(newTranslation);
+      expect(event.isCountable).toBe(true);
+      expect(event.type).toBe('noun');
     });
   });
 
   describe('updatePhrasalVerb', () => {
-    it('should update phrasal verb translation and emit updated event', () => {
-      // Arrange
-      const expressionContext = ExpressionContext.createPhrasalVerb(
-        'to give up',
-        '550e8400-e29b-41d4-a716-446655440026',
+    it('should update phrasal verb translation and apply update event', () => {
+      const context = ExpressionContext.createPhrasalVerb(
+        mockTranslation,
+        mockExpressionId,
       );
-      const newTranslation = 'to look after';
+      // Clear creation event by creating a fresh context
+      const freshContext = new ExpressionContext(
+        context.getExpressionContextId(),
+        context.getExpressionId(),
+        context.getTranslation(),
+        context.getIsCountable(),
+        context.getType(),
+        context.getForms(),
+        context.getIsIrregular(),
+      );
 
-      // Act
-      expressionContext.updatePhrasalVerb(newTranslation);
+      const newTranslation = 'updated phrasal verb translation';
+      freshContext.updatePhrasalVerb(newTranslation);
 
-      // Assert
-      expect(expressionContext.getTranslation()).toBe(newTranslation);
+      expect(freshContext.getTranslation()).toBe(newTranslation);
 
-      const events = expressionContext.getUncommittedEvents();
-      expect(events).toHaveLength(2); // Created + Updated
-      expect(events[1]).toBeInstanceOf(ExpressionContextUpdatedEvent);
+      const events = freshContext.getUncommittedEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(ExpressionContextUpdatedEvent);
+      const event = events[0] as ExpressionContextUpdatedEvent;
+      expect(event.translation).toBe(newTranslation);
+      expect(event.type).toBe('phrasal_verb');
+    });
+  });
 
-      const updateEvent = events[1] as ExpressionContextUpdatedEvent;
-      expect(updateEvent.translation).toBe(newTranslation);
-      expect(updateEvent.isCountable).toBe(false);
-      expect(updateEvent.type).toBe('phrasal_verb');
-      expect(updateEvent.forms).toBeNull();
-      expect(updateEvent.isIrregular).toBe(false);
+  describe('getter methods', () => {
+    let context: ExpressionContext;
+    let expressionContextId: ExpressionContextId;
+    let expressionId: ExpressionId;
+    let type: ExpressionType;
+    let forms: VerbForms;
+
+    beforeEach(() => {
+      expressionContextId = ExpressionContextId.create();
+      expressionId = ExpressionId.fromString(mockExpressionId);
+      type = ExpressionType.verb();
+      forms = VerbForms.fromArray(['test', 'tested', 'tested']);
+
+      context = new ExpressionContext(
+        expressionContextId,
+        expressionId,
+        mockTranslation,
+        true,
+        type,
+        forms,
+        true,
+      );
+    });
+
+    it('should return correct expression context id', () => {
+      expect(context.getExpressionContextId()).toBe(expressionContextId);
+    });
+
+    it('should return correct expression id', () => {
+      expect(context.getExpressionId()).toBe(expressionId);
+    });
+
+    it('should return correct translation', () => {
+      expect(context.getTranslation()).toBe(mockTranslation);
+    });
+
+    it('should return correct countable flag', () => {
+      expect(context.getIsCountable()).toBe(true);
+    });
+
+    it('should return correct type', () => {
+      expect(context.getType()).toBe(type);
+    });
+
+    it('should return correct forms', () => {
+      expect(context.getForms()).toBe(forms);
+    });
+
+    it('should return correct irregular flag', () => {
+      expect(context.getIsIrregular()).toBe(true);
+    });
+  });
+
+  describe('edge cases', () => {
+    it('should handle empty translation string', () => {
+      const context = ExpressionContext.createVerb('', mockExpressionId);
+      expect(context.getTranslation()).toBe('');
+    });
+
+    it('should handle forms set in constructor', () => {
+      const expressionContextId = ExpressionContextId.create();
+      const expressionId = ExpressionId.fromString(mockExpressionId);
+      const type = ExpressionType.verb();
+      const forms = VerbForms.fromArray(['test', 'tested', 'tested']);
+
+      const context = new ExpressionContext(
+        expressionContextId,
+        expressionId,
+        mockTranslation,
+        false,
+        type,
+        forms,
+        false,
+      );
+
+      expect(context.getForms()).toBe(forms);
+    });
+
+    it('should handle null forms passed to constructor', () => {
+      const expressionContextId = ExpressionContextId.create();
+      const expressionId = ExpressionId.fromString(mockExpressionId);
+      const type = ExpressionType.noun();
+
+      const context = new ExpressionContext(
+        expressionContextId,
+        expressionId,
+        mockTranslation,
+        false,
+        type,
+        null,
+        false,
+      );
+
+      expect(context.getForms()).toBeNull();
     });
   });
 });

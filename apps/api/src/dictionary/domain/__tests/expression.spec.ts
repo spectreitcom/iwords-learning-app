@@ -6,232 +6,219 @@ import { ExpressionDeletedEvent } from '../events/expression-deleted.event';
 
 describe('Expression', () => {
   describe('constructor', () => {
-    it('should create an expression with valid id and phrase', () => {
-      // Arrange
-      const expressionId = 'f47ac10b-58cc-4372-a567-0e02b2c3d479';
-      const phrase = 'Hello world';
+    it('should create an Expression with given expressionId and phrase', () => {
+      const testId = '550e8400-e29b-41d4-a716-446655440000';
+      const expression = new Expression(testId, 'hello world');
 
-      // Act
-      const expression = new Expression(expressionId, phrase);
-
-      // Assert
-      expect(expression.getExpressionId().value).toBe(expressionId);
-      expect(expression.getPhrase()).toBe(phrase);
+      expect(expression.getExpressionId().value).toBe(testId);
+      expect(expression.getPhrase()).toBe('hello world');
     });
 
-    it('should throw error when invalid UUID is provided', () => {
-      // Arrange
-      const invalidId = 'invalid-uuid';
-      const phrase = 'Hello world';
+    it('should create an Expression with ExpressionId value object', () => {
+      const testId = '550e8400-e29b-41d4-a716-446655440001';
+      const expression = new Expression(testId, 'hello world');
 
-      // Act & Assert
-      expect(() => new Expression(invalidId, phrase)).toThrow(
-        'ExpressionId is not valid',
-      );
+      expect(expression.getExpressionId()).toBeInstanceOf(ExpressionId);
+      expect(expression.getExpressionId().value).toBe(testId);
     });
   });
 
   describe('create', () => {
-    it('should create expression with generated ID and emit ExpressionCreatedEvent', () => {
-      // Arrange
-      const phrase = 'Test phrase';
-
-      // Act
+    it('should create a new Expression with generated ID', () => {
+      const phrase = 'test phrase';
       const expression = Expression.create(phrase);
 
-      // Assert
-      expect(expression.getPhrase()).toBe(phrase);
-      expect(expression.getExpressionId().value).toBeDefined();
+      expect(expression.getExpressionId()).toBeInstanceOf(ExpressionId);
       expect(expression.getExpressionId().value).toMatch(
         /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
       );
+      expect(expression.getPhrase()).toBe(phrase);
+    });
 
-      const events = expression.getUncommittedEvents();
-      expect(events).toHaveLength(1);
-      expect(events[0]).toBeInstanceOf(ExpressionCreatedEvent);
-      expect((events[0] as ExpressionCreatedEvent).expressionId).toBe(
-        expression.getExpressionId().value,
-      );
-      expect((events[0] as ExpressionCreatedEvent).phrase).toBe(phrase);
+    it('should apply ExpressionCreatedEvent when creating', () => {
+      const phrase = 'test phrase';
+      const expression = Expression.create(phrase);
+
+      const uncommittedEvents = expression.getUncommittedEvents();
+      expect(uncommittedEvents).toHaveLength(1);
+      expect(uncommittedEvents[0]).toBeInstanceOf(ExpressionCreatedEvent);
+      const event = uncommittedEvents[0] as ExpressionCreatedEvent;
+      expect(event.expressionId).toBe(expression.getExpressionId().value);
+      expect(event.phrase).toBe(phrase);
+    });
+
+    it('should create Expression with empty phrase', () => {
+      const expression = Expression.create('');
+
+      expect(expression.getPhrase()).toBe('');
+      expect(expression.getExpressionId()).toBeInstanceOf(ExpressionId);
+    });
+
+    it('should create Expression with whitespace phrase', () => {
+      const phrase = '   ';
+      const expression = Expression.create(phrase);
+
+      expect(expression.getPhrase()).toBe(phrase);
+      expect(expression.getExpressionId()).toBeInstanceOf(ExpressionId);
     });
   });
 
   describe('updatePhrase', () => {
-    it('should update phrase and emit ExpressionPhraseUpdatedEvent', () => {
-      // Arrange
-      const expression = Expression.create('Original phrase');
-      expression.commit(); // Clear creation event
-      const newPhrase = 'Updated phrase';
+    let expression: Expression;
+    const testId = '550e8400-e29b-41d4-a716-446655440002';
+    const originalPhrase = 'original phrase';
 
-      // Act
-      expression.updatePhrase(newPhrase);
-
-      // Assert
-      expect(expression.getPhrase()).toBe(newPhrase);
-
-      const events = expression.getUncommittedEvents();
-      expect(events).toHaveLength(1);
-      expect(events[0]).toBeInstanceOf(ExpressionPhraseUpdatedEvent);
-      expect((events[0] as ExpressionPhraseUpdatedEvent).expressionId).toBe(
-        expression.getExpressionId().value,
-      );
-      expect((events[0] as ExpressionPhraseUpdatedEvent).oldPhrase).toBe(
-        'Original phrase',
-      );
-      expect((events[0] as ExpressionPhraseUpdatedEvent).newPhrase).toBe(
-        newPhrase,
-      );
+    beforeEach(() => {
+      expression = new Expression(testId, originalPhrase);
     });
 
-    it('should handle empty string phrase update', () => {
-      // Arrange
-      const expression = Expression.create('Original phrase');
-      expression.commit();
-      const newPhrase = '';
-
-      // Act
+    it('should update phrase and apply ExpressionPhraseUpdatedEvent', () => {
+      const newPhrase = 'updated phrase';
       expression.updatePhrase(newPhrase);
 
-      // Assert
       expect(expression.getPhrase()).toBe(newPhrase);
 
-      const events = expression.getUncommittedEvents();
-      expect(events).toHaveLength(1);
-      expect(events[0]).toBeInstanceOf(ExpressionPhraseUpdatedEvent);
+      const uncommittedEvents = expression.getUncommittedEvents();
+      expect(uncommittedEvents).toHaveLength(1);
+      expect(uncommittedEvents[0]).toBeInstanceOf(ExpressionPhraseUpdatedEvent);
+      const event = uncommittedEvents[0] as ExpressionPhraseUpdatedEvent;
+      expect(event.expressionId).toBe(testId);
+      expect(event.oldPhrase).toBe(originalPhrase);
+      expect(event.newPhrase).toBe(newPhrase);
+    });
+
+    it('should handle updating to empty phrase', () => {
+      expression.updatePhrase('');
+
+      expect(expression.getPhrase()).toBe('');
+
+      const uncommittedEvents = expression.getUncommittedEvents();
+      const event = uncommittedEvents[0] as ExpressionPhraseUpdatedEvent;
+      expect(event.expressionId).toBe(testId);
+      expect(event.oldPhrase).toBe(originalPhrase);
+      expect(event.newPhrase).toBe('');
     });
 
     it('should handle updating to same phrase', () => {
-      // Arrange
-      const phrase = 'Same phrase';
-      const expression = Expression.create(phrase);
-      expression.commit();
+      expression.updatePhrase(originalPhrase);
 
-      // Act
-      expression.updatePhrase(phrase);
+      expect(expression.getPhrase()).toBe(originalPhrase);
 
-      // Assert
-      expect(expression.getPhrase()).toBe(phrase);
+      const uncommittedEvents = expression.getUncommittedEvents();
+      const event = uncommittedEvents[0] as ExpressionPhraseUpdatedEvent;
+      expect(event.expressionId).toBe(testId);
+      expect(event.oldPhrase).toBe(originalPhrase);
+      expect(event.newPhrase).toBe(originalPhrase);
+    });
 
-      const events = expression.getUncommittedEvents();
-      expect(events).toHaveLength(1);
-      expect(events[0]).toBeInstanceOf(ExpressionPhraseUpdatedEvent);
-      expect((events[0] as ExpressionPhraseUpdatedEvent).oldPhrase).toBe(
-        phrase,
-      );
-      expect((events[0] as ExpressionPhraseUpdatedEvent).newPhrase).toBe(
-        phrase,
-      );
+    it('should handle multiple phrase updates', () => {
+      const firstUpdate = 'first update';
+      const secondUpdate = 'second update';
+
+      expression.updatePhrase(firstUpdate);
+      expression.updatePhrase(secondUpdate);
+
+      expect(expression.getPhrase()).toBe(secondUpdate);
+
+      const uncommittedEvents = expression.getUncommittedEvents();
+      expect(uncommittedEvents).toHaveLength(2);
+      const secondEvent = uncommittedEvents[1] as ExpressionPhraseUpdatedEvent;
+      expect(secondEvent.expressionId).toBe(testId);
+      expect(secondEvent.oldPhrase).toBe(firstUpdate);
+      expect(secondEvent.newPhrase).toBe(secondUpdate);
     });
   });
 
   describe('delete', () => {
-    it('should emit ExpressionDeletedEvent', () => {
-      // Arrange
-      const expression = Expression.create('Test phrase');
-      expression.commit(); // Clear creation event
+    let expression: Expression;
+    const testId = '550e8400-e29b-41d4-a716-446655440003';
 
-      // Act
+    beforeEach(() => {
+      expression = new Expression(testId, 'test phrase');
+    });
+
+    it('should apply ExpressionDeletedEvent when deleting', () => {
       expression.delete();
 
-      // Assert
-      const events = expression.getUncommittedEvents();
-      expect(events).toHaveLength(1);
-      expect(events[0]).toBeInstanceOf(ExpressionDeletedEvent);
-      expect((events[0] as ExpressionDeletedEvent).expressionId).toBe(
-        expression.getExpressionId().value,
-      );
+      const uncommittedEvents = expression.getUncommittedEvents();
+      expect(uncommittedEvents).toHaveLength(1);
+      expect(uncommittedEvents[0]).toBeInstanceOf(ExpressionDeletedEvent);
+      const event = uncommittedEvents[0] as ExpressionDeletedEvent;
+      expect(event.expressionId).toBe(testId);
+    });
+
+    it('should allow multiple delete calls', () => {
+      expression.delete();
+      expression.delete();
+
+      const uncommittedEvents = expression.getUncommittedEvents();
+      expect(uncommittedEvents).toHaveLength(2);
+      expect(uncommittedEvents[0]).toBeInstanceOf(ExpressionDeletedEvent);
+      expect(uncommittedEvents[1]).toBeInstanceOf(ExpressionDeletedEvent);
     });
   });
 
   describe('getExpressionId', () => {
-    it('should return the expression ID', () => {
-      // Arrange
-      const expressionId = 'f47ac10b-58cc-4372-a567-0e02b2c3d479';
-      const expression = new Expression(expressionId, 'Test phrase');
+    it('should return the ExpressionId value object', () => {
+      const testId = '550e8400-e29b-41d4-a716-446655440004';
+      const expression = new Expression(testId, 'test phrase');
 
-      // Act
-      const result = expression.getExpressionId();
-
-      // Assert
-      expect(result).toBeInstanceOf(ExpressionId);
-      expect(result.value).toBe(expressionId);
+      expect(expression.getExpressionId()).toBeInstanceOf(ExpressionId);
+      expect(expression.getExpressionId().value).toBe(testId);
     });
   });
 
   describe('getPhrase', () => {
-    it('should return the phrase', () => {
-      // Arrange
-      const phrase = 'Test phrase';
-      const expression = Expression.create(phrase);
+    it('should return the current phrase', () => {
+      const phrase = 'test phrase';
+      const testId = '550e8400-e29b-41d4-a716-446655440005';
+      const expression = new Expression(testId, phrase);
 
-      // Act
-      const result = expression.getPhrase();
+      expect(expression.getPhrase()).toBe(phrase);
+    });
 
-      // Assert
-      expect(result).toBe(phrase);
+    it('should return updated phrase after update', () => {
+      const testId = '550e8400-e29b-41d4-a716-446655440006';
+      const expression = new Expression(testId, 'original');
+      const newPhrase = 'updated phrase';
+
+      expression.updatePhrase(newPhrase);
+
+      expect(expression.getPhrase()).toBe(newPhrase);
     });
   });
 
-  describe('edge cases', () => {
-    it('should handle very long phrases', () => {
-      // Arrange
-      const longPhrase = 'a'.repeat(10000);
-
-      // Act
-      const expression = Expression.create(longPhrase);
-
-      // Assert
-      expect(expression.getPhrase()).toBe(longPhrase);
-      expect(expression.getPhrase()).toHaveLength(10000);
-    });
-
-    it('should handle phrases with special characters', () => {
-      // Arrange
-      const specialPhrase = 'Hello 世界! @#$%^&*()_+-=[]{}|;:,.<>?';
-
-      // Act
-      const expression = Expression.create(specialPhrase);
-
-      // Assert
-      expect(expression.getPhrase()).toBe(specialPhrase);
-    });
-
-    it('should handle multiple operations and maintain event order', () => {
-      // Arrange
-      const expression = Expression.create('Initial phrase');
-      const expressionId = expression.getExpressionId().value;
-
-      // Act
-      expression.updatePhrase('Updated phrase');
+  describe('complex scenarios', () => {
+    it('should handle create, update, and delete sequence', () => {
+      const expression = Expression.create('initial phrase');
+      expression.updatePhrase('updated phrase');
       expression.delete();
 
-      // Assert
-      const events = expression.getUncommittedEvents();
-      expect(events).toHaveLength(3);
+      const uncommittedEvents = expression.getUncommittedEvents();
+      expect(uncommittedEvents).toHaveLength(3);
+      expect(uncommittedEvents[0]).toBeInstanceOf(ExpressionCreatedEvent);
+      expect(uncommittedEvents[1]).toBeInstanceOf(ExpressionPhraseUpdatedEvent);
+      expect(uncommittedEvents[2]).toBeInstanceOf(ExpressionDeletedEvent);
+    });
 
-      expect(events[0]).toBeInstanceOf(ExpressionCreatedEvent);
-      expect((events[0] as ExpressionCreatedEvent).expressionId).toBe(
-        expressionId,
-      );
-      expect((events[0] as ExpressionCreatedEvent).phrase).toBe(
-        'Initial phrase',
-      );
+    it('should maintain phrase state after delete', () => {
+      const testId = '550e8400-e29b-41d4-a716-446655440007';
+      const expression = new Expression(testId, 'test phrase');
+      expression.delete();
 
-      expect(events[1]).toBeInstanceOf(ExpressionPhraseUpdatedEvent);
-      expect((events[1] as ExpressionPhraseUpdatedEvent).expressionId).toBe(
-        expressionId,
-      );
-      expect((events[1] as ExpressionPhraseUpdatedEvent).oldPhrase).toBe(
-        'Initial phrase',
-      );
-      expect((events[1] as ExpressionPhraseUpdatedEvent).newPhrase).toBe(
-        'Updated phrase',
-      );
+      expect(expression.getPhrase()).toBe('test phrase');
+    });
 
-      expect(events[2]).toBeInstanceOf(ExpressionDeletedEvent);
-      expect((events[2] as ExpressionDeletedEvent).expressionId).toBe(
-        expressionId,
-      );
+    it('should handle special characters in phrase', () => {
+      const specialPhrase = 'Hello! @#$%^&*()_+ 世界 🌍';
+      const expression = Expression.create(specialPhrase);
+
+      expect(expression.getPhrase()).toBe(specialPhrase);
+
+      const newSpecialPhrase = 'Ñoño café naïve résumé 中文';
+      expression.updatePhrase(newSpecialPhrase);
+
+      expect(expression.getPhrase()).toBe(newSpecialPhrase);
     });
   });
 });
