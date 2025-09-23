@@ -2,6 +2,7 @@ import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateAdverbExpressionContextCommand } from '../commands/update-adverb-expression-context.command';
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
 import { ExpressionContextNotFoundError } from '../errors';
+import { ADVERB } from '../../domain/constants';
 
 @CommandHandler(UpdateAdverbExpressionContextCommand)
 export class UpdateAdverbExpressionContextCommandHandler
@@ -16,7 +17,10 @@ export class UpdateAdverbExpressionContextCommandHandler
     const { expressionContextId, translation } = command;
 
     const expressionContext =
-      await this.expressionContextRepository.findById(expressionContextId);
+      await this.expressionContextRepository.findByIdAndType(
+        expressionContextId,
+        ADVERB,
+      );
 
     if (!expressionContext) {
       throw new ExpressionContextNotFoundError(expressionContextId);

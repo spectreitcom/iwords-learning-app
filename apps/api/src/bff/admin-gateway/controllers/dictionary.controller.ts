@@ -34,6 +34,12 @@ import { CreateAdverbExpressionContextDto } from '../dtos/create-adverb-expressi
 import { CreateIrregularVerbExpressionContextDto } from '../dtos/create-irregular-verb-expression-context.dto';
 import { CreateSentenceDto } from '../dtos/create-sentence.dto';
 import { UpdateSentenceDto } from '../dtos/update-sentence.dto';
+import { UpdateVerbExpressionContextDto } from '../dtos/update-verb-expression-context.dto';
+import { UpdateAdjectiveExpressionContextDto } from '../dtos/update-adjective-expression-context.dto';
+import { UpdateNounExpressionContextDto } from '../dtos/update-noun-expression-context.dto';
+import { UpdateAdverbExpressionContextDto } from '../dtos/update-adverb-expression-context.dto';
+import { UpdatePhrasalVerbExpressionContextDto } from '../dtos/update-phrasal-verb-expression-context.dto';
+import { UpdateIrregularVerbExpressionContextDto } from '../dtos/update-irregular-verb-expression-context.dto';
 
 @ApiTags('Admin Dictionary')
 @Controller('admin/dictionary')
@@ -270,6 +276,152 @@ export class DictionaryController {
       );
     } catch (e) {
       if (e instanceof ExpressionNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Update verb expression context' })
+  @ApiResponse({ status: 200, description: 'Expression context updated' })
+  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @Put('expression-contexts/:expressionContextId/verb')
+  @HttpCode(HttpStatus.OK)
+  async updateVerbExpressionContext(
+    @Body() payload: UpdateVerbExpressionContextDto,
+    @Param('expressionContextId', new ParseUUIDPipe())
+    expressionContextId: string,
+  ) {
+    try {
+      await this.dictionaryApiService.updateVerbExpressionContext(
+        expressionContextId,
+        payload.translation,
+      );
+    } catch (e) {
+      if (e instanceof ExpressionContextNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Update adjective expression context' })
+  @ApiResponse({ status: 200, description: 'Expression context updated' })
+  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @Put('expression-contexts/:expressionContextId/adjective')
+  @HttpCode(HttpStatus.OK)
+  async updateAdjectiveExpressionContext(
+    @Body() payload: UpdateAdjectiveExpressionContextDto,
+    @Param('expressionContextId', new ParseUUIDPipe())
+    expressionContextId: string,
+  ) {
+    try {
+      await this.dictionaryApiService.updateAdjectiveExpressionContext(
+        expressionContextId,
+        payload.translation,
+      );
+    } catch (e) {
+      if (e instanceof ExpressionContextNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Update noun expression context' })
+  @ApiResponse({ status: 200, description: 'Expression context updated' })
+  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @Put('expression-contexts/:expressionContextId/noun')
+  @HttpCode(HttpStatus.OK)
+  async updateNounExpressionContext(
+    @Body() payload: UpdateNounExpressionContextDto,
+    @Param('expressionContextId', new ParseUUIDPipe())
+    expressionContextId: string,
+  ) {
+    try {
+      await this.dictionaryApiService.updateNounExpressionContext(
+        expressionContextId,
+        payload.translation,
+        payload.isCountable,
+      );
+    } catch (e) {
+      if (e instanceof ExpressionContextNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Update adverb expression context' })
+  @ApiResponse({ status: 200, description: 'Expression context updated' })
+  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @Put('expression-contexts/:expressionContextId/adverb')
+  @HttpCode(HttpStatus.OK)
+  async updateAdverbExpressionContext(
+    @Body() payload: UpdateAdverbExpressionContextDto,
+    @Param('expressionContextId', new ParseUUIDPipe())
+    expressionContextId: string,
+  ) {
+    try {
+      await this.dictionaryApiService.updateAdverbExpressionContext(
+        expressionContextId,
+        payload.translation,
+      );
+    } catch (e) {
+      if (e instanceof ExpressionContextNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Update phrasal verb expression context' })
+  @ApiResponse({ status: 200, description: 'Expression context updated' })
+  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @Put('expression-contexts/:expressionContextId/phrasal-verb')
+  @HttpCode(HttpStatus.OK)
+  async updatePhrasalVerbExpressionContext(
+    @Body() payload: UpdatePhrasalVerbExpressionContextDto,
+    @Param('expressionContextId', new ParseUUIDPipe())
+    expressionContextId: string,
+  ) {
+    try {
+      await this.dictionaryApiService.updatePhrasalVerbExpressionContext(
+        expressionContextId,
+        payload.translation,
+      );
+    } catch (e) {
+      if (e instanceof ExpressionContextNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Update irregular verb expression context' })
+  @ApiResponse({ status: 200, description: 'Expression context updated' })
+  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @Put('expression-contexts/:expressionContextId/irregular-verb')
+  @HttpCode(HttpStatus.OK)
+  async updateIrregularVerbExpressionContext(
+    @Body() payload: UpdateIrregularVerbExpressionContextDto,
+    @Param('expressionContextId', new ParseUUIDPipe())
+    expressionContextId: string,
+  ) {
+    try {
+      await this.dictionaryApiService.updateIrregularVerbExpressionContext(
+        expressionContextId,
+        payload.translation,
+        payload.forms,
+      );
+    } catch (e) {
+      if (e instanceof ExpressionContextNotFoundError) {
         throw new NotFoundException(e.message);
       }
       throw e;

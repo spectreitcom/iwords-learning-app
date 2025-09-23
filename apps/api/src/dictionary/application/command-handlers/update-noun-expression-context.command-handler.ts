@@ -2,6 +2,7 @@ import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateNounExpressionContextCommand } from '../commands/update-noun-expression-context.command';
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
 import { ExpressionContextNotFoundError } from '../errors';
+import { NOUN } from '../../domain/constants';
 
 @CommandHandler(UpdateNounExpressionContextCommand)
 export class UpdateNounExpressionContextCommandHandler
@@ -16,7 +17,10 @@ export class UpdateNounExpressionContextCommandHandler
     const { expressionContextId, translation, isCountable } = command;
 
     const expressionContext =
-      await this.expressionContextRepository.findById(expressionContextId);
+      await this.expressionContextRepository.findByIdAndType(
+        expressionContextId,
+        NOUN,
+      );
 
     if (!expressionContext) {
       throw new ExpressionContextNotFoundError(expressionContextId);

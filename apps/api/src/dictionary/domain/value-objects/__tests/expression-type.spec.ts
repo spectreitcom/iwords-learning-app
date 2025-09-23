@@ -1,5 +1,12 @@
 import { ExpressionType } from '../expression-type';
-import { VERB, NOUN, ADJECTIVE, ADVERB, PHRASAL_VERB } from '../../constants';
+import {
+  VERB,
+  NOUN,
+  ADJECTIVE,
+  ADVERB,
+  PHRASAL_VERB,
+  IRREGULAR_VERB,
+} from '../../constants';
 
 describe('ExpressionType', () => {
   describe('static factory methods', () => {
@@ -27,6 +34,11 @@ describe('ExpressionType', () => {
       const expressionType = ExpressionType.phrasalVerb();
       expect(expressionType.value).toBe(PHRASAL_VERB);
     });
+
+    it('should create irregular verb expression type', () => {
+      const expressionType = ExpressionType.irregularVerb();
+      expect(expressionType.value).toBe(IRREGULAR_VERB);
+    });
   });
 
   describe('fromString', () => {
@@ -53,6 +65,11 @@ describe('ExpressionType', () => {
     it('should create expression type from valid string - phrasal verb', () => {
       const expressionType = ExpressionType.fromString(PHRASAL_VERB);
       expect(expressionType.value).toBe(PHRASAL_VERB);
+    });
+
+    it('should create expression type from valid string - irregular verb', () => {
+      const expressionType = ExpressionType.fromString(IRREGULAR_VERB);
+      expect(expressionType.value).toBe(IRREGULAR_VERB);
     });
 
     it('should throw error for invalid string', () => {
