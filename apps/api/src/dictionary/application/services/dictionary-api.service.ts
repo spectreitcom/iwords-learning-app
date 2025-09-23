@@ -41,7 +41,7 @@ export class DictionaryApiService implements DictionaryApi {
     private readonly queryBus: QueryBus,
   ) {}
 
-  createAdjectiveExpressionContext(
+  async createAdjectiveExpressionContext(
     expressionId: string,
     translation: string,
   ): Promise<CreateAdjectiveExpressionContextCommandResponse> {
@@ -49,10 +49,10 @@ export class DictionaryApiService implements DictionaryApi {
       expressionId,
       translation,
     );
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  createAdverbExpressionContext(
+  async createAdverbExpressionContext(
     expressionId: string,
     translation: string,
   ): Promise<CreateAdverbExpressionContextCommandResponse> {
@@ -60,15 +60,17 @@ export class DictionaryApiService implements DictionaryApi {
       expressionId,
       translation,
     );
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  createExpression(phrase: string): Promise<CreateExpressionCommandResponse> {
+  async createExpression(
+    phrase: string,
+  ): Promise<CreateExpressionCommandResponse> {
     const command = new CreateExpressionCommand(phrase);
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  createIrregularVerbExpressionContext(
+  async createIrregularVerbExpressionContext(
     expressionId: string,
     translation: string,
     forms: [string, string, string],
@@ -78,10 +80,10 @@ export class DictionaryApiService implements DictionaryApi {
       translation,
       forms,
     );
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  createNounExpressionContext(
+  async createNounExpressionContext(
     expressionId: string,
     translation: string,
     isCountable: boolean,
@@ -91,10 +93,10 @@ export class DictionaryApiService implements DictionaryApi {
       translation,
       isCountable,
     );
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  createPhrasalVerbExpressionContext(
+  async createPhrasalVerbExpressionContext(
     expressionId: string,
     translation: string,
   ): Promise<CreatePhrasalVerbExpressionContextCommandResponse> {
@@ -102,10 +104,10 @@ export class DictionaryApiService implements DictionaryApi {
       expressionId,
       translation,
     );
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  createSentence(
+  async createSentence(
     content: string,
     translation: string,
     expressionContextId: string,
@@ -115,10 +117,10 @@ export class DictionaryApiService implements DictionaryApi {
       translation,
       expressionContextId,
     );
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  createVerbExpressionContext(
+  async createVerbExpressionContext(
     expressionId: string,
     translation: string,
   ): Promise<CreateVerbExpressionContextCommandResponse> {
@@ -126,25 +128,25 @@ export class DictionaryApiService implements DictionaryApi {
       expressionId,
       translation,
     );
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  deleteExpression(expressionId: string): Promise<void> {
+  async deleteExpression(expressionId: string): Promise<void> {
     const command = new DeleteExpressionCommand(expressionId);
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  deleteExpressionContext(expressionContextId: string): Promise<void> {
+  async deleteExpressionContext(expressionContextId: string): Promise<void> {
     const command = new DeleteExpressionContextCommand(expressionContextId);
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  deleteSentence(sentenceId: string): Promise<void> {
+  async deleteSentence(sentenceId: string): Promise<void> {
     const command = new DeleteSentenceCommand(sentenceId);
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  updateAdjectiveExpressionContext(
+  async updateAdjectiveExpressionContext(
     expressionContextId: string,
     translation: string,
   ): Promise<void> {
@@ -152,10 +154,10 @@ export class DictionaryApiService implements DictionaryApi {
       expressionContextId,
       translation,
     );
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  updateAdverbExpressionContext(
+  async updateAdverbExpressionContext(
     expressionContextId: string,
     translation: string,
   ): Promise<void> {
@@ -163,15 +165,15 @@ export class DictionaryApiService implements DictionaryApi {
       expressionContextId,
       translation,
     );
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  updateExpression(expressionId: string, phrase: string): Promise<void> {
+  async updateExpression(expressionId: string, phrase: string): Promise<void> {
     const command = new UpdateExpressionCommand(expressionId, phrase);
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  updateIrregularVerbExpressionContext(
+  async updateIrregularVerbExpressionContext(
     expressionContextId: string,
     translation: string,
     forms: [string, string, string],
@@ -181,10 +183,10 @@ export class DictionaryApiService implements DictionaryApi {
       translation,
       forms,
     );
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  updateNounExpressionContext(
+  async updateNounExpressionContext(
     expressionContextId: string,
     translation: string,
     isCountable: boolean,
@@ -194,10 +196,10 @@ export class DictionaryApiService implements DictionaryApi {
       translation,
       isCountable,
     );
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  updatePhrasalVerbExpressionContext(
+  async updatePhrasalVerbExpressionContext(
     expressionContextId: string,
     translation: string,
   ): Promise<void> {
@@ -205,19 +207,19 @@ export class DictionaryApiService implements DictionaryApi {
       expressionContextId,
       translation,
     );
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  updateSentence(
+  async updateSentence(
     sentenceId: string,
     content: string,
     translation: string,
   ): Promise<void> {
     const command = new UpdateSentenceCommand(sentenceId, content, translation);
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  updateVerbExpressionContext(
+  async updateVerbExpressionContext(
     expressionContextId: string,
     translation: string,
   ): Promise<void> {
@@ -225,32 +227,32 @@ export class DictionaryApiService implements DictionaryApi {
       expressionContextId,
       translation,
     );
-    return this.commandBus.execute(command);
+    return await this.commandBus.execute(command);
   }
 
-  searchDictionaryReadModel(
+  async searchDictionaryReadModel(
     searchText: string,
     take: number,
     page: number,
   ): Promise<SearchDictionaryReadModelQueryResponse> {
     const query = new SearchDictionaryReadModelQuery(searchText, take, page);
-    return this.queryBus.execute(query);
+    return await this.queryBus.execute(query);
   }
 
-  getExpressionById(expressionId: string): Promise<ExpressionView> {
+  async getExpressionById(expressionId: string): Promise<ExpressionView> {
     const query = new GetExpressionByIdQuery(expressionId);
-    return this.queryBus.execute(query);
+    return await this.queryBus.execute(query);
   }
 
-  getExpressionContextById(
+  async getExpressionContextById(
     expressionContextId: string,
   ): Promise<ExpressionView> {
     const query = new GetExpressionContextByIdQuery(expressionContextId);
-    return this.queryBus.execute(query);
+    return await this.queryBus.execute(query);
   }
 
-  getSentenceById(sentenceId: string): Promise<ExpressionView> {
+  async getSentenceById(sentenceId: string): Promise<ExpressionView> {
     const query = new GetSentenceByIdQuery(sentenceId);
-    return this.queryBus.execute(query);
+    return await this.queryBus.execute(query);
   }
 }

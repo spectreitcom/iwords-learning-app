@@ -31,6 +31,7 @@ import { CreateNounExpressionContextDto } from '../dtos/create-noun-expression-c
 import { CreateAdjectiveExpressionContextDto } from '../dtos/create-adjective-expression-context.dto';
 import { CreateAdverbExpressionContextDto } from '../dtos/create-adverb-expression-context.dto';
 import { CreateIrregularVerbExpressionContextDto } from '../dtos/create-irregular-verb-expression-context.dto';
+import { CreateSentenceDto } from '../dtos/create-sentence.dto';
 
 @ApiTags('Admin Dictionary')
 @Controller('admin/dictionary')
@@ -286,6 +287,30 @@ export class DictionaryController {
     try {
       await this.dictionaryApiService.deleteExpressionContext(
         expressionContextId,
+      );
+    } catch (e) {
+      if (e instanceof ExpressionContextNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Add sentence to the context' })
+  @ApiResponse({
+    status: 201,
+    description: 'Sentence added to the context successfully',
+  })
+  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @Post('sentences')
+  @HttpCode(HttpStatus.CREATED)
+  async addSentence(@Body() payload: CreateSentenceDto) {
+    try {
+      return await this.dictionaryApiService.createSentence(
+        payload.content,
+        payload.translation,
+        payload.expressionContextId,
       );
     } catch (e) {
       if (e instanceof ExpressionContextNotFoundError) {
