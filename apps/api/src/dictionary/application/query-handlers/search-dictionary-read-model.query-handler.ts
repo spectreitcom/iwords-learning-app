@@ -27,13 +27,13 @@ export class SearchDictionaryReadModelQueryHandler
         OR: [
           {
             phrase: {
-              contains: searchText,
+              contains: searchText ?? '',
               mode: 'insensitive',
             },
           },
           {
             translation: {
-              contains: searchText,
+              contains: searchText ?? '',
               mode: 'insensitive',
             },
           },
@@ -48,13 +48,13 @@ export class SearchDictionaryReadModelQueryHandler
         OR: [
           {
             phrase: {
-              contains: searchText,
+              contains: searchText ?? '',
               mode: 'insensitive',
             },
           },
           {
             translation: {
-              contains: searchText,
+              contains: searchText ?? '',
               mode: 'insensitive',
             },
           },
