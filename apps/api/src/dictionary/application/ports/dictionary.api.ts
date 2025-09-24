@@ -8,6 +8,7 @@ import { CreatePhrasalVerbExpressionContextCommandResponse } from '../command-ha
 import { SearchDictionaryReadModelQueryResponse } from '../query-handlers/search-dictionary-read-model.query-handler';
 import { ExpressionView } from '../../views/expression.view';
 import { GetExpressionListQueryResponse } from '../query-handlers/get-expressions-list.query-handler';
+import { GetExpressionContextsListQueryResponse } from '../query-handlers/get-expression-contexts-list.query-handler';
 
 export abstract class DictionaryApi {
   abstract createExpression(
@@ -120,4 +121,10 @@ export abstract class DictionaryApi {
     take: number,
     page: number,
   ): Promise<GetExpressionListQueryResponse>;
+
+  abstract getExpressionContextList(
+    expressionId: string,
+    take: number,
+    page: number,
+  ): Promise<GetExpressionContextsListQueryResponse>;
 }
