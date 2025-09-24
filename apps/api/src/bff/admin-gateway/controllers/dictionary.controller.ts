@@ -43,6 +43,7 @@ import { UpdateAdverbExpressionContextDto } from '../dtos/update-adverb-expressi
 import { UpdatePhrasalVerbExpressionContextDto } from '../dtos/update-phrasal-verb-expression-context.dto';
 import { UpdateIrregularVerbExpressionContextDto } from '../dtos/update-irregular-verb-expression-context.dto';
 import { SearchDictionaryQueryDto } from '../dtos/search-dictionary-query.dto';
+import { GetExpressionsListQueryDto } from '../dtos/get-expressions-list-query.dto';
 
 @ApiTags('Admin Dictionary')
 @Controller('admin/dictionary')
@@ -59,6 +60,22 @@ export class DictionaryController {
   @HttpCode(HttpStatus.OK)
   async searchDictionary(@Query() query: SearchDictionaryQueryDto) {
     return this.dictionaryApiService.searchDictionaryReadModel(
+      query.searchText,
+      query.take,
+      query.page,
+    );
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Get expressions list' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns a list of expressions',
+  })
+  @Get('expressions')
+  @HttpCode(HttpStatus.OK)
+  async getExpressionsList(@Query() query: GetExpressionsListQueryDto) {
+    return await this.dictionaryApiService.getExpressionsList(
       query.searchText,
       query.take,
       query.page,
