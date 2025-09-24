@@ -572,6 +572,28 @@ export class DictionaryController {
   }
 
   @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Get sentence by id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns the sentence by id',
+  })
+  @ApiResponse({ status: 404, description: 'Sentence not found' })
+  @Get('sentences/:sentenceId')
+  @HttpCode(HttpStatus.OK)
+  async getSentence(
+    @Param('sentenceId', new ParseUUIDPipe()) sentenceId: string,
+  ) {
+    try {
+      return await this.dictionaryApiService.getSentenceById(sentenceId);
+    } catch (e) {
+      if (e instanceof SentenceNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Add sentence to the context' })
   @ApiResponse({
     status: 201,
