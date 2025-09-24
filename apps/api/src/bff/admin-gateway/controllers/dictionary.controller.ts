@@ -68,6 +68,28 @@ export class DictionaryController {
   }
 
   @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Get expression by id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns the expression by id',
+  })
+  @ApiResponse({ status: 404, description: 'Expression not found' })
+  @Get('expressions/:expressionId')
+  @HttpCode(HttpStatus.OK)
+  async getExpression(
+    @Param('expressionId', new ParseUUIDPipe()) expressionId: string,
+  ) {
+    try {
+      return await this.dictionaryApiService.getExpressionById(expressionId);
+    } catch (e) {
+      if (e instanceof ExpressionNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Get expressions list' })
   @ApiResponse({
     status: 200,
