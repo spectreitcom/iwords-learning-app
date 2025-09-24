@@ -174,6 +174,30 @@ export class DictionaryController {
   }
 
   @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Expression context by id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns the expression context by id',
+  })
+  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @Get('expression-contexts/:expressionContextId')
+  async getExpressionContext(
+    @Param('expressionContextId', new ParseUUIDPipe())
+    expressionContextId: string,
+  ) {
+    try {
+      return await this.dictionaryApiService.getExpressionContextById(
+        expressionContextId,
+      );
+    } catch (e) {
+      if (e instanceof ExpressionContextNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
+  }
+
+  @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Expression contexts list' })
   @ApiResponse({
     status: 200,
