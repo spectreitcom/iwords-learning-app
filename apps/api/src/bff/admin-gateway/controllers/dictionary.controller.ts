@@ -44,6 +44,7 @@ import { UpdatePhrasalVerbExpressionContextDto } from '../dtos/update-phrasal-ve
 import { UpdateIrregularVerbExpressionContextDto } from '../dtos/update-irregular-verb-expression-context.dto';
 import { SearchDictionaryQueryDto } from '../dtos/search-dictionary-query.dto';
 import { GetExpressionsListQueryDto } from '../dtos/get-expressions-list-query.dto';
+import { GetExpressionContextsListQueryDto } from '../dtos/get-expression-contexts-list-query.dto';
 
 @ApiTags('Admin Dictionary')
 @Controller('admin/dictionary')
@@ -148,6 +149,24 @@ export class DictionaryController {
       }
       throw e;
     }
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Expression contexts list' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns a list of expression contexts',
+  })
+  @Get('expression-contexts')
+  @HttpCode(HttpStatus.OK)
+  async getExpressionContextsList(
+    @Query() query: GetExpressionContextsListQueryDto,
+  ) {
+    return await this.dictionaryApiService.getExpressionContextList(
+      query.expressionId,
+      query.take,
+      query.page,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
