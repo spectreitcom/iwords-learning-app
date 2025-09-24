@@ -33,6 +33,8 @@ import { ExpressionView } from '../../views/expression.view';
 import { GetExpressionByIdQuery } from '../queries/get-expression-by-id.query';
 import { GetExpressionContextByIdQuery } from '../queries/get-expression-context-by-id.query';
 import { GetSentenceByIdQuery } from '../queries/get-sentence-by-id.query';
+import { GetExpressionListQueryResponse } from '../query-handlers/get-expressions-list.query-handler';
+import { GetExpressionsListQuery } from '../queries/get-expressions-list.query';
 
 @Injectable()
 export class DictionaryApiService implements DictionaryApi {
@@ -253,6 +255,15 @@ export class DictionaryApiService implements DictionaryApi {
 
   async getSentenceById(sentenceId: string): Promise<ExpressionView> {
     const query = new GetSentenceByIdQuery(sentenceId);
+    return await this.queryBus.execute(query);
+  }
+
+  async getExpressionsList(
+    searchText: string | undefined,
+    take: number,
+    page: number,
+  ): Promise<GetExpressionListQueryResponse> {
+    const query = new GetExpressionsListQuery(take, page, searchText);
     return await this.queryBus.execute(query);
   }
 }
