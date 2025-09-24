@@ -7,6 +7,7 @@ import { CreateIrregularVerbExpressionContextCommandResponse } from '../command-
 import { CreatePhrasalVerbExpressionContextCommandResponse } from '../command-handlers/create-phrasal-verb-expression-context.command-handler';
 import { SearchDictionaryReadModelQueryResponse } from '../query-handlers/search-dictionary-read-model.query-handler';
 import { ExpressionView } from '../../views/expression.view';
+import { GetExpressionListQueryResponse } from '../query-handlers/get-expressions-list.query-handler';
 
 export abstract class DictionaryApi {
   abstract createExpression(
@@ -113,4 +114,10 @@ export abstract class DictionaryApi {
   ): Promise<ExpressionView>;
 
   abstract getSentenceById(sentenceId: string): Promise<ExpressionView>;
+
+  abstract getExpressionsList(
+    searchText: string | undefined,
+    take: number,
+    page: number,
+  ): Promise<GetExpressionListQueryResponse>;
 }
