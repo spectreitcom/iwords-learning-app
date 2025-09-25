@@ -14,6 +14,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Search } from "lucide-react";
 import { SearchExpressionsInput } from "@/features/dictionary/components/search-expressions-input";
 import { ExpressionTableItemActions } from "@/features/dictionary/components/expression-table-item-actions";
+import { AddExpressionModal } from "@/features/dictionary/components/add-expression-modal";
 
 const TAKE = 20;
 
@@ -30,10 +31,15 @@ export default async function ExpressionsPage({ searchParams }: Props) {
     <div>
       <h1 className={"text-2xl"}>Lista wyrażeń</h1>
       <div className={"mt-8"}>
-        <SearchExpressionsInput
-          searchText={searchParamsValues.searchText ?? ""}
-          otherSearchParams={searchParamsValues}
-        />
+        <div className={"flex justify-end"}>
+          <AddExpressionModal />
+        </div>
+        <div className={"mt-4"}>
+          <SearchExpressionsInput
+            searchText={searchParamsValues.searchText ?? ""}
+            otherSearchParams={searchParamsValues}
+          />
+        </div>
         <Suspense fallback={<SkeletonLoader />}>
           <AwaitedContent searchParamsValues={searchParamsValues} />
         </Suspense>
@@ -58,7 +64,9 @@ async function AwaitedContent({
     );
   return (
     <div>
-      <ExpressionsListTable expressions={expressionsData.data} />
+      <div className={"mt-4"}>
+        <ExpressionsListTable expressions={expressionsData.data} />
+      </div>
       <div className={"flex justify-end mt-4"}>
         <Pagination
           currentPage={expressionsData.currentPage}
