@@ -13,6 +13,7 @@ import { Pagination } from "@/components/pagination";
 import { Card, CardContent } from "@/components/ui/card";
 import { Search } from "lucide-react";
 import { SearchExpressionsInput } from "@/features/dictionary/components/search-expressions-input";
+import { ExpressionTableItemActions } from "@/features/dictionary/components/expression-table-item-actions";
 
 const TAKE = 20;
 
@@ -144,7 +145,12 @@ function ExpressionsListTable({ expressions }: { expressions: Expression[] }) {
         {expressions.map((expression) => (
           <TableRow key={expression.expressionId}>
             <TableCell>{expression.phrase}</TableCell>
-            <TableCell />
+            <TableCell className={"flex justify-end"}>
+              <ExpressionTableItemActions
+                expressionId={expression.expressionId}
+                phrase={expression.phrase}
+              />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

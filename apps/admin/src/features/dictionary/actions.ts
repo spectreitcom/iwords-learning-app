@@ -4,6 +4,8 @@ import { BACKEND_URL } from "@/lib/constants";
 import { CollectionWithPagination } from "@/lib/types";
 import { Expression } from "@/features/dictionary/types";
 import { getSession } from "@/lib/session";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function getExpressions(page = 1, searchText?: string, take = 20) {
   const session = await getSession();
@@ -26,4 +28,19 @@ export async function getExpressions(page = 1, searchText?: string, take = 20) {
   );
 
   return (await response.json()) as CollectionWithPagination<Expression>;
+}
+
+export async function deleteExpression(expressionId: string) {
+  const session = await getSession();
+
+  await fetch(`${BACKEND_URL}/dictionary/expressions/${expressionId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.accessToken}`,
+    },
+  });
+
+  revalidatePath("/expressions");
+  redirect("/expressions");
 }
