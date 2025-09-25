@@ -5,6 +5,7 @@ import { CollectionWithPagination } from "@/lib/types";
 import {
   CreateExpressionResponse,
   Expression,
+  ExpressionContext,
 } from "@/features/dictionary/types";
 import { getSession } from "@/lib/session";
 import { revalidatePath } from "next/cache";
@@ -64,4 +65,47 @@ export async function createExpression(data: CreateExpressionSchema) {
   revalidatePath("/expressions");
 
   return (await response.json()) as CreateExpressionResponse;
+}
+
+export async function getExpression(expressionId: string) {
+  const session = await getSession();
+
+  const response = await fetch(
+    `${BACKEND_URL}/dictionary/expressions/${expressionId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+    },
+  );
+
+  return (await response.json()) as Expression;
+}
+
+export async function getExpressionContexts(
+  expressionId: string,
+  page = 1,
+  take = 20,
+) {
+  const session = await getSession();
+
+  const urlSearchParams = new URLSearchParams();
+  urlSearchParams.append("expressionId", expressionId);
+  urlSearchParams.append("page", page.toString());
+  urlSearchParams.append("take", take.toString());
+
+  const response = await fetch(
+    `${BACKEND_URL}/dictionary/expression-contexts?${urlSearchParams.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+    },
+  );
+
+  return (await response.json()) as CollectionWithPagination<ExpressionContext>;
 }
