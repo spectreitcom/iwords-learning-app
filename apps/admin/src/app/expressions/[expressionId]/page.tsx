@@ -1,5 +1,10 @@
 import { Suspense } from "react";
-import { getExpressions } from "@/features/dictionary/actions";
+import Link from "next/link";
+import { ChevronLeftIcon } from "lucide-react";
+import {
+  getExpression,
+  getExpressionContexts,
+} from "@/features/dictionary/actions";
 import {
   Table,
   TableBody,
@@ -8,41 +13,40 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Expression } from "@/features/dictionary/types";
 import { Pagination } from "@/components/pagination";
 import { Card, CardContent } from "@/components/ui/card";
 import { Search } from "lucide-react";
-import { SearchExpressionsInput } from "@/features/dictionary/components/search-expressions-input";
-import { ExpressionTableItemActions } from "@/features/dictionary/components/expression-table-item-actions";
-import { AddExpressionModal } from "@/features/dictionary/components/add-expression-modal";
-import Link from "next/link";
+import { ExpressionContext } from "@/features/dictionary/types";
+import { expressionTypeMap } from "@/features/dictionary/utils";
 
 const TAKE = 20;
 
 type Props = {
-  searchParams: Promise<{
-    page: string;
-    searchText: string;
-  }>;
+  params: Promise<{ expressionId: string }>;
+  searchParams: Promise<{ page: string }>;
 };
 
-export default async function ExpressionsPage({ searchParams }: Props) {
-  const searchParamsValues = await searchParams;
+export default async function ExpressionContextsPage({
+  params,
+  searchParams,
+}: Props) {
+  const { expressionId } = await params;
+  const { page } = await searchParams;
+  const expression = await getExpression(expressionId);
   return (
     <div>
-      <h1 className={"text-2xl"}>Lista wyrażeń</h1>
+      <div>
+        <Link href={"/expressions"} className={"flex items-center gap-2"}>
+          <ChevronLeftIcon />
+          Powrót
+        </Link>
+        <h1 className={"text-2xl mt-2"}>
+          {expression.phrase} - Lista kontekstów
+        </h1>
+      </div>
       <div className={"mt-8"}>
-        <div className={"flex justify-end"}>
-          <AddExpressionModal />
-        </div>
-        <div className={"mt-4"}>
-          <SearchExpressionsInput
-            searchText={searchParamsValues.searchText ?? ""}
-            otherSearchParams={searchParamsValues}
-          />
-        </div>
         <Suspense fallback={<SkeletonLoader />}>
-          <AwaitedContent searchParamsValues={searchParamsValues} />
+          <AwaitedContent expressionId={expressionId} page={page} />
         </Suspense>
       </div>
     </div>
@@ -50,33 +54,60 @@ export default async function ExpressionsPage({ searchParams }: Props) {
 }
 
 async function AwaitedContent({
-  searchParamsValues,
+  expressionId,
+  page,
 }: {
-  searchParamsValues: { page: string; searchText: string };
+  expressionId: string;
+  page: string;
 }) {
-  const page = searchParamsValues.page ? parseInt(searchParamsValues.page) : 1;
-  const searchText = searchParamsValues.searchText || "";
-  const expressionsData = await getExpressions(page, searchText, TAKE);
-  if (!expressionsData.data?.length)
-    return (
-      <div className={"mt-8"}>
-        <NoData />
-      </div>
-    );
+  const expressionContextsData = await getExpressionContexts(
+    expressionId,
+    parseInt(page) ?? 1,
+    TAKE,
+  );
+
+  if (!expressionContextsData.data?.length) return <NoData />;
+
   return (
     <div>
-      <div className={"mt-4"}>
-        <ExpressionsListTable expressions={expressionsData.data} />
-      </div>
+      <ContextsListTable expressionContexts={expressionContextsData.data} />
       <div className={"flex justify-end mt-4"}>
         <Pagination
-          currentPage={expressionsData.currentPage}
-          total={expressionsData.total}
+          currentPage={expressionContextsData.currentPage}
+          total={expressionContextsData.total}
           take={TAKE}
-          otherSearchParams={searchParamsValues}
         />
       </div>
     </div>
+  );
+}
+
+function ContextsListTable({
+  expressionContexts,
+}: {
+  expressionContexts: ExpressionContext[];
+}) {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Tłumaczenie</TableHead>
+          <TableHead>Typ</TableHead>
+          <TableHead />
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {expressionContexts.map((expressionContext) => (
+          <TableRow key={expressionContext.expressionContextId}>
+            <TableCell>{expressionContext.translation}</TableCell>
+            <TableCell>
+              {expressionTypeMap.get(expressionContext.type)}
+            </TableCell>
+            <TableCell />
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
 
@@ -86,7 +117,8 @@ function SkeletonLoader() {
       <Table className="w-full">
         <TableHeader>
           <TableRow>
-            <TableHead>Wyrażenie</TableHead>
+            <TableHead>Tłumaczenie</TableHead>
+            <TableHead>Typ</TableHead>
             <TableHead />
           </TableRow>
         </TableHeader>
@@ -105,6 +137,17 @@ function SkeletonLoader() {
                     }}
                   />
                 </div>
+              </TableCell>
+              <TableCell>
+                <div
+                  className="h-4 w-16 bg-gray-200 animate-pulse rounded"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
+                    backgroundSize: "200% 100%",
+                    animation: "shimmer 1.5s ease-in-out infinite",
+                  }}
+                />
               </TableCell>
               <TableCell>
                 <div
@@ -141,36 +184,6 @@ function SkeletonLoader() {
   );
 }
 
-function ExpressionsListTable({ expressions }: { expressions: Expression[] }) {
-  return (
-    <Table className={"w-full"}>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Wyrażenie</TableHead>
-          <TableHead />
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {expressions.map((expression) => (
-          <TableRow key={expression.expressionId}>
-            <TableCell>
-              <Link href={`/expressions/${expression.expressionId}`}>
-                {expression.phrase}
-              </Link>
-            </TableCell>
-            <TableCell className={"flex justify-end"}>
-              <ExpressionTableItemActions
-                expressionId={expression.expressionId}
-                phrase={expression.phrase}
-              />
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-}
-
 function NoData() {
   return (
     <Card className="w-full mx-auto">
@@ -179,13 +192,13 @@ function NoData() {
           <Search className="w-8 h-8 text-gray-400" />
         </div>
         <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          Brak wyrażeń
+          Brak kontekstów
         </h3>
         <p className="text-sm text-gray-500 mb-4">
-          Nie znaleziono żadnych wyrażeń w bazie danych.
+          Nie znaleziono żadnych kontekstów dla tego wyrażenia.
         </p>
         <div className="text-xs text-gray-400">
-          Spróbuj dodać nowe wyrażenia lub zmienić kryteria wyszukiwania
+          Konteksty będą dostępne po dodaniu tłumaczeń dla tego wyrażenia
         </div>
       </CardContent>
     </Card>
