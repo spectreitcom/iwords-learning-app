@@ -22,3 +22,7 @@ export type ExpressionContext = {
   translation: string;
   type: ExpressionContextType;
 };
+
+export type CreateExpressionContextResponse = {
+  id: string;
+};
