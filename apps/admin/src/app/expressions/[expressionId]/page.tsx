@@ -66,7 +66,7 @@ async function AwaitedContent({
 }) {
   const expressionContextsData = await getExpressionContexts(
     expressionId,
-    parseInt(page) ?? 1,
+    page ? parseInt(page) : 1,
     TAKE,
   );
 
