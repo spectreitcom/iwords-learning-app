@@ -359,7 +359,7 @@ export class DictionaryController {
     @Body() payload: CreateAdverbExpressionContextDto,
   ) {
     try {
-      return await this.dictionaryApiService.createAdjectiveExpressionContext(
+      return await this.dictionaryApiService.createAdverbExpressionContext(
         payload.expressionId,
         payload.translation,
       );
