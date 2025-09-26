@@ -18,6 +18,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Search } from "lucide-react";
 import { ExpressionContext } from "@/features/dictionary/types";
 import { expressionTypeMap } from "@/features/dictionary/utils";
+import { AddExpressionContextMenu } from "@/features/dictionary/components/add-expression-context-menu";
 
 const TAKE = 20;
 
@@ -44,7 +45,10 @@ export default async function ExpressionContextsPage({
           {expression.phrase} - Lista kontekstów
         </h1>
       </div>
-      <div className={"mt-8"}>
+      <div className={"mt-8 flex justify-end"}>
+        <AddExpressionContextMenu expressionId={expressionId} />
+      </div>
+      <div className={"mt-4"}>
         <Suspense fallback={<SkeletonLoader />}>
           <AwaitedContent expressionId={expressionId} page={page} />
         </Suspense>

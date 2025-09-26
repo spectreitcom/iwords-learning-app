@@ -6,4 +6,41 @@ export const createExpressionSchema = z.object({
   }),
 });
 
-export type CreateExpressionSchema = z.infer<typeof createExpressionSchema>;
+export type CreateExpressionData = z.infer<typeof createExpressionSchema>;
+
+export const createOnlyTranslationExpressionContextSchema = z.object({
+  translation: z.string().min(1, {
+    message: "To pole jest wymagane",
+  }),
+  expressionId: z.uuid(),
+});
+
+export type CreateOnlyTranslationExpressionContextData = z.infer<
+  typeof createOnlyTranslationExpressionContextSchema
+>;
+
+export const createNounExpressionContextSchema = z.object({
+  translation: z.string().min(1, {
+    message: "To pole jest wymagane",
+  }),
+  expressionId: z.uuid(),
+  isCountable: z.boolean(),
+});
+
+export type CreateNounExpressionContextData = z.infer<
+  typeof createNounExpressionContextSchema
+>;
+
+export const createIrregularVerbExpressionContextSchema = z.object({
+  translation: z.string().min(1, {
+    message: "To pole jest wymagane",
+  }),
+  expressionId: z.uuid(),
+  form1: z.string().min(1, { message: "To pole jest wymagane" }),
+  form2: z.string().min(1, { message: "To pole jest wymagane" }),
+  form3: z.string().min(1, { message: "To pole jest wymagane" }),
+});
+
+export type CreateIrregularVerbExpressionContextData = z.infer<
+  typeof createIrregularVerbExpressionContextSchema
+>;

@@ -11,7 +11,7 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  CreateExpressionSchema,
+  CreateExpressionData,
   createExpressionSchema,
 } from "@/features/dictionary/schemas";
 import {
@@ -57,7 +57,7 @@ function CreateExpressionForm({ onSuccess }: { onSuccess: () => void }) {
     },
   });
 
-  const submit = async (data: CreateExpressionSchema) => {
+  const submit = async (data: CreateExpressionData) => {
     const responseData = await createExpression(data);
     if (responseData.existingExpressionId) {
       setExistingExpressionId(responseData.existingExpressionId);
