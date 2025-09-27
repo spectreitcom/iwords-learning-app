@@ -82,3 +82,13 @@ model DictionaryReadModel {
 }
 
 //----------------------------------
+
+// Box Bounded Context
+model Box {
+  id                   String   @id @default(uuid())
+  title                String
+  createdAt            DateTime @default(now())
+  expressionContextIds String[] @default([])
+}
+
+//----------------------------------
