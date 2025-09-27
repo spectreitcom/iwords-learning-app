@@ -9,10 +9,11 @@ import { AuthController } from './controllers/auth.controller';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { DictionaryController } from './controllers/dictionary.controller';
 import { BoxModule } from '../../box/application/box.module';
+import { BoxController } from './controllers/box.controller';
 
 @Module({
   imports: [DictionaryModule, AdminIdentityModule, BoxModule],
-  controllers: [AuthController, DictionaryController],
+  controllers: [AuthController, DictionaryController, BoxController],
   providers: [
     LocalStrategy,
     JwtStrategy,
