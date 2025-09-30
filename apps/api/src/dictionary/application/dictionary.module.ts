@@ -36,6 +36,7 @@ import { GetExpressionContextByIdQueryHandler } from './query-handlers/get-expre
 import { GetSentenceByIdQueryHandler } from './query-handlers/get-sentence-by-id.query-handler';
 import { GetExpressionsListQueryHandler } from './query-handlers/get-expressions-list.query-handler';
 import { GetExpressionContextsListQueryHandler } from './query-handlers/get-expression-contexts-list.query-handler';
+import { GetDictionaryReadModelsByExpressionContextIdsQueryHandler } from './query-handlers/get-dictionary-read-models-by-expression-context-ids.query-handler';
 
 const EVENT_HANDLERS = [
   ExpressionCreatedEventHandler,
@@ -78,6 +79,7 @@ const QUERY_HANDLERS = [
   GetSentenceByIdQueryHandler,
   GetExpressionsListQueryHandler,
   GetExpressionContextsListQueryHandler,
+  GetDictionaryReadModelsByExpressionContextIdsQueryHandler,
 ];
 
 @Module({
