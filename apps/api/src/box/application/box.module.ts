@@ -10,18 +10,20 @@ import { PrismaModule } from '../../common/prisma/prisma.module';
 import { GetBoxByIdQueryHandler } from './query-handlers/get-box-by-id.query-handler';
 import { DeleteBoxCommandHandler } from './command-handlers/delete-box.command-handler';
 import { BoxDeletedEventHandler } from './event-handlers/box-deleted.event-handler';
+import { UpdateBoxCommandHandler } from './command-handlers/update-box.command-handler';
 
 const EVENT_HANDLERS = [
   BoxCreatedEventHandler,
   BoxUpdatedEventHandler,
   ExpressionContextIdAddedEventHandler,
   ExpressionContextIdRemovedEventHandler,
+  BoxDeletedEventHandler,
 ];
 
 const COMMAND_HANDLERS = [
   CreateBoxCommandHandler,
   DeleteBoxCommandHandler,
-  BoxDeletedEventHandler,
+  UpdateBoxCommandHandler,
 ];
 
 const QUERY_HANDLERS = [GetBoxByIdQueryHandler];
