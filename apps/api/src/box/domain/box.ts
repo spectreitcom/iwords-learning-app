@@ -6,6 +6,7 @@ import { ExpressionContextIdAlreadyExists } from './errors';
 import { ExpressionContextIdAddedEvent } from './events/expression-context-id-added.event';
 import { BoxUpdatedEvent } from './events/box-updated.event';
 import { ExpressionContextIdRemovedEvent } from './events/expression-context-id-removed.event';
+import { BoxDeletedEvent } from './events/box-deleted.event';
 
 export class Box extends AggregateRoot {
   private readonly boxId: BoxId;
@@ -72,6 +73,10 @@ export class Box extends AggregateRoot {
         expressionContextId,
       ),
     );
+  }
+
+  delete() {
+    this.apply(new BoxDeletedEvent(this.boxId.value));
   }
 
   getBoxId() {

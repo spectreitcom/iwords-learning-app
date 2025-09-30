@@ -8,6 +8,8 @@ import { CreateBoxCommandHandler } from './command-handlers/create-box.command-h
 import { BoxApiService } from './services/box-api.service';
 import { PrismaModule } from '../../common/prisma/prisma.module';
 import { GetBoxByIdQueryHandler } from './query-handlers/get-box-by-id.query-handler';
+import { DeleteBoxCommandHandler } from './command-handlers/delete-box.command-handler';
+import { BoxDeletedEventHandler } from './event-handlers/box-deleted.event-handler';
 
 const EVENT_HANDLERS = [
   BoxCreatedEventHandler,
@@ -16,7 +18,11 @@ const EVENT_HANDLERS = [
   ExpressionContextIdRemovedEventHandler,
 ];
 
-const COMMAND_HANDLERS = [CreateBoxCommandHandler];
+const COMMAND_HANDLERS = [
+  CreateBoxCommandHandler,
+  DeleteBoxCommandHandler,
+  BoxDeletedEventHandler,
+];
 
 const QUERY_HANDLERS = [GetBoxByIdQueryHandler];
 

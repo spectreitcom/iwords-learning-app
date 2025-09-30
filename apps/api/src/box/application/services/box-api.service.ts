@@ -4,6 +4,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateBoxCommand } from '../commands/create-box.command';
 import { BoxView } from '../../view/box.view';
 import { GetBoxByIdQuery } from '../queries/get-box-by-id.query';
+import { DeleteBoxCommand } from '../commands/delete-box.command';
 
 @Injectable()
 export class BoxApiService implements BoxApi {
@@ -20,5 +21,10 @@ export class BoxApiService implements BoxApi {
   async getBoxById(boxId: string): Promise<BoxView> {
     const query = new GetBoxByIdQuery(boxId);
     return await this.queryBus.execute(query);
+  }
+
+  async deleteBox(boxId: string): Promise<void> {
+    const command = new DeleteBoxCommand(boxId);
+    return await this.commandBus.execute(command);
   }
 }
