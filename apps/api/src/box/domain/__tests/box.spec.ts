@@ -5,6 +5,7 @@ import { BoxCreatedEvent } from '../events/box-created.event';
 import { BoxUpdatedEvent } from '../events/box-updated.event';
 import { ExpressionContextIdAddedEvent } from '../events/expression-context-id-added.event';
 import { ExpressionContextIdRemovedEvent } from '../events/expression-context-id-removed.event';
+import { BoxDeletedEvent } from '../events/box-deleted.event';
 import { ExpressionContextIdAlreadyExists } from '../errors';
 
 describe('Box', () => {
@@ -142,6 +143,34 @@ describe('Box', () => {
       expect(event).toBeInstanceOf(ExpressionContextIdRemovedEvent);
       expect(event.boxId).toBe(box.getBoxId().value);
       expect(event.expressionContextId).toBe(expressionContextId);
+    });
+  });
+
+  describe('delete', () => {
+    it('should publish BoxDeletedEvent when deleting a box', () => {
+      const box = Box.create('Test Box');
+
+      box.delete();
+
+      expect(box.getUncommittedEvents()).toHaveLength(2); // Creation + Delete events
+
+      const event = box.getUncommittedEvents()[1] as BoxDeletedEvent;
+      expect(event).toBeInstanceOf(BoxDeletedEvent);
+      expect(event.boxId).toBe(box.getBoxId().value);
+    });
+
+    it('should publish BoxDeletedEvent for a box with expression context ids', () => {
+      const box = Box.create('Test Box');
+      const expressionContextId = '550e8400-e29b-41d4-a716-446655440001';
+
+      box.addExpressionContextId(expressionContextId);
+      box.delete();
+
+      expect(box.getUncommittedEvents()).toHaveLength(3); // Creation + Add + Delete events
+
+      const event = box.getUncommittedEvents()[2] as BoxDeletedEvent;
+      expect(event).toBeInstanceOf(BoxDeletedEvent);
+      expect(event.boxId).toBe(box.getBoxId().value);
     });
   });
 

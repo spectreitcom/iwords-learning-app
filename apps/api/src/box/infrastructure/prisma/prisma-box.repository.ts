@@ -46,4 +46,10 @@ export class PrismaBoxRepository implements BoxRepository {
 
     return new Box(boxIdValueObject, boxRecord.title, expressionContextIds);
   }
+
+  async delete(boxId: string): Promise<void> {
+    await this.prismaService.box.delete({
+      where: { id: boxId },
+    });
+  }
 }
