@@ -9,6 +9,7 @@ import { SearchDictionaryReadModelQueryResponse } from '../query-handlers/search
 import { ExpressionView } from '../../views/expression.view';
 import { GetExpressionListQueryResponse } from '../query-handlers/get-expressions-list.query-handler';
 import { GetExpressionContextsListQueryResponse } from '../query-handlers/get-expression-contexts-list.query-handler';
+import { DictionaryReadModel } from '../../read-models/dictionary-read-model';
 
 export abstract class DictionaryApi {
   abstract createExpression(
@@ -127,4 +128,8 @@ export abstract class DictionaryApi {
     take: number,
     page: number,
   ): Promise<GetExpressionContextsListQueryResponse>;
+
+  abstract getDictionaryReadModelsByExpressionContextIds(
+    expressionContextIds: string[],
+  ): Promise<DictionaryReadModel[]>;
 }

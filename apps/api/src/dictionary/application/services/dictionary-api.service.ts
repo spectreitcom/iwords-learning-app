@@ -37,6 +37,8 @@ import { GetExpressionListQueryResponse } from '../query-handlers/get-expression
 import { GetExpressionsListQuery } from '../queries/get-expressions-list.query';
 import { GetExpressionContextsListQueryResponse } from '../query-handlers/get-expression-contexts-list.query-handler';
 import { GetExpressionContextsListQuery } from '../queries/get-expression-contexts-list.query';
+import { DictionaryReadModel } from '../../read-models/dictionary-read-model';
+import { GetDictionaryReadModelsByExpressionContextIdsQuery } from '../queries/get-dictionary-read-models-by-expression-context-ids.query';
 
 @Injectable()
 export class DictionaryApiService implements DictionaryApi {
@@ -275,6 +277,15 @@ export class DictionaryApiService implements DictionaryApi {
     page: number,
   ): Promise<GetExpressionContextsListQueryResponse> {
     const query = new GetExpressionContextsListQuery(expressionId, take, page);
+    return await this.queryBus.execute(query);
+  }
+
+  async getDictionaryReadModelsByExpressionContextIds(
+    expressionContextIds: string[],
+  ): Promise<DictionaryReadModel[]> {
+    const query = new GetDictionaryReadModelsByExpressionContextIdsQuery(
+      expressionContextIds,
+    );
     return await this.queryBus.execute(query);
   }
 }
