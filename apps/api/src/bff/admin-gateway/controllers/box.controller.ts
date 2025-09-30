@@ -4,7 +4,11 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  NotFoundException,
+  Param,
+  ParseUUIDPipe,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { BoxApiService } from '../../../box/application/services/box-api.service';
@@ -16,6 +20,8 @@ import {
 } from '@nestjs/swagger';
 import { CreateBoxDto } from '../dtos/create-box.dto';
 import { GetBoxesListQueryDto } from '../dtos/get-boxes-list-query.dto';
+import { UpdateBoxDto } from '../dtos/update-box.dto';
+import { BoxNotFoundError } from '../../../box/application/errors';
 
 @ApiTags('Admin Boxes')
 @Controller('admin/boxes')
@@ -65,5 +71,28 @@ export class BoxController {
   @HttpCode(HttpStatus.OK)
   getBoxesList(@Query() query: GetBoxesListQueryDto) {
     return this.boxApiService.getBoxesList(query.take, query.page);
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Update the box by id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Box updated successfully',
+  })
+  @ApiResponse({ status: 404, description: 'Box not found' })
+  @Put(':boxId')
+  @HttpCode(HttpStatus.OK)
+  updateBox(
+    @Param('boxId', new ParseUUIDPipe()) boxId: string,
+    @Body() payload: UpdateBoxDto,
+  ) {
+    try {
+      return this.boxApiService.updateBox(boxId, payload.title);
+    } catch (e) {
+      if (e instanceof BoxNotFoundError) {
+        throw new NotFoundException(e.message);
+      }
+      throw e;
+    }
   }
 }
