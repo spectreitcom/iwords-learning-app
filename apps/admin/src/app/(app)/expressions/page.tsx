@@ -154,17 +154,12 @@ function ExpressionsListTable({ expressions }: { expressions: Expression[] }) {
         {expressions.map((expression) => (
           <TableRow key={expression.expressionId}>
             <TableCell>
-              <Link
-                href={`/apps/admin/src/app/(app)/expressions/${expression.expressionId}`}
-              >
+              <Link href={`/expressions/${expression.expressionId}`}>
                 {expression.phrase}
               </Link>
             </TableCell>
             <TableCell className={"flex justify-end"}>
-              <ExpressionTableItemActions
-                expressionId={expression.expressionId}
-                phrase={expression.phrase}
-              />
+              <ExpressionTableItemActions expression={expression} />
             </TableCell>
           </TableRow>
         ))}
