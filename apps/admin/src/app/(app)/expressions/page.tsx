@@ -154,7 +154,9 @@ function ExpressionsListTable({ expressions }: { expressions: Expression[] }) {
         {expressions.map((expression) => (
           <TableRow key={expression.expressionId}>
             <TableCell>
-              <Link href={`/expressions/${expression.expressionId}`}>
+              <Link
+                href={`/apps/admin/src/app/(app)/expressions/${expression.expressionId}`}
+              >
                 {expression.phrase}
               </Link>
             </TableCell>

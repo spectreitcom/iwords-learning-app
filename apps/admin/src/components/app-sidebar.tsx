@@ -29,7 +29,9 @@ export function AppSidebar() {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href={"/expressions/create"}>Nowe wyrażenie</Link>
+                  <Link href={"/apps/admin/src/app/(app)/expressions/create"}>
+                    Nowe wyrażenie
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
