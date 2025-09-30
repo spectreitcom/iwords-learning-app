@@ -11,6 +11,7 @@ import { GetBoxByIdQueryHandler } from './query-handlers/get-box-by-id.query-han
 import { DeleteBoxCommandHandler } from './command-handlers/delete-box.command-handler';
 import { BoxDeletedEventHandler } from './event-handlers/box-deleted.event-handler';
 import { UpdateBoxCommandHandler } from './command-handlers/update-box.command-handler';
+import { GetBoxesListQueryHandler } from './query-handlers/get-boxes-list.query-handler';
 
 const EVENT_HANDLERS = [
   BoxCreatedEventHandler,
@@ -26,7 +27,7 @@ const COMMAND_HANDLERS = [
   UpdateBoxCommandHandler,
 ];
 
-const QUERY_HANDLERS = [GetBoxByIdQueryHandler];
+const QUERY_HANDLERS = [GetBoxByIdQueryHandler, GetBoxesListQueryHandler];
 
 @Module({
   imports: [InfrastructureModule, PrismaModule],
