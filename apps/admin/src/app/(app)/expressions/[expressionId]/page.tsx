@@ -19,6 +19,7 @@ import { Search } from "lucide-react";
 import { ExpressionContext } from "@/features/dictionary/types";
 import { expressionTypeMap } from "@/features/dictionary/utils";
 import { AddExpressionContextMenu } from "@/features/dictionary/components/add-expression-context-menu";
+import { ExpressionContextsTableItemActions } from "@/features/dictionary/components/expression-contexts-table-item-actions";
 
 const TAKE = 20;
 
@@ -107,7 +108,11 @@ function ContextsListTable({
             <TableCell>
               {expressionTypeMap.get(expressionContext.type)}
             </TableCell>
-            <TableCell />
+            <TableCell className={"flex justify-end"}>
+              <ExpressionContextsTableItemActions
+                expressionContext={expressionContext}
+              />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

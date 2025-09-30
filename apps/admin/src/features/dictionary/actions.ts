@@ -269,3 +269,20 @@ export async function createIrregularVerbExpressionContext(
 
   return (await response.json()) as CreateExpressionContextResponse;
 }
+
+export async function deleteExpressionContext(expressionContextId: string) {
+  const session = await getSession();
+
+  await fetch(
+    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+    },
+  );
+
+  revalidatePath(`/expressions/${expressionContextId}`);
+}
