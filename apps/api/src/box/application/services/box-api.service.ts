@@ -5,6 +5,7 @@ import { CreateBoxCommand } from '../commands/create-box.command';
 import { BoxView } from '../../view/box.view';
 import { GetBoxByIdQuery } from '../queries/get-box-by-id.query';
 import { DeleteBoxCommand } from '../commands/delete-box.command';
+import { UpdateBoxCommand } from '../commands/update-box.command';
 
 @Injectable()
 export class BoxApiService implements BoxApi {
@@ -25,6 +26,11 @@ export class BoxApiService implements BoxApi {
 
   async deleteBox(boxId: string): Promise<void> {
     const command = new DeleteBoxCommand(boxId);
+    return await this.commandBus.execute(command);
+  }
+
+  async updateBox(boxId: string, title: string): Promise<void> {
+    const command = new UpdateBoxCommand(boxId, title);
     return await this.commandBus.execute(command);
   }
 }

@@ -4,4 +4,5 @@ export abstract class BoxApi {
   abstract createBox(title: string): Promise<void>;
   abstract getBoxById(boxId: string): Promise<BoxView>;
   abstract deleteBox(boxId: string): Promise<void>;
+  abstract updateBox(boxId: string, title: string): Promise<void>;
 }
