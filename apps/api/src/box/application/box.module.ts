@@ -6,6 +6,8 @@ import { ExpressionContextIdAddedEventHandler } from './event-handlers/expressio
 import { ExpressionContextIdRemovedEventHandler } from './event-handlers/expression-context-id-removed.event-handler';
 import { CreateBoxCommandHandler } from './command-handlers/create-box.command-handler';
 import { BoxApiService } from './services/box-api.service';
+import { PrismaModule } from '../../common/prisma/prisma.module';
+import { GetBoxByIdQueryHandler } from './query-handlers/get-box-by-id.query-handler';
 
 const EVENT_HANDLERS = [
   BoxCreatedEventHandler,
@@ -16,10 +18,10 @@ const EVENT_HANDLERS = [
 
 const COMMAND_HANDLERS = [CreateBoxCommandHandler];
 
-const QUERY_HANDLERS = [];
+const QUERY_HANDLERS = [GetBoxByIdQueryHandler];
 
 @Module({
-  imports: [InfrastructureModule],
+  imports: [InfrastructureModule, PrismaModule],
   providers: [
     ...EVENT_HANDLERS,
     ...COMMAND_HANDLERS,
