@@ -1,10 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
-  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
@@ -21,7 +21,6 @@ import {
 import { CreateBoxDto } from '../dtos/create-box.dto';
 import { GetBoxesListQueryDto } from '../dtos/get-boxes-list-query.dto';
 import { UpdateBoxDto } from '../dtos/update-box.dto';
-import { BoxNotFoundError } from '../../../box/application/errors';
 
 @ApiTags('Admin Boxes')
 @Controller('admin/boxes')
@@ -76,23 +75,22 @@ export class BoxController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Update the box by id' })
   @ApiResponse({
-    status: 200,
+    status: 204,
     description: 'Box updated successfully',
   })
   @ApiResponse({ status: 404, description: 'Box not found' })
   @Put(':boxId')
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.NO_CONTENT)
   updateBox(
     @Param('boxId', new ParseUUIDPipe()) boxId: string,
     @Body() payload: UpdateBoxDto,
   ) {
-    try {
-      return this.boxApiService.updateBox(boxId, payload.title);
-    } catch (e) {
-      if (e instanceof BoxNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return this.boxApiService.updateBox(boxId, payload.title);
+  }
+
+  @Delete(':boxId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteBox(@Param('boxId', new ParseUUIDPipe()) boxId: string) {
+    return this.boxApiService.deleteBox(boxId);
   }
 }
