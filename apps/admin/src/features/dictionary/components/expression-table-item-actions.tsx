@@ -20,14 +20,16 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import { deleteExpression } from "@/features/dictionary/actions";
+import { EditExpressionModal } from "@/features/dictionary/components/edit-expression-modal";
+import { Expression } from "@/features/dictionary/types";
 
 type Props = {
-  expressionId: string;
-  phrase: string;
+  expression: Expression;
 };
 
-export function ExpressionTableItemActions({ expressionId, phrase }: Props) {
+export function ExpressionTableItemActions({ expression }: Props) {
   const [open, setOpen] = useState(false);
+  const [showEditExpressionModal, setShowEditExpressionModal] = useState(false);
 
   return (
     <>
@@ -38,7 +40,9 @@ export function ExpressionTableItemActions({ expressionId, phrase }: Props) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem>Edytuj</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setShowEditExpressionModal(true)}>
+            Edytuj
+          </DropdownMenuItem>
           <DropdownMenuItem
             variant={"destructive"}
             onClick={() => setOpen(true)}
@@ -49,9 +53,13 @@ export function ExpressionTableItemActions({ expressionId, phrase }: Props) {
       </DropdownMenu>
       <Alert
         open={open}
-        expressionId={expressionId}
-        phrase={phrase}
+        expression={expression}
         onClose={() => setOpen(false)}
+      />
+      <EditExpressionModal
+        expression={expression}
+        open={showEditExpressionModal}
+        onClose={() => setShowEditExpressionModal(false)}
       />
     </>
   );
@@ -60,14 +68,13 @@ export function ExpressionTableItemActions({ expressionId, phrase }: Props) {
 function Alert({
   open,
   onClose,
-  phrase,
-  expressionId,
+  expression,
 }: Props & { open: boolean; onClose: () => void }) {
   const [removing, setRemoving] = useState(false);
 
   const handleDelete = async () => {
     setRemoving(true);
-    await deleteExpression(expressionId);
+    await deleteExpression(expression.expressionId);
   };
 
   return (
@@ -75,7 +82,7 @@ function Alert({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Czy jesteś pewien, że chcesz usunąć wyrażenie - {phrase}?
+            Czy jesteś pewien, że chcesz usunąć wyrażenie - {expression.phrase}?
           </AlertDialogTitle>
           <AlertDialogDescription>
             Ta akcja nie może zostać cofnięta. Dane zostaną usunięte

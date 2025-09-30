@@ -73,6 +73,24 @@ export async function createExpression(data: CreateExpressionData) {
   return (await response.json()) as CreateExpressionResponse;
 }
 
+export async function updateExpression(
+  expressionId: string,
+  data: CreateExpressionData,
+) {
+  const session = await getSession();
+
+  await fetch(`${BACKEND_URL}/dictionary/expressions/${expressionId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.accessToken}`,
+    },
+    body: JSON.stringify({ ...data }),
+  });
+
+  revalidatePath(`/expressions`);
+}
+
 export async function getExpression(expressionId: string) {
   const session = await getSession();
 
