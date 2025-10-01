@@ -1,7 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { DeleteExpressionContextCommand } from '../commands/delete-expression-context.command';
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
-import { ExpressionContextNotFoundError } from '../errors';
+import { AppError } from '../../../common/errors';
 
 @CommandHandler(DeleteExpressionContextCommand)
 export class DeleteExpressionContextCommandHandler
@@ -19,7 +19,10 @@ export class DeleteExpressionContextCommandHandler
       await this.expressionContextRepository.findById(expressionContextId);
 
     if (!expressionContext) {
-      throw new ExpressionContextNotFoundError(expressionContextId);
+      throw new AppError(
+        'ENTITY_NOT_FOUND',
+        `Expression context with id ${expressionContextId} not found.`,
+      );
     }
     this.eventPublisher.mergeObjectContext(expressionContext);
     expressionContext.delete();

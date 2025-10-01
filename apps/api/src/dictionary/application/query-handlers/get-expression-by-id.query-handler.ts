@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetExpressionByIdQuery } from '../queries/get-expression-by-id.query';
 import { ExpressionView } from '../../views/expression.view';
 import { PrismaService } from '../../../common/prisma/prisma.service';
-import { ExpressionNotFoundError } from '../errors';
+import { AppError } from '../../../common/errors';
 
 @QueryHandler(GetExpressionByIdQuery)
 export class GetExpressionByIdQueryHandler
@@ -19,7 +19,11 @@ export class GetExpressionByIdQueryHandler
       },
     });
 
-    if (!expression) throw new ExpressionNotFoundError(expressionId);
+    if (!expression)
+      throw new AppError(
+        'ENTITY_NOT_FOUND',
+        `Expression with id ${expressionId} not found.`,
+      );
 
     return new ExpressionView(expression.id, expression.phrase);
   }

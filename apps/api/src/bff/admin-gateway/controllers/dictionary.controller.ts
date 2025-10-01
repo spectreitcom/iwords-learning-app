@@ -1,12 +1,10 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   HttpCode,
   HttpStatus,
-  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
@@ -22,12 +20,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { UpdateExpressionDto } from '../dtos/update-expression.dto';
-import {
-  ExpressionContextNotFoundError,
-  ExpressionNotFoundError,
-  ExpressionPhraseAlreadyTakenError,
-  SentenceNotFoundError,
-} from '../../../dictionary/application/errors';
 import { CreateVerbExpressionContextDto } from '../dtos/create-verb-expression-context.dto';
 import { CreatePhrasalVerbExpressionContextDto } from '../dtos/create-phrasal-verb-expression-context.dto';
 import { CreateNounExpressionContextDto } from '../dtos/create-noun-expression-context.dto';
@@ -79,14 +71,7 @@ export class DictionaryController {
   async getExpression(
     @Param('expressionId', new ParseUUIDPipe()) expressionId: string,
   ) {
-    try {
-      return await this.dictionaryApiService.getExpressionById(expressionId);
-    } catch (e) {
-      if (e instanceof ExpressionNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.getExpressionById(expressionId);
   }
 
   @ApiBearerAuth('admin-auth')
@@ -137,20 +122,10 @@ export class DictionaryController {
     @Body() payload: UpdateExpressionDto,
     @Param('expressionId', new ParseUUIDPipe()) expressionId: string,
   ) {
-    try {
-      return await this.dictionaryApiService.updateExpression(
-        expressionId,
-        payload.phrase,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      if (e instanceof ExpressionPhraseAlreadyTakenError) {
-        throw new BadRequestException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.updateExpression(
+      expressionId,
+      payload.phrase,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
@@ -163,14 +138,7 @@ export class DictionaryController {
   async deleteExpression(
     @Param('expressionId', new ParseUUIDPipe()) expressionId: string,
   ) {
-    try {
-      return await this.dictionaryApiService.deleteExpression(expressionId);
-    } catch (e) {
-      if (e instanceof ExpressionNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.deleteExpression(expressionId);
   }
 
   @ApiBearerAuth('admin-auth')
@@ -185,16 +153,9 @@ export class DictionaryController {
     @Param('expressionContextId', new ParseUUIDPipe())
     expressionContextId: string,
   ) {
-    try {
-      return await this.dictionaryApiService.getExpressionContextById(
-        expressionContextId,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionContextNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.getExpressionContextById(
+      expressionContextId,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
@@ -233,17 +194,10 @@ export class DictionaryController {
   async createVerbExpressionContext(
     @Body() payload: CreateVerbExpressionContextDto,
   ) {
-    try {
-      return await this.dictionaryApiService.createVerbExpressionContext(
-        payload.expressionId,
-        payload.translation,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.createVerbExpressionContext(
+      payload.expressionId,
+      payload.translation,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
@@ -264,17 +218,10 @@ export class DictionaryController {
   async createPhrasalVerbExpressionContext(
     @Body() payload: CreatePhrasalVerbExpressionContextDto,
   ) {
-    try {
-      return await this.dictionaryApiService.createPhrasalVerbExpressionContext(
-        payload.expressionId,
-        payload.translation,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.createPhrasalVerbExpressionContext(
+      payload.expressionId,
+      payload.translation,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
@@ -295,18 +242,11 @@ export class DictionaryController {
   async createNounExpressionContext(
     @Body() payload: CreateNounExpressionContextDto,
   ) {
-    try {
-      return await this.dictionaryApiService.createNounExpressionContext(
-        payload.expressionId,
-        payload.translation,
-        payload.isCountable,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.createNounExpressionContext(
+      payload.expressionId,
+      payload.translation,
+      payload.isCountable,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
@@ -327,17 +267,10 @@ export class DictionaryController {
   async createAdjectiveExpressionContext(
     @Body() payload: CreateAdjectiveExpressionContextDto,
   ) {
-    try {
-      return await this.dictionaryApiService.createAdjectiveExpressionContext(
-        payload.expressionId,
-        payload.translation,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.createAdjectiveExpressionContext(
+      payload.expressionId,
+      payload.translation,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
@@ -358,17 +291,10 @@ export class DictionaryController {
   async createAdverbExpressionContext(
     @Body() payload: CreateAdverbExpressionContextDto,
   ) {
-    try {
-      return await this.dictionaryApiService.createAdverbExpressionContext(
-        payload.expressionId,
-        payload.translation,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.createAdverbExpressionContext(
+      payload.expressionId,
+      payload.translation,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
@@ -389,18 +315,11 @@ export class DictionaryController {
   async createIrregularVerbExpressionContext(
     @Body() payload: CreateIrregularVerbExpressionContextDto,
   ) {
-    try {
-      return await this.dictionaryApiService.createIrregularVerbExpressionContext(
-        payload.expressionId,
-        payload.translation,
-        payload.forms,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.createIrregularVerbExpressionContext(
+      payload.expressionId,
+      payload.translation,
+      payload.forms,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
@@ -414,17 +333,10 @@ export class DictionaryController {
     @Param('expressionContextId', new ParseUUIDPipe())
     expressionContextId: string,
   ) {
-    try {
-      await this.dictionaryApiService.updateVerbExpressionContext(
-        expressionContextId,
-        payload.translation,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionContextNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.updateVerbExpressionContext(
+      expressionContextId,
+      payload.translation,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
@@ -438,17 +350,10 @@ export class DictionaryController {
     @Param('expressionContextId', new ParseUUIDPipe())
     expressionContextId: string,
   ) {
-    try {
-      await this.dictionaryApiService.updateAdjectiveExpressionContext(
-        expressionContextId,
-        payload.translation,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionContextNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.updateAdjectiveExpressionContext(
+      expressionContextId,
+      payload.translation,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
@@ -462,18 +367,11 @@ export class DictionaryController {
     @Param('expressionContextId', new ParseUUIDPipe())
     expressionContextId: string,
   ) {
-    try {
-      await this.dictionaryApiService.updateNounExpressionContext(
-        expressionContextId,
-        payload.translation,
-        payload.isCountable,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionContextNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.updateNounExpressionContext(
+      expressionContextId,
+      payload.translation,
+      payload.isCountable,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
@@ -487,17 +385,10 @@ export class DictionaryController {
     @Param('expressionContextId', new ParseUUIDPipe())
     expressionContextId: string,
   ) {
-    try {
-      await this.dictionaryApiService.updateAdverbExpressionContext(
-        expressionContextId,
-        payload.translation,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionContextNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.updateAdverbExpressionContext(
+      expressionContextId,
+      payload.translation,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
@@ -511,17 +402,10 @@ export class DictionaryController {
     @Param('expressionContextId', new ParseUUIDPipe())
     expressionContextId: string,
   ) {
-    try {
-      await this.dictionaryApiService.updatePhrasalVerbExpressionContext(
-        expressionContextId,
-        payload.translation,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionContextNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.updatePhrasalVerbExpressionContext(
+      expressionContextId,
+      payload.translation,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
@@ -535,18 +419,11 @@ export class DictionaryController {
     @Param('expressionContextId', new ParseUUIDPipe())
     expressionContextId: string,
   ) {
-    try {
-      await this.dictionaryApiService.updateIrregularVerbExpressionContext(
-        expressionContextId,
-        payload.translation,
-        payload.forms,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionContextNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.updateIrregularVerbExpressionContext(
+      expressionContextId,
+      payload.translation,
+      payload.forms,
+    );
   }
 
   @Delete('expression-contexts/:expressionContextId')
@@ -559,16 +436,9 @@ export class DictionaryController {
     @Param('expressionContextId', new ParseUUIDPipe())
     expressionContextId: string,
   ) {
-    try {
-      await this.dictionaryApiService.deleteExpressionContext(
-        expressionContextId,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionContextNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.deleteExpressionContext(
+      expressionContextId,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
@@ -583,14 +453,7 @@ export class DictionaryController {
   async getSentence(
     @Param('sentenceId', new ParseUUIDPipe()) sentenceId: string,
   ) {
-    try {
-      return await this.dictionaryApiService.getSentenceById(sentenceId);
-    } catch (e) {
-      if (e instanceof SentenceNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.getSentenceById(sentenceId);
   }
 
   @ApiBearerAuth('admin-auth')
@@ -603,18 +466,11 @@ export class DictionaryController {
   @Post('sentences')
   @HttpCode(HttpStatus.CREATED)
   async addSentence(@Body() payload: CreateSentenceDto) {
-    try {
-      return await this.dictionaryApiService.createSentence(
-        payload.content,
-        payload.translation,
-        payload.expressionContextId,
-      );
-    } catch (e) {
-      if (e instanceof ExpressionContextNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.createSentence(
+      payload.content,
+      payload.translation,
+      payload.expressionContextId,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
@@ -629,14 +485,7 @@ export class DictionaryController {
   async deleteSentence(
     @Param('sentenceId', new ParseUUIDPipe()) sentenceId: string,
   ) {
-    try {
-      await this.dictionaryApiService.deleteSentence(sentenceId);
-    } catch (e) {
-      if (e instanceof SentenceNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.deleteSentence(sentenceId);
   }
 
   @ApiBearerAuth('admin-auth')
@@ -650,17 +499,10 @@ export class DictionaryController {
     @Body() payload: UpdateSentenceDto,
     @Param('sentenceId', new ParseUUIDPipe()) sentenceId: string,
   ) {
-    try {
-      return await this.dictionaryApiService.updateSentence(
-        sentenceId,
-        payload.content,
-        payload.translation,
-      );
-    } catch (e) {
-      if (e instanceof SentenceNotFoundError) {
-        throw new NotFoundException(e.message);
-      }
-      throw e;
-    }
+    return await this.dictionaryApiService.updateSentence(
+      sentenceId,
+      payload.content,
+      payload.translation,
+    );
   }
 }

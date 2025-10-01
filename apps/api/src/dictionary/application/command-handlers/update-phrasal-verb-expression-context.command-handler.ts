@@ -1,8 +1,8 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { UpdatePhrasalVerbExpressionContextCommand } from '../commands/update-phrasal-verb-expression-context.command';
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
-import { ExpressionContextNotFoundError } from '../errors';
 import { PHRASAL_VERB } from '../../domain/constants';
+import { AppError } from '../../../common/errors';
 
 @CommandHandler(UpdatePhrasalVerbExpressionContextCommand)
 export class UpdatePhrasalVerbExpressionContextCommandHandler
@@ -25,7 +25,10 @@ export class UpdatePhrasalVerbExpressionContextCommandHandler
       );
 
     if (!expressionContext) {
-      throw new ExpressionContextNotFoundError(expressionContextId);
+      throw new AppError(
+        'ENTITY_NOT_FOUND',
+        `Expression context with id ${expressionContextId} not found.`,
+      );
     }
 
     this.eventPublisher.mergeObjectContext(expressionContext);

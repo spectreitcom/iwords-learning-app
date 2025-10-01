@@ -2,8 +2,8 @@ import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { CreateVerbExpressionContextCommand } from '../commands/create-verb-expression-context.command';
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
 import { ExpressionValidationService } from '../ports/expression-validation.service';
-import { ExpressionNotFoundError } from '../errors';
 import { ExpressionContext } from '../../domain/expression-context';
+import { AppError } from '../../../common/errors';
 
 export type CreateVerbExpressionContextCommandResponse = {
   id: string;
@@ -32,7 +32,10 @@ export class CreateVerbExpressionContextCommandHandler
       await this.expressionValidationService.exists(expressionId);
 
     if (!expressionExists) {
-      throw new ExpressionNotFoundError(expressionId);
+      throw new AppError(
+        'ENTITY_NOT_FOUND',
+        `Expression with id ${expressionId} not found.`,
+      );
     }
 
     const expressionContext = ExpressionContext.createVerb(

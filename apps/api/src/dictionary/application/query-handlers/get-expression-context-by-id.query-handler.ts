@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetExpressionContextByIdQuery } from '../queries/get-expression-context-by-id.query';
 import { ExpressionContextView } from '../../views/expression-context.view';
 import { PrismaService } from '../../../common/prisma/prisma.service';
-import { ExpressionContextNotFoundError } from '../errors';
+import { AppError } from '../../../common/errors';
 
 @QueryHandler(GetExpressionContextByIdQuery)
 export class GetExpressionContextByIdQueryHandler
@@ -22,7 +22,10 @@ export class GetExpressionContextByIdQueryHandler
       });
 
     if (!expressionContext)
-      throw new ExpressionContextNotFoundError(expressionContextId);
+      throw new AppError(
+        'ENTITY_NOT_FOUND',
+        `Expression context with id ${expressionContextId} not found.`,
+      );
 
     return new ExpressionContextView(
       expressionContext.id,

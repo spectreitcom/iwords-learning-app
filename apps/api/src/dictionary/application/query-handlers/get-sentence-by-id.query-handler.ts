@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetSentenceByIdQuery } from '../queries/get-sentence-by-id.query';
 import { SentenceView } from '../../views/sentence.view';
 import { PrismaService } from '../../../common/prisma/prisma.service';
-import { SentenceNotFoundError } from '../errors';
+import { AppError } from '../../../common/errors';
 
 @QueryHandler(GetSentenceByIdQuery)
 export class GetSentenceByIdQueryHandler
@@ -18,7 +18,11 @@ export class GetSentenceByIdQueryHandler
       },
     });
 
-    if (!sentence) throw new SentenceNotFoundError(sentenceId);
+    if (!sentence)
+      throw new AppError(
+        'ENTITY_NOT_FOUND',
+        `Sentence with id ${sentenceId} not found.`,
+      );
 
     return new SentenceView(
       sentence.id,

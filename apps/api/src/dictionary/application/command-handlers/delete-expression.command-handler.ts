@@ -1,7 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { DeleteExpressionCommand } from '../commands/delete-expression.command';
 import { ExpressionRepository } from '../ports/expression.repository';
-import { ExpressionNotFoundError } from '../errors';
+import { AppError } from '../../../common/errors';
 
 @CommandHandler(DeleteExpressionCommand)
 export class DeleteExpressionCommandHandler
@@ -18,7 +18,10 @@ export class DeleteExpressionCommandHandler
     const expression = await this.expressionRepository.findById(expressionId);
 
     if (!expression) {
-      throw new ExpressionNotFoundError(expressionId);
+      throw new AppError(
+        'ENTITY_NOT_FOUND',
+        `Expression with id ${expressionId} not found.`,
+      );
     }
 
     expression.delete();

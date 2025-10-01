@@ -1,8 +1,8 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateNounExpressionContextCommand } from '../commands/update-noun-expression-context.command';
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
-import { ExpressionContextNotFoundError } from '../errors';
 import { NOUN } from '../../domain/constants';
+import { AppError } from '../../../common/errors';
 
 @CommandHandler(UpdateNounExpressionContextCommand)
 export class UpdateNounExpressionContextCommandHandler
@@ -23,7 +23,10 @@ export class UpdateNounExpressionContextCommandHandler
       );
 
     if (!expressionContext) {
-      throw new ExpressionContextNotFoundError(expressionContextId);
+      throw new AppError(
+        'ENTITY_NOT_FOUND',
+        `Expression context with id ${expressionContextId} not found.`,
+      );
     }
 
     this.eventPublisher.mergeObjectContext(expressionContext);
