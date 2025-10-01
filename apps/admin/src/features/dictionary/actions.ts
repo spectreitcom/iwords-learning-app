@@ -8,7 +8,6 @@ import {
   Expression,
   ExpressionContext,
 } from "@/features/dictionary/types";
-import { getSession } from "@/lib/session";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
@@ -17,23 +16,21 @@ import {
   CreateNounExpressionContextData,
   CreateOnlyTranslationExpressionContextData,
 } from "@/features/dictionary/schemas";
+import { authFetch } from "@/lib/auth-fetch";
 
 export async function getExpressions(page = 1, searchText?: string, take = 20) {
-  const session = await getSession();
-
   const urlSearchParams = new URLSearchParams();
   urlSearchParams.append("page", page.toString());
   urlSearchParams.append("take", take.toString());
   if (searchText) {
     urlSearchParams.append("searchText", searchText);
   }
-  const response = await fetch(
+  const response = await authFetch(
     `${BACKEND_URL}/dictionary/expressions?${urlSearchParams.toString()}`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
       },
     },
   );
@@ -42,13 +39,10 @@ export async function getExpressions(page = 1, searchText?: string, take = 20) {
 }
 
 export async function deleteExpression(expressionId: string) {
-  const session = await getSession();
-
-  await fetch(`${BACKEND_URL}/dictionary/expressions/${expressionId}`, {
+  await authFetch(`${BACKEND_URL}/dictionary/expressions/${expressionId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.accessToken}`,
     },
   });
 
@@ -57,13 +51,10 @@ export async function deleteExpression(expressionId: string) {
 }
 
 export async function createExpression(data: CreateExpressionData) {
-  const session = await getSession();
-
-  const response = await fetch(`${BACKEND_URL}/dictionary/expressions`, {
+  const response = await authFetch(`${BACKEND_URL}/dictionary/expressions`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.accessToken}`,
     },
     body: JSON.stringify({ ...data }),
   });
@@ -77,13 +68,10 @@ export async function updateExpression(
   expressionId: string,
   data: CreateExpressionData,
 ) {
-  const session = await getSession();
-
-  await fetch(`${BACKEND_URL}/dictionary/expressions/${expressionId}`, {
+  await authFetch(`${BACKEND_URL}/dictionary/expressions/${expressionId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.accessToken}`,
     },
     body: JSON.stringify({ ...data }),
   });
@@ -92,15 +80,12 @@ export async function updateExpression(
 }
 
 export async function getExpression(expressionId: string) {
-  const session = await getSession();
-
-  const response = await fetch(
+  const response = await authFetch(
     `${BACKEND_URL}/dictionary/expressions/${expressionId}`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
       },
     },
   );
@@ -113,20 +98,17 @@ export async function getExpressionContexts(
   page = 1,
   take = 20,
 ) {
-  const session = await getSession();
-
   const urlSearchParams = new URLSearchParams();
   urlSearchParams.append("expressionId", expressionId);
   urlSearchParams.append("page", page.toString());
   urlSearchParams.append("take", take.toString());
 
-  const response = await fetch(
+  const response = await authFetch(
     `${BACKEND_URL}/dictionary/expression-contexts?${urlSearchParams.toString()}`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
       },
     },
   );
@@ -137,15 +119,12 @@ export async function getExpressionContexts(
 export async function createVerbExpressionContext(
   data: CreateOnlyTranslationExpressionContextData,
 ) {
-  const session = await getSession();
-
-  const response = await fetch(
+  const response = await authFetch(
     `${BACKEND_URL}/dictionary/expression-contexts/verb`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
       },
       body: JSON.stringify({ ...data }),
     },
@@ -159,15 +138,12 @@ export async function createVerbExpressionContext(
 export async function createAdjectiveExpressionContext(
   data: CreateOnlyTranslationExpressionContextData,
 ) {
-  const session = await getSession();
-
-  const response = await fetch(
+  const response = await authFetch(
     `${BACKEND_URL}/dictionary/expression-contexts/adjective`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
       },
       body: JSON.stringify({ ...data }),
     },
@@ -181,15 +157,12 @@ export async function createAdjectiveExpressionContext(
 export async function createPhrasalVerbExpressionContext(
   data: CreateOnlyTranslationExpressionContextData,
 ) {
-  const session = await getSession();
-
-  const response = await fetch(
+  const response = await authFetch(
     `${BACKEND_URL}/dictionary/expression-contexts/phrasal-verb`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
       },
       body: JSON.stringify({ ...data }),
     },
@@ -203,15 +176,12 @@ export async function createPhrasalVerbExpressionContext(
 export async function createAdverbExpressionContext(
   data: CreateOnlyTranslationExpressionContextData,
 ) {
-  const session = await getSession();
-
-  const response = await fetch(
+  const response = await authFetch(
     `${BACKEND_URL}/dictionary/expression-contexts/adverb`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
       },
       body: JSON.stringify({ ...data }),
     },
@@ -225,15 +195,12 @@ export async function createAdverbExpressionContext(
 export async function createNounExpressionContext(
   data: CreateNounExpressionContextData,
 ) {
-  const session = await getSession();
-
-  const response = await fetch(
+  const response = await authFetch(
     `${BACKEND_URL}/dictionary/expression-contexts/noun`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
       },
       body: JSON.stringify({ ...data }),
     },
@@ -247,15 +214,12 @@ export async function createNounExpressionContext(
 export async function createIrregularVerbExpressionContext(
   data: CreateIrregularVerbExpressionContextData,
 ) {
-  const session = await getSession();
-
-  const response = await fetch(
+  const response = await authFetch(
     `${BACKEND_URL}/dictionary/expression-contexts/irregular-verb`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
       },
       body: JSON.stringify({
         translation: data.translation,
@@ -271,15 +235,12 @@ export async function createIrregularVerbExpressionContext(
 }
 
 export async function deleteExpressionContext(expressionContextId: string) {
-  const session = await getSession();
-
-  await fetch(
+  await authFetch(
     `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}`,
     {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
       },
     },
   );
