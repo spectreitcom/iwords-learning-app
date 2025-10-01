@@ -1,7 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { DeleteSentenceCommand } from '../commands/delete-sentence.command';
 import { SentenceRepository } from '../ports/sentece.repository';
-import { SentenceNotFoundError } from '../errors';
+import { AppError } from '../../../common/errors';
 
 @CommandHandler(DeleteSentenceCommand)
 export class DeleteSentenceCommandHandler
@@ -18,7 +18,10 @@ export class DeleteSentenceCommandHandler
     const sentence = await this.sentenceRepository.findById(sentenceId);
 
     if (!sentence) {
-      throw new SentenceNotFoundError(sentenceId);
+      throw new AppError(
+        'ENTITY_NOT_FOUND',
+        `Sentence with id ${sentenceId} not found.`,
+      );
     }
 
     this.eventPublisher.mergeObjectContext(sentence);

@@ -2,8 +2,8 @@ import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { CreateSentenceCommand } from '../commands/create-sentence.command';
 import { SentenceRepository } from '../ports/sentece.repository';
 import { ExpressionContextValidationService } from '../ports/expression-context-validation.service';
-import { ExpressionContextNotFoundError } from '../errors';
 import { Sentence } from '../../domain/sentence';
+import { AppError } from '../../../common/errors';
 
 @CommandHandler(CreateSentenceCommand)
 export class CreateSentenceCommandHandler
@@ -22,7 +22,10 @@ export class CreateSentenceCommandHandler
       await this.expressionContextValidationService.exists(expressionContextId);
 
     if (!expressionContextExists) {
-      throw new ExpressionContextNotFoundError(expressionContextId);
+      throw new AppError(
+        'ENTITY_NOT_FOUND',
+        `Expression context with id ${expressionContextId} not found.`,
+      );
     }
 
     const sentence = Sentence.create(
