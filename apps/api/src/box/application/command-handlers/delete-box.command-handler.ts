@@ -1,7 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { DeleteBoxCommand } from '../commands/delete-box.command';
 import { BoxRepository } from '../ports/box.repository';
-import { BoxNotFoundError } from '../errors';
+import { AppError } from '../../../common/errors';
 
 @CommandHandler(DeleteBoxCommand)
 export class DeleteBoxCommandHandler
@@ -17,7 +17,8 @@ export class DeleteBoxCommandHandler
 
     const box = await this.boxRepository.findById(boxId);
 
-    if (!box) throw new BoxNotFoundError(boxId);
+    if (!box)
+      throw new AppError('ENTITY_NOT_FOUND', `Box with id ${boxId} not found`);
 
     this.eventPublisher.mergeObjectContext(box);
     box.delete();
