@@ -3,7 +3,7 @@
 import { loginSchema, LoginSchema } from "@/features/auth/schemas";
 import { BACKEND_URL } from "@/lib/constants";
 import { LoginResponse } from "@/features/auth/types";
-import { createSession } from "@/lib/session";
+import { createSession, getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
@@ -33,4 +33,30 @@ export async function login(payload: LoginSchema) {
 
   revalidatePath("/");
   redirect("/");
+}
+
+export async function refreshToken() {
+  const session = await getSession();
+
+  if (!session) throw new Error("No session");
+
+  const response = await fetch(`${BACKEND_URL}/auth/refresh-token`, {
+    method: "POST",
+    body: JSON.stringify({ refreshToken: session.refreshToken }),
+  });
+
+  if (!response.ok) throw new Error("Failed to refresh token");
+
+  const { accessToken, refreshToken, user } =
+    (await response.json()) as LoginResponse;
+
+  await createSession({
+    accessToken,
+    refreshToken,
+    email: user.email,
+    name: user.name,
+    id: user.id,
+  });
+
+  return accessToken;
 }
