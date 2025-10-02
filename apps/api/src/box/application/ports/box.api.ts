@@ -10,4 +10,12 @@ export abstract class BoxApi {
     take: number,
     page: number,
   ): Promise<GetBoxesListQueryResponse>;
+  abstract removeExpressionContextId(
+    boxId: string,
+    expressionContextId: string,
+  ): Promise<void>;
+  abstract addExpressionContextId(
+    boxId: string,
+    expressionContextId: string,
+  ): Promise<void>;
 }
