@@ -16,6 +16,7 @@ import {
   CreateIrregularVerbExpressionContextData,
   CreateNounExpressionContextData,
   CreateOnlyTranslationExpressionContextData,
+  CreateSentenceData,
 } from "@/features/dictionary/schemas";
 import { authFetch } from "@/lib/auth-fetch";
 
@@ -261,4 +262,20 @@ export async function deleteExpressionContext(expressionContextId: string) {
   );
 
   revalidatePath(`/expressions/${expressionContextId}`);
+}
+
+export async function createSentence(
+  expressionId: string,
+  expressionContextId: string,
+  payload: CreateSentenceData,
+) {
+  const response = await authFetch(`${BACKEND_URL}/dictionary/sentences`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ...payload, expressionContextId }),
+  });
+
+  revalidatePath(`/expressions/${expressionId}/context/${expressionContextId}`);
 }

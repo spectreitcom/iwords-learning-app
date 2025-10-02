@@ -44,3 +44,10 @@ export const createIrregularVerbExpressionContextSchema = z.object({
 export type CreateIrregularVerbExpressionContextData = z.infer<
   typeof createIrregularVerbExpressionContextSchema
 >;
+
+export const createSentenceSchema = z.object({
+  content: z.string().min(1, { message: "To pole jest wymagane" }),
+  translation: z.string().min(1, { message: "To pole jest wymagane" }),
+});
+
+export type CreateSentenceData = z.infer<typeof createSentenceSchema>;
