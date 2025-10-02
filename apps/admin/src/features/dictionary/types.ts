@@ -26,3 +26,16 @@ export type ExpressionContext = {
 export type CreateExpressionContextResponse = {
   id: string;
 };
+
+export type Sentence = {
+  sentenceId: string;
+  translation: string;
+  content: string;
+};
+
+export type ExpressionContextDetails = ExpressionContext & {
+  isCountable: false;
+  isIrregular: false;
+  forms: [];
+  sentences: Sentence[];
+};

@@ -7,6 +7,7 @@ import {
   CreateExpressionResponse,
   Expression,
   ExpressionContext,
+  ExpressionContextDetails,
 } from "@/features/dictionary/types";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -114,6 +115,20 @@ export async function getExpressionContexts(
   );
 
   return (await response.json()) as CollectionWithPagination<ExpressionContext>;
+}
+
+export async function getExpressionContextDetails(expressionContextId: string) {
+  const response = await authFetch(
+    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  return (await response.json()) as ExpressionContextDetails;
 }
 
 export async function createVerbExpressionContext(
