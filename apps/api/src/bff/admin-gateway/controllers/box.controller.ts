@@ -168,4 +168,23 @@ export class BoxController {
       payload.expressionContextId,
     );
   }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Add item to box' })
+  @ApiResponse({
+    status: 200,
+    description: 'Item removed from the box successfully',
+  })
+  @ApiResponse({ status: 404, description: 'Box not found' })
+  @Delete(':boxId/remove-item/:expressionContextId')
+  async removeExpressionContextId(
+    @Param('boxId', new ParseUUIDPipe()) boxId: string,
+    @Param('expressionContextId', new ParseUUIDPipe())
+    expressionContextId: string,
+  ) {
+    return await this.boxApiService.removeExpressionContextId(
+      boxId,
+      expressionContextId,
+    );
+  }
 }
