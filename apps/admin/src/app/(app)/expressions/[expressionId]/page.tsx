@@ -75,7 +75,10 @@ async function AwaitedContent({
 
   return (
     <div>
-      <ContextsListTable expressionContexts={expressionContextsData.data} />
+      <ContextsListTable
+        expressionContexts={expressionContextsData.data}
+        expressionId={expressionId}
+      />
       <div className={"flex justify-end mt-4"}>
         <Pagination
           currentPage={expressionContextsData.currentPage}
@@ -89,8 +92,10 @@ async function AwaitedContent({
 
 function ContextsListTable({
   expressionContexts,
+  expressionId,
 }: {
   expressionContexts: ExpressionContext[];
+  expressionId: string;
 }) {
   return (
     <Table>
@@ -104,7 +109,13 @@ function ContextsListTable({
       <TableBody>
         {expressionContexts.map((expressionContext) => (
           <TableRow key={expressionContext.expressionContextId}>
-            <TableCell>{expressionContext.translation}</TableCell>
+            <TableCell>
+              <Link
+                href={`/expressions/${expressionId}/context/${expressionContext.expressionContextId}`}
+              >
+                {expressionContext.translation}
+              </Link>
+            </TableCell>
             <TableCell>
               {expressionTypeMap.get(expressionContext.type)}
             </TableCell>
