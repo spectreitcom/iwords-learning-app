@@ -3,6 +3,7 @@ import {
   Catch,
   ExceptionFilter,
   HttpStatus,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { AppErrorCode, codeToStatus } from '../../../common/errors';
 import { Response } from 'express';
@@ -10,10 +11,20 @@ import { Response } from 'express';
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(
-    exception: { code?: AppErrorCode; message?: string },
+    exception:
+      | { code?: AppErrorCode; message?: string }
+      | UnauthorizedException,
     host: ArgumentsHost,
   ) {
     const res: Response = host.switchToHttp().getResponse();
+
+    if (exception instanceof UnauthorizedException) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        title: 'UNAUTHORIZED',
+        detail: 'Unauthorized',
+        status: HttpStatus.UNAUTHORIZED,
+      });
+    }
 
     if (exception?.code && codeToStatus[exception.code]) {
       const status = codeToStatus[exception.code];

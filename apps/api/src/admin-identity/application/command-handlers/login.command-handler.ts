@@ -2,11 +2,11 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { LoginCommand } from '../commands/login.command';
 import { AdminUserView } from '../../views/admin-user.view';
 import { AdminUserRepository } from '../ports/admin-user.repository';
-import { WrongEmailOrPasswordError } from '../errors';
 import { AccessTokenService } from '../ports/access-token.service';
 import { RefreshTokenService } from '../ports/refresh-token.service';
 import { RefreshTokenStorage } from '../ports/refresh-token.storage';
 import { randomUUID } from 'node:crypto';
+import { AppError } from '../../../common/errors';
 
 export type LoginCommandResponse = {
   accessToken: string;
@@ -29,7 +29,8 @@ export class LoginCommandHandler
     const { userId } = command;
     const adminUser = await this.adminUserRepository.findById(userId);
 
-    if (!adminUser) throw new WrongEmailOrPasswordError();
+    if (!adminUser)
+      throw new AppError('WRONG_CREDENTIALS', 'Wrong credentials');
 
     const accessToken = this.accessTokenService.createToken(
       adminUser.getAdminUserId().value,

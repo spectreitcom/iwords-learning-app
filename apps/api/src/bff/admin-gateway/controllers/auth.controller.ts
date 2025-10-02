@@ -4,7 +4,6 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { LocalAuthGuard } from '../auth/local-auth.guard';
@@ -19,10 +18,6 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { RefreshTokenDto } from '../dtos/refresh-token.dto';
-import {
-  AdminIdentityNotFoundError,
-  InvalidRefreshTokenError,
-} from '../../../admin-identity/application/errors';
 
 @ApiTags('Admin Auth')
 @Controller('admin/auth')
@@ -94,17 +89,9 @@ export class AuthController {
   @Post('refresh-token')
   @HttpCode(HttpStatus.OK)
   async refreshToken(@Body() payload: RefreshTokenDto) {
-    try {
-      return await this.adminIdentityApiService.refreshToken(
-        payload.refreshToken,
-      );
-    } catch (e) {
-      if (e instanceof InvalidRefreshTokenError)
-        throw new UnauthorizedException();
-      if (e instanceof AdminIdentityNotFoundError)
-        throw new UnauthorizedException();
-      throw e;
-    }
+    return await this.adminIdentityApiService.refreshToken(
+      payload.refreshToken,
+    );
   }
 
   @ApiBearerAuth('admin-auth')

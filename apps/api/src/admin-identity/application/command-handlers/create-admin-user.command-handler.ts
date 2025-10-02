@@ -3,8 +3,8 @@ import { CreateAdminUserCommand } from '../commands/create-admin-user.command';
 import { AdminUserRepository } from '../ports/admin-user.repository';
 import { HashingService } from '../ports/hashing.service';
 import { AdminUserValidationService } from '../ports/admin-user-validation.service';
-import { AdminIdentityEmailTakenError } from '../errors';
 import { AdminUser } from '../../domain/admin-user';
+import { AppError } from '../../../common/errors';
 
 @CommandHandler(CreateAdminUserCommand)
 export class CreateAdminUserCommandHandler
@@ -22,7 +22,8 @@ export class CreateAdminUserCommandHandler
     const isEmailTaken =
       await this.adminUserValidationService.isEmailTaken(email);
 
-    if (isEmailTaken) throw new AdminIdentityEmailTakenError(email);
+    if (isEmailTaken)
+      throw new AppError('ALREADY_EXISTS', `Email ${email} is already taken`);
 
     const hashedPassword = await this.hashingService.hash(password);
 
