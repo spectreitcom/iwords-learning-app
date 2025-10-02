@@ -17,7 +17,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Sentence } from "@/features/dictionary/types";
 import { SentencesTableItemActions } from "@/features/dictionary/components/sentences-table-item-actions";
-import { Button } from "@/components/ui/button";
+import { AddSentenceModal } from "@/features/dictionary/components/add-sentence-modal";
 
 type Props = {
   params: Promise<{ expressionId: string; expressionContextId: string }>;
@@ -62,7 +62,10 @@ async function AwaitedContent({
         <p>Typ: {expressionTypeMap.get(expressionContext.type)}</p>
       </div>
       <div className={"mt-8 flex justify-end"}>
-        <Button>Dodaj zdanie</Button>
+        <AddSentenceModal
+          expressionId={expressionId}
+          expressionContextId={expressionContextId}
+        />
       </div>
       <div className={"mt-4"}>
         <SentencesList sentences={expressionContext.sentences ?? []} />
