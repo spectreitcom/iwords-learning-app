@@ -22,7 +22,7 @@ import { RedisRefreshTokenStorage } from './services/redis-refresh-token.storage
       useFactory: (configService: ConfigService) => ({
         secret: configService.get('JWT_SECRET'),
         signOptions: {
-          expiresIn: '10s',
+          expiresIn: '3600s',
         },
       }),
       inject: [ConfigService],
