@@ -27,13 +27,6 @@ export function AppSidebar() {
                   <Link href={"/expressions"}>Lista wyrażeń</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href={"/apps/admin/src/app/(app)/expressions/create"}>
-                    Nowe wyrażenie
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
