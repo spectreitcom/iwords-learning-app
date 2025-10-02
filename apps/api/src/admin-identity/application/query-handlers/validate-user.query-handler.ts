@@ -3,7 +3,7 @@ import { ValidateUserQuery } from '../queries/validate-user.query';
 import { AdminUserView } from '../../views/admin-user.view';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 import { HashingService } from '../ports/hashing.service';
-import { WrongEmailOrPasswordError } from '../errors';
+import { AppError } from '../../../common/errors';
 
 @QueryHandler(ValidateUserQuery)
 export class ValidateUserQueryHandler
@@ -23,14 +23,16 @@ export class ValidateUserQueryHandler
       },
     });
 
-    if (!adminUser) throw new WrongEmailOrPasswordError();
+    if (!adminUser)
+      throw new AppError('WRONG_CREDENTIALS', 'Wrong credentials');
 
     const isPasswordValid = await this.hashingService.compare(
       password,
       adminUser.password ?? '',
     );
 
-    if (!isPasswordValid) throw new WrongEmailOrPasswordError();
+    if (!isPasswordValid)
+      throw new AppError('WRONG_CREDENTIALS', 'Wrong credentials');
 
     return new AdminUserView(adminUser.id, adminUser.email, adminUser.name);
   }

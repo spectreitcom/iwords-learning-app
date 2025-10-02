@@ -1,3 +1,5 @@
+"use server";
+
 import { SECRET_KEY } from "@/lib/constants";
 import { cookies } from "next/headers";
 import { jwtVerify, SignJWT } from "jose";

@@ -1,7 +1,7 @@
 "use server";
 
 import { loginSchema, LoginSchema } from "@/features/auth/schemas";
-import { BACKEND_URL } from "@/lib/constants";
+import { BACKEND_URL, SELF_URL } from "@/lib/constants";
 import { LoginResponse } from "@/features/auth/types";
 import { createSession, getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
@@ -28,7 +28,7 @@ export async function login(payload: LoginSchema) {
     refreshToken: data.refreshToken,
     email: data.user.email,
     name: data.user.name,
-    id: data.user.id,
+    id: data.user.adminUserId,
   });
 
   revalidatePath("/");
@@ -42,6 +42,9 @@ export async function refreshToken() {
 
   const response = await fetch(`${BACKEND_URL}/auth/refresh-token`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({ refreshToken: session.refreshToken }),
   });
 
@@ -50,13 +53,12 @@ export async function refreshToken() {
   const { accessToken, refreshToken, user } =
     (await response.json()) as LoginResponse;
 
-  await createSession({
-    accessToken,
-    refreshToken,
-    email: user.email,
-    name: user.name,
-    id: user.id,
+  const updateRes = await fetch(`${SELF_URL}/api/auth/update`, {
+    method: "POST",
+    body: JSON.stringify({ accessToken, refreshToken, user }),
   });
+
+  if (!updateRes.ok) throw new Error("Failed to update session");
 
   return accessToken;
 }

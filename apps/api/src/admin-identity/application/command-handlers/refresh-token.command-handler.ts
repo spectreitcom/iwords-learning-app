@@ -3,13 +3,10 @@ import { RefreshTokenCommand } from '../commands/refresh-token.command';
 import { AdminUserView } from '../../views/admin-user.view';
 import { RefreshTokenService } from '../ports/refresh-token.service';
 import { AccessTokenService } from '../ports/access-token.service';
-import {
-  AdminIdentityNotFoundError,
-  InvalidRefreshTokenError,
-} from '../errors';
 import { AdminUserRepository } from '../ports/admin-user.repository';
 import { randomUUID } from 'node:crypto';
 import { RefreshTokenStorage } from '../ports/refresh-token.storage';
+import { AppError } from '../../../common/errors';
 
 export type RefreshTokenCommandResponse = {
   accessToken: string;
@@ -33,18 +30,20 @@ export class RefreshTokenCommandHandler
   ): Promise<RefreshTokenCommandResponse> {
     const result = this.refreshTokenService.verifyToken(command.refreshToken);
 
-    if (!result) throw new InvalidRefreshTokenError();
+    if (!result) throw new AppError('WRONG_CREDENTIALS', 'Wrong refresh token');
 
     const isValid = await this.refreshTokenStorage.validate(
       result.sub,
       result.refreshTokenId,
     );
 
-    if (!isValid) throw new InvalidRefreshTokenError();
+    if (!isValid)
+      throw new AppError('WRONG_CREDENTIALS', 'Wrong refresh token');
 
     const adminUser = await this.adminUserRepository.findById(result.sub);
 
-    if (!adminUser) throw new AdminIdentityNotFoundError(result.sub);
+    if (!adminUser)
+      throw new AppError('WRONG_CREDENTIALS', 'Wrong refresh token');
 
     const accessToken = this.accessTokenService.createToken(result.sub);
 

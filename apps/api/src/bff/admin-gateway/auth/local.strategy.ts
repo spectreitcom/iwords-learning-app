@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { AdminIdentityApiService } from '../../../admin-identity/application/services/admin-identity-api.service';
-import { WrongEmailOrPasswordError } from '../../../admin-identity/application/errors';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -18,10 +17,8 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
       return {
         userId: user.adminUserId,
       };
-    } catch (e) {
-      if (e instanceof WrongEmailOrPasswordError)
-        throw new UnauthorizedException();
-      throw e;
+    } catch {
+      throw new UnauthorizedException();
     }
   }
 }
