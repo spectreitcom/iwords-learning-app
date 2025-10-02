@@ -8,6 +8,8 @@ import { DeleteBoxCommand } from '../commands/delete-box.command';
 import { UpdateBoxCommand } from '../commands/update-box.command';
 import { GetBoxesListQuery } from '../queries/get-boxes-list.query';
 import { GetBoxesListQueryResponse } from '../query-handlers/get-boxes-list.query-handler';
+import { AddExpressionContextIdCommand } from '../commands/add-expression-context-id.command';
+import { RemoveExpressionContextIdCommand } from '../commands/remove-expression-context-id.command';
 
 @Injectable()
 export class BoxApiService implements BoxApi {
@@ -42,5 +44,27 @@ export class BoxApiService implements BoxApi {
   ): Promise<GetBoxesListQueryResponse> {
     const query = new GetBoxesListQuery(take, page);
     return await this.queryBus.execute(query);
+  }
+
+  async addExpressionContextId(
+    boxId: string,
+    expressionContextId: string,
+  ): Promise<void> {
+    const command = new AddExpressionContextIdCommand(
+      boxId,
+      expressionContextId,
+    );
+    return await this.commandBus.execute(command);
+  }
+
+  async removeExpressionContextId(
+    boxId: string,
+    expressionContextId: string,
+  ): Promise<void> {
+    const command = new RemoveExpressionContextIdCommand(
+      boxId,
+      expressionContextId,
+    );
+    return await this.commandBus.execute(command);
   }
 }
