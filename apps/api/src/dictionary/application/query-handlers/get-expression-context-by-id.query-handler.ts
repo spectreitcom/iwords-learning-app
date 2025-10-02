@@ -3,6 +3,7 @@ import { GetExpressionContextByIdQuery } from '../queries/get-expression-context
 import { ExpressionContextView } from '../../views/expression-context.view';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 import { AppError } from '../../../common/errors';
+import { SentenceView } from '../../views/sentence.view';
 
 @QueryHandler(GetExpressionContextByIdQuery)
 export class GetExpressionContextByIdQueryHandler
@@ -18,6 +19,9 @@ export class GetExpressionContextByIdQueryHandler
       await this.prismaService.expressionContext.findUnique({
         where: {
           id: expressionContextId,
+        },
+        include: {
+          sentences: true,
         },
       });
 
@@ -37,6 +41,10 @@ export class GetExpressionContextByIdQueryHandler
       expressionContext.forms
         ? (expressionContext.forms as [string, string, string])
         : null,
+      expressionContext.sentences.map(
+        (sentence) =>
+          new SentenceView(sentence.id, sentence.content, sentence.translation),
+      ),
     );
   }
 }
