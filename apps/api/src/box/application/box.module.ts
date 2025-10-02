@@ -12,6 +12,7 @@ import { DeleteBoxCommandHandler } from './command-handlers/delete-box.command-h
 import { BoxDeletedEventHandler } from './event-handlers/box-deleted.event-handler';
 import { UpdateBoxCommandHandler } from './command-handlers/update-box.command-handler';
 import { GetBoxesListQueryHandler } from './query-handlers/get-boxes-list.query-handler';
+import { AddExpressionContextIdCommandHandler } from './command-handlers/add-expression-context-id.command-handler';
 
 const EVENT_HANDLERS = [
   BoxCreatedEventHandler,
@@ -25,6 +26,7 @@ const COMMAND_HANDLERS = [
   CreateBoxCommandHandler,
   DeleteBoxCommandHandler,
   UpdateBoxCommandHandler,
+  AddExpressionContextIdCommandHandler,
 ];
 
 const QUERY_HANDLERS = [GetBoxByIdQueryHandler, GetBoxesListQueryHandler];
