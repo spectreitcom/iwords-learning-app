@@ -22,6 +22,7 @@ import { CreateBoxDto } from '../dtos/create-box.dto';
 import { GetBoxesListQueryDto } from '../dtos/get-boxes-list-query.dto';
 import { UpdateBoxDto } from '../dtos/update-box.dto';
 import { DictionaryApiService } from '../../../dictionary/application/services/dictionary-api.service';
+import { AddItemToBoxDto } from '../dtos/add-item-to-box.dto';
 
 @ApiTags('Admin Boxes')
 @Controller('admin/boxes')
@@ -147,5 +148,24 @@ export class BoxController {
         translation: context.translation,
       })),
     };
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Add item to box' })
+  @ApiResponse({
+    status: 200,
+    description: 'Item added to box successfully',
+  })
+  @ApiResponse({ status: 404, description: 'Box not found' })
+  @Post(':boxId/add-item')
+  @HttpCode(HttpStatus.OK)
+  async addExpressionContextId(
+    @Param('boxId', new ParseUUIDPipe()) boxId: string,
+    @Body() payload: AddItemToBoxDto,
+  ) {
+    return await this.boxApiService.addExpressionContextId(
+      boxId,
+      payload.expressionContextId,
+    );
   }
 }
