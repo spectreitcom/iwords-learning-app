@@ -5,7 +5,7 @@ export class AdminUser {
   private readonly adminUserId: AdminUserId;
   private readonly email: AdminUserEmail;
   private readonly name: string;
-  private readonly hashedPassword: string | null;
+  private hashedPassword: string | null;
   private readonly isSuperuser: boolean;
 
   constructor(
@@ -35,6 +35,10 @@ export class AdminUser {
       hashedPassword,
       isSuperuser,
     );
+  }
+
+  updateHashedPassword(newHashedPassword: string) {
+    this.hashedPassword = newHashedPassword;
   }
 
   getAdminUserId() {

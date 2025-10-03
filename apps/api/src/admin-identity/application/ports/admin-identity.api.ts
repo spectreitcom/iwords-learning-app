@@ -24,4 +24,10 @@ export abstract class AdminIdentityApi {
   ): Promise<RefreshTokenCommandResponse>;
 
   abstract signOut(userId: string): Promise<void>;
+
+  abstract changeLoggedUserPassword(
+    userId: string,
+    existingPassword: string,
+    newPassword: string,
+  ): Promise<void>;
 }

@@ -10,6 +10,7 @@ import { ValidateUserQuery } from '../queries/validate-user.query';
 import { RefreshTokenCommandResponse } from '../command-handlers/refresh-token.command-handler';
 import { RefreshTokenCommand } from '../commands/refresh-token.command';
 import { SignOutCommand } from '../commands/sign-out.command';
+import { ChangePasswordCommand } from '../commands/change-password.command';
 
 @Injectable()
 export class AdminIdentityApiService implements AdminIdentityApi {
@@ -57,6 +58,19 @@ export class AdminIdentityApiService implements AdminIdentityApi {
 
   async signOut(userId: string): Promise<void> {
     const command = new SignOutCommand(userId);
+    return await this.commandBus.execute(command);
+  }
+
+  async changeLoggedUserPassword(
+    userId: string,
+    existingPassword: string,
+    newPassword: string,
+  ): Promise<void> {
+    const command = new ChangePasswordCommand(
+      existingPassword,
+      newPassword,
+      userId,
+    );
     return await this.commandBus.execute(command);
   }
 }
