@@ -7,6 +7,7 @@ export class AdminUser {
   private readonly name: string;
   private hashedPassword: string | null;
   private readonly isSuperuser: boolean;
+  private blocked: boolean;
 
   constructor(
     adminUserId: AdminUserId,
@@ -14,12 +15,14 @@ export class AdminUser {
     name: string,
     hashedPassword: string | null,
     isSuperuser: boolean,
+    blocked: boolean = false,
   ) {
     this.adminUserId = adminUserId;
     this.email = email;
     this.name = name;
     this.hashedPassword = hashedPassword;
     this.isSuperuser = isSuperuser;
+    this.blocked = blocked;
   }
 
   static create(
@@ -34,11 +37,16 @@ export class AdminUser {
       name,
       hashedPassword,
       isSuperuser,
+      false,
     );
   }
 
   updateHashedPassword(newHashedPassword: string) {
     this.hashedPassword = newHashedPassword;
+  }
+
+  block() {
+    this.blocked = true;
   }
 
   getAdminUserId() {
@@ -59,5 +67,9 @@ export class AdminUser {
 
   getHashedPassword() {
     return this.hashedPassword;
+  }
+
+  getBlocked() {
+    return this.blocked;
   }
 }

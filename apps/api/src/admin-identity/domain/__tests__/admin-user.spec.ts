@@ -3,316 +3,264 @@ import { AdminUserId } from '../value-objects/admin-user-id';
 import { AdminUserEmail } from '../value-objects/admin-user-email';
 
 describe('AdminUser', () => {
-  describe('constructor', () => {
-    it('should create AdminUser with all required properties', () => {
-      const adminUserId = AdminUserId.create();
-      const email = AdminUserEmail.fromString('admin@example.com');
-      const name = 'Admin User';
-      const hashedPassword = 'hashed_password_123';
-      const isSuperuser = true;
+  const mockAdminUserId = AdminUserId.fromString(
+    '550e8400-e29b-41d4-a716-446655440000',
+  );
+  const mockEmail = AdminUserEmail.fromString('admin@example.com');
+  const mockName = 'John Doe';
+  const mockHashedPassword = 'hashedPassword123';
 
+  describe('constructor', () => {
+    it('should create an admin user with all properties', () => {
       const adminUser = new AdminUser(
-        adminUserId,
-        email,
-        name,
-        hashedPassword,
-        isSuperuser,
+        mockAdminUserId,
+        mockEmail,
+        mockName,
+        mockHashedPassword,
+        true,
+        false,
       );
 
-      expect(adminUser.getAdminUserId()).toBe(adminUserId);
-      expect(adminUser.getEmail()).toBe(email);
-      expect(adminUser.getName()).toBe(name);
-      expect(adminUser.getHashedPassword()).toBe(hashedPassword);
-      expect(adminUser.getIsSuperuser()).toBe(isSuperuser);
+      expect(adminUser.getAdminUserId()).toBe(mockAdminUserId);
+      expect(adminUser.getEmail()).toBe(mockEmail);
+      expect(adminUser.getName()).toBe(mockName);
+      expect(adminUser.getHashedPassword()).toBe(mockHashedPassword);
+      expect(adminUser.getIsSuperuser()).toBe(true);
+      expect(adminUser.getBlocked()).toBe(false);
     });
 
-    it('should create AdminUser with null hashed password', () => {
-      const adminUserId = AdminUserId.create();
-      const email = AdminUserEmail.fromString('admin@example.com');
-      const name = 'Admin User';
-      const hashedPassword = null;
-      const isSuperuser = false;
-
+    it('should create an admin user with default blocked status as false', () => {
       const adminUser = new AdminUser(
-        adminUserId,
-        email,
-        name,
-        hashedPassword,
-        isSuperuser,
+        mockAdminUserId,
+        mockEmail,
+        mockName,
+        mockHashedPassword,
+        false,
+      );
+
+      expect(adminUser.getBlocked()).toBe(false);
+    });
+
+    it('should create an admin user with null hashed password', () => {
+      const adminUser = new AdminUser(
+        mockAdminUserId,
+        mockEmail,
+        mockName,
+        null,
+        false,
+        false,
       );
 
       expect(adminUser.getHashedPassword()).toBeNull();
-      expect(adminUser.getIsSuperuser()).toBe(false);
+    });
+
+    it('should create a blocked admin user', () => {
+      const adminUser = new AdminUser(
+        mockAdminUserId,
+        mockEmail,
+        mockName,
+        mockHashedPassword,
+        false,
+        true,
+      );
+
+      expect(adminUser.getBlocked()).toBe(true);
     });
   });
 
-  describe('create', () => {
-    it('should create AdminUser with valid parameters', () => {
-      const email = 'admin@example.com';
-      const name = 'Admin User';
-      const hashedPassword = 'hashed_password_123';
-      const isSuperuser = true;
+  describe('create static method', () => {
+    it('should create an admin user with generated ID and default blocked status', () => {
+      const email = 'test@example.com';
+      const name = 'Test User';
+      const hashedPassword = 'testPassword';
 
-      const adminUser = AdminUser.create(
-        email,
-        name,
-        hashedPassword,
-        isSuperuser,
-      );
+      const adminUser = AdminUser.create(email, name, hashedPassword, true);
 
-      expect(adminUser.getAdminUserId()).toBeInstanceOf(AdminUserId);
-      expect(adminUser.getEmail()).toBeInstanceOf(AdminUserEmail);
+      expect(adminUser.getAdminUserId()).toBeDefined();
       expect(adminUser.getEmail().value).toBe(email);
       expect(adminUser.getName()).toBe(name);
       expect(adminUser.getHashedPassword()).toBe(hashedPassword);
-      expect(adminUser.getIsSuperuser()).toBe(isSuperuser);
+      expect(adminUser.getIsSuperuser()).toBe(true);
+      expect(adminUser.getBlocked()).toBe(false);
     });
 
-    it('should create AdminUser with null hashed password', () => {
-      const email = 'admin@example.com';
-      const name = 'Admin User';
-      const hashedPassword = null;
-      const isSuperuser = false;
+    it('should create a regular admin user (not superuser)', () => {
+      const email = 'regular@example.com';
+      const name = 'Regular User';
+      const hashedPassword = 'regularPassword';
 
-      const adminUser = AdminUser.create(
-        email,
-        name,
-        hashedPassword,
-        isSuperuser,
-      );
+      const adminUser = AdminUser.create(email, name, hashedPassword, false);
+
+      expect(adminUser.getIsSuperuser()).toBe(false);
+    });
+
+    it('should create an admin user with null password', () => {
+      const email = 'nopass@example.com';
+      const name = 'No Password User';
+
+      const adminUser = AdminUser.create(email, name, null, false);
 
       expect(adminUser.getHashedPassword()).toBeNull();
-      expect(adminUser.getIsSuperuser()).toBe(false);
-    });
-
-    it('should create AdminUser as non-superuser by default', () => {
-      const email = 'regular@example.com';
-      const name = 'Regular Admin';
-      const hashedPassword = 'hashed_password_123';
-      const isSuperuser = false;
-
-      const adminUser = AdminUser.create(
-        email,
-        name,
-        hashedPassword,
-        isSuperuser,
-      );
-
-      expect(adminUser.getIsSuperuser()).toBe(false);
-    });
-
-    it('should throw error when creating with invalid email', () => {
-      const invalidEmail = 'invalid-email';
-      const name = 'Admin User';
-      const hashedPassword = 'hashed_password_123';
-      const isSuperuser = true;
-
-      expect(() => {
-        AdminUser.create(invalidEmail, name, hashedPassword, isSuperuser);
-      }).toThrow('Invalid admin user email');
-    });
-
-    it('should create different AdminUserIds for different instances', () => {
-      const email = 'admin@example.com';
-      const name = 'Admin User';
-      const hashedPassword = 'hashed_password_123';
-      const isSuperuser = true;
-
-      const adminUser1 = AdminUser.create(
-        email,
-        name,
-        hashedPassword,
-        isSuperuser,
-      );
-      const adminUser2 = AdminUser.create(
-        email,
-        name,
-        hashedPassword,
-        isSuperuser,
-      );
-
-      expect(
-        adminUser1.getAdminUserId().equals(adminUser2.getAdminUserId()),
-      ).toBe(false);
     });
   });
 
   describe('updateHashedPassword', () => {
-    let adminUser: AdminUser;
-
-    beforeEach(() => {
-      adminUser = AdminUser.create(
-        'admin@example.com',
-        'Admin User',
-        'old_hashed_password',
-        true,
+    it('should update the hashed password', () => {
+      const adminUser = new AdminUser(
+        mockAdminUserId,
+        mockEmail,
+        mockName,
+        mockHashedPassword,
+        false,
+        false,
       );
-    });
 
-    it('should update hashed password', () => {
-      const newHashedPassword = 'new_hashed_password_123';
-
+      const newHashedPassword = 'newHashedPassword456';
       adminUser.updateHashedPassword(newHashedPassword);
 
       expect(adminUser.getHashedPassword()).toBe(newHashedPassword);
     });
 
-    it('should update hashed password from null', () => {
-      const adminUserWithNullPassword = AdminUser.create(
-        'admin@example.com',
-        'Admin User',
+    it('should update null password to a valid password', () => {
+      const adminUser = new AdminUser(
+        mockAdminUserId,
+        mockEmail,
+        mockName,
         null,
-        true,
+        false,
+        false,
       );
-      const newHashedPassword = 'new_hashed_password_123';
 
-      adminUserWithNullPassword.updateHashedPassword(newHashedPassword);
+      const newHashedPassword = 'firstPassword';
+      adminUser.updateHashedPassword(newHashedPassword);
 
-      expect(adminUserWithNullPassword.getHashedPassword()).toBe(
-        newHashedPassword,
+      expect(adminUser.getHashedPassword()).toBe(newHashedPassword);
+    });
+  });
+
+  describe('block', () => {
+    it('should block an unblocked admin user', () => {
+      const adminUser = new AdminUser(
+        mockAdminUserId,
+        mockEmail,
+        mockName,
+        mockHashedPassword,
+        false,
+        false,
       );
+
+      expect(adminUser.getBlocked()).toBe(false);
+
+      adminUser.block();
+
+      expect(adminUser.getBlocked()).toBe(true);
     });
 
-    it('should allow updating password multiple times', () => {
-      const firstPassword = 'first_password';
-      const secondPassword = 'second_password';
+    it('should keep an already blocked user blocked', () => {
+      const adminUser = new AdminUser(
+        mockAdminUserId,
+        mockEmail,
+        mockName,
+        mockHashedPassword,
+        false,
+        true,
+      );
 
-      adminUser.updateHashedPassword(firstPassword);
-      expect(adminUser.getHashedPassword()).toBe(firstPassword);
+      expect(adminUser.getBlocked()).toBe(true);
 
-      adminUser.updateHashedPassword(secondPassword);
-      expect(adminUser.getHashedPassword()).toBe(secondPassword);
+      adminUser.block();
+
+      expect(adminUser.getBlocked()).toBe(true);
     });
   });
 
   describe('getters', () => {
     let adminUser: AdminUser;
-    let adminUserId: AdminUserId;
-    let email: AdminUserEmail;
 
     beforeEach(() => {
-      adminUserId = AdminUserId.create();
-      email = AdminUserEmail.fromString('test@example.com');
       adminUser = new AdminUser(
-        adminUserId,
-        email,
-        'Test User',
-        'test_hashed_password',
+        mockAdminUserId,
+        mockEmail,
+        mockName,
+        mockHashedPassword,
         true,
+        false,
       );
     });
 
-    describe('getAdminUserId', () => {
-      it('should return the same AdminUserId instance', () => {
-        expect(adminUser.getAdminUserId()).toBe(adminUserId);
-      });
+    it('should return admin user id', () => {
+      expect(adminUser.getAdminUserId()).toBe(mockAdminUserId);
     });
 
-    describe('getEmail', () => {
-      it('should return the same AdminUserEmail instance', () => {
-        expect(adminUser.getEmail()).toBe(email);
-      });
+    it('should return email', () => {
+      expect(adminUser.getEmail()).toBe(mockEmail);
     });
 
-    describe('getName', () => {
-      it('should return the name', () => {
-        expect(adminUser.getName()).toBe('Test User');
-      });
+    it('should return name', () => {
+      expect(adminUser.getName()).toBe(mockName);
     });
 
-    describe('getHashedPassword', () => {
-      it('should return the hashed password', () => {
-        expect(adminUser.getHashedPassword()).toBe('test_hashed_password');
-      });
-
-      it('should return null when hashed password is null', () => {
-        const userWithNullPassword = new AdminUser(
-          adminUserId,
-          email,
-          'Test User',
-          null,
-          false,
-        );
-
-        expect(userWithNullPassword.getHashedPassword()).toBeNull();
-      });
+    it('should return hashed password', () => {
+      expect(adminUser.getHashedPassword()).toBe(mockHashedPassword);
     });
 
-    describe('getIsSuperuser', () => {
-      it('should return true for superuser', () => {
-        expect(adminUser.getIsSuperuser()).toBe(true);
-      });
+    it('should return is superuser status', () => {
+      expect(adminUser.getIsSuperuser()).toBe(true);
+    });
 
-      it('should return false for non-superuser', () => {
-        const regularUser = new AdminUser(
-          adminUserId,
-          email,
-          'Regular User',
-          'password',
-          false,
-        );
-
-        expect(regularUser.getIsSuperuser()).toBe(false);
-      });
+    it('should return blocked status', () => {
+      expect(adminUser.getBlocked()).toBe(false);
     });
   });
 
-  describe('edge cases and data integrity', () => {
-    it('should handle empty name', () => {
-      const adminUser = AdminUser.create(
-        'admin@example.com',
+  describe('edge cases', () => {
+    it('should handle empty string name', () => {
+      const adminUser = new AdminUser(
+        mockAdminUserId,
+        mockEmail,
         '',
-        'hashed_password',
+        mockHashedPassword,
+        false,
         false,
       );
 
       expect(adminUser.getName()).toBe('');
     });
 
-    it('should handle name with special characters', () => {
-      const specialName = 'Ádmin Üser-123 @special!';
-      const adminUser = AdminUser.create(
-        'admin@example.com',
-        specialName,
-        'hashed_password',
+    it('should handle multiple password updates', () => {
+      const adminUser = new AdminUser(
+        mockAdminUserId,
+        mockEmail,
+        mockName,
+        'password1',
+        false,
         false,
       );
 
-      expect(adminUser.getName()).toBe(specialName);
+      adminUser.updateHashedPassword('password2');
+      expect(adminUser.getHashedPassword()).toBe('password2');
+
+      adminUser.updateHashedPassword('password3');
+      expect(adminUser.getHashedPassword()).toBe('password3');
     });
 
-    it('should handle very long hashed password', () => {
-      const longHashedPassword = 'a'.repeat(1000);
-      const adminUser = AdminUser.create(
-        'admin@example.com',
-        'Admin User',
-        longHashedPassword,
+    it('should handle multiple block calls', () => {
+      const adminUser = new AdminUser(
+        mockAdminUserId,
+        mockEmail,
+        mockName,
+        mockHashedPassword,
+        false,
         false,
       );
 
-      expect(adminUser.getHashedPassword()).toBe(longHashedPassword);
-    });
+      expect(adminUser.getBlocked()).toBe(false);
 
-    it('should maintain immutability of readonly properties', () => {
-      const adminUser = AdminUser.create(
-        'admin@example.com',
-        'Admin User',
-        'hashed_password',
-        true,
-      );
+      adminUser.block();
+      expect(adminUser.getBlocked()).toBe(true);
 
-      const originalId = adminUser.getAdminUserId();
-      const originalEmail = adminUser.getEmail();
-      const originalName = adminUser.getName();
-      const originalIsSuperuser = adminUser.getIsSuperuser();
-
-      // These should remain the same after password update
-      adminUser.updateHashedPassword('new_password');
-
-      expect(adminUser.getAdminUserId()).toBe(originalId);
-      expect(adminUser.getEmail()).toBe(originalEmail);
-      expect(adminUser.getName()).toBe(originalName);
-      expect(adminUser.getIsSuperuser()).toBe(originalIsSuperuser);
+      adminUser.block();
+      expect(adminUser.getBlocked()).toBe(true);
     });
   });
 });

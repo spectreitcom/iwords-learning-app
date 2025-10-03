@@ -29,7 +29,7 @@ export class LoginCommandHandler
     const { userId } = command;
     const adminUser = await this.adminUserRepository.findById(userId);
 
-    if (!adminUser)
+    if (!adminUser || adminUser.getBlocked())
       throw new AppError('WRONG_CREDENTIALS', 'Wrong credentials');
 
     const accessToken = this.accessTokenService.createToken(
@@ -55,6 +55,7 @@ export class LoginCommandHandler
         adminUser.getAdminUserId().value,
         adminUser.getEmail().value,
         adminUser.getName(),
+        adminUser.getBlocked(),
       ),
     };
   }

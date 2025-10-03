@@ -25,6 +25,11 @@ export class GetUserByIdQueryHandler
         `Admin user with id ${adminUserId} not found`,
       );
 
-    return new AdminUserView(adminUser.id, adminUser.email, adminUser.name);
+    return new AdminUserView(
+      adminUser.id,
+      adminUser.email,
+      adminUser.name,
+      adminUser.blocked,
+    );
   }
 }
