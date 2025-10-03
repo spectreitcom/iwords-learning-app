@@ -34,6 +34,11 @@ export class ValidateUserQueryHandler
     if (!isPasswordValid)
       throw new AppError('WRONG_CREDENTIALS', 'Wrong credentials');
 
-    return new AdminUserView(adminUser.id, adminUser.email, adminUser.name);
+    return new AdminUserView(
+      adminUser.id,
+      adminUser.email,
+      adminUser.name,
+      adminUser.blocked,
+    );
   }
 }

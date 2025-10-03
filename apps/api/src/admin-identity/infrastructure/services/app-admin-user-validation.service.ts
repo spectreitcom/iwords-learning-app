@@ -16,4 +16,13 @@ export class AppAdminUserValidationService
     });
     return !!adminUser;
   }
+
+  async isSuperUser(adminUserId: string): Promise<boolean> {
+    const adminUser = await this.prismaService.adminUser.findUnique({
+      where: {
+        id: adminUserId,
+      },
+    });
+    return adminUser?.blocked ?? true;
+  }
 }

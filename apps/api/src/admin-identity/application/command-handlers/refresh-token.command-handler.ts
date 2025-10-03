@@ -42,7 +42,7 @@ export class RefreshTokenCommandHandler
 
     const adminUser = await this.adminUserRepository.findById(result.sub);
 
-    if (!adminUser)
+    if (!adminUser || adminUser.getBlocked())
       throw new AppError('WRONG_CREDENTIALS', 'Wrong refresh token');
 
     const accessToken = this.accessTokenService.createToken(result.sub);
@@ -66,6 +66,7 @@ export class RefreshTokenCommandHandler
         adminUser.getAdminUserId().value,
         adminUser.getEmail().value,
         adminUser.getName(),
+        adminUser.getBlocked(),
       ),
     };
   }

@@ -17,6 +17,7 @@ export class PrismaAdminUserRepository implements AdminUserRepository {
         name: adminUser.getName(),
         password: adminUser.getHashedPassword(),
         isSuperuser: adminUser.getIsSuperuser(),
+        blocked: adminUser.getBlocked(),
       },
       create: {
         id: adminUser.getAdminUserId().value,
@@ -43,6 +44,7 @@ export class PrismaAdminUserRepository implements AdminUserRepository {
       adminUserData.name,
       adminUserData.password,
       adminUserData.isSuperuser,
+      adminUserData.blocked,
     );
   }
 
@@ -58,6 +60,7 @@ export class PrismaAdminUserRepository implements AdminUserRepository {
       adminUserData.name,
       adminUserData.password,
       adminUserData.isSuperuser,
+      adminUserData.blocked,
     );
   }
 }

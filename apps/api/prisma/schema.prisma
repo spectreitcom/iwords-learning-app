@@ -23,6 +23,7 @@ model AdminUser {
   password    String?
   name        String
   isSuperuser Boolean  @default(false)
+  blocked     Boolean  @default(false)
   createdAt   DateTime @default(now())
 }
 

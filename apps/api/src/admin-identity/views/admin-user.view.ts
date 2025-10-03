@@ -3,5 +3,6 @@ export class AdminUserView {
     public readonly adminUserId: string,
     public readonly email: string,
     public readonly name: string,
+    public readonly blocked: boolean,
   ) {}
 }

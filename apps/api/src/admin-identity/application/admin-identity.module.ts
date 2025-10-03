@@ -9,6 +9,7 @@ import { ValidateUserQueryHandler } from './query-handlers/validate-user.query-h
 import { RefreshTokenCommandHandler } from './command-handlers/refresh-token.command-handler';
 import { SignOutCommandHandler } from './command-handlers/sign-out.command-handler';
 import { ChangePasswordCommandHandler } from './command-handlers/change-password.command-handler';
+import { BlockAdminUserCommandHandler } from './command-handlers/block-admin-user.command-handler';
 
 const EVENT_HANDLERS = [];
 
@@ -18,6 +19,7 @@ const COMMAND_HANDLERS = [
   RefreshTokenCommandHandler,
   SignOutCommandHandler,
   ChangePasswordCommandHandler,
+  BlockAdminUserCommandHandler,
 ];
 
 const QUERY_HANDLERS = [GetUserByIdQueryHandler, ValidateUserQueryHandler];
