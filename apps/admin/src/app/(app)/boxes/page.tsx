@@ -153,13 +153,9 @@ function BoxesListTable({ boxes }: { boxes: Box[] }) {
         {boxes.map((box) => (
           <TableRow key={box.boxId}>
             <TableCell>
-              <Link href={`/boxes/${box.boxId}`}>
-                {box.title}
-              </Link>
+              <Link href={`/boxes/${box.boxId}`}>{box.title}</Link>
             </TableCell>
-            <TableCell>
-              {box.expressionContextIds.length}
-            </TableCell>
+            <TableCell>{box.expressionContextIds.length}</TableCell>
             <TableCell className={"flex justify-end"}>
               {/* Actions can be added here similar to ExpressionTableItemActions */}
             </TableCell>
@@ -177,15 +173,11 @@ function NoData() {
         <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
           <Search className="w-8 h-8 text-gray-400" />
         </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          Brak boxów
-        </h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">Brak boxów</h3>
         <p className="text-sm text-gray-500 mb-4">
           Nie znaleziono żadnych boxów w bazie danych.
         </p>
-        <div className="text-xs text-gray-400">
-          Spróbuj dodać nowe boxy
-        </div>
+        <div className="text-xs text-gray-400">Spróbuj dodać nowe boxy</div>
       </CardContent>
     </Card>
   );
