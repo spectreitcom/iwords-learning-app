@@ -30,4 +30,9 @@ export abstract class AdminIdentityApi {
     existingPassword: string,
     newPassword: string,
   ): Promise<void>;
+
+  abstract blockAdminUser(
+    adminUserId: string,
+    userToBlockId: string,
+  ): Promise<void>;
 }
