@@ -68,13 +68,25 @@ async function AwaitedContent({
         />
       </div>
       <div className={"mt-4"}>
-        <SentencesList sentences={expressionContext.sentences ?? []} />
+        <SentencesList
+          sentences={expressionContext.sentences ?? []}
+          expressionId={expressionId}
+          expressionContextId={expressionContextId}
+        />
       </div>
     </div>
   );
 }
 
-function SentencesList({ sentences }: { sentences: Sentence[] }) {
+function SentencesList({
+  sentences,
+  expressionId,
+  expressionContextId,
+}: {
+  sentences: Sentence[];
+  expressionId: string;
+  expressionContextId: string;
+}) {
   if (!sentences.length) return <NoData />;
 
   return (
@@ -92,7 +104,11 @@ function SentencesList({ sentences }: { sentences: Sentence[] }) {
             <TableCell>{sentence.content}</TableCell>
             <TableCell>{sentence.translation}</TableCell>
             <TableCell className={"flex justify-end"}>
-              <SentencesTableItemActions />
+              <SentencesTableItemActions
+                sentence={sentence}
+                expressionId={expressionId}
+                expressionContextId={expressionContextId}
+              />
             </TableCell>
           </TableRow>
         ))}
