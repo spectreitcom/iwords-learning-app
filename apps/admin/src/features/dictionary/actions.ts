@@ -279,3 +279,18 @@ export async function createSentence(
 
   revalidatePath(`/expressions/${expressionId}/context/${expressionContextId}`);
 }
+
+export async function deleteSentence(
+  sentenceId: string,
+  expressionId: string,
+  expressionContextId: string,
+) {
+  await authFetch(`${BACKEND_URL}/dictionary/sentences/${sentenceId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  revalidatePath(`/expressions/${expressionId}/context/${expressionContextId}`);
+}
