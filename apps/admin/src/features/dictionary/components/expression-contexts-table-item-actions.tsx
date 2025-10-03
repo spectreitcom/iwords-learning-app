@@ -186,7 +186,6 @@ function EditVerbModal({
 
   useEffect(() => {
     if (open && expressionContextId) {
-      console.log("here"); // todo;
       getExpressionContextDetails(expressionContextId)
         .then((expressionContextDetails) => {
           setExpressionContextDetails(expressionContextDetails);
@@ -428,7 +427,6 @@ function EditAdjectiveModal({
             translation: expressionContextDetails.translation,
           }}
           onSubmitted={async (data) => {
-            console.log("EditAdjectiveModal", data); // todo;
             await updateAdjectiveExpressionContext(
               expressionContextId,
               expressionContextDetails.expressionId,
