@@ -31,12 +31,12 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>Lekcje</SidebarGroupLabel>
+          <SidebarGroupLabel>Boxes</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href={"/lessons"}>Lista lekcji</Link>
+                  <Link href={"/boxes"}>Lista boxów</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
