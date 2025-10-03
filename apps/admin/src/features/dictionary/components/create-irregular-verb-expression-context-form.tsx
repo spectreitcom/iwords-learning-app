@@ -16,22 +16,21 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 type Props = {
-  expressionId: string;
   onSubmitted: (data: CreateIrregularVerbExpressionContextData) => void;
+  defaultValues?: CreateIrregularVerbExpressionContextData;
 };
 
 export function CreateIrregularVerbExpressionContextForm({
-  expressionId,
   onSubmitted,
+  defaultValues,
 }: Props) {
   const form = useForm({
     resolver: zodResolver(createIrregularVerbExpressionContextSchema),
     defaultValues: {
-      translation: "",
-      expressionId,
-      form1: "",
-      form2: "",
-      form3: "",
+      translation: defaultValues?.translation ?? "",
+      form1: defaultValues?.form1 ?? "",
+      form2: defaultValues?.form2 ?? "",
+      form3: defaultValues?.form3 ?? "",
     },
   });
 

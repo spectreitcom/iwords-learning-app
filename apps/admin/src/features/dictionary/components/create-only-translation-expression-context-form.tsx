@@ -16,19 +16,18 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 type Props = {
-  expressionId: string;
   onSubmitted: (data: CreateOnlyTranslationExpressionContextData) => void;
+  defaultValues?: CreateOnlyTranslationExpressionContextData;
 };
 
 export function CreateOnlyTranslationExpressionContextForm({
-  expressionId,
   onSubmitted,
+  defaultValues,
 }: Props) {
   const form = useForm({
     resolver: zodResolver(createOnlyTranslationExpressionContextSchema),
     defaultValues: {
-      translation: "",
-      expressionId,
+      translation: defaultValues?.translation ?? "",
     },
   });
 

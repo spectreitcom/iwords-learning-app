@@ -133,6 +133,7 @@ export async function getExpressionContextDetails(expressionContextId: string) {
 }
 
 export async function createVerbExpressionContext(
+  expressionId: string,
   data: CreateOnlyTranslationExpressionContextData,
 ) {
   const response = await authFetch(
@@ -142,16 +143,17 @@ export async function createVerbExpressionContext(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...data }),
+      body: JSON.stringify({ ...data, expressionId }),
     },
   );
 
-  revalidatePath(`/expressions/${data.expressionId}`);
+  revalidatePath(`/expressions/${expressionId}`);
 
   return (await response.json()) as CreateExpressionContextResponse;
 }
 
 export async function createAdjectiveExpressionContext(
+  expressionId: string,
   data: CreateOnlyTranslationExpressionContextData,
 ) {
   const response = await authFetch(
@@ -161,16 +163,17 @@ export async function createAdjectiveExpressionContext(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...data }),
+      body: JSON.stringify({ ...data, expressionId }),
     },
   );
 
-  revalidatePath(`/expressions/${data.expressionId}`);
+  revalidatePath(`/expressions/${expressionId}`);
 
   return (await response.json()) as CreateExpressionContextResponse;
 }
 
 export async function createPhrasalVerbExpressionContext(
+  expressionId: string,
   data: CreateOnlyTranslationExpressionContextData,
 ) {
   const response = await authFetch(
@@ -180,16 +183,17 @@ export async function createPhrasalVerbExpressionContext(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...data }),
+      body: JSON.stringify({ ...data, expressionId }),
     },
   );
 
-  revalidatePath(`/expressions/${data.expressionId}`);
+  revalidatePath(`/expressions/${expressionId}`);
 
   return (await response.json()) as CreateExpressionContextResponse;
 }
 
 export async function createAdverbExpressionContext(
+  expressionId: string,
   data: CreateOnlyTranslationExpressionContextData,
 ) {
   const response = await authFetch(
@@ -199,16 +203,17 @@ export async function createAdverbExpressionContext(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...data }),
+      body: JSON.stringify({ ...data, expressionId }),
     },
   );
 
-  revalidatePath(`/expressions/${data.expressionId}`);
+  revalidatePath(`/expressions/${expressionId}`);
 
   return (await response.json()) as CreateExpressionContextResponse;
 }
 
 export async function createNounExpressionContext(
+  expressionId: string,
   data: CreateNounExpressionContextData,
 ) {
   const response = await authFetch(
@@ -218,16 +223,17 @@ export async function createNounExpressionContext(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...data }),
+      body: JSON.stringify({ ...data, expressionId }),
     },
   );
 
-  revalidatePath(`/expressions/${data.expressionId}`);
+  revalidatePath(`/expressions/${expressionId}`);
 
   return (await response.json()) as CreateExpressionContextResponse;
 }
 
 export async function createIrregularVerbExpressionContext(
+  expressionId: string,
   data: CreateIrregularVerbExpressionContextData,
 ) {
   const response = await authFetch(
@@ -239,13 +245,13 @@ export async function createIrregularVerbExpressionContext(
       },
       body: JSON.stringify({
         translation: data.translation,
-        expressionId: data.expressionId,
+        expressionId,
         forms: [data.form1, data.form2, data.form3],
       }),
     },
   );
 
-  revalidatePath(`/expressions/${data.expressionId}`);
+  revalidatePath(`/expressions/${expressionId}`);
 
   return (await response.json()) as CreateExpressionContextResponse;
 }
@@ -269,7 +275,7 @@ export async function createSentence(
   expressionContextId: string,
   payload: CreateSentenceData,
 ) {
-  const response = await authFetch(`${BACKEND_URL}/dictionary/sentences`, {
+  await authFetch(`${BACKEND_URL}/dictionary/sentences`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -293,4 +299,121 @@ export async function deleteSentence(
   });
 
   revalidatePath(`/expressions/${expressionId}/context/${expressionContextId}`);
+}
+
+export async function updateVerbExpressionContext(
+  expressionContextId: string,
+  expressionId: string,
+  data: CreateOnlyTranslationExpressionContextData,
+) {
+  await authFetch(
+    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/verb`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...data }),
+    },
+  );
+
+  revalidatePath(`/expressions/${expressionId}`);
+}
+
+export async function updateAdjectiveExpressionContext(
+  expressionContextId: string,
+  expressionId: string,
+  data: CreateOnlyTranslationExpressionContextData,
+) {
+  await authFetch(
+    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/adjective`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...data }),
+    },
+  );
+
+  revalidatePath(`/expressions/${expressionId}`);
+}
+
+export async function updateAdverbExpressionContext(
+  expressionContextId: string,
+  expressionId: string,
+  data: CreateOnlyTranslationExpressionContextData,
+) {
+  await authFetch(
+    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/adverb`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...data }),
+    },
+  );
+
+  revalidatePath(`/expressions/${expressionId}`);
+}
+
+export async function updatePhrasalAdverbExpressionContext(
+  expressionContextId: string,
+  expressionId: string,
+  data: CreateOnlyTranslationExpressionContextData,
+) {
+  await authFetch(
+    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/phrasal-verb`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...data }),
+    },
+  );
+
+  revalidatePath(`/expressions/${expressionId}`);
+}
+
+export async function updateNounExpressionContext(
+  expressionContextId: string,
+  expressionId: string,
+  data: CreateNounExpressionContextData,
+) {
+  await authFetch(
+    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/noun`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...data }),
+    },
+  );
+
+  revalidatePath(`/expressions/${expressionId}`);
+}
+
+export async function updateIrregularVerbExpressionContext(
+  expressionContextId: string,
+  expressionId: string,
+  data: CreateIrregularVerbExpressionContextData,
+) {
+  await authFetch(
+    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/irregular-verb`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        translation: data.translation,
+        forms: [data.form1, data.form2, data.form3],
+      }),
+    },
+  );
+
+  revalidatePath(`/expressions/${expressionId}`);
 }
