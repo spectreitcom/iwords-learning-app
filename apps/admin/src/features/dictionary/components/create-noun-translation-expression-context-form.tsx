@@ -19,20 +19,19 @@ import { useId } from "react";
 import { Label } from "@/components/ui/label";
 
 type Props = {
-  expressionId: string;
   onSubmitted: (data: CreateNounExpressionContextData) => void;
+  defaultValues?: CreateNounExpressionContextData;
 };
 
 export function CreateNounExpressionContextForm({
-  expressionId,
   onSubmitted,
+  defaultValues,
 }: Props) {
   const form = useForm({
     resolver: zodResolver(createNounExpressionContextSchema),
     defaultValues: {
-      translation: "",
-      expressionId,
-      isCountable: false,
+      translation: defaultValues?.translation ?? "",
+      isCountable: defaultValues?.isCountable ?? false,
     },
   });
 

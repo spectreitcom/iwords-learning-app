@@ -1,7 +1,10 @@
 "use client";
 
-import { ExpressionContext } from "@/features/dictionary/types";
-import { useState } from "react";
+import {
+  ExpressionContext,
+  ExpressionContextDetails,
+} from "@/features/dictionary/types";
+import { ReactNode, useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,7 +23,26 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { deleteExpressionContext } from "@/features/dictionary/actions";
+import {
+  createVerbExpressionContext,
+  deleteExpressionContext,
+  getExpressionContextDetails,
+  updateAdjectiveExpressionContext,
+  updateAdverbExpressionContext,
+  updateIrregularVerbExpressionContext,
+  updateNounExpressionContext,
+  updatePhrasalAdverbExpressionContext,
+  updateVerbExpressionContext,
+} from "@/features/dictionary/actions";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { CreateOnlyTranslationExpressionContextForm } from "@/features/dictionary/components/create-only-translation-expression-context-form";
+import { CreateNounExpressionContextForm } from "@/features/dictionary/components/create-noun-translation-expression-context-form";
+import { CreateIrregularVerbExpressionContextForm } from "@/features/dictionary/components/create-irregular-verb-expression-context-form";
 
 type Props = {
   expressionContext: ExpressionContext;
@@ -30,6 +52,14 @@ export function ExpressionContextsTableItemActions({
   expressionContext,
 }: Props) {
   const [open, setOpen] = useState(false);
+  const [showEditVerbModal, setShowEditVerbModal] = useState(false);
+  const [showEditAdjectiveModal, setShowEditAdjectiveModal] = useState(false);
+  const [showEditAdverbModal, setShowEditAdverbModal] = useState(false);
+  const [showEditPhrasalVerbModal, setShowEditPhrasalVerbModal] =
+    useState(false);
+  const [showEditNounModal, setShowEditNounModal] = useState(false);
+  const [showEditIrregularVerbModal, setShowEditIrregularVerbModal] =
+    useState(false);
 
   return (
     <>
@@ -40,7 +70,38 @@ export function ExpressionContextsTableItemActions({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem>Edytuj</DropdownMenuItem>
+          {expressionContext.type === "verb" && (
+            <DropdownMenuItem onClick={() => setShowEditVerbModal(true)}>
+              Edytuj
+            </DropdownMenuItem>
+          )}
+          {expressionContext.type === "adjective" && (
+            <DropdownMenuItem onClick={() => setShowEditAdjectiveModal(true)}>
+              Edytuj
+            </DropdownMenuItem>
+          )}
+          {expressionContext.type === "adverb" && (
+            <DropdownMenuItem onClick={() => setShowEditAdverbModal(true)}>
+              Edytuj
+            </DropdownMenuItem>
+          )}
+          {expressionContext.type === "phrasal_verb" && (
+            <DropdownMenuItem onClick={() => setShowEditPhrasalVerbModal(true)}>
+              Edytuj
+            </DropdownMenuItem>
+          )}
+          {expressionContext.type === "noun" && (
+            <DropdownMenuItem onClick={() => setShowEditNounModal(true)}>
+              Edytuj
+            </DropdownMenuItem>
+          )}
+          {expressionContext.type === "irregular_verb" && (
+            <DropdownMenuItem
+              onClick={() => setShowEditIrregularVerbModal(true)}
+            >
+              Edytuj
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             variant={"destructive"}
             onClick={() => setOpen(true)}
@@ -50,12 +111,326 @@ export function ExpressionContextsTableItemActions({
         </DropdownMenuContent>
       </DropdownMenu>
 
+      <EditVerbModal
+        expressionContextId={expressionContext.expressionContextId}
+        open={showEditVerbModal}
+        onClose={() => setShowEditVerbModal(false)}
+      />
+
+      <EditAdjectiveModal
+        open={showEditAdjectiveModal}
+        expressionContextId={expressionContext.expressionContextId}
+        onClose={() => setShowEditAdjectiveModal(false)}
+      />
+
+      <EditAdverbModal
+        open={showEditAdverbModal}
+        expressionContextId={expressionContext.expressionContextId}
+        onClose={() => setShowEditAdverbModal(false)}
+      />
+
+      <EditPhrasalVerbModal
+        open={showEditPhrasalVerbModal}
+        expressionContextId={expressionContext.expressionContextId}
+        onClose={() => setShowEditPhrasalVerbModal(false)}
+      />
+
+      <EditNounModal
+        open={showEditNounModal}
+        expressionContextId={expressionContext.expressionContextId}
+        onClose={() => setShowEditNounModal(false)}
+      />
+
+      <EditIrregularVerbModal
+        open={showEditIrregularVerbModal}
+        expressionContextId={expressionContext.expressionContextId}
+        onClose={() => setShowEditIrregularVerbModal(false)}
+      />
+
       <Alert
         open={open}
         onClose={() => setOpen(false)}
         expressionContext={expressionContext}
       />
     </>
+  );
+}
+
+type ModalProps = {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  children: ReactNode;
+};
+
+function Modal({ open, onClose, title, children }: ModalProps) {
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
+        {children}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function EditVerbModal({
+  open,
+  onClose,
+  expressionContextId,
+}: Omit<ModalProps, "title" | "children"> & { expressionContextId: string }) {
+  const [expressionContextDetails, setExpressionContextDetails] =
+    useState<ExpressionContextDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (open) {
+      getExpressionContextDetails(expressionContextId)
+        .then((expressionContextDetails) => {
+          setExpressionContextDetails(expressionContextDetails);
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [open, expressionContextId]);
+
+  return (
+    <Modal open={open} onClose={onClose} title={"Edycja czasownika"}>
+      {loading && <ModalLoader />}
+
+      {expressionContextDetails && !loading && (
+        <CreateOnlyTranslationExpressionContextForm
+          defaultValues={{
+            translation: expressionContextDetails.translation,
+          }}
+          onSubmitted={async (data) => {
+            await updateVerbExpressionContext(
+              expressionContextId,
+              expressionContextDetails.expressionId,
+              data,
+            );
+            onClose();
+          }}
+        />
+      )}
+    </Modal>
+  );
+}
+
+function EditIrregularVerbModal({
+  open,
+  onClose,
+  expressionContextId,
+}: Omit<ModalProps, "title" | "children"> & { expressionContextId: string }) {
+  const [expressionContextDetails, setExpressionContextDetails] =
+    useState<ExpressionContextDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getExpressionContextDetails(expressionContextId)
+      .then((expressionContextDetails) => {
+        setExpressionContextDetails(expressionContextDetails);
+      })
+      .finally(() => setLoading(false));
+  }, [open, expressionContextId]);
+
+  return (
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={"Edycja czasownika nieregularnego"}
+    >
+      {loading && <ModalLoader />}
+
+      {expressionContextDetails && !loading && (
+        <CreateIrregularVerbExpressionContextForm
+          defaultValues={{
+            translation: expressionContextDetails.translation,
+            form1: expressionContextDetails?.forms?.at(0) ?? "",
+            form2: expressionContextDetails?.forms?.at(1) ?? "",
+            form3: expressionContextDetails?.forms?.at(2) ?? "",
+          }}
+          onSubmitted={async (data) => {
+            await updateIrregularVerbExpressionContext(
+              expressionContextId,
+              expressionContextDetails.expressionId,
+              data,
+            );
+            onClose();
+          }}
+        />
+      )}
+    </Modal>
+  );
+}
+
+function EditNounModal({
+  open,
+  onClose,
+  expressionContextId,
+}: Omit<ModalProps, "title" | "children"> & { expressionContextId: string }) {
+  const [expressionContextDetails, setExpressionContextDetails] =
+    useState<ExpressionContextDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getExpressionContextDetails(expressionContextId)
+      .then((expressionContextDetails) => {
+        setExpressionContextDetails(expressionContextDetails);
+      })
+      .finally(() => setLoading(false));
+  }, [open, expressionContextId]);
+
+  return (
+    <Modal open={open} onClose={onClose} title={"Edycja rzeczownika"}>
+      {loading && <ModalLoader />}
+
+      {expressionContextDetails && !loading && (
+        <CreateNounExpressionContextForm
+          defaultValues={{
+            translation: expressionContextDetails.translation,
+            isCountable: expressionContextDetails.isCountable,
+          }}
+          onSubmitted={async (data) => {
+            await updateNounExpressionContext(
+              expressionContextId,
+              expressionContextDetails.expressionId,
+              data,
+            );
+            onClose();
+          }}
+        />
+      )}
+    </Modal>
+  );
+}
+
+function EditPhrasalVerbModal({
+  open,
+  onClose,
+  expressionContextId,
+}: Omit<ModalProps, "title" | "children"> & { expressionContextId: string }) {
+  const [expressionContextDetails, setExpressionContextDetails] =
+    useState<ExpressionContextDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getExpressionContextDetails(expressionContextId)
+      .then((expressionContextDetails) => {
+        setExpressionContextDetails(expressionContextDetails);
+      })
+      .finally(() => setLoading(false));
+  }, [open, expressionContextId]);
+
+  return (
+    <Modal open={open} onClose={onClose} title={"Edycja czasownika frazowego"}>
+      {loading && <ModalLoader />}
+
+      {expressionContextDetails && !loading && (
+        <CreateOnlyTranslationExpressionContextForm
+          defaultValues={{
+            translation: expressionContextDetails.translation,
+          }}
+          onSubmitted={async (data) => {
+            await updatePhrasalAdverbExpressionContext(
+              expressionContextId,
+              expressionContextDetails.expressionId,
+              data,
+            );
+            onClose();
+          }}
+        />
+      )}
+    </Modal>
+  );
+}
+
+function EditAdverbModal({
+  open,
+  onClose,
+  expressionContextId,
+}: Omit<ModalProps, "title" | "children"> & { expressionContextId: string }) {
+  const [expressionContextDetails, setExpressionContextDetails] =
+    useState<ExpressionContextDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getExpressionContextDetails(expressionContextId)
+      .then((expressionContextDetails) => {
+        setExpressionContextDetails(expressionContextDetails);
+      })
+      .finally(() => setLoading(false));
+  }, [open, expressionContextId]);
+
+  return (
+    <Modal open={open} onClose={onClose} title={"Edycja przysłówka"}>
+      {loading && <ModalLoader />}
+
+      {expressionContextDetails && !loading && (
+        <CreateOnlyTranslationExpressionContextForm
+          defaultValues={{
+            translation: expressionContextDetails.translation,
+          }}
+          onSubmitted={async (data) => {
+            await updateAdverbExpressionContext(
+              expressionContextId,
+              expressionContextDetails.expressionId,
+              data,
+            );
+            onClose();
+          }}
+        />
+      )}
+    </Modal>
+  );
+}
+
+function EditAdjectiveModal({
+  open,
+  onClose,
+  expressionContextId,
+}: Omit<ModalProps, "title" | "children"> & { expressionContextId: string }) {
+  const [expressionContextDetails, setExpressionContextDetails] =
+    useState<ExpressionContextDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getExpressionContextDetails(expressionContextId)
+      .then((expressionContextDetails) => {
+        setExpressionContextDetails(expressionContextDetails);
+      })
+      .finally(() => setLoading(false));
+  }, [open, expressionContextId]);
+
+  return (
+    <Modal open={open} onClose={onClose} title={"Edycja przymiotnika"}>
+      {loading && <ModalLoader />}
+
+      {expressionContextDetails && !loading && (
+        <CreateOnlyTranslationExpressionContextForm
+          defaultValues={{
+            translation: expressionContextDetails.translation,
+          }}
+          onSubmitted={async (data) => {
+            await updateAdjectiveExpressionContext(
+              expressionContextId,
+              expressionContextDetails.expressionId,
+              data,
+            );
+            onClose();
+          }}
+        />
+      )}
+    </Modal>
+  );
+}
+
+function ModalLoader() {
+  return (
+    <div className="flex items-center justify-center p-4">
+      <div className="w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
+    </div>
   );
 }
 

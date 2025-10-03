@@ -134,9 +134,8 @@ function AddVerbModal({
   return (
     <Modal open={open} onClose={onClose} title={"Dodaj czasownik"}>
       <CreateOnlyTranslationExpressionContextForm
-        expressionId={expressionId}
         onSubmitted={async (data) => {
-          await createVerbExpressionContext(data);
+          await createVerbExpressionContext(expressionId, data);
           onClose();
         }}
       />
@@ -152,9 +151,8 @@ function AddPhrasalVerbModal({
   return (
     <Modal open={open} onClose={onClose} title={"Dodaj czasownik frazowy"}>
       <CreateOnlyTranslationExpressionContextForm
-        expressionId={expressionId}
         onSubmitted={async (data) => {
-          await createPhrasalVerbExpressionContext(data);
+          await createPhrasalVerbExpressionContext(expressionId, data);
           onClose();
         }}
       />
@@ -170,9 +168,8 @@ function AddNounModal({
   return (
     <Modal open={open} onClose={onClose} title={"Dodaj rzeczownik"}>
       <CreateNounExpressionContextForm
-        expressionId={expressionId}
         onSubmitted={async (data) => {
-          await createNounExpressionContext(data);
+          await createNounExpressionContext(expressionId, data);
           onClose();
         }}
       />
@@ -188,9 +185,8 @@ function AddAdverbModal({
   return (
     <Modal open={open} onClose={onClose} title={"Dodaj przysłówek"}>
       <CreateOnlyTranslationExpressionContextForm
-        expressionId={expressionId}
         onSubmitted={async (data) => {
-          await createAdverbExpressionContext(data);
+          await createAdverbExpressionContext(expressionId, data);
           onClose();
         }}
       />
@@ -206,9 +202,8 @@ function AddIrregularVerbModal({
   return (
     <Modal open={open} onClose={onClose} title={"Dodaj czasownik nieregularny"}>
       <CreateIrregularVerbExpressionContextForm
-        expressionId={expressionId}
         onSubmitted={async (data) => {
-          await createIrregularVerbExpressionContext(data);
+          await createIrregularVerbExpressionContext(expressionId, data);
           onClose();
         }}
       />
@@ -224,9 +219,8 @@ function AddAdjectiveModal({
   return (
     <Modal open={open} onClose={onClose} title={"Dodaj przymiotnik"}>
       <CreateOnlyTranslationExpressionContextForm
-        expressionId={expressionId}
         onSubmitted={async (data) => {
-          await createAdjectiveExpressionContext(data);
+          await createAdjectiveExpressionContext(expressionId, data);
           onClose();
         }}
       />
