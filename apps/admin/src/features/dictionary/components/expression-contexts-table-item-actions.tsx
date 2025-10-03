@@ -185,7 +185,7 @@ function EditVerbModal({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (open) {
+    if (open && expressionContextId) {
       getExpressionContextDetails(expressionContextId)
         .then((expressionContextDetails) => {
           setExpressionContextDetails(expressionContextDetails);
@@ -209,6 +209,7 @@ function EditVerbModal({
               expressionContextDetails.expressionId,
               data,
             );
+            setExpressionContextDetails(null);
             onClose();
           }}
         />
@@ -227,11 +228,13 @@ function EditIrregularVerbModal({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getExpressionContextDetails(expressionContextId)
-      .then((expressionContextDetails) => {
-        setExpressionContextDetails(expressionContextDetails);
-      })
-      .finally(() => setLoading(false));
+    if (open && expressionContextId) {
+      getExpressionContextDetails(expressionContextId)
+        .then((expressionContextDetails) => {
+          setExpressionContextDetails(expressionContextDetails);
+        })
+        .finally(() => setLoading(false));
+    }
   }, [open, expressionContextId]);
 
   return (
@@ -256,6 +259,7 @@ function EditIrregularVerbModal({
               expressionContextDetails.expressionId,
               data,
             );
+            setExpressionContextDetails(null);
             onClose();
           }}
         />
@@ -274,11 +278,13 @@ function EditNounModal({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getExpressionContextDetails(expressionContextId)
-      .then((expressionContextDetails) => {
-        setExpressionContextDetails(expressionContextDetails);
-      })
-      .finally(() => setLoading(false));
+    if (open && expressionContextId) {
+      getExpressionContextDetails(expressionContextId)
+        .then((expressionContextDetails) => {
+          setExpressionContextDetails(expressionContextDetails);
+        })
+        .finally(() => setLoading(false));
+    }
   }, [open, expressionContextId]);
 
   return (
@@ -297,6 +303,7 @@ function EditNounModal({
               expressionContextDetails.expressionId,
               data,
             );
+            setExpressionContextDetails(null);
             onClose();
           }}
         />
@@ -315,11 +322,13 @@ function EditPhrasalVerbModal({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getExpressionContextDetails(expressionContextId)
-      .then((expressionContextDetails) => {
-        setExpressionContextDetails(expressionContextDetails);
-      })
-      .finally(() => setLoading(false));
+    if (open && expressionContextId) {
+      getExpressionContextDetails(expressionContextId)
+        .then((expressionContextDetails) => {
+          setExpressionContextDetails(expressionContextDetails);
+        })
+        .finally(() => setLoading(false));
+    }
   }, [open, expressionContextId]);
 
   return (
@@ -337,6 +346,7 @@ function EditPhrasalVerbModal({
               expressionContextDetails.expressionId,
               data,
             );
+            setExpressionContextDetails(null);
             onClose();
           }}
         />
@@ -355,11 +365,13 @@ function EditAdverbModal({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getExpressionContextDetails(expressionContextId)
-      .then((expressionContextDetails) => {
-        setExpressionContextDetails(expressionContextDetails);
-      })
-      .finally(() => setLoading(false));
+    if (open && expressionContextId) {
+      getExpressionContextDetails(expressionContextId)
+        .then((expressionContextDetails) => {
+          setExpressionContextDetails(expressionContextDetails);
+        })
+        .finally(() => setLoading(false));
+    }
   }, [open, expressionContextId]);
 
   return (
@@ -377,6 +389,7 @@ function EditAdverbModal({
               expressionContextDetails.expressionId,
               data,
             );
+            setExpressionContextDetails(null);
             onClose();
           }}
         />
@@ -395,11 +408,13 @@ function EditAdjectiveModal({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getExpressionContextDetails(expressionContextId)
-      .then((expressionContextDetails) => {
-        setExpressionContextDetails(expressionContextDetails);
-      })
-      .finally(() => setLoading(false));
+    if (open && expressionContextId) {
+      getExpressionContextDetails(expressionContextId)
+        .then((expressionContextDetails) => {
+          setExpressionContextDetails(expressionContextDetails);
+        })
+        .finally(() => setLoading(false));
+    }
   }, [open, expressionContextId]);
 
   return (
@@ -417,6 +432,7 @@ function EditAdjectiveModal({
               expressionContextDetails.expressionId,
               data,
             );
+            setExpressionContextDetails(null);
             onClose();
           }}
         />
