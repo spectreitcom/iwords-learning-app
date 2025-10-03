@@ -3,6 +3,7 @@ import {
   Controller,
   HttpCode,
   HttpStatus,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -18,6 +19,7 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { RefreshTokenDto } from '../dtos/refresh-token.dto';
+import { ChangePasswordForLoggedUserDto } from '../dtos/change-password-for-logged-user.dto';
 
 @ApiTags('Admin Auth')
 @Controller('admin/auth')
@@ -100,5 +102,17 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async signOut(@CurrentAdminUserId() userId: string) {
     return await this.adminIdentityApiService.signOut(userId);
+  }
+
+  @Patch('change-password')
+  changePasswordForLoggedUser(
+    @CurrentAdminUserId() userId: string,
+    @Body() payload: ChangePasswordForLoggedUserDto,
+  ) {
+    return this.adminIdentityApiService.changeLoggedUserPassword(
+      userId,
+      payload.existingPassword,
+      payload.newPassword,
+    );
   }
 }
