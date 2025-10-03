@@ -3,3 +3,15 @@ export type Box = {
   title: string;
   expressionContextIds: string[];
 };
+
+export type BoxItem = {
+  expressionContextId: string;
+  phrase: string;
+  translation: string;
+};
+
+export type BoxDetails = {
+  boxId: string;
+  title: string;
+  boxItems: BoxItem[];
+};
