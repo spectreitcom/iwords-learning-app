@@ -275,7 +275,7 @@ export async function createSentence(
   expressionContextId: string,
   payload: CreateSentenceData,
 ) {
-  const response = await authFetch(`${BACKEND_URL}/dictionary/sentences`, {
+  await authFetch(`${BACKEND_URL}/dictionary/sentences`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
