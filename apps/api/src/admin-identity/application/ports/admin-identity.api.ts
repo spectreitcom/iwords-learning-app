@@ -35,4 +35,9 @@ export abstract class AdminIdentityApi {
     adminUserId: string,
     userToBlockId: string,
   ): Promise<void>;
+
+  abstract unblockAdminUser(
+    adminUserId: string,
+    userToUnblockId: string,
+  ): Promise<void>;
 }

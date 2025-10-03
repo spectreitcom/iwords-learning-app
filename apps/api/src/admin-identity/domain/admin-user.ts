@@ -49,6 +49,10 @@ export class AdminUser {
     this.blocked = true;
   }
 
+  unblock() {
+    this.blocked = false;
+  }
+
   getAdminUserId() {
     return this.adminUserId;
   }

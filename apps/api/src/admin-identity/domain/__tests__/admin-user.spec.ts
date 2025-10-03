@@ -174,6 +174,42 @@ describe('AdminUser', () => {
     });
   });
 
+  describe('unblock', () => {
+    it('should unblock a blocked admin user', () => {
+      const adminUser = new AdminUser(
+        mockAdminUserId,
+        mockEmail,
+        mockName,
+        mockHashedPassword,
+        false,
+        true,
+      );
+
+      expect(adminUser.getBlocked()).toBe(true);
+
+      adminUser.unblock();
+
+      expect(adminUser.getBlocked()).toBe(false);
+    });
+
+    it('should keep an already unblocked user unblocked', () => {
+      const adminUser = new AdminUser(
+        mockAdminUserId,
+        mockEmail,
+        mockName,
+        mockHashedPassword,
+        false,
+        false,
+      );
+
+      expect(adminUser.getBlocked()).toBe(false);
+
+      adminUser.unblock();
+
+      expect(adminUser.getBlocked()).toBe(false);
+    });
+  });
+
   describe('getters', () => {
     let adminUser: AdminUser;
 
@@ -261,6 +297,50 @@ describe('AdminUser', () => {
 
       adminUser.block();
       expect(adminUser.getBlocked()).toBe(true);
+    });
+
+    it('should handle multiple unblock calls', () => {
+      const adminUser = new AdminUser(
+        mockAdminUserId,
+        mockEmail,
+        mockName,
+        mockHashedPassword,
+        false,
+        true,
+      );
+
+      expect(adminUser.getBlocked()).toBe(true);
+
+      adminUser.unblock();
+      expect(adminUser.getBlocked()).toBe(false);
+
+      adminUser.unblock();
+      expect(adminUser.getBlocked()).toBe(false);
+    });
+
+    it('should handle alternating block and unblock calls', () => {
+      const adminUser = new AdminUser(
+        mockAdminUserId,
+        mockEmail,
+        mockName,
+        mockHashedPassword,
+        false,
+        false,
+      );
+
+      expect(adminUser.getBlocked()).toBe(false);
+
+      adminUser.block();
+      expect(adminUser.getBlocked()).toBe(true);
+
+      adminUser.unblock();
+      expect(adminUser.getBlocked()).toBe(false);
+
+      adminUser.block();
+      expect(adminUser.getBlocked()).toBe(true);
+
+      adminUser.unblock();
+      expect(adminUser.getBlocked()).toBe(false);
     });
   });
 });

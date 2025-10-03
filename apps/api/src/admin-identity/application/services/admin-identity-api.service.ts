@@ -12,6 +12,7 @@ import { RefreshTokenCommand } from '../commands/refresh-token.command';
 import { SignOutCommand } from '../commands/sign-out.command';
 import { ChangePasswordCommand } from '../commands/change-password.command';
 import { BlockAdminUserCommand } from '../commands/block-admin-user.command';
+import { UnblockAdminUserCommand } from '../commands/unblock-admin-user.command';
 
 @Injectable()
 export class AdminIdentityApiService implements AdminIdentityApi {
@@ -80,6 +81,14 @@ export class AdminIdentityApiService implements AdminIdentityApi {
     userToBlockId: string,
   ): Promise<void> {
     const command = new BlockAdminUserCommand(adminUserId, userToBlockId);
+    return await this.commandBus.execute(command);
+  }
+
+  async unblockAdminUser(
+    adminUserId: string,
+    userToUnblockId: string,
+  ): Promise<void> {
+    const command = new UnblockAdminUserCommand(adminUserId, userToUnblockId);
     return await this.commandBus.execute(command);
   }
 }
