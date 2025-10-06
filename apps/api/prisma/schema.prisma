@@ -13,6 +13,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Outbox
+model OutboxMessage {
+  id          String @id @default(cuid())
+  eventName   String
+  payload     Json
+  aggregateId String
+
+  // publishing fields
+  status        OutboxStatus @default(PENDING)
+  attempts      Int          @default(0)
+  nextAttemptAt DateTime     @default(now())
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([status, nextAttemptAt])
+}
+
+enum OutboxStatus {
+  PENDING
+  PUBLISHED
+  FAILED
+}
+
+//----------------------------------
+
 // Users Bounded Context
 //----------------------------------
 
