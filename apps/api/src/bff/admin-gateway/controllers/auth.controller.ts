@@ -24,6 +24,7 @@ import { ChangePasswordForLoggedUserDto } from '../dtos/change-password-for-logg
 import { GetAdminUsersListQueryDto } from '../dtos/get-admin-users-list-query.dto';
 import { BlockAdminUserDto } from '../dtos/block-admin-user.dto';
 import { UnblockAdminUserDto } from '../dtos/unblock-admin-user.dto';
+import { AdminRequestResetPasswordDto } from '../dtos/admin-request-reset-password.dto';
 
 @ApiTags('Admin Identity')
 @Controller('admin')
@@ -106,6 +107,22 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async signOut(@CurrentAdminUserId() userId: string) {
     return await this.adminIdentityApiService.signOut(userId);
+  }
+
+  @Public()
+  @ApiOperation({ summary: 'Request reset password' })
+  @ApiResponse({
+    status: 204,
+    description: 'Email with reset password link sent to the user.',
+  })
+  @ApiResponse({ status: 400, description: 'Validation error' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  @Post('auth/request-reset-password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async requestResetPassword(@Body() payload: AdminRequestResetPasswordDto) {
+    return await this.adminIdentityApiService.requestResetPassword(
+      payload.email,
+    );
   }
 
   @ApiBearerAuth('admin-auth')
