@@ -1,4 +1,4 @@
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaClient } from '@prisma/client';
 
 export type CollectionWithPagination<T> = {
   data: T[];
@@ -7,6 +7,6 @@ export type CollectionWithPagination<T> = {
 };
 
 export type PrismaTx = Omit<
-  PrismaService,
+  PrismaClient,
   '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
 >;
