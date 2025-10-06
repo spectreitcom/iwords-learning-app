@@ -11,6 +11,7 @@ import { SignOutCommandHandler } from './command-handlers/sign-out.command-handl
 import { ChangePasswordCommandHandler } from './command-handlers/change-password.command-handler';
 import { BlockAdminUserCommandHandler } from './command-handlers/block-admin-user.command-handler';
 import { UnblockAdminUserCommandHandler } from './command-handlers/unblock-admin-user.command-handler';
+import { GetUsersListQueryHandler } from './query-handlers/get-users-list.query-handler';
 
 const EVENT_HANDLERS = [];
 
@@ -24,7 +25,11 @@ const COMMAND_HANDLERS = [
   UnblockAdminUserCommandHandler,
 ];
 
-const QUERY_HANDLERS = [GetUserByIdQueryHandler, ValidateUserQueryHandler];
+const QUERY_HANDLERS = [
+  GetUserByIdQueryHandler,
+  ValidateUserQueryHandler,
+  GetUsersListQueryHandler,
+];
 
 @Module({
   imports: [InfrastructureModule, PrismaModule],

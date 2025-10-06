@@ -1,6 +1,7 @@
 import { AdminUserView } from '../../views/admin-user.view';
 import { LoginCommandResponse } from '../command-handlers/login.command-handler';
 import { RefreshTokenCommandResponse } from '../command-handlers/refresh-token.command-handler';
+import { GetUsersListQueryResponse } from '../query-handlers/get-users-list.query-handler';
 
 export abstract class AdminIdentityApi {
   abstract getUserById(adminUserId: string): Promise<AdminUserView>;
@@ -40,4 +41,10 @@ export abstract class AdminIdentityApi {
     adminUserId: string,
     userToUnblockId: string,
   ): Promise<void>;
+
+  abstract getUsersList(
+    adminUserId: string,
+    take: number,
+    page: number,
+  ): Promise<GetUsersListQueryResponse>;
 }
