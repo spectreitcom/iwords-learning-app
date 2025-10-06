@@ -13,6 +13,7 @@ import { Pagination } from "@/components/pagination";
 import { Card, CardContent } from "@/components/ui/card";
 import { Search } from "lucide-react";
 import Link from "next/link";
+import { CreateBoxModal } from "@/features/boxes/components/create-box-modal";
 
 const TAKE = 20;
 
@@ -28,6 +29,9 @@ export default async function BoxesPage({ searchParams }: Props) {
     <div>
       <h1 className={"text-2xl"}>Lista boxów</h1>
       <div className={"mt-8"}>
+        <div className={"mt-4 flex justify-end"}>
+          <CreateBoxModal />
+        </div>
         <Suspense fallback={<SkeletonLoader />}>
           <AwaitedContent searchParamsValues={searchParamsValues} />
         </Suspense>

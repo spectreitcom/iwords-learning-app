@@ -4,6 +4,8 @@ import { authFetch } from "@/lib/auth-fetch";
 import { BACKEND_URL } from "@/lib/constants";
 import { CollectionWithPagination } from "@/lib/types";
 import { Box, BoxDetails } from "@/features/boxes/types";
+import { CreateBoxData } from "@/features/boxes/schemas";
+import { revalidatePath } from "next/cache";
 
 export async function getBoxes(page = 1, take = 20) {
   const urlSearchParams = new URLSearchParams();
@@ -32,4 +34,16 @@ export async function getBoxDetails(boxId: string) {
   });
 
   return (await response.json()) as BoxDetails;
+}
+
+export async function createBox(data: CreateBoxData) {
+  await authFetch(`${BACKEND_URL}/boxes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ...data }),
+  });
+
+  revalidatePath("/boxes");
 }
