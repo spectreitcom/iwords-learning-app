@@ -501,8 +501,8 @@ export class DictionaryController {
   ) {
     return await this.dictionaryApiService.updateSentence(
       sentenceId,
-      payload.content,
       payload.translation,
+      payload.content,
     );
   }
 }

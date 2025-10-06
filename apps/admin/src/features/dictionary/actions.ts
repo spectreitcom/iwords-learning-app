@@ -301,6 +301,23 @@ export async function deleteSentence(
   revalidatePath(`/expressions/${expressionId}/context/${expressionContextId}`);
 }
 
+export async function updateSentence(
+  sentenceId: string,
+  expressionId: string,
+  expressionContextId: string,
+  data: CreateSentenceData,
+) {
+  await authFetch(`${BACKEND_URL}/dictionary/sentences/${sentenceId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ...data }),
+  });
+
+  revalidatePath(`/expressions/${expressionId}/context/${expressionContextId}`);
+}
+
 export async function updateVerbExpressionContext(
   expressionContextId: string,
   expressionId: string,

@@ -8,8 +8,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { EllipsisIcon } from "lucide-react";
-import { useState } from "react";
-import { deleteSentence } from "@/features/dictionary/actions";
+import { ReactNode, useState } from "react";
+import { deleteSentence, updateSentence } from "@/features/dictionary/actions";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,6 +21,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Sentence } from "@/features/dictionary/types";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { CreateSentenceForm } from "@/features/dictionary/components/create-sentence-form";
 
 type Props = {
   sentence: Sentence;
@@ -34,6 +41,7 @@ export function SentencesTableItemActions({
   expressionId,
 }: Props) {
   const [open, setOpen] = useState(false);
+  const [showEditSentenceModal, setShowEditSentenceModal] = useState(false);
 
   return (
     <>
@@ -44,7 +52,9 @@ export function SentencesTableItemActions({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem>Edytuj</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setShowEditSentenceModal(true)}>
+            Edytuj
+          </DropdownMenuItem>
           <DropdownMenuItem
             variant={"destructive"}
             onClick={() => setOpen(true)}
@@ -59,6 +69,14 @@ export function SentencesTableItemActions({
         sentence={sentence}
         expressionId={expressionId}
         expressionContextId={expressionContextId}
+      />
+
+      <EditModal
+        open={showEditSentenceModal}
+        onClose={() => setShowEditSentenceModal(false)}
+        expressionId={expressionId}
+        expressionContextId={expressionContextId}
+        sentence={sentence}
       />
     </>
   );
@@ -104,5 +122,54 @@ function Alert({
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
+  );
+}
+
+type ModalProps = {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  children: ReactNode;
+};
+
+function Modal({ open, onClose, title, children }: ModalProps) {
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
+        {children}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function EditModal({
+  open,
+  onClose,
+  expressionContextId,
+  expressionId,
+  sentence,
+}: Omit<ModalProps, "title" | "children"> & {
+  expressionContextId: string;
+  expressionId: string;
+  sentence: Sentence;
+}) {
+  return (
+    <Modal open={open} onClose={onClose} title={"Edycja zdania"}>
+      <CreateSentenceForm
+        defaultValues={sentence}
+        onSubmitted={async (data) => {
+          await updateSentence(
+            sentence.sentenceId,
+            expressionId,
+            expressionContextId,
+            data,
+          );
+          onClose();
+        }}
+      />
+    </Modal>
   );
 }
