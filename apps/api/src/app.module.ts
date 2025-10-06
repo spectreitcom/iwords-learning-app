@@ -6,6 +6,7 @@ import { envSchema } from '../env-schema';
 import { CliModule } from './cli/cli.module';
 import { OutboxModule } from './common/outbox/outbox.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { EmailNotificationModule } from './email-notification/application/email-notification.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ScheduleModule } from '@nestjs/schedule';
       },
     }),
     ScheduleModule.forRoot(),
+    EmailNotificationModule,
     OutboxModule,
     CqrsModule.forRoot(),
     AdminGatewayModule,
