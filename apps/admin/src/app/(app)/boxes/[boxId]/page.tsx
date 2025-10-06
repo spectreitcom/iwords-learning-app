@@ -12,6 +12,7 @@ import {
 import { getBoxDetails } from "@/features/boxes/actions";
 import { BoxItem } from "@/features/boxes/types";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
+import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 
 type Props = {
   params: Promise<{ boxId: string }>;
@@ -33,7 +34,14 @@ export default async function BoxDetailPage({ params }: Props) {
         </h1>
       </div>
       <div className={"mt-4"}>
-        <Suspense fallback={<SkeletonLoader />}>
+        <Suspense
+          fallback={
+            <TableSkeletonLoader
+              headers={["Wyrażenie", "Tłumaczenie", ""]}
+              showPagination={false}
+            />
+          }
+        >
           <AwaitedContent boxDetails={boxDetails} />
         </Suspense>
       </div>
@@ -84,62 +92,5 @@ function BoxItemsTable({ boxItems }: { boxItems: BoxItem[] }) {
         ))}
       </TableBody>
     </Table>
-  );
-}
-
-function SkeletonLoader() {
-  return (
-    <div className="space-y-4">
-      <Table className="w-full">
-        <TableHeader>
-          <TableRow>
-            <TableHead>Wyrażenie</TableHead>
-            <TableHead>Tłumaczenie</TableHead>
-            <TableHead />
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {Array.from({ length: 20 }).map((_, i) => (
-            <TableRow key={i} className="border-b">
-              <TableCell>
-                <div className="flex items-center space-x-3">
-                  <div
-                    className="h-4 w-3/4 bg-gray-200 animate-pulse rounded"
-                    style={{
-                      background:
-                        "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-                      backgroundSize: "200% 100%",
-                      animation: "shimmer 1.5s ease-in-out infinite",
-                    }}
-                  />
-                </div>
-              </TableCell>
-              <TableCell>
-                <div
-                  className="h-4 w-16 bg-gray-200 animate-pulse rounded"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-                    backgroundSize: "200% 100%",
-                    animation: "shimmer 1.5s ease-in-out infinite",
-                  }}
-                />
-              </TableCell>
-              <TableCell>
-                <div
-                  className="w-8 h-4 bg-gray-200 animate-pulse rounded ml-auto"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-                    backgroundSize: "200% 100%",
-                    animation: "shimmer 1.5s ease-in-out infinite",
-                  }}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
   );
 }

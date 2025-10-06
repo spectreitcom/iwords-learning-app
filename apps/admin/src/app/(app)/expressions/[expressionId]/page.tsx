@@ -19,6 +19,7 @@ import { expressionTypeMap } from "@/features/dictionary/utils";
 import { AddExpressionContextMenu } from "@/features/dictionary/components/add-expression-context-menu";
 import { ExpressionContextsTableItemActions } from "@/features/dictionary/components/expression-contexts-table-item-actions";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
+import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 
 const TAKE = 20;
 
@@ -49,7 +50,14 @@ export default async function ExpressionContextsPage({
         <AddExpressionContextMenu expressionId={expressionId} />
       </div>
       <div className={"mt-4"}>
-        <Suspense fallback={<SkeletonLoader />}>
+        <Suspense
+          fallback={
+            <TableSkeletonLoader
+              headers={["Tłumaczenie", "Typ", ""]}
+              showPagination={true}
+            />
+          }
+        >
           <AwaitedContent expressionId={expressionId} page={page} />
         </Suspense>
       </div>
@@ -134,78 +142,5 @@ function ContextsListTable({
         ))}
       </TableBody>
     </Table>
-  );
-}
-
-function SkeletonLoader() {
-  return (
-    <div className="space-y-4">
-      <Table className="w-full">
-        <TableHeader>
-          <TableRow>
-            <TableHead>Tłumaczenie</TableHead>
-            <TableHead>Typ</TableHead>
-            <TableHead />
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {Array.from({ length: 20 }).map((_, i) => (
-            <TableRow key={i} className="border-b">
-              <TableCell>
-                <div className="flex items-center space-x-3">
-                  <div
-                    className="h-4 w-3/4 bg-gray-200 animate-pulse rounded"
-                    style={{
-                      background:
-                        "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-                      backgroundSize: "200% 100%",
-                      animation: "shimmer 1.5s ease-in-out infinite",
-                    }}
-                  />
-                </div>
-              </TableCell>
-              <TableCell>
-                <div
-                  className="h-4 w-16 bg-gray-200 animate-pulse rounded"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-                    backgroundSize: "200% 100%",
-                    animation: "shimmer 1.5s ease-in-out infinite",
-                  }}
-                />
-              </TableCell>
-              <TableCell>
-                <div
-                  className="w-8 h-4 bg-gray-200 animate-pulse rounded ml-auto"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-                    backgroundSize: "200% 100%",
-                    animation: "shimmer 1.5s ease-in-out infinite",
-                  }}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div className="flex justify-end mt-6">
-        <div className="flex items-center space-x-2">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div
-              key={i}
-              className="w-8 h-8 bg-gray-200 animate-pulse rounded"
-              style={{
-                background:
-                  "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-                backgroundSize: "200% 100%",
-                animation: "shimmer 1.5s ease-in-out infinite",
-              }}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
   );
 }

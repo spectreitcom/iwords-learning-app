@@ -18,6 +18,7 @@ import { Sentence } from "@/features/dictionary/types";
 import { SentencesTableItemActions } from "@/features/dictionary/components/sentences-table-item-actions";
 import { AddSentenceModal } from "@/features/dictionary/components/add-sentence-modal";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
+import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 
 type Props = {
   params: Promise<{ expressionId: string; expressionContextId: string }>;
@@ -26,7 +27,14 @@ type Props = {
 export default async function ExpressionContextDetailsPage({ params }: Props) {
   const { expressionId, expressionContextId } = await params;
   return (
-    <Suspense fallback={<SkeletonLoader />}>
+    <Suspense
+      fallback={
+        <TableSkeletonLoader
+          headers={["Zdanie", "Tłumaczenie", ""]}
+          showPagination={false}
+        />
+      }
+    >
       <AwaitedContent
         expressionId={expressionId}
         expressionContextId={expressionContextId}
@@ -121,119 +129,5 @@ function SentencesList({
         ))}
       </TableBody>
     </Table>
-  );
-}
-
-function SkeletonLoader() {
-  return (
-    <div className="space-y-6">
-      {/* Header skeleton */}
-      <div>
-        {/* Back link skeleton */}
-        <div className="flex items-center gap-2 mb-2">
-          <div
-            className="h-4 w-4 bg-gray-200 rounded"
-            style={{
-              background:
-                "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-              backgroundSize: "200% 100%",
-              animation: "shimmer 1.5s ease-in-out infinite",
-            }}
-          />
-          <div
-            className="h-4 w-16 bg-gray-200 rounded"
-            style={{
-              background:
-                "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-              backgroundSize: "200% 100%",
-              animation: "shimmer 1.5s ease-in-out infinite",
-            }}
-          />
-        </div>
-        {/* Title skeleton */}
-        <div
-          className="h-8 w-3/4 bg-gray-200 rounded mb-2"
-          style={{
-            background:
-              "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-            backgroundSize: "200% 100%",
-            animation: "shimmer 1.5s ease-in-out infinite",
-          }}
-        />
-        {/* Type skeleton */}
-        <div
-          className="h-4 w-24 bg-gray-200 rounded"
-          style={{
-            background:
-              "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-            backgroundSize: "200% 100%",
-            animation: "shimmer 1.5s ease-in-out infinite",
-          }}
-        />
-      </div>
-
-      {/* Button skeleton */}
-      <div className="flex justify-end">
-        <div
-          className="h-10 w-32 bg-gray-200 rounded-md"
-          style={{
-            background:
-              "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-            backgroundSize: "200% 100%",
-            animation: "shimmer 1.5s ease-in-out infinite",
-          }}
-        />
-      </div>
-
-      {/* Table skeleton */}
-      <Table className="w-full">
-        <TableHeader>
-          <TableRow>
-            <TableHead>Zdanie</TableHead>
-            <TableHead>Tłumaczenie</TableHead>
-            <TableHead />
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {Array.from({ length: 5 }).map((_, i) => (
-            <TableRow key={i} className="border-b">
-              <TableCell>
-                <div
-                  className="h-4 w-5/6 bg-gray-200 rounded"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-                    backgroundSize: "200% 100%",
-                    animation: "shimmer 1.5s ease-in-out infinite",
-                  }}
-                />
-              </TableCell>
-              <TableCell>
-                <div
-                  className="h-4 w-4/5 bg-gray-200 rounded"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-                    backgroundSize: "200% 100%",
-                    animation: "shimmer 1.5s ease-in-out infinite",
-                  }}
-                />
-              </TableCell>
-              <TableCell className="flex justify-end">
-                <div
-                  className="h-8 w-8 bg-gray-200 rounded"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-                    backgroundSize: "200% 100%",
-                    animation: "shimmer 1.5s ease-in-out infinite",
-                  }}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
   );
 }
