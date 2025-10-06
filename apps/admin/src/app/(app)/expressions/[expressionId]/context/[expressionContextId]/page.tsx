@@ -18,6 +18,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Sentence } from "@/features/dictionary/types";
 import { SentencesTableItemActions } from "@/features/dictionary/components/sentences-table-item-actions";
 import { AddSentenceModal } from "@/features/dictionary/components/add-sentence-modal";
+import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 
 type Props = {
   params: Promise<{ expressionId: string; expressionContextId: string }>;
@@ -87,7 +88,13 @@ function SentencesList({
   expressionId: string;
   expressionContextId: string;
 }) {
-  if (!sentences.length) return <NoData />;
+  if (!sentences.length) return (
+    <NoDataPlaceholder 
+      heading="Brak zdań"
+      description="Nie znaleziono żadnych zdań dla tego kontekstu wyrażenia."
+      description2="Dodaj przykładowe zdania, aby pokazać użycie tego wyrażenia w kontekście"
+    />
+  );
 
   return (
     <Table>
@@ -231,22 +238,3 @@ function SkeletonLoader() {
   );
 }
 
-function NoData() {
-  return (
-    <Card className="w-full mx-auto">
-      <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
-          <FileText className="w-8 h-8 text-gray-400" />
-        </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">Brak zdań</h3>
-        <p className="text-sm text-gray-500 mb-4">
-          Nie znaleziono żadnych zdań dla tego kontekstu wyrażenia.
-        </p>
-        <div className="text-xs text-gray-400">
-          Dodaj przykładowe zdania, aby pokazać użycie tego wyrażenia w
-          kontekście
-        </div>
-      </CardContent>
-    </Card>
-  );
-}

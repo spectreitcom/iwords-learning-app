@@ -12,6 +12,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { getBoxDetails } from "@/features/boxes/actions";
 import { BoxItem } from "@/features/boxes/types";
+import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 
 type Props = {
   params: Promise<{ boxId: string }>;
@@ -46,7 +47,13 @@ async function AwaitedContent({
 }: {
   boxDetails: { boxId: string; title: string; boxItems: BoxItem[] };
 }) {
-  if (!boxDetails.boxItems?.length) return <NoData />;
+  if (!boxDetails.boxItems?.length) return (
+    <NoDataPlaceholder 
+      heading="Brak elementów"
+      description="To pudełko nie zawiera żadnych wyrażeń."
+      description2="Dodaj wyrażenia do tego pudełka"
+    />
+  );
 
   return (
     <div>
@@ -137,23 +144,3 @@ function SkeletonLoader() {
   );
 }
 
-function NoData() {
-  return (
-    <Card className="w-full mx-auto">
-      <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
-          <FileTextIcon className="w-8 h-8 text-gray-400" />
-        </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          Brak elementów
-        </h3>
-        <p className="text-sm text-gray-500 mb-4">
-          To pudełko nie zawiera żadnych wyrażeń.
-        </p>
-        <div className="text-xs text-gray-400">
-          Dodaj wyrażenia do tego pudełka
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
