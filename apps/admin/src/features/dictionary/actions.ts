@@ -8,7 +8,6 @@ import {
   Expression,
   ExpressionContext,
   ExpressionContextDetails,
-  Sentence,
 } from "@/features/dictionary/types";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
