@@ -18,6 +18,9 @@ export class GetBoxesListQueryHandler
     const records = await this.prismaService.box.findMany({
       skip: (page - 1) * take,
       take,
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
     const total = await this.prismaService.box.count();

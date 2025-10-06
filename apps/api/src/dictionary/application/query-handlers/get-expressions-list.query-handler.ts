@@ -28,6 +28,9 @@ export class GetExpressionsListQueryHandler
       },
       take,
       skip: (page - 1) * take,
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
     const total = await this.prismaService.expression.count({

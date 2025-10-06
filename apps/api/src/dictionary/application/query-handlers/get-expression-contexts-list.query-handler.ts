@@ -28,6 +28,9 @@ export class GetExpressionContextsListQueryHandler
       },
       take,
       skip: (page - 1) * take,
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
     const data = records.map(
