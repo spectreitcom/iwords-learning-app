@@ -10,8 +10,6 @@ import {
 } from "@/components/ui/table";
 import { Expression } from "@/features/dictionary/types";
 import { Pagination } from "@/components/pagination";
-import { Card, CardContent } from "@/components/ui/card";
-import { Search } from "lucide-react";
 import { SearchExpressionsInput } from "@/features/dictionary/components/search-expressions-input";
 import { ExpressionTableItemActions } from "@/features/dictionary/components/expression-table-item-actions";
 import { AddExpressionModal } from "@/features/dictionary/components/add-expression-modal";
@@ -61,7 +59,7 @@ async function AwaitedContent({
   if (!expressionsData.data?.length)
     return (
       <div className={"mt-8"}>
-        <NoDataPlaceholder 
+        <NoDataPlaceholder
           heading="Brak wyrażeń"
           description="Nie znaleziono żadnych wyrażeń w bazie danych."
           description2="Spróbuj dodać nowe wyrażenia lub zmienić kryteria wyszukiwania"
@@ -172,4 +170,3 @@ function ExpressionsListTable({ expressions }: { expressions: Expression[] }) {
     </Table>
   );
 }
-

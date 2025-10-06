@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { ChevronLeftIcon, FileTextIcon } from "lucide-react";
+import { ChevronLeftIcon } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent } from "@/components/ui/card";
 import { getBoxDetails } from "@/features/boxes/actions";
 import { BoxItem } from "@/features/boxes/types";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
@@ -47,13 +46,14 @@ async function AwaitedContent({
 }: {
   boxDetails: { boxId: string; title: string; boxItems: BoxItem[] };
 }) {
-  if (!boxDetails.boxItems?.length) return (
-    <NoDataPlaceholder 
-      heading="Brak elementów"
-      description="To pudełko nie zawiera żadnych wyrażeń."
-      description2="Dodaj wyrażenia do tego pudełka"
-    />
-  );
+  if (!boxDetails.boxItems?.length)
+    return (
+      <NoDataPlaceholder
+        heading="Brak elementów"
+        description="To pudełko nie zawiera żadnych wyrażeń."
+        description2="Dodaj wyrażenia do tego pudełka"
+      />
+    );
 
   return (
     <div>
@@ -143,4 +143,3 @@ function SkeletonLoader() {
     </div>
   );
 }
-

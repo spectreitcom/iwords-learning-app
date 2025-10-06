@@ -4,7 +4,7 @@ import {
   getExpressionContextDetails,
 } from "@/features/dictionary/actions";
 import Link from "next/link";
-import { ChevronLeftIcon, FileText } from "lucide-react";
+import { ChevronLeftIcon } from "lucide-react";
 import { expressionTypeMap } from "@/features/dictionary/utils";
 import {
   Table,
@@ -14,7 +14,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent } from "@/components/ui/card";
 import { Sentence } from "@/features/dictionary/types";
 import { SentencesTableItemActions } from "@/features/dictionary/components/sentences-table-item-actions";
 import { AddSentenceModal } from "@/features/dictionary/components/add-sentence-modal";
@@ -88,13 +87,14 @@ function SentencesList({
   expressionId: string;
   expressionContextId: string;
 }) {
-  if (!sentences.length) return (
-    <NoDataPlaceholder 
-      heading="Brak zdań"
-      description="Nie znaleziono żadnych zdań dla tego kontekstu wyrażenia."
-      description2="Dodaj przykładowe zdania, aby pokazać użycie tego wyrażenia w kontekście"
-    />
-  );
+  if (!sentences.length)
+    return (
+      <NoDataPlaceholder
+        heading="Brak zdań"
+        description="Nie znaleziono żadnych zdań dla tego kontekstu wyrażenia."
+        description2="Dodaj przykładowe zdania, aby pokazać użycie tego wyrażenia w kontekście"
+      />
+    );
 
   return (
     <Table>
@@ -237,4 +237,3 @@ function SkeletonLoader() {
     </div>
   );
 }
-

@@ -10,8 +10,6 @@ import {
 } from "@/components/ui/table";
 import { Box } from "@/features/boxes/types";
 import { Pagination } from "@/components/pagination";
-import { Card, CardContent } from "@/components/ui/card";
-import { Search } from "lucide-react";
 import Link from "next/link";
 import { CreateBoxModal } from "@/features/boxes/components/create-box-modal";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
@@ -51,7 +49,7 @@ async function AwaitedContent({
   if (!boxesData.data?.length)
     return (
       <div className={"mt-8"}>
-        <NoDataPlaceholder 
+        <NoDataPlaceholder
           heading="Brak boxów"
           description="Nie znaleziono żadnych boxów w bazie danych."
           description2="Spróbuj dodać nowe boxy"
@@ -174,4 +172,3 @@ function BoxesListTable({ boxes }: { boxes: Box[] }) {
     </Table>
   );
 }
-

@@ -14,8 +14,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Pagination } from "@/components/pagination";
-import { Card, CardContent } from "@/components/ui/card";
-import { Search } from "lucide-react";
 import { ExpressionContext } from "@/features/dictionary/types";
 import { expressionTypeMap } from "@/features/dictionary/utils";
 import { AddExpressionContextMenu } from "@/features/dictionary/components/add-expression-context-menu";
@@ -72,13 +70,14 @@ async function AwaitedContent({
     TAKE,
   );
 
-  if (!expressionContextsData.data?.length) return (
-    <NoDataPlaceholder 
-      heading="Brak kontekstów"
-      description="Nie znaleziono żadnych kontekstów dla tego wyrażenia."
-      description2="Konteksty będą dostępne po dodaniu tłumaczeń dla tego wyrażenia"
-    />
-  );
+  if (!expressionContextsData.data?.length)
+    return (
+      <NoDataPlaceholder
+        heading="Brak kontekstów"
+        description="Nie znaleziono żadnych kontekstów dla tego wyrażenia."
+        description2="Konteksty będą dostępne po dodaniu tłumaczeń dla tego wyrażenia"
+      />
+    );
 
   return (
     <div>
@@ -210,4 +209,3 @@ function SkeletonLoader() {
     </div>
   );
 }
-
