@@ -23,6 +23,7 @@ import { RefreshTokenDto } from '../dtos/refresh-token.dto';
 import { ChangePasswordForLoggedUserDto } from '../dtos/change-password-for-logged-user.dto';
 import { GetAdminUsersListQueryDto } from '../dtos/get-admin-users-list-query.dto';
 import { BlockAdminUserDto } from '../dtos/block-admin-user.dto';
+import { UnblockAdminUserDto } from '../dtos/unblock-admin-user.dto';
 
 @ApiTags('Admin Identity')
 @Controller('admin')
@@ -178,6 +179,26 @@ export class AuthController {
     @Body() payload: BlockAdminUserDto,
   ) {
     return await this.adminIdentityApiService.blockAdminUser(
+      userId,
+      payload.adminUserId,
+    );
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Unblock admin user' })
+  @ApiResponse({
+    status: 204,
+    description: 'Admin user unblocked successfully',
+  })
+  @ApiResponse({ status: 400, description: 'Validation error' })
+  @ApiResponse({ status: 404, description: 'Admin user not found' })
+  @Post('admin-users/unblock')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async unblockAdminUser(
+    @CurrentAdminUserId() userId: string,
+    @Body() payload: UnblockAdminUserDto,
+  ) {
+    return await this.adminIdentityApiService.unblockAdminUser(
       userId,
       payload.adminUserId,
     );
