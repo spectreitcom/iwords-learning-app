@@ -15,6 +15,7 @@ import { BlockAdminUserCommand } from '../commands/block-admin-user.command';
 import { UnblockAdminUserCommand } from '../commands/unblock-admin-user.command';
 import { GetUsersListQueryResponse } from '../query-handlers/get-users-list.query-handler';
 import { GetUsersListQuery } from '../queries/get-users-list.query';
+import { RequestResetPasswordCommand } from '../commands/request-reset-password.command';
 
 @Injectable()
 export class AdminIdentityApiService implements AdminIdentityApi {
@@ -101,5 +102,10 @@ export class AdminIdentityApiService implements AdminIdentityApi {
   ): Promise<GetUsersListQueryResponse> {
     const query = new GetUsersListQuery(adminUserId, page, take);
     return await this.queryBus.execute(query);
+  }
+
+  async requestResetPassword(email: string): Promise<void> {
+    const command = new RequestResetPasswordCommand(email);
+    return await this.commandBus.execute(command);
   }
 }
