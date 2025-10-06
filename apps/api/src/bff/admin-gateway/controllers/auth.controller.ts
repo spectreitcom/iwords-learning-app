@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Patch,
@@ -20,9 +21,10 @@ import {
 } from '@nestjs/swagger';
 import { RefreshTokenDto } from '../dtos/refresh-token.dto';
 import { ChangePasswordForLoggedUserDto } from '../dtos/change-password-for-logged-user.dto';
+import { GetAdminUsersListQueryDto } from '../dtos/get-admin-users-list-query.dto';
 
-@ApiTags('Admin Auth')
-@Controller('admin/auth')
+@ApiTags('Admin Identity')
+@Controller('admin')
 export class AuthController {
   constructor(
     private readonly adminIdentityApiService: AdminIdentityApiService,
@@ -59,7 +61,7 @@ export class AuthController {
       },
     },
   })
-  @Post('sign-in')
+  @Post('auth/sign-in')
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
   signIn(@CurrentAdminUserId() userId: string) {
@@ -88,7 +90,7 @@ export class AuthController {
     },
   })
   @ApiResponse({ status: 401, description: 'Invalid refresh token' })
-  @Post('refresh-token')
+  @Post('auth/refresh-token')
   @HttpCode(HttpStatus.OK)
   async refreshToken(@Body() payload: RefreshTokenDto) {
     return await this.adminIdentityApiService.refreshToken(
@@ -98,13 +100,20 @@ export class AuthController {
 
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Sign out admin user' })
-  @Post('sign-out')
+  @Post('auth/sign-out')
   @HttpCode(HttpStatus.OK)
   async signOut(@CurrentAdminUserId() userId: string) {
     return await this.adminIdentityApiService.signOut(userId);
   }
 
-  @Patch('change-password')
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Change password for logged user' })
+  @ApiResponse({
+    status: 200,
+    description: 'Password changed successfully',
+  })
+  @ApiResponse({ status: 400, description: 'Validation error' })
+  @Patch('auth/change-password')
   changePasswordForLoggedUser(
     @CurrentAdminUserId() userId: string,
     @Body() payload: ChangePasswordForLoggedUserDto,
@@ -113,6 +122,43 @@ export class AuthController {
       userId,
       payload.existingPassword,
       payload.newPassword,
+    );
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Get admin users list' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns a list of admin users',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string', format: 'uuid' },
+              email: { type: 'string', format: 'email' },
+              name: { type: 'string', example: 'John Doe' },
+              blocked: { type: 'boolean', example: false },
+            },
+          },
+        },
+        currentPage: { type: 'number', format: 'int32' },
+        total: { type: 'number', format: 'int32' },
+      },
+    },
+  })
+  @Get('admin-users')
+  async getAdminUsersList(
+    @CurrentAdminUserId() userId: string,
+    @Body() payload: GetAdminUsersListQueryDto,
+  ) {
+    return await this.adminIdentityApiService.getUsersList(
+      userId,
+      payload.take,
+      payload.page,
     );
   }
 }
