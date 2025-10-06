@@ -14,6 +14,8 @@ import { RefreshTokenService } from '../application/ports/refresh-token.service'
 import { JwtRefreshTokenService } from './services/jwt-refresh-token.service';
 import { RefreshTokenStorage } from '../application/ports/refresh-token.storage';
 import { RedisRefreshTokenStorage } from './services/redis-refresh-token.storage';
+import { ResetPasswordTokensStorage } from '../application/ports/reset-password-tokens.storage';
+import { RedisResetPasswordTokensStorage } from './services/redis-reset-password-tokens.storage';
 
 @Module({
   imports: [
@@ -53,6 +55,10 @@ import { RedisRefreshTokenStorage } from './services/redis-refresh-token.storage
       provide: RefreshTokenStorage,
       useClass: RedisRefreshTokenStorage,
     },
+    {
+      provide: ResetPasswordTokensStorage,
+      useClass: RedisResetPasswordTokensStorage,
+    },
   ],
   exports: [
     HashingService,
@@ -61,6 +67,7 @@ import { RedisRefreshTokenStorage } from './services/redis-refresh-token.storage
     AccessTokenService,
     RefreshTokenService,
     RefreshTokenStorage,
+    ResetPasswordTokensStorage,
   ],
 })
 export class InfrastructureModule {}

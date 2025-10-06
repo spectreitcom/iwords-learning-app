@@ -12,6 +12,8 @@ import { ChangePasswordCommandHandler } from './command-handlers/change-password
 import { BlockAdminUserCommandHandler } from './command-handlers/block-admin-user.command-handler';
 import { UnblockAdminUserCommandHandler } from './command-handlers/unblock-admin-user.command-handler';
 import { GetUsersListQueryHandler } from './query-handlers/get-users-list.query-handler';
+import { OutboxModule } from '../../common/outbox/outbox.module';
+import { RequestResetPasswordCommandHandler } from './command-handlers/request-reset-password.command-handler';
 
 const EVENT_HANDLERS = [];
 
@@ -23,6 +25,7 @@ const COMMAND_HANDLERS = [
   ChangePasswordCommandHandler,
   BlockAdminUserCommandHandler,
   UnblockAdminUserCommandHandler,
+  RequestResetPasswordCommandHandler,
 ];
 
 const QUERY_HANDLERS = [
@@ -32,7 +35,7 @@ const QUERY_HANDLERS = [
 ];
 
 @Module({
-  imports: [InfrastructureModule, PrismaModule],
+  imports: [InfrastructureModule, PrismaModule, OutboxModule],
   providers: [
     ...EVENT_HANDLERS,
     ...COMMAND_HANDLERS,
