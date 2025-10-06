@@ -13,6 +13,8 @@ import { SignOutCommand } from '../commands/sign-out.command';
 import { ChangePasswordCommand } from '../commands/change-password.command';
 import { BlockAdminUserCommand } from '../commands/block-admin-user.command';
 import { UnblockAdminUserCommand } from '../commands/unblock-admin-user.command';
+import { GetUsersListQueryResponse } from '../query-handlers/get-users-list.query-handler';
+import { GetUsersListQuery } from '../queries/get-users-list.query';
 
 @Injectable()
 export class AdminIdentityApiService implements AdminIdentityApi {
@@ -90,5 +92,14 @@ export class AdminIdentityApiService implements AdminIdentityApi {
   ): Promise<void> {
     const command = new UnblockAdminUserCommand(adminUserId, userToUnblockId);
     return await this.commandBus.execute(command);
+  }
+
+  async getUsersList(
+    adminUserId: string,
+    take: number,
+    page: number,
+  ): Promise<GetUsersListQueryResponse> {
+    const query = new GetUsersListQuery(adminUserId, page, take);
+    return await this.queryBus.execute(query);
   }
 }
