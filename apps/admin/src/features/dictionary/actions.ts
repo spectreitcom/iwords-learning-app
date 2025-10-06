@@ -8,6 +8,7 @@ import {
   Expression,
   ExpressionContext,
   ExpressionContextDetails,
+  Sentence,
 } from "@/features/dictionary/types";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -296,6 +297,23 @@ export async function deleteSentence(
     headers: {
       "Content-Type": "application/json",
     },
+  });
+
+  revalidatePath(`/expressions/${expressionId}/context/${expressionContextId}`);
+}
+
+export async function updateSentence(
+  sentenceId: string,
+  expressionId: string,
+  expressionContextId: string,
+  data: CreateSentenceData,
+) {
+  await authFetch(`${BACKEND_URL}/dictionary/sentences/${sentenceId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ...data }),
   });
 
   revalidatePath(`/expressions/${expressionId}/context/${expressionContextId}`);
