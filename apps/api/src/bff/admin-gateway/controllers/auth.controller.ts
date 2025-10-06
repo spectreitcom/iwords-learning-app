@@ -22,6 +22,7 @@ import {
 import { RefreshTokenDto } from '../dtos/refresh-token.dto';
 import { ChangePasswordForLoggedUserDto } from '../dtos/change-password-for-logged-user.dto';
 import { GetAdminUsersListQueryDto } from '../dtos/get-admin-users-list-query.dto';
+import { BlockAdminUserDto } from '../dtos/block-admin-user.dto';
 
 @ApiTags('Admin Identity')
 @Controller('admin')
@@ -159,6 +160,26 @@ export class AuthController {
       userId,
       payload.take,
       payload.page,
+    );
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Block admin user' })
+  @ApiResponse({
+    status: 204,
+    description: 'Admin user blocked successfully',
+  })
+  @ApiResponse({ status: 400, description: 'Validation error' })
+  @ApiResponse({ status: 404, description: 'Admin user not found' })
+  @Post('admin-users/block')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async blockAdminUser(
+    @CurrentAdminUserId() userId: string,
+    @Body() payload: BlockAdminUserDto,
+  ) {
+    return await this.adminIdentityApiService.blockAdminUser(
+      userId,
+      payload.adminUserId,
     );
   }
 }
