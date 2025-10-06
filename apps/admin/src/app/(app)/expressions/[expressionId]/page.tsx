@@ -14,12 +14,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Pagination } from "@/components/pagination";
-import { Card, CardContent } from "@/components/ui/card";
-import { Search } from "lucide-react";
 import { ExpressionContext } from "@/features/dictionary/types";
 import { expressionTypeMap } from "@/features/dictionary/utils";
 import { AddExpressionContextMenu } from "@/features/dictionary/components/add-expression-context-menu";
 import { ExpressionContextsTableItemActions } from "@/features/dictionary/components/expression-contexts-table-item-actions";
+import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 
 const TAKE = 20;
 
@@ -71,7 +70,14 @@ async function AwaitedContent({
     TAKE,
   );
 
-  if (!expressionContextsData.data?.length) return <NoData />;
+  if (!expressionContextsData.data?.length)
+    return (
+      <NoDataPlaceholder
+        heading="Brak kontekstów"
+        description="Nie znaleziono żadnych kontekstów dla tego wyrażenia."
+        description2="Konteksty będą dostępne po dodaniu tłumaczeń dla tego wyrażenia"
+      />
+    );
 
   return (
     <div>
@@ -201,26 +207,5 @@ function SkeletonLoader() {
         </div>
       </div>
     </div>
-  );
-}
-
-function NoData() {
-  return (
-    <Card className="w-full mx-auto">
-      <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
-          <Search className="w-8 h-8 text-gray-400" />
-        </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          Brak kontekstów
-        </h3>
-        <p className="text-sm text-gray-500 mb-4">
-          Nie znaleziono żadnych kontekstów dla tego wyrażenia.
-        </p>
-        <div className="text-xs text-gray-400">
-          Konteksty będą dostępne po dodaniu tłumaczeń dla tego wyrażenia
-        </div>
-      </CardContent>
-    </Card>
   );
 }

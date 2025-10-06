@@ -10,12 +10,11 @@ import {
 } from "@/components/ui/table";
 import { Expression } from "@/features/dictionary/types";
 import { Pagination } from "@/components/pagination";
-import { Card, CardContent } from "@/components/ui/card";
-import { Search } from "lucide-react";
 import { SearchExpressionsInput } from "@/features/dictionary/components/search-expressions-input";
 import { ExpressionTableItemActions } from "@/features/dictionary/components/expression-table-item-actions";
 import { AddExpressionModal } from "@/features/dictionary/components/add-expression-modal";
 import Link from "next/link";
+import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 
 const TAKE = 20;
 
@@ -60,7 +59,11 @@ async function AwaitedContent({
   if (!expressionsData.data?.length)
     return (
       <div className={"mt-8"}>
-        <NoData />
+        <NoDataPlaceholder
+          heading="Brak wyrażeń"
+          description="Nie znaleziono żadnych wyrażeń w bazie danych."
+          description2="Spróbuj dodać nowe wyrażenia lub zmienić kryteria wyszukiwania"
+        />
       </div>
     );
   return (
@@ -165,26 +168,5 @@ function ExpressionsListTable({ expressions }: { expressions: Expression[] }) {
         ))}
       </TableBody>
     </Table>
-  );
-}
-
-function NoData() {
-  return (
-    <Card className="w-full mx-auto">
-      <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
-          <Search className="w-8 h-8 text-gray-400" />
-        </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          Brak wyrażeń
-        </h3>
-        <p className="text-sm text-gray-500 mb-4">
-          Nie znaleziono żadnych wyrażeń w bazie danych.
-        </p>
-        <div className="text-xs text-gray-400">
-          Spróbuj dodać nowe wyrażenia lub zmienić kryteria wyszukiwania
-        </div>
-      </CardContent>
-    </Card>
   );
 }
