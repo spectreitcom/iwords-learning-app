@@ -47,3 +47,14 @@ export async function createBox(data: CreateBoxData) {
 
   revalidatePath("/boxes");
 }
+
+export async function deleteBox(boxId: string) {
+  await authFetch(`${BACKEND_URL}/boxes/${boxId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  revalidatePath("/boxes");
+}

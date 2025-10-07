@@ -14,6 +14,7 @@ import Link from "next/link";
 import { CreateBoxModal } from "@/features/boxes/components/create-box-modal";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
+import { BoxesTableItemActions } from "@/features/boxes/components/boxes-table-item-actions";
 
 const TAKE = 20;
 
@@ -99,7 +100,7 @@ function BoxesListTable({ boxes }: { boxes: Box[] }) {
             </TableCell>
             <TableCell>{box.expressionContextIds.length}</TableCell>
             <TableCell className={"flex justify-end"}>
-              {/* Actions can be added here similar to ExpressionTableItemActions */}
+              <BoxesTableItemActions box={box} />
             </TableCell>
           </TableRow>
         ))}
