@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Box } from "@/features/boxes/types";
 import { deleteBox } from "@/features/boxes/actions";
+import { EditBoxModal } from "@/features/boxes/components/edit-box-modal";
 
 type Props = {
   box: Box;
@@ -28,6 +29,7 @@ type Props = {
 
 export function BoxesTableItemActions({ box }: Props) {
   const [showAlert, setShowAlert] = useState(false);
+  const [showEditBoxModal, setShowEditBoxModal] = useState(false);
 
   return (
     <>
@@ -38,7 +40,9 @@ export function BoxesTableItemActions({ box }: Props) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem>Edytuj</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setShowEditBoxModal(true)}>
+            Edytuj
+          </DropdownMenuItem>
           <DropdownMenuItem
             variant={"destructive"}
             onClick={() => setShowAlert(true)}
@@ -49,6 +53,11 @@ export function BoxesTableItemActions({ box }: Props) {
       </DropdownMenu>
 
       <Alert box={box} open={showAlert} onClose={() => setShowAlert(false)} />
+      <EditBoxModal
+        box={box}
+        open={showEditBoxModal}
+        onClose={() => setShowEditBoxModal(false)}
+      />
     </>
   );
 }
