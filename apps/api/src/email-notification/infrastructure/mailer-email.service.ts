@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EmailService } from '../application/ports/email.service';
-import { BaseEmail } from '../application/base-email';
+import { BaseEmail } from '../application/emails/base-email';
 import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
