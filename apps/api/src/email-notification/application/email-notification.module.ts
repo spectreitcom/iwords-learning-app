@@ -3,6 +3,7 @@ import { AdminRequestedResetPasswordEventHandler } from './event-handlers/admin-
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { InfrastructureModule } from '../infrastructure/infrastructure.module';
+import { join } from 'node:path';
 
 const EVENT_HANDLERS = [AdminRequestedResetPasswordEventHandler];
 
@@ -19,7 +20,7 @@ const EVENT_HANDLERS = [AdminRequestedResetPasswordEventHandler];
         from: '<no-reply@example.com>',
       },
       template: {
-        dir: __dirname + '/templates',
+        dir: join(__dirname, 'templates'),
         adapter: new HandlebarsAdapter(),
         options: { strict: true },
       },

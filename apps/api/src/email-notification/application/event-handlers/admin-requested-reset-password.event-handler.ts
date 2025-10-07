@@ -3,6 +3,7 @@ import { Logger } from '@nestjs/common';
 import { IntegrationEvent } from '../../../common/outbox/types';
 import { EmailService } from '../ports/email.service';
 import { RequestedResetPasswordEmail } from '../emails/requested-reset-password.email';
+import { ConfigService } from '@nestjs/config';
 
 type EventPayload = {
   email: string;
@@ -17,15 +18,17 @@ export class AdminRequestedResetPasswordEventHandler
     AdminRequestedResetPasswordEventHandler.name,
   );
 
-  constructor(private readonly emailService: EmailService) {}
+  constructor(
+    private readonly emailService: EmailService,
+    private readonly configService: ConfigService,
+  ) {}
 
   async handle(event: IntegrationEvent<EventPayload>) {
     this.logger.debug(JSON.stringify(event));
+    const { email, resetPasswordToken } = event.payload;
+    const FRONTEND_URL = this.configService.get<string>('ADMIN_FRONTEND_URL')!;
     await this.emailService.send(
-      new RequestedResetPasswordEmail(
-        event.payload.email,
-        event.payload.resetPasswordToken,
-      ),
+      new RequestedResetPasswordEmail(email, FRONTEND_URL, resetPasswordToken),
     );
   }
 }

@@ -14,4 +14,9 @@ export const envSchema = Joi.object({
 
   // Redis configuration
   REDIS_URI: Joi.string().uri().required().description('Redis connection URL'),
+
+  ADMIN_FRONTEND_URL: Joi.string()
+    .uri()
+    .required()
+    .description('Admin frontend URL'),
 });
