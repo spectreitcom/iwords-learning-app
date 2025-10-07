@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { EventBus } from '@nestjs/cqrs';
 import { PrismaService } from '../prisma/prisma.service';
+import { IntegrationEvent, IntegrationEventType } from './types';
 
 @Injectable()
 export class OutboxPublisher {
@@ -26,7 +27,15 @@ export class OutboxPublisher {
 
     for (const msg of batch) {
       try {
-        this.eventBus.publish(msg);
+        this.eventBus.publish(
+          new IntegrationEvent(
+            msg.eventName as IntegrationEventType,
+            msg.payload,
+            {
+              aggregateId: msg.aggregateId,
+            },
+          ),
+        );
         await this.prisma.outboxMessage.update({
           where: {
             id: msg.id,
