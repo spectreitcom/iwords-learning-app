@@ -24,6 +24,7 @@ export class AdminRequestedResetPasswordEventHandler
   ) {}
 
   async handle(event: IntegrationEvent<EventPayload>) {
+    if (event.type !== 'admin-identity.requested-reset-password') return;
     this.logger.debug(JSON.stringify(event));
     const { email, resetPasswordToken } = event.payload;
     const FRONTEND_URL = this.configService.get<string>('ADMIN_FRONTEND_URL')!;
