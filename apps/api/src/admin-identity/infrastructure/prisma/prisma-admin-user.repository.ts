@@ -4,13 +4,15 @@ import { PrismaService } from '../../../common/prisma/prisma.service';
 import { AdminUser } from '../../domain/admin-user';
 import { AdminUserId } from '../../domain/value-objects/admin-user-id';
 import { AdminUserEmail } from '../../domain/value-objects/admin-user-email';
+import { PrismaTx } from '../../../common/types';
 
 @Injectable()
 export class PrismaAdminUserRepository implements AdminUserRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async save(adminUser: AdminUser): Promise<void> {
-    await this.prismaService.adminUser.upsert({
+  async save(adminUser: AdminUser, tx?: PrismaTx): Promise<void> {
+    const prisma = tx ?? this.prismaService;
+    await prisma.adminUser.upsert({
       where: { id: adminUser.getAdminUserId().value },
       update: {
         email: adminUser.getEmail().value,
@@ -18,6 +20,7 @@ export class PrismaAdminUserRepository implements AdminUserRepository {
         password: adminUser.getHashedPassword(),
         isSuperuser: adminUser.getIsSuperuser(),
         blocked: adminUser.getBlocked(),
+        resetPasswordToken: adminUser.getResetPasswordToken(),
       },
       create: {
         id: adminUser.getAdminUserId().value,
@@ -25,6 +28,7 @@ export class PrismaAdminUserRepository implements AdminUserRepository {
         name: adminUser.getName(),
         password: adminUser.getHashedPassword(),
         isSuperuser: adminUser.getIsSuperuser(),
+        resetPasswordToken: adminUser.getResetPasswordToken(),
       },
     });
   }
@@ -45,6 +49,7 @@ export class PrismaAdminUserRepository implements AdminUserRepository {
       adminUserData.password,
       adminUserData.isSuperuser,
       adminUserData.blocked,
+      adminUserData.resetPasswordToken,
     );
   }
 
@@ -61,6 +66,27 @@ export class PrismaAdminUserRepository implements AdminUserRepository {
       adminUserData.password,
       adminUserData.isSuperuser,
       adminUserData.blocked,
+      adminUserData.resetPasswordToken,
+    );
+  }
+
+  async findByResetPasswordToken(token: string): Promise<AdminUser | null> {
+    const adminUserData = await this.prismaService.adminUser.findFirst({
+      where: {
+        resetPasswordToken: token,
+      },
+    });
+
+    if (!adminUserData) return null;
+
+    return new AdminUser(
+      AdminUserId.fromString(adminUserData.id),
+      AdminUserEmail.fromString(adminUserData.email),
+      adminUserData.name,
+      adminUserData.password,
+      adminUserData.isSuperuser,
+      adminUserData.blocked,
+      adminUserData.resetPasswordToken,
     );
   }
 }
