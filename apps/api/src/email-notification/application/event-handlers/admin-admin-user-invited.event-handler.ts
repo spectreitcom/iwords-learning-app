@@ -2,8 +2,8 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { Logger } from '@nestjs/common';
 import { IntegrationEvent } from '../../../common/outbox/types';
 import { EmailService } from '../ports/email.service';
-import { RequestedResetPasswordEmail } from '../emails/requested-reset-password.email';
 import { ConfigService } from '@nestjs/config';
+import { AdminUserInvitedEmail } from '../emails/admin-user-invited.email';
 
 type EventPayload = {
   email: string;
@@ -11,12 +11,10 @@ type EventPayload = {
 };
 
 @EventsHandler(IntegrationEvent)
-export class AdminRequestedResetPasswordEventHandler
+export class AdminAdminUserInvitedEventHandler
   implements IEventHandler<IntegrationEvent<EventPayload>>
 {
-  private readonly logger = new Logger(
-    AdminRequestedResetPasswordEventHandler.name,
-  );
+  private readonly logger = new Logger(AdminAdminUserInvitedEventHandler.name);
 
   constructor(
     private readonly emailService: EmailService,
@@ -24,12 +22,12 @@ export class AdminRequestedResetPasswordEventHandler
   ) {}
 
   async handle(event: IntegrationEvent<EventPayload>) {
-    if (event.type !== 'admin-identity.requested-reset-password') return;
+    if (event.type !== 'admin-identity.user-invited') return;
     this.logger.debug(JSON.stringify(event));
     const { email, resetPasswordToken } = event.payload;
     const FRONTEND_URL = this.configService.get<string>('ADMIN_FRONTEND_URL')!;
     await this.emailService.send(
-      new RequestedResetPasswordEmail(email, FRONTEND_URL, resetPasswordToken),
+      new AdminUserInvitedEmail(email, FRONTEND_URL, resetPasswordToken),
     );
   }
 }
