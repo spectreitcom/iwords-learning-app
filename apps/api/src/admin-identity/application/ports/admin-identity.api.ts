@@ -53,4 +53,6 @@ export abstract class AdminIdentityApi {
   abstract resetPassword(token: string, newPassword: string): Promise<void>;
 
   abstract inviteUser(email: string, name: string): Promise<void>;
+
+  abstract resendInvitationEmail(adminUserId: string): Promise<void>;
 }
