@@ -43,13 +43,14 @@ enum OutboxStatus {
 
 // Admin Identity Bounded Context
 model AdminUser {
-  id          String   @id @default(uuid())
-  email       String   @unique
-  password    String?
-  name        String
-  isSuperuser Boolean  @default(false)
-  blocked     Boolean  @default(false)
-  createdAt   DateTime @default(now())
+  id                 String   @id @default(uuid())
+  email              String   @unique
+  password           String?
+  name               String
+  isSuperuser        Boolean  @default(false)
+  blocked            Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  resetPasswordToken String?
 }
 
 //----------------------------------

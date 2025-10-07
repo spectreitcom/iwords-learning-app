@@ -27,6 +27,11 @@ export class RedisResetPasswordTokensStorage
     return this.redisClient.get(this.getKey(userId));
   }
 
+  async validate(userId: string): Promise<boolean> {
+    const token = await this.getToken(userId);
+    return !!token;
+  }
+
   private getKey(userId: string) {
     return `resetPasswordToken:${userId}`;
   }

@@ -6,6 +6,7 @@ import { OutboxService } from '../../../common/outbox/outbox.service';
 import { ResetPasswordTokensStorage } from '../ports/reset-password-tokens.storage';
 import { randomUUID } from 'node:crypto';
 import { IntegrationEvent } from '../../../common/outbox/types';
+import { AdminUserRepository } from '../ports/admin-user.repository';
 
 @CommandHandler(RequestResetPasswordCommand)
 export class RequestResetPasswordCommandHandler
@@ -15,16 +16,13 @@ export class RequestResetPasswordCommandHandler
     private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
     private readonly resetTokensStorage: ResetPasswordTokensStorage,
+    private readonly adminUserRepository: AdminUserRepository,
   ) {}
 
   async execute(command: RequestResetPasswordCommand): Promise<void> {
     const { email } = command;
     await this.prismaService.$transaction(async (prisma) => {
-      const adminUser = await prisma.adminUser.findUnique({
-        where: {
-          email,
-        },
-      });
+      const adminUser = await this.adminUserRepository.findByEmail(email);
 
       if (!adminUser) {
         throw new AppError(
@@ -35,18 +33,25 @@ export class RequestResetPasswordCommandHandler
 
       const resetPasswordToken = randomUUID();
 
+      adminUser.updateResetPasswordToken(resetPasswordToken);
+
       const event = new IntegrationEvent<{
         resetPasswordToken: string;
         email: string;
       }>(
         'admin-identity.requested-reset-password',
-        { resetPasswordToken, email: adminUser.email },
+        { resetPasswordToken, email: adminUser.getEmail().value },
         {
-          aggregateId: adminUser.id,
+          aggregateId: adminUser.getAdminUserId().value,
         },
       );
 
-      await this.resetTokensStorage.insert(adminUser.id, resetPasswordToken);
+      await this.resetTokensStorage.insert(
+        adminUser.getAdminUserId().value,
+        resetPasswordToken,
+      );
+
+      await this.adminUserRepository.save(adminUser, prisma);
       await this.outboxService.enqueue(event, prisma);
     });
   }

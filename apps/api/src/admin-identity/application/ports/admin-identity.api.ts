@@ -49,4 +49,6 @@ export abstract class AdminIdentityApi {
   ): Promise<GetUsersListQueryResponse>;
 
   abstract requestResetPassword(email: string): Promise<void>;
+
+  abstract resetPassword(token: string, newPassword: string): Promise<void>;
 }
