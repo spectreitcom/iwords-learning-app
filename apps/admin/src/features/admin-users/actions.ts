@@ -13,7 +13,7 @@ export async function getAdminUsers(page = 1, take = 20) {
   urlSearchParams.append("take", take.toString());
 
   const response = await authFetch(
-    `${BACKEND_URL}/admin/admin-users?${urlSearchParams.toString()}`,
+    `${BACKEND_URL}/admin-users?${urlSearchParams.toString()}`,
     {
       method: "GET",
       headers: {
@@ -26,7 +26,7 @@ export async function getAdminUsers(page = 1, take = 20) {
 }
 
 export async function inviteAdminUser(data: InviteAdminUserData) {
-  await authFetch(`${BACKEND_URL}/admin/admin-users/invite`, {
+  await authFetch(`${BACKEND_URL}/admin-users/invite`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -38,7 +38,7 @@ export async function inviteAdminUser(data: InviteAdminUserData) {
 }
 
 export async function blockAdminUser(adminUserId: string) {
-  await authFetch(`${BACKEND_URL}/admin/admin-users/block`, {
+  await authFetch(`${BACKEND_URL}/admin-users/block`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -50,7 +50,7 @@ export async function blockAdminUser(adminUserId: string) {
 }
 
 export async function unblockAdminUser(adminUserId: string) {
-  await authFetch(`${BACKEND_URL}/admin/admin-users/unblock`, {
+  await authFetch(`${BACKEND_URL}/admin-users/unblock`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
