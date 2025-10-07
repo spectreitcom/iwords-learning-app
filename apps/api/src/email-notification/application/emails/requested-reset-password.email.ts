@@ -1,4 +1,4 @@
-import { BaseEmail } from '../../infrastructure/base-email';
+import { BaseEmail } from '../base-email';
 
 export class RequestedResetPasswordEmail extends BaseEmail {
   constructor(recipient: string, token: string) {
