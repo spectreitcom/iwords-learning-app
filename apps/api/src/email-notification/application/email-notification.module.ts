@@ -4,8 +4,12 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { InfrastructureModule } from '../infrastructure/infrastructure.module';
 import { join } from 'node:path';
+import { AdminAdminUserInvitedEventHandler } from './event-handlers/admin-admin-user-invited.event-handler';
 
-const EVENT_HANDLERS = [AdminRequestedResetPasswordEventHandler];
+const EVENT_HANDLERS = [
+  AdminRequestedResetPasswordEventHandler,
+  AdminAdminUserInvitedEventHandler,
+];
 
 @Module({
   imports: [

@@ -16,6 +16,7 @@ import { OutboxModule } from '../../common/outbox/outbox.module';
 import { RequestResetPasswordCommandHandler } from './command-handlers/request-reset-password.command-handler';
 import { ResetPasswordCommandHandler } from './command-handlers/reset-password.command-handler';
 import { InviteUserCommandHandler } from './command-handlers/invite-user.command-handler';
+import { ResendInvitationEmailCommandHandler } from './command-handlers/resend-invitation-email.command-handler';
 
 const EVENT_HANDLERS = [];
 
@@ -30,6 +31,7 @@ const COMMAND_HANDLERS = [
   RequestResetPasswordCommandHandler,
   ResetPasswordCommandHandler,
   InviteUserCommandHandler,
+  ResendInvitationEmailCommandHandler,
 ];
 
 const QUERY_HANDLERS = [
