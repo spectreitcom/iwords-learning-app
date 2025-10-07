@@ -1,6 +1,8 @@
 import { JsonValue } from '@prisma/client/runtime/library';
 
-export type IntegrationEventType = 'admin-identity.requested-reset-password';
+export type IntegrationEventType =
+  | 'admin-identity.requested-reset-password'
+  | 'admin-identity.user-invited';
 
 export class IntegrationEvent<T extends Record<string, any> | JsonValue> {
   constructor(

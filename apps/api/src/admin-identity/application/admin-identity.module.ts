@@ -15,6 +15,7 @@ import { GetUsersListQueryHandler } from './query-handlers/get-users-list.query-
 import { OutboxModule } from '../../common/outbox/outbox.module';
 import { RequestResetPasswordCommandHandler } from './command-handlers/request-reset-password.command-handler';
 import { ResetPasswordCommandHandler } from './command-handlers/reset-password.command-handler';
+import { InviteUserCommandHandler } from './command-handlers/invite-user.command-handler';
 
 const EVENT_HANDLERS = [];
 
@@ -28,6 +29,7 @@ const COMMAND_HANDLERS = [
   UnblockAdminUserCommandHandler,
   RequestResetPasswordCommandHandler,
   ResetPasswordCommandHandler,
+  InviteUserCommandHandler,
 ];
 
 const QUERY_HANDLERS = [
