@@ -18,6 +18,7 @@ import { GetUsersListQuery } from '../queries/get-users-list.query';
 import { RequestResetPasswordCommand } from '../commands/request-reset-password.command';
 import { ResetPasswordCommand } from '../commands/reset-password.command';
 import { InviteUserCommand } from '../commands/invite-user.command';
+import { ResendInvitationEmailCommand } from '../commands/resend-invitation-email.command';
 
 @Injectable()
 export class AdminIdentityApiService implements AdminIdentityApi {
@@ -118,6 +119,11 @@ export class AdminIdentityApiService implements AdminIdentityApi {
 
   async inviteUser(email: string, name: string): Promise<void> {
     const command = new InviteUserCommand(email, name);
+    return await this.commandBus.execute(command);
+  }
+
+  async resendInvitationEmail(adminUserId: string): Promise<void> {
+    const command = new ResendInvitationEmailCommand(adminUserId);
     return await this.commandBus.execute(command);
   }
 }
