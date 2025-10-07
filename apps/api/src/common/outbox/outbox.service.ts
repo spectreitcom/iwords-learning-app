@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { IIntegrationEvent } from './types';
+import { IntegrationEvent } from './types';
 import { PrismaTx } from '../types';
 
 @Injectable()
 export class OutboxService {
-  async enqueue(event: IIntegrationEvent, tx: PrismaTx) {
+  async enqueue<T extends Record<string, any>>(
+    event: IntegrationEvent<T>,
+    tx: PrismaTx,
+  ) {
     await tx.outboxMessage.create({
       data: {
-        aggregateId: event.aggregateId,
-        eventName: event.name,
-        payload: event.payload as Record<string, any>,
+        aggregateId: event.meta.aggregateId,
+        eventName: event.type,
+        payload: event.payload,
       },
     });
   }

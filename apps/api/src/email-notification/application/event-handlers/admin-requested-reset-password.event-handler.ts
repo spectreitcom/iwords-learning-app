@@ -1,20 +1,21 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { Logger } from '@nestjs/common';
+import { IntegrationEvent } from '../../../common/outbox/types';
 
 type EventPayload = {
   email: string;
   resetPasswordToken: string;
 };
 
-@EventsHandler(['admin-identity.requested-reset-password'])
+@EventsHandler(IntegrationEvent)
 export class AdminRequestedResetPasswordEventHandler
-  implements IEventHandler<EventPayload>
+  implements IEventHandler<IntegrationEvent<EventPayload>>
 {
   private readonly logger = new Logger(
     AdminRequestedResetPasswordEventHandler.name,
   );
 
-  handle(event: EventPayload) {
-    this.logger.log(JSON.stringify(event));
+  handle(event: IntegrationEvent<EventPayload>) {
+    this.logger.debug(JSON.stringify(event));
   }
 }

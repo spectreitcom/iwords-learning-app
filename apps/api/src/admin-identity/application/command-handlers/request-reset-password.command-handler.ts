@@ -3,9 +3,9 @@ import { RequestResetPasswordCommand } from '../commands/request-reset-password.
 import { PrismaService } from '../../../common/prisma/prisma.service';
 import { AppError } from '../../../common/errors';
 import { OutboxService } from '../../../common/outbox/outbox.service';
-import { IIntegrationEvent } from '../../../common/outbox/types';
 import { ResetPasswordTokensStorage } from '../ports/reset-password-tokens.storage';
 import { randomUUID } from 'node:crypto';
+import { IntegrationEvent } from '../../../common/outbox/types';
 
 @CommandHandler(RequestResetPasswordCommand)
 export class RequestResetPasswordCommandHandler
@@ -35,11 +35,16 @@ export class RequestResetPasswordCommandHandler
 
       const resetPasswordToken = randomUUID();
 
-      const event: IIntegrationEvent = {
-        name: 'admin-identity.requested-reset-password',
-        aggregateId: adminUser.id,
-        payload: { resetPasswordToken, email: adminUser.email },
-      };
+      const event = new IntegrationEvent<{
+        resetPasswordToken: string;
+        email: string;
+      }>(
+        'admin-identity.requested-reset-password',
+        { resetPasswordToken, email: adminUser.email },
+        {
+          aggregateId: adminUser.id,
+        },
+      );
 
       await this.resetTokensStorage.insert(adminUser.id, resetPasswordToken);
       await this.outboxService.enqueue(event, prisma);
