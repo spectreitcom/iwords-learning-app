@@ -58,3 +58,15 @@ export async function deleteBox(boxId: string) {
 
   revalidatePath("/boxes");
 }
+
+export async function updateBox(boxId: string, data: CreateBoxData) {
+  await authFetch(`${BACKEND_URL}/boxes/${boxId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ...data }),
+  });
+
+  revalidatePath("/boxes");
+}
