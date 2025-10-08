@@ -82,3 +82,20 @@ export async function addItemToBox(boxId: string, expressionContextId: string) {
 
   revalidatePath(`/boxes/${boxId}`);
 }
+
+export async function removeItemFromBox(
+  boxId: string,
+  expressionContextId: string,
+) {
+  await authFetch(
+    `${BACKEND_URL}/boxes/${boxId}/remove-item/${expressionContextId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  revalidatePath(`/boxes/${boxId}`);
+}

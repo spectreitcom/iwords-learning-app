@@ -14,6 +14,7 @@ import { BoxDetails, BoxItem } from "@/features/boxes/types";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 import { AddItemToBoxModal } from "@/features/boxes/components/add-item-to-box-modal";
+import { RemoveBoxItemButton } from "@/features/boxes/components/remove-box-item-button";
 
 type Props = {
   params: Promise<{ boxId: string }>;
@@ -68,12 +69,18 @@ async function AwaitedContent({ boxDetails }: { boxDetails: BoxDetails }) {
 
   return (
     <div>
-      <BoxItemsTable boxItems={boxDetails.boxItems} />
+      <BoxItemsTable boxItems={boxDetails.boxItems} boxId={boxDetails.boxId} />
     </div>
   );
 }
 
-function BoxItemsTable({ boxItems }: { boxItems: BoxItem[] }) {
+function BoxItemsTable({
+  boxItems,
+  boxId,
+}: {
+  boxItems: BoxItem[];
+  boxId: string;
+}) {
   return (
     <Table>
       <TableHeader>
@@ -89,7 +96,12 @@ function BoxItemsTable({ boxItems }: { boxItems: BoxItem[] }) {
             <TableCell>{boxItem.phrase}</TableCell>
             <TableCell>{boxItem.translation}</TableCell>
             <TableCell className={"flex justify-end"}>
-              {/* Placeholder for future actions */}
+              <RemoveBoxItemButton
+                boxId={boxId}
+                expressionContextId={boxItem.expressionContextId}
+                phrase={boxItem.phrase}
+                translation={boxItem.translation}
+              />
             </TableCell>
           </TableRow>
         ))}
