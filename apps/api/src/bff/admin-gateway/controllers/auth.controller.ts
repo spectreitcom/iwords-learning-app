@@ -28,6 +28,7 @@ import { BlockAdminUserDto } from '../dtos/block-admin-user.dto';
 import { UnblockAdminUserDto } from '../dtos/unblock-admin-user.dto';
 import { AdminRequestResetPasswordDto } from '../dtos/admin-request-reset-password.dto';
 import { InviteAdminUserDto } from '../dtos/invite-admin-user.dto';
+import { ResendAdminInvitationEmailDto } from '../dtos/resend-admin-invitation-email.dto';
 
 @ApiTags('Admin Identity')
 @Controller('admin')
@@ -257,6 +258,22 @@ export class AuthController {
     return await this.adminIdentityApiService.inviteUser(
       payload.email,
       payload.name,
+    );
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Resend invitation email' })
+  @ApiResponse({
+    status: 204,
+    description: 'Invitation email resent successfully',
+  })
+  @ApiResponse({ status: 400, description: 'Validation error' })
+  @ApiResponse({ status: 404, description: 'Admin user not found' })
+  @Post('admin-users/resend-invitation-email')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async resendInvitationEmail(@Body() payload: ResendAdminInvitationEmailDto) {
+    return await this.adminIdentityApiService.resendInvitationEmail(
+      payload.adminUserId,
     );
   }
 }
