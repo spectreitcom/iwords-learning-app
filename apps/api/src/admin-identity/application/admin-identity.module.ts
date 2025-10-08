@@ -17,6 +17,7 @@ import { RequestResetPasswordCommandHandler } from './command-handlers/request-r
 import { ResetPasswordCommandHandler } from './command-handlers/reset-password.command-handler';
 import { InviteUserCommandHandler } from './command-handlers/invite-user.command-handler';
 import { ResendInvitationEmailCommandHandler } from './command-handlers/resend-invitation-email.command-handler';
+import { ValidateResetPasswordTokenQueryHandler } from './query-handlers/validate-reset-password-token.query-handler';
 
 const EVENT_HANDLERS = [];
 
@@ -38,6 +39,7 @@ const QUERY_HANDLERS = [
   GetUserByIdQueryHandler,
   ValidateUserQueryHandler,
   GetUsersListQueryHandler,
+  ValidateResetPasswordTokenQueryHandler,
 ];
 
 @Module({

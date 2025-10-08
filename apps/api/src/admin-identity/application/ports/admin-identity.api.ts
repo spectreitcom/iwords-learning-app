@@ -2,6 +2,7 @@ import { AdminUserView } from '../../views/admin-user.view';
 import { LoginCommandResponse } from '../command-handlers/login.command-handler';
 import { RefreshTokenCommandResponse } from '../command-handlers/refresh-token.command-handler';
 import { GetUsersListQueryResponse } from '../query-handlers/get-users-list.query-handler';
+import { ValidateResetPasswordTokenQueryResponse } from '../query-handlers/validate-reset-password-token.query-handler';
 
 export abstract class AdminIdentityApi {
   abstract getUserById(adminUserId: string): Promise<AdminUserView>;
@@ -55,4 +56,8 @@ export abstract class AdminIdentityApi {
   abstract inviteUser(email: string, name: string): Promise<void>;
 
   abstract resendInvitationEmail(adminUserId: string): Promise<void>;
+
+  abstract validateResetPasswordToken(
+    token: string,
+  ): Promise<ValidateResetPasswordTokenQueryResponse>;
 }

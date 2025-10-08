@@ -19,6 +19,8 @@ import { RequestResetPasswordCommand } from '../commands/request-reset-password.
 import { ResetPasswordCommand } from '../commands/reset-password.command';
 import { InviteUserCommand } from '../commands/invite-user.command';
 import { ResendInvitationEmailCommand } from '../commands/resend-invitation-email.command';
+import { ValidateResetPasswordTokenQueryResponse } from '../query-handlers/validate-reset-password-token.query-handler';
+import { ValidateResetPasswordTokenQuery } from '../queries/validate-reset-password-token.query';
 
 @Injectable()
 export class AdminIdentityApiService implements AdminIdentityApi {
@@ -125,5 +127,12 @@ export class AdminIdentityApiService implements AdminIdentityApi {
   async resendInvitationEmail(adminUserId: string): Promise<void> {
     const command = new ResendInvitationEmailCommand(adminUserId);
     return await this.commandBus.execute(command);
+  }
+
+  async validateResetPasswordToken(
+    token: string,
+  ): Promise<ValidateResetPasswordTokenQueryResponse> {
+    const query = new ValidateResetPasswordTokenQuery(token);
+    return await this.queryBus.execute(query);
   }
 }
