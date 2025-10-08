@@ -2,6 +2,7 @@ import {
   ArgumentsHost,
   Catch,
   ExceptionFilter,
+  HttpException,
   HttpStatus,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -18,13 +19,21 @@ export class HttpExceptionFilter implements ExceptionFilter {
   ) {
     const res: Response = host.switchToHttp().getResponse();
 
-    if (exception instanceof UnauthorizedException) {
-      return res.status(HttpStatus.UNAUTHORIZED).json({
-        title: 'UNAUTHORIZED',
-        detail: 'Unauthorized',
-        status: HttpStatus.UNAUTHORIZED,
+    if (exception instanceof HttpException) {
+      return res.status(exception.getStatus()).json({
+        title: exception.getStatus().toString(),
+        detail: exception.message,
+        status: exception.getStatus(),
       });
     }
+
+    // if (exception instanceof UnauthorizedException) {
+    //   return res.status(HttpStatus.UNAUTHORIZED).json({
+    //     title: 'UNAUTHORIZED',
+    //     detail: 'Unauthorized',
+    //     status: HttpStatus.UNAUTHORIZED,
+    //   });
+    // }
 
     if (exception?.code && codeToStatus[exception.code]) {
       const status = codeToStatus[exception.code];
