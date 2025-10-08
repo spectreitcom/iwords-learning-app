@@ -25,6 +25,7 @@ import { GetAdminUsersListQueryDto } from '../dtos/get-admin-users-list-query.dt
 import { BlockAdminUserDto } from '../dtos/block-admin-user.dto';
 import { UnblockAdminUserDto } from '../dtos/unblock-admin-user.dto';
 import { AdminRequestResetPasswordDto } from '../dtos/admin-request-reset-password.dto';
+import { InviteAdminUserDto } from '../dtos/invite-admin-user.dto';
 
 @ApiTags('Admin Identity')
 @Controller('admin')
@@ -218,6 +219,22 @@ export class AuthController {
     return await this.adminIdentityApiService.unblockAdminUser(
       userId,
       payload.adminUserId,
+    );
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Invite admin user' })
+  @ApiResponse({
+    status: 204,
+    description: 'Admin user invited successfully',
+  })
+  @ApiResponse({ status: 400, description: 'Validation error' })
+  @Post('admin-users/invite')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async invite(@Body() payload: InviteAdminUserDto) {
+    return await this.adminIdentityApiService.inviteUser(
+      payload.email,
+      payload.name,
     );
   }
 }
