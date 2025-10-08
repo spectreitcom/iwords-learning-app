@@ -4,6 +4,8 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   UseGuards,
@@ -124,6 +126,26 @@ export class AuthController {
     return await this.adminIdentityApiService.requestResetPassword(
       payload.email,
     );
+  }
+
+  @Public()
+  @ApiOperation({ summary: 'Validate reset password token' })
+  @ApiResponse({
+    status: 200,
+    description: 'Check if the token is valid and not expired.',
+    schema: {
+      type: 'object',
+      properties: {
+        valid: { type: 'boolean' },
+      },
+    },
+  })
+  @Get('auth/validate-reset-password-token/:token')
+  @HttpCode(HttpStatus.OK)
+  async validateResetPasswordToken(
+    @Param('token', new ParseUUIDPipe()) token: string,
+  ) {
+    return await this.adminIdentityApiService.validateResetPasswordToken(token);
   }
 
   @ApiBearerAuth('admin-auth')
