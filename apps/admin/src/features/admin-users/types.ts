@@ -1,5 +1,5 @@
 export type AdminUser = {
-  id: string;
+  adminUserId: string;
   email: string;
   name: string;
   blocked: boolean;

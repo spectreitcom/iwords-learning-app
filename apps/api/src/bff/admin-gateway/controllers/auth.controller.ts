@@ -158,7 +158,7 @@ export class AuthController {
           items: {
             type: 'object',
             properties: {
-              id: { type: 'string', format: 'uuid' },
+              adminUserId: { type: 'string', format: 'uuid' },
               email: { type: 'string', format: 'email' },
               name: { type: 'string', example: 'John Doe' },
               blocked: { type: 'boolean', example: false },

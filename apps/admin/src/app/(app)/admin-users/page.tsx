@@ -95,7 +95,7 @@ function AdminUsersListTable({ adminUsers }: { adminUsers: AdminUser[] }) {
       </TableHeader>
       <TableBody>
         {adminUsers.map((adminUser) => (
-          <TableRow key={adminUser.id}>
+          <TableRow key={adminUser.adminUserId}>
             <TableCell>{adminUser.email}</TableCell>
             <TableCell>{adminUser.name}</TableCell>
             <TableCell>
