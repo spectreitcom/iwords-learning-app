@@ -70,3 +70,15 @@ export async function updateBox(boxId: string, data: CreateBoxData) {
 
   revalidatePath("/boxes");
 }
+
+export async function addItemToBox(boxId: string, expressionContextId: string) {
+  await authFetch(`${BACKEND_URL}/boxes/${boxId}/add-item`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ expressionContextId }),
+  });
+
+  revalidatePath(`/boxes/${boxId}`);
+}

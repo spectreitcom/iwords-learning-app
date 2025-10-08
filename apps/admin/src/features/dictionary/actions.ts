@@ -8,6 +8,7 @@ import {
   Expression,
   ExpressionContext,
   ExpressionContextDetails,
+  SearchedDictionaryExpression,
 } from "@/features/dictionary/types";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -433,4 +434,31 @@ export async function updateIrregularVerbExpressionContext(
   );
 
   revalidatePath(`/expressions/${expressionId}`);
+}
+
+export async function searchDictionaryExpressions(
+  searchText: string,
+  page = 1,
+  take = 20,
+) {
+  const urlSearchParams = new URLSearchParams();
+
+  urlSearchParams.append("page", page.toString());
+  urlSearchParams.append("take", take.toString());
+
+  if (searchText) {
+    urlSearchParams.append("searchText", searchText);
+  }
+
+  const response = await authFetch(
+    `${BACKEND_URL}/dictionary/search?${urlSearchParams.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  return (await response.json()) as CollectionWithPagination<SearchedDictionaryExpression>;
 }

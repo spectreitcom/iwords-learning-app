@@ -39,3 +39,15 @@ export type ExpressionContextDetails = ExpressionContext & {
   forms: [];
   sentences: Sentence[];
 };
+
+export type SearchedDictionaryExpression = {
+  id: string;
+  phrase: string;
+  translation: string;
+  expressionContextId: string;
+  expressionId: string;
+  type: ExpressionContextType;
+  forms: string[];
+  isCountable: boolean;
+  isIrregular: boolean;
+};
