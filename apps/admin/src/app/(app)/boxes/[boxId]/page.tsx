@@ -10,9 +10,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getBoxDetails } from "@/features/boxes/actions";
-import { BoxItem } from "@/features/boxes/types";
+import { BoxDetails, BoxItem } from "@/features/boxes/types";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
+import { AddItemToBoxModal } from "@/features/boxes/components/add-item-to-box-modal";
 
 type Props = {
   params: Promise<{ boxId: string }>;
@@ -29,9 +30,15 @@ export default async function BoxDetailPage({ params }: Props) {
           <ChevronLeftIcon />
           Powrót
         </Link>
-        <h1 className={"text-2xl mt-2"}>
-          {boxDetails.title} - Szczegóły pudełka
-        </h1>
+        <h1 className={"text-2xl mt-2"}>Box - {boxDetails.title}</h1>
+      </div>
+      <div className={"mt-8 flex justify-end"}>
+        <AddItemToBoxModal
+          boxId={boxDetails.boxId}
+          chosenExpressionContextIds={
+            boxDetails.boxItems?.map((item) => item.expressionContextId) ?? []
+          }
+        />
       </div>
       <div className={"mt-4"}>
         <Suspense
@@ -49,11 +56,7 @@ export default async function BoxDetailPage({ params }: Props) {
   );
 }
 
-async function AwaitedContent({
-  boxDetails,
-}: {
-  boxDetails: { boxId: string; title: string; boxItems: BoxItem[] };
-}) {
+async function AwaitedContent({ boxDetails }: { boxDetails: BoxDetails }) {
   if (!boxDetails.boxItems?.length)
     return (
       <NoDataPlaceholder
