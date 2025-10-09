@@ -4,7 +4,10 @@ import { authFetch } from "@/lib/auth-fetch";
 import { BACKEND_URL } from "@/lib/constants";
 import { CollectionWithPagination } from "@/lib/types";
 import { AdminUser } from "@/features/admin-users/types";
-import { InviteAdminUserData } from "@/features/admin-users/schemas";
+import {
+  ChangePasswordData,
+  InviteAdminUserData,
+} from "@/features/admin-users/schemas";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -100,4 +103,16 @@ export async function resetPassword(token: string, password: string) {
   }
 
   redirect("/auth/sign-in");
+}
+
+export async function changePassword(data: ChangePasswordData) {
+  const response = await authFetch(`${BACKEND_URL}/auth/change-password`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ...data }),
+  });
+
+  if (!response.ok) return { error: true, message: "Password was not changed" };
 }
