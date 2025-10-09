@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Form,
   FormControl,
@@ -16,6 +17,7 @@ import { login } from "@/features/auth/actions";
 import { useState } from "react";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
+import Link from "next/link";
 
 export function AuthLoginForm() {
   const [error, setError] = useState<string | null>(null);
@@ -73,6 +75,10 @@ export function AuthLoginForm() {
           name={"password"}
           control={form.control}
         />
+
+        <div className={"flex justify-end"}>
+          <Link href={"/auth/reset-password"}>Nie pamiętam hasła</Link>
+        </div>
 
         <Button
           type={"submit"}

@@ -10,3 +10,19 @@ export const inviteAdminUserSchema = z.object({
 });
 
 export type InviteAdminUserData = z.infer<typeof inviteAdminUserSchema>;
+
+export const requestForResetPasswordSchema = z.object({
+  email: z.email({ message: "Podaj poprawny adres email" }),
+});
+
+export type RequestForResetPasswordData = z.infer<
+  typeof requestForResetPasswordSchema
+>;
+
+export const resetPasswordSchema = z.object({
+  password: z.string().min(1, {
+    message: "To pole jest wymagane",
+  }),
+});
+
+export type ResetPasswordData = z.infer<typeof resetPasswordSchema>;
