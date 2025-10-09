@@ -23,6 +23,6 @@ export class AppAdminUserValidationService
         id: adminUserId,
       },
     });
-    return adminUser?.blocked ?? true;
+    return adminUser?.isSuperuser ?? false;
   }
 }
