@@ -79,10 +79,11 @@ function Alert({
   const handle = async () => {
     setPending(true);
     if (adminUser.blocked) {
-      await unblockAdminUser(adminUser.id);
+      await unblockAdminUser(adminUser.adminUserId);
     } else {
-      await blockAdminUser(adminUser.id);
+      await blockAdminUser(adminUser.adminUserId);
     }
+    setPending(false);
     onClose();
   };
 
