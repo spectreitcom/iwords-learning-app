@@ -1,7 +1,7 @@
 import { getSession } from "@/lib/session";
 import { NextRequest, NextResponse } from "next/server";
 
-const PUBLIC_PATHS = ["/auth/sign-in"];
+const PUBLIC_PATHS = ["/auth/sign-in", "/auth/reset-password"];
 
 export async function middleware(request: NextRequest) {
   if (

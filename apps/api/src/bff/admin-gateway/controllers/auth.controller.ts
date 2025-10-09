@@ -29,6 +29,7 @@ import { UnblockAdminUserDto } from '../dtos/unblock-admin-user.dto';
 import { AdminRequestResetPasswordDto } from '../dtos/admin-request-reset-password.dto';
 import { InviteAdminUserDto } from '../dtos/invite-admin-user.dto';
 import { ResendAdminInvitationEmailDto } from '../dtos/resend-admin-invitation-email.dto';
+import { ResetPasswordDto } from '../dtos/reset-password.dto';
 
 @ApiTags('Admin Identity')
 @Controller('admin')
@@ -126,6 +127,23 @@ export class AuthController {
   async requestResetPassword(@Body() payload: AdminRequestResetPasswordDto) {
     return await this.adminIdentityApiService.requestResetPassword(
       payload.email,
+    );
+  }
+
+  @Public()
+  @ApiOperation({ summary: 'Reset password' })
+  @ApiResponse({
+    status: 204,
+    description: 'Password reset successfully',
+  })
+  @ApiResponse({ status: 400, description: 'Validation error' })
+  @ApiResponse({ status: 401, description: 'Wrong reset password token' })
+  @Post('auth/reset-password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async resetPassword(@Body() payload: ResetPasswordDto) {
+    return await this.adminIdentityApiService.resetPassword(
+      payload.token,
+      payload.password,
     );
   }
 
