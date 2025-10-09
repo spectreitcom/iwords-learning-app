@@ -26,3 +26,12 @@ export const resetPasswordSchema = z.object({
 });
 
 export type ResetPasswordData = z.infer<typeof resetPasswordSchema>;
+
+export const changePasswordSchema = z.object({
+  existingPassword: z.string().min(1, {
+    message: "To pole jest wymagane",
+  }),
+  newPassword: z.string().min(1, { message: "To pole jest wymagane" }),
+});
+
+export type ChangePasswordData = z.infer<typeof changePasswordSchema>;
