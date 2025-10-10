@@ -38,6 +38,9 @@ enum OutboxStatus {
 
 //----------------------------------
 
+// Inbox
+//----------------------------------
+
 // Users Bounded Context
 //----------------------------------
 
@@ -116,6 +119,33 @@ model Box {
   title                String
   createdAt            DateTime @default(now())
   expressionContextIds String[] @default([])
+}
+
+//----------------------------------
+
+// Answers Bounded Context
+model AnswerExpressionContextReadModel {
+  id                  String   @id @default(uuid())
+  phrase              String
+  expressionId        String
+  expressionContextId String   @unique
+  type                String
+  translation         String
+  forms               String[] @default([])
+  isIrregular         Boolean  @default(false)
+  isCountable         Boolean  @default(false)
+  sentenceIds         String[] @default([])
+
+  @@unique([expressionId, expressionContextId])
+}
+
+model AnswerSentenceReadModel {
+  id                  String @id @default(uuid())
+  sentenceId          String @unique
+  content             String
+  translation         String
+  expressionContextId String
+  expressionId        String
 }
 
 //----------------------------------
