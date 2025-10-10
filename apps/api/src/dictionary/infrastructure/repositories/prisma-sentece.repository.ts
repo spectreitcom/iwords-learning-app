@@ -4,13 +4,16 @@ import { PrismaService } from '../../../common/prisma/prisma.service';
 import { Sentence } from '../../domain/sentence';
 import { SentenceId } from '../../domain/value-objects/sentence-id';
 import { ExpressionContextId } from '../../domain/value-objects/expression-context-id';
+import { PrismaTx } from '../../../common/types';
 
 @Injectable()
 export class PrismaSentenceRepository implements SentenceRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async save(sentence: Sentence): Promise<void> {
-    await this.prismaService.sentence.upsert({
+  async save(sentence: Sentence, tx?: PrismaTx): Promise<void> {
+    const prisma = tx ?? this.prismaService;
+
+    await prisma.sentence.upsert({
       where: { id: sentence.getSentenceId().value },
       update: {
         content: sentence.getContent(),
@@ -43,8 +46,9 @@ export class PrismaSentenceRepository implements SentenceRepository {
     );
   }
 
-  async delete(sentenceId: string): Promise<void> {
-    await this.prismaService.sentence.delete({
+  async delete(sentenceId: string, tx?: PrismaTx): Promise<void> {
+    const prisma = tx ?? this.prismaService;
+    await prisma.sentence.delete({
       where: { id: sentenceId },
     });
   }
