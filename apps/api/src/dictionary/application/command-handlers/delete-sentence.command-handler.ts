@@ -2,6 +2,9 @@ import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { DeleteSentenceCommand } from '../commands/delete-sentence.command';
 import { SentenceRepository } from '../ports/sentece.repository';
 import { AppError } from '../../../common/errors';
+import { PrismaService } from '../../../common/prisma/prisma.service';
+import { OutboxService } from '../../../common/outbox/outbox.service';
+import { IntegrationEvent } from '../../../common/outbox/types';
 
 @CommandHandler(DeleteSentenceCommand)
 export class DeleteSentenceCommandHandler
@@ -10,23 +13,46 @@ export class DeleteSentenceCommandHandler
   constructor(
     private readonly sentenceRepository: SentenceRepository,
     private readonly eventPublisher: EventPublisher,
+    private readonly prismaService: PrismaService,
+    private readonly outboxService: OutboxService,
   ) {}
 
   async execute(command: DeleteSentenceCommand): Promise<void> {
     const { sentenceId } = command;
 
-    const sentence = await this.sentenceRepository.findById(sentenceId);
+    await this.prismaService.$transaction(async (prisma) => {
+      const sentence = await this.sentenceRepository.findById(sentenceId);
 
-    if (!sentence) {
-      throw new AppError(
-        'ENTITY_NOT_FOUND',
-        `Sentence with id ${sentenceId} not found.`,
+      if (!sentence) {
+        throw new AppError(
+          'ENTITY_NOT_FOUND',
+          `Sentence with id ${sentenceId} not found.`,
+        );
+      }
+
+      this.eventPublisher.mergeObjectContext(sentence);
+
+      sentence.delete();
+
+      await this.sentenceRepository.delete(
+        sentence.getSentenceId().value,
+        prisma,
       );
-    }
 
-    this.eventPublisher.mergeObjectContext(sentence);
-    sentence.delete();
-    await this.sentenceRepository.delete(sentence.getSentenceId().value);
-    sentence.commit();
+      const event: IntegrationEvent<{ sentenceId: string }> =
+        new IntegrationEvent(
+          'dictionary.sentence-deleted',
+          {
+            sentenceId,
+          },
+          {
+            aggregateId: sentence.getSentenceId().value,
+          },
+        );
+
+      await this.outboxService.enqueue(event, prisma);
+
+      sentence.commit();
+    });
   }
 }
