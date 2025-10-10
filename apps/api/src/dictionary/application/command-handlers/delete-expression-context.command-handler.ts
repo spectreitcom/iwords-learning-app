@@ -2,6 +2,9 @@ import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { DeleteExpressionContextCommand } from '../commands/delete-expression-context.command';
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
 import { AppError } from '../../../common/errors';
+import { PrismaService } from '../../../common/prisma/prisma.service';
+import { OutboxService } from '../../../common/outbox/outbox.service';
+import { IntegrationEvent } from '../../../common/outbox/types';
 
 @CommandHandler(DeleteExpressionContextCommand)
 export class DeleteExpressionContextCommandHandler
@@ -10,23 +13,42 @@ export class DeleteExpressionContextCommandHandler
   constructor(
     private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly eventPublisher: EventPublisher,
+    private readonly prismaService: PrismaService,
+    private readonly outboxService: OutboxService,
   ) {}
 
   async execute(command: DeleteExpressionContextCommand): Promise<void> {
     const { expressionContextId } = command;
 
-    const expressionContext =
-      await this.expressionContextRepository.findById(expressionContextId);
+    await this.prismaService.$transaction(async (prisma) => {
+      const expressionContext =
+        await this.expressionContextRepository.findById(expressionContextId);
 
-    if (!expressionContext) {
-      throw new AppError(
-        'ENTITY_NOT_FOUND',
-        `Expression context with id ${expressionContextId} not found.`,
+      if (!expressionContext) {
+        throw new AppError(
+          'ENTITY_NOT_FOUND',
+          `Expression context with id ${expressionContextId} not found.`,
+        );
+      }
+      this.eventPublisher.mergeObjectContext(expressionContext);
+      expressionContext.delete();
+      await this.expressionContextRepository.delete(
+        expressionContextId,
+        prisma,
       );
-    }
-    this.eventPublisher.mergeObjectContext(expressionContext);
-    expressionContext.delete();
-    await this.expressionContextRepository.delete(expressionContextId);
-    expressionContext.commit();
+
+      const event: IntegrationEvent<{ expressionContextId: string }> =
+        new IntegrationEvent(
+          'dictionary.expression-context-deleted',
+          { expressionContextId },
+          {
+            aggregateId: expressionContext.getExpressionId().value,
+          },
+        );
+
+      await this.outboxService.enqueue(event, prisma);
+
+      expressionContext.commit();
+    });
   }
 }

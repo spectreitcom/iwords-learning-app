@@ -6,6 +6,7 @@ import { ExpressionContextId } from '../../domain/value-objects/expression-conte
 import { ExpressionId } from '../../domain/value-objects/expression-id';
 import { ExpressionType } from '../../domain/value-objects/expression-type';
 import { VerbForms } from '../../domain/value-objects/verb-forms';
+import { PrismaTx } from '../../../common/types';
 
 @Injectable()
 export class PrismaExpressionContextRepository
@@ -13,10 +14,15 @@ export class PrismaExpressionContextRepository
 {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async save(expressionContext: ExpressionContext): Promise<void> {
+  async save(
+    expressionContext: ExpressionContext,
+    tx?: PrismaTx,
+  ): Promise<void> {
+    const prisma = tx ?? this.prismaService;
+
     const forms = expressionContext.getForms();
 
-    await this.prismaService.expressionContext.upsert({
+    await prisma.expressionContext.upsert({
       where: {
         id: expressionContext.getExpressionContextId().value,
       },
@@ -66,8 +72,9 @@ export class PrismaExpressionContextRepository
     );
   }
 
-  async delete(expressionContextId: string): Promise<void> {
-    await this.prismaService.expressionContext.delete({
+  async delete(expressionContextId: string, tx?: PrismaTx): Promise<void> {
+    const prisma = tx ?? this.prismaService;
+    await prisma.expressionContext.delete({
       where: { id: expressionContextId },
     });
   }
