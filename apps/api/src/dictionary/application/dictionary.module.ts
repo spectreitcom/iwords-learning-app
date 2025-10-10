@@ -37,6 +37,7 @@ import { GetSentenceByIdQueryHandler } from './query-handlers/get-sentence-by-id
 import { GetExpressionsListQueryHandler } from './query-handlers/get-expressions-list.query-handler';
 import { GetExpressionContextsListQueryHandler } from './query-handlers/get-expression-contexts-list.query-handler';
 import { GetDictionaryReadModelsByExpressionContextIdsQueryHandler } from './query-handlers/get-dictionary-read-models-by-expression-context-ids.query-handler';
+import { OutboxModule } from '../../common/outbox/outbox.module';
 
 const EVENT_HANDLERS = [
   ExpressionCreatedEventHandler,
@@ -83,7 +84,7 @@ const QUERY_HANDLERS = [
 ];
 
 @Module({
-  imports: [InfrastructureModule, PrismaModule],
+  imports: [InfrastructureModule, PrismaModule, OutboxModule],
   providers: [
     ...EVENT_HANDLERS,
     ...COMMAND_HANDLERS,
