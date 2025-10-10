@@ -5,6 +5,7 @@ import { DictionarySentenceCreatedEventHandler } from './event-handlers/dictiona
 import { DictionaryExpressionContextUpdatedEventHandler } from './event-handlers/dictionary-expression-context-updated.event-handler';
 import { DictionaryExpressionContextDeletedEventHandler } from './event-handlers/dictionary-expression-context-deleted.event-handler';
 import { DictionarySentenceDeletedEventHandler } from './event-handlers/dictionary-sentence-deleted.event-handler';
+import { DictionarySentenceUpdatedEventHandler } from './event-handlers/dictionary-sentence-updated.event-handler';
 
 const EVENT_HANDLERS = [
   DictionaryExpressionContextCreatedEventHandler,
@@ -12,6 +13,7 @@ const EVENT_HANDLERS = [
   DictionaryExpressionContextUpdatedEventHandler,
   DictionaryExpressionContextDeletedEventHandler,
   DictionarySentenceDeletedEventHandler,
+  DictionarySentenceUpdatedEventHandler,
 ];
 
 @Module({
