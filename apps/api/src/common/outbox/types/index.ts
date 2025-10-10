@@ -8,7 +8,9 @@ export type IntegrationEventType =
   | 'dictionary.expression-context-deleted'
   | 'dictionary.sentence-created'
   | 'dictionary.sentence-deleted'
-  | 'dictionary.sentence-updated';
+  | 'dictionary.sentence-updated'
+  | 'dictionary.expression-updated'
+  | 'dictionary.expression-deleted';
 
 export class IntegrationEvent<T extends Record<string, any> | JsonValue> {
   constructor(
