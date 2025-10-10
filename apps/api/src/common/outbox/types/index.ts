@@ -10,7 +10,8 @@ export type IntegrationEventType =
   | 'dictionary.sentence-deleted'
   | 'dictionary.sentence-updated'
   | 'dictionary.expression-updated'
-  | 'dictionary.expression-deleted';
+  | 'dictionary.expression-deleted'
+  | 'user-identity.user-created';
 
 export class IntegrationEvent<T extends Record<string, any> | JsonValue> {
   constructor(
