@@ -7,6 +7,7 @@ import { CliModule } from './cli/cli.module';
 import { OutboxModule } from './common/outbox/outbox.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { EmailNotificationModule } from './email-notification/application/email-notification.module';
+import { GatewayModule } from './bff/gateway/gateway.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { EmailNotificationModule } from './email-notification/application/email-
     OutboxModule,
     CqrsModule.forRoot(),
     AdminGatewayModule,
+    GatewayModule,
     CliModule,
   ],
 })
