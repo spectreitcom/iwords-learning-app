@@ -1,9 +1,12 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { CreateIrregularVerbExpressionContextCommand } from '../commands/create-irregular-verb-expression-context.command';
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
-import { ExpressionValidationService } from '../ports/expression-validation.service';
 import { ExpressionContext } from '../../domain/expression-context';
 import { AppError } from '../../../common/errors';
+import { PrismaService } from '../../../common/prisma/prisma.service';
+import { OutboxService } from '../../../common/outbox/outbox.service';
+import { ExpressionRepository } from '../ports/expression.repository';
+import { IntegrationEvent } from '../../../common/outbox/types';
 
 export type CreateIrregularVerbExpressionContextCommandResponse = {
   id: string;
@@ -20,7 +23,9 @@ export class CreateIrregularVerbExpressionContextCommandHandler
   constructor(
     private readonly eventPublisher: EventPublisher,
     private readonly expressionContextRepository: ExpressionContextRepository,
-    private readonly expressionValidationService: ExpressionValidationService,
+    private readonly expressionRepository: ExpressionRepository,
+    private readonly prismaService: PrismaService,
+    private readonly outboxService: OutboxService,
   ) {}
 
   async execute(
@@ -28,25 +33,56 @@ export class CreateIrregularVerbExpressionContextCommandHandler
   ): Promise<CreateIrregularVerbExpressionContextCommandResponse> {
     const { expressionId, translation, forms } = command;
 
-    const expressionExists =
-      await this.expressionValidationService.exists(expressionId);
+    return this.prismaService.$transaction(async (prisma) => {
+      const expression = await this.expressionRepository.findById(expressionId);
 
-    if (!expressionExists) {
-      throw new AppError(
-        'ENTITY_NOT_FOUND',
-        `Expression with id ${expressionId} not found.`,
+      if (!expression) {
+        throw new AppError(
+          'ENTITY_NOT_FOUND',
+          `Expression with id ${expressionId} not found.`,
+        );
+      }
+
+      const expressionContext = ExpressionContext.createIrregularVerb(
+        translation.toLowerCase(),
+        forms.map((form) => form.toLowerCase()) as [string, string, string],
+        expressionId,
       );
-    }
+      this.eventPublisher.mergeObjectContext(expressionContext);
 
-    const expressionContext = ExpressionContext.createIrregularVerb(
-      translation.toLowerCase(),
-      forms.map((form) => form.toLowerCase()) as [string, string, string],
-      expressionId,
-    );
-    this.eventPublisher.mergeObjectContext(expressionContext);
-    await this.expressionContextRepository.save(expressionContext);
-    expressionContext.commit();
+      await this.expressionContextRepository.save(expressionContext, prisma);
 
-    return { id: expressionContext.getExpressionContextId().value };
+      const event: IntegrationEvent<{
+        expressionContextId: string;
+        expressionId: string;
+        phrase: string;
+        type: string;
+        translation: string;
+        forms: [string, string, string] | null;
+        isIrregular: boolean;
+        isCountable: boolean;
+      }> = new IntegrationEvent(
+        'dictionary.expression-context-created',
+        {
+          expressionContextId: expressionContext.getExpressionContextId().value,
+          forms: expressionContext.getForms()?.value ?? null,
+          expressionId: expression.getExpressionId().value,
+          isCountable: expressionContext.getIsCountable(),
+          type: expressionContext.getType().value,
+          translation: expressionContext.getTranslation(),
+          isIrregular: expressionContext.getIsIrregular(),
+          phrase: expression.getPhrase(),
+        },
+        {
+          aggregateId: expressionContext.getExpressionId().value,
+        },
+      );
+
+      await this.outboxService.enqueue(event, prisma);
+
+      expressionContext.commit();
+
+      return { id: expressionContext.getExpressionContextId().value };
+    });
   }
 }
