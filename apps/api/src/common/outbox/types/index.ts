@@ -5,7 +5,10 @@ export type IntegrationEventType =
   | 'admin-identity.user-invited'
   | 'dictionary.expression-context-created'
   | 'dictionary.expression-context-updated'
-  | 'dictionary.expression-context-deleted';
+  | 'dictionary.expression-context-deleted'
+  | 'dictionary.sentence-created'
+  | 'dictionary.sentence-deleted'
+  | 'dictionary.sentence-updated';
 
 export class IntegrationEvent<T extends Record<string, any> | JsonValue> {
   constructor(
