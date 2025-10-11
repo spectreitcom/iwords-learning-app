@@ -11,9 +11,15 @@ import { DictionaryController } from './controllers/dictionary.controller';
 import { BoxModule } from '../../box/application/box.module';
 import { BoxController } from './controllers/box.controller';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
+import { UserIdentityModule } from '../../user-identity/appliaction/user-identity.module';
 
 @Module({
-  imports: [DictionaryModule, AdminIdentityModule, BoxModule],
+  imports: [
+    DictionaryModule,
+    AdminIdentityModule,
+    BoxModule,
+    UserIdentityModule,
+  ],
   controllers: [AuthController, DictionaryController, BoxController],
   providers: [
     LocalStrategy,
