@@ -42,6 +42,16 @@ enum OutboxStatus {
 //----------------------------------
 
 // Users Bounded Context
+model User {
+  id        String   @id @default(uuid())
+  clerkId   String
+  email     String   @unique
+  name      String
+  blocked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  provider  String
+}
+
 //----------------------------------
 
 // Admin Identity Bounded Context
