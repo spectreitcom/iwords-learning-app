@@ -3,6 +3,9 @@ import { UpdateIrregularVerbExpressionContextCommand } from '../commands/update-
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
 import { IRREGULAR_VERB } from '../../domain/constants';
 import { AppError } from '../../../common/errors';
+import { PrismaService } from '../../../common/prisma/prisma.service';
+import { OutboxService } from '../../../common/outbox/outbox.service';
+import { IntegrationEvent } from '../../../common/outbox/types';
 
 @CommandHandler(UpdateIrregularVerbExpressionContextCommand)
 export class UpdateIrregularVerbExpressionContextCommandHandler
@@ -11,6 +14,8 @@ export class UpdateIrregularVerbExpressionContextCommandHandler
   constructor(
     private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly eventPublisher: EventPublisher,
+    private readonly prismaService: PrismaService,
+    private readonly outboxService: OutboxService,
   ) {}
 
   async execute(
@@ -18,25 +23,54 @@ export class UpdateIrregularVerbExpressionContextCommandHandler
   ): Promise<void> {
     const { expressionContextId, translation, forms } = command;
 
-    const expressionContext =
-      await this.expressionContextRepository.findByIdAndType(
-        expressionContextId,
-        IRREGULAR_VERB,
+    await this.prismaService.$transaction(async (prisma) => {
+      const expressionContext =
+        await this.expressionContextRepository.findByIdAndType(
+          expressionContextId,
+          IRREGULAR_VERB,
+        );
+
+      if (!expressionContext) {
+        throw new AppError(
+          'ENTITY_NOT_FOUND',
+          `Expression context with id ${expressionContextId} not found.`,
+        );
+      }
+
+      this.eventPublisher.mergeObjectContext(expressionContext);
+
+      expressionContext.updateIrregularVerb(
+        translation.toLowerCase(),
+        forms.map((form) => form.toLowerCase()) as [string, string, string],
       );
 
-    if (!expressionContext) {
-      throw new AppError(
-        'ENTITY_NOT_FOUND',
-        `Expression context with id ${expressionContextId} not found.`,
-      );
-    }
+      await this.expressionContextRepository.save(expressionContext, prisma);
 
-    this.eventPublisher.mergeObjectContext(expressionContext);
-    expressionContext.updateIrregularVerb(
-      translation.toLowerCase(),
-      forms.map((form) => form.toLowerCase()) as [string, string, string],
-    );
-    await this.expressionContextRepository.save(expressionContext);
-    expressionContext.commit();
+      const event: IntegrationEvent<{
+        expressionContextId: string;
+        expressionId: string;
+        translation: string;
+        forms: [string, string, string] | null;
+        isIrregular: boolean;
+        isCountable: boolean;
+      }> = new IntegrationEvent(
+        'dictionary.expression-context-updated',
+        {
+          expressionContextId: expressionContext.getExpressionContextId().value,
+          expressionId: expressionContext.getExpressionId().value,
+          forms: expressionContext.getForms()?.value ?? null,
+          isCountable: expressionContext.getIsCountable(),
+          isIrregular: expressionContext.getIsIrregular(),
+          translation: expressionContext.getTranslation(),
+        },
+        {
+          aggregateId: expressionContext.getExpressionId().value,
+        },
+      );
+
+      await this.outboxService.enqueue(event, prisma);
+
+      expressionContext.commit();
+    });
   }
 }
