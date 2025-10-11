@@ -6,8 +6,6 @@ import { PrismaService } from '../../../common/prisma/prisma.service';
 type EventPayload = {
   expressionContextId: string;
   expressionId: string;
-  phrase: string;
-  type: string;
   translation: string;
   forms: [string, string, string] | null;
   isIrregular: boolean;
@@ -34,10 +32,8 @@ export class DictionaryExpressionContextUpdatedEventHandler
       expressionContextId,
       isCountable,
       isIrregular,
-      phrase,
       translation,
       forms,
-      type,
     } = event.payload;
 
     const record =
@@ -58,10 +54,8 @@ export class DictionaryExpressionContextUpdatedEventHandler
       data: {
         isCountable,
         isIrregular,
-        phrase,
         translation,
         forms: forms ? forms : [],
-        type,
       },
     });
   }
