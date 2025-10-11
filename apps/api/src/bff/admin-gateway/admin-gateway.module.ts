@@ -10,7 +10,7 @@ import { LocalAuthGuard } from './auth/local-auth.guard';
 import { DictionaryController } from './controllers/dictionary.controller';
 import { BoxModule } from '../../box/application/box.module';
 import { BoxController } from './controllers/box.controller';
-import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { HttpExceptionFilter } from '../filters/http-exception.filter';
 
 @Module({
   imports: [DictionaryModule, AdminIdentityModule, BoxModule],

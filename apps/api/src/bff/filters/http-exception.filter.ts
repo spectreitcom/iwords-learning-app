@@ -6,7 +6,7 @@ import {
   HttpStatus,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AppErrorCode, codeToStatus } from '../../../common/errors';
+import { AppErrorCode, codeToStatus } from '../../common/errors';
 import { Response } from 'express';
 
 @Catch()
