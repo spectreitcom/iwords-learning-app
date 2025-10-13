@@ -7,4 +7,6 @@ export abstract class UserApi {
   ): Promise<GetUsersListQueryResponse>;
 
   abstract blockUser(userId: string): Promise<void>;
+
+  abstract unblockUser(userId: string): Promise<void>;
 }
