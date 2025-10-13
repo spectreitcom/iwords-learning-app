@@ -20,10 +20,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { User } from "@/features/users/types";
-import {
-  blockUser,
-  unblockUser,
-} from "@/features/users/actions";
+import { blockUser, unblockUser } from "@/features/users/actions";
 
 type Props = {
   user: User;
@@ -60,11 +57,7 @@ export function UsersTableItemActions({ user }: Props) {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <Alert
-        user={user}
-        open={showAlert}
-        onClose={() => setShowAlert(false)}
-      />
+      <Alert user={user} open={showAlert} onClose={() => setShowAlert(false)} />
     </>
   );
 }
@@ -92,7 +85,9 @@ function Alert({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Czy jesteś pewien, że chcesz {user.blocked ? "odblokować" : "zablokować"} użytkownika {user.name}?
+            Czy jesteś pewien, że chcesz{" "}
+            {user.blocked ? "odblokować" : "zablokować"} użytkownika {user.name}
+            ?
           </AlertDialogTitle>
           <AlertDialogDescription>
             Ta akcja zmieni status użytkownika w systemie.
