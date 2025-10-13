@@ -1,4 +1,12 @@
-import { Controller, Get, HttpStatus, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Query,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -7,6 +15,7 @@ import {
 } from '@nestjs/swagger';
 import { UserApiService } from '../../../user-identity/appliaction/services/user-api.service';
 import { GetUsersListQueryDto } from '../dtos/get-users-list-query.dto';
+import { BlockUserDto } from '../dtos/block-user.dto';
 
 @ApiTags('Admin Users')
 @Controller('admin/users')
@@ -40,5 +49,24 @@ export class UsersController {
   @Get()
   async getUsersList(@Query() query: GetUsersListQueryDto) {
     return await this.userApiService.getUsersList(query.take, query.page);
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({
+    summary: 'Block user',
+    description: 'Blocks the user by ID',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'User blocked successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'User not found',
+  })
+  @Post('block')
+  @HttpCode(HttpStatus.OK)
+  async blockUser(@Body() payload: BlockUserDto) {
+    return await this.userApiService.blockUser(payload.userId);
   }
 }
