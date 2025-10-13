@@ -12,6 +12,7 @@ import { BoxModule } from '../../box/application/box.module';
 import { BoxController } from './controllers/box.controller';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { UserIdentityModule } from '../../user-identity/appliaction/user-identity.module';
+import { UsersController } from './controllers/users.controller';
 
 @Module({
   imports: [
@@ -20,7 +21,12 @@ import { UserIdentityModule } from '../../user-identity/appliaction/user-identit
     BoxModule,
     UserIdentityModule,
   ],
-  controllers: [AuthController, DictionaryController, BoxController],
+  controllers: [
+    AuthController,
+    DictionaryController,
+    BoxController,
+    UsersController,
+  ],
   providers: [
     LocalStrategy,
     JwtStrategy,
