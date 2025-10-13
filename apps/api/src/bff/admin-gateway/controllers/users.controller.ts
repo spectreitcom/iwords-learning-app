@@ -16,6 +16,7 @@ import {
 import { UserApiService } from '../../../user-identity/appliaction/services/user-api.service';
 import { GetUsersListQueryDto } from '../dtos/get-users-list-query.dto';
 import { BlockUserDto } from '../dtos/block-user.dto';
+import { UnblockUserDto } from '../dtos/unblock-user.dto';
 
 @ApiTags('Admin Users')
 @Controller('admin/users')
@@ -68,5 +69,24 @@ export class UsersController {
   @HttpCode(HttpStatus.OK)
   async blockUser(@Body() payload: BlockUserDto) {
     return await this.userApiService.blockUser(payload.userId);
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({
+    summary: 'Unblock user',
+    description: 'Unblocks the user by ID',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'User unblocked successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'User not found',
+  })
+  @Post('unblock')
+  @HttpCode(HttpStatus.OK)
+  async unblockUser(@Body() payload: UnblockUserDto) {
+    return await this.userApiService.unblockUser(payload.userId);
   }
 }
