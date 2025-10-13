@@ -4,10 +4,11 @@ import { PrismaModule } from '../../common/prisma/prisma.module';
 import { GetUsersListQueryHandler } from './query-handlers/get-users-list.query-handler';
 import { UserApiService } from './services/user-api.service';
 import { BlockUserCommandHandler } from './command-handlers/block-user.command-handler';
+import { UnblockUserCommandHandler } from './command-handlers/unblock-user.command-handler';
 
 const EVENT_HANDLERS = [];
 
-const COMMAND_HANDLERS = [BlockUserCommandHandler];
+const COMMAND_HANDLERS = [BlockUserCommandHandler, UnblockUserCommandHandler];
 
 const QUERY_HANDLERS = [GetUsersListQueryHandler];
 
