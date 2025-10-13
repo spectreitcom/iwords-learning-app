@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
 
-export class GetBoxesListQueryDto {
+export class GetUsersListQueryDto {
   @ApiProperty({ required: false, description: 'Take count', default: 10 })
   @IsOptional()
   readonly take: number = 10;
