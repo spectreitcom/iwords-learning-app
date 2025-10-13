@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { UserApi } from '../ports/user.api';
 import { GetUsersListQueryResponse } from '../query-handlers/get-users-list.query-handler';
-import { QueryBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetUsersListQuery } from '../queries/get-users-list.query';
+import { BlockUserCommand } from '../commands/block-user.command';
 
 @Injectable()
 export class UserApiService implements UserApi {
-  constructor(private readonly queryBus: QueryBus) {}
+  constructor(
+    private readonly queryBus: QueryBus,
+    private readonly commandBus: CommandBus,
+  ) {}
 
   async getUsersList(
     take: number,
@@ -14,5 +18,10 @@ export class UserApiService implements UserApi {
   ): Promise<GetUsersListQueryResponse> {
     const query = new GetUsersListQuery(take, page);
     return await this.queryBus.execute(query);
+  }
+
+  async blockUser(userId: string): Promise<void> {
+    const command = new BlockUserCommand(userId);
+    return await this.commandBus.execute(command);
   }
 }
