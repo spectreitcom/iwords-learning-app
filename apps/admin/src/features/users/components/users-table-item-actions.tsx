@@ -19,17 +19,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { AdminUser } from "@/features/admin-users/types";
-import {
-  blockAdminUser,
-  unblockAdminUser,
-} from "@/features/admin-users/actions";
+import { User } from "@/features/users/types";
+import { blockUser, unblockUser } from "@/features/users/actions";
 
 type Props = {
-  adminUser: AdminUser;
+  user: User;
 };
 
-export function AdminUsersTableItemActions({ adminUser }: Props) {
+export function UsersTableItemActions({ user }: Props) {
   const [showAlert, setShowAlert] = useState(false);
 
   return (
@@ -42,7 +39,7 @@ export function AdminUsersTableItemActions({ adminUser }: Props) {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem>Edytuj</DropdownMenuItem>
-          {adminUser.blocked ? (
+          {user.blocked ? (
             <DropdownMenuItem
               variant={"default"}
               onClick={() => setShowAlert(true)}
@@ -60,11 +57,7 @@ export function AdminUsersTableItemActions({ adminUser }: Props) {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <Alert
-        adminUser={adminUser}
-        open={showAlert}
-        onClose={() => setShowAlert(false)}
-      />
+      <Alert user={user} open={showAlert} onClose={() => setShowAlert(false)} />
     </>
   );
 }
@@ -72,16 +65,16 @@ export function AdminUsersTableItemActions({ adminUser }: Props) {
 function Alert({
   open,
   onClose,
-  adminUser,
+  user,
 }: Props & { open: boolean; onClose: () => void }) {
   const [pending, setPending] = useState(false);
 
   const handle = async () => {
     setPending(true);
-    if (adminUser.blocked) {
-      await unblockAdminUser(adminUser.adminUserId);
+    if (user.blocked) {
+      await unblockUser(user.userId);
     } else {
-      await blockAdminUser(adminUser.adminUserId);
+      await blockUser(user.userId);
     }
     setPending(false);
     onClose();
@@ -93,12 +86,11 @@ function Alert({
         <AlertDialogHeader>
           <AlertDialogTitle>
             Czy jesteś pewien, że chcesz{" "}
-            {adminUser.blocked ? "odblokować" : "zablokować"} administratora{" "}
-            {adminUser.name}?
+            {user.blocked ? "odblokować" : "zablokować"} użytkownika {user.name}
+            ?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Ta akcja nie może zostać cofnięta. Dane zostaną usunięte
-            permanentnie.
+            Ta akcja zmieni status użytkownika w systemie.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -106,7 +98,7 @@ function Alert({
             Anuluj
           </AlertDialogCancel>
           <AlertDialogAction onClick={handle} disabled={pending}>
-            {adminUser.blocked ? "Odblokuj" : "Blokuj"}
+            {user.blocked ? "Odblokuj" : "Blokuj"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
