@@ -5,4 +5,6 @@ export abstract class UserApi {
     take: number,
     page: number,
   ): Promise<GetUsersListQueryResponse>;
+
+  abstract blockUser(userId: string): Promise<void>;
 }
