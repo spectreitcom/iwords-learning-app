@@ -8,6 +8,8 @@ import { OutboxModule } from './common/outbox/outbox.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { EmailNotificationModule } from './email-notification/application/email-notification.module';
 import { GatewayModule } from './bff/gateway/gateway.module';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from './bff/filters/http-exception.filter';
 
 @Module({
   imports: [
@@ -26,6 +28,12 @@ import { GatewayModule } from './bff/gateway/gateway.module';
     AdminGatewayModule,
     GatewayModule,
     CliModule,
+  ],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
   ],
 })
 export class AppModule {}
