@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateExpressionDto } from '../dtos/create-expression.dto';
 import { DictionaryApiService } from '../../../dictionary/application/services/dictionary-api.service';
@@ -37,7 +38,9 @@ import { UpdateIrregularVerbExpressionContextDto } from '../dtos/update-irregula
 import { SearchDictionaryQueryDto } from '../dtos/search-dictionary-query.dto';
 import { GetExpressionsListQueryDto } from '../dtos/get-expressions-list-query.dto';
 import { GetExpressionContextsListQueryDto } from '../dtos/get-expression-contexts-list-query.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('Admin Dictionary')
 @Controller('admin/dictionary')
 export class DictionaryController {

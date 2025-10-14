@@ -30,7 +30,9 @@ import { AdminRequestResetPasswordDto } from '../dtos/admin-request-reset-passwo
 import { InviteAdminUserDto } from '../dtos/invite-admin-user.dto';
 import { ResendAdminInvitationEmailDto } from '../dtos/resend-admin-invitation-email.dto';
 import { ResetPasswordDto } from '../dtos/reset-password.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('Admin Identity')
 @Controller('admin')
 export class AuthController {

@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -17,7 +18,9 @@ import { UserApiService } from '../../../user-identity/appliaction/services/user
 import { GetUsersListQueryDto } from '../dtos/get-users-list-query.dto';
 import { BlockUserDto } from '../dtos/block-user.dto';
 import { UnblockUserDto } from '../dtos/unblock-user.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('Admin Users')
 @Controller('admin/users')
 export class UsersController {
