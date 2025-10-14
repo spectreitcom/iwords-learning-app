@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { BoxApiService } from '../../../box/application/services/box-api.service';
 import {
@@ -23,7 +24,9 @@ import { GetBoxesListQueryDto } from '../dtos/get-boxes-list-query.dto';
 import { UpdateBoxDto } from '../dtos/update-box.dto';
 import { DictionaryApiService } from '../../../dictionary/application/services/dictionary-api.service';
 import { AddItemToBoxDto } from '../dtos/add-item-to-box.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('Admin Boxes')
 @Controller('admin/boxes')
 export class BoxController {
