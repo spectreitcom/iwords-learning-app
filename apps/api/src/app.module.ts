@@ -10,6 +10,7 @@ import { EmailNotificationModule } from './email-notification/application/email-
 import { GatewayModule } from './bff/gateway/gateway.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './bff/filters/http-exception.filter';
+import { WebhooksModule } from './bff/webhooks/webhooks.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { HttpExceptionFilter } from './bff/filters/http-exception.filter';
     CqrsModule.forRoot(),
     AdminGatewayModule,
     GatewayModule,
+    WebhooksModule,
     CliModule,
   ],
   providers: [
