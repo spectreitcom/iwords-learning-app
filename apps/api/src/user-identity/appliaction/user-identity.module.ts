@@ -5,15 +5,23 @@ import { GetUsersListQueryHandler } from './query-handlers/get-users-list.query-
 import { UserApiService } from './services/user-api.service';
 import { BlockUserCommandHandler } from './command-handlers/block-user.command-handler';
 import { UnblockUserCommandHandler } from './command-handlers/unblock-user.command-handler';
+import { CreateUserCommandHandler } from './command-handlers/create-user.command-handler';
+import { DeleteUserCommandHandler } from './command-handlers/delete-user.command-handler';
+import { OutboxModule } from '../../common/outbox/outbox.module';
 
 const EVENT_HANDLERS = [];
 
-const COMMAND_HANDLERS = [BlockUserCommandHandler, UnblockUserCommandHandler];
+const COMMAND_HANDLERS = [
+  BlockUserCommandHandler,
+  UnblockUserCommandHandler,
+  CreateUserCommandHandler,
+  DeleteUserCommandHandler,
+];
 
 const QUERY_HANDLERS = [GetUsersListQueryHandler];
 
 @Module({
-  imports: [InfrastructureModule, PrismaModule],
+  imports: [InfrastructureModule, PrismaModule, OutboxModule],
   providers: [
     ...EVENT_HANDLERS,
     ...COMMAND_HANDLERS,

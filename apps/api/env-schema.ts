@@ -19,4 +19,9 @@ export const envSchema = Joi.object({
     .uri()
     .required()
     .description('Admin frontend URL'),
+
+  // Clerk
+  CLERK_WEBHOOK_SECRET: Joi.string()
+    .required()
+    .description('Clerk webhook secret'),
 });

@@ -7,7 +7,6 @@ export class User {
   private readonly email: UserEmail;
   private readonly name: string;
   private blocked: boolean;
-  private readonly provider: string;
 
   constructor(
     userId: UserId,
@@ -15,29 +14,21 @@ export class User {
     email: UserEmail,
     name: string,
     blocked: boolean,
-    provider: string,
   ) {
     this.userId = userId;
     this.clerkId = clerkId;
     this.email = email;
     this.name = name;
     this.blocked = blocked;
-    this.provider = provider;
   }
 
-  static create(
-    clerkId: string,
-    email: string,
-    name: string,
-    provider: string,
-  ) {
+  static create(clerkId: string, email: string, name: string) {
     return new User(
       UserId.create(),
       clerkId,
       UserEmail.fromString(email),
       name,
       false,
-      provider,
     );
   }
 
@@ -67,9 +58,5 @@ export class User {
 
   getBlocked(): boolean {
     return this.blocked;
-  }
-
-  getProvider(): string {
-    return this.provider;
   }
 }

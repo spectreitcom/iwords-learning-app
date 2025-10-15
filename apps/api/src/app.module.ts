@@ -11,6 +11,7 @@ import { GatewayModule } from './bff/gateway/gateway.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './bff/filters/http-exception.filter';
 import { WebhooksModule } from './bff/webhooks/webhooks.module';
+import { InboxModule } from './common/inbox/inbox.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { WebhooksModule } from './bff/webhooks/webhooks.module';
     GatewayModule,
     WebhooksModule,
     CliModule,
+    InboxModule,
   ],
   providers: [
     {
