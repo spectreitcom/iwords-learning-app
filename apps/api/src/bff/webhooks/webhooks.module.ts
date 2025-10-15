@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ClerkWebhookController } from './clerk-webhook.controller';
+import { WebhooksController } from './webhooks.controller';
+import { InboxModule } from '../../common/inbox/inbox.module';
 
 @Module({
-  imports: [],
-  controllers: [ClerkWebhookController],
-  providers: [],
+  imports: [InboxModule],
+  controllers: [WebhooksController],
 })
 export class WebhooksModule {}

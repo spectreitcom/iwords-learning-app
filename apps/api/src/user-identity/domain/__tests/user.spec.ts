@@ -6,42 +6,26 @@ describe('User', () => {
   const mockClerkId = 'clerk_123456789';
   const mockEmail = 'test@example.com';
   const mockName = 'John Doe';
-  const mockProvider = 'google';
 
   describe('constructor', () => {
     it('should create User with all required properties', () => {
       const userId = UserId.create();
       const userEmail = UserEmail.fromString(mockEmail);
 
-      const user = new User(
-        userId,
-        mockClerkId,
-        userEmail,
-        mockName,
-        false,
-        mockProvider,
-      );
+      const user = new User(userId, mockClerkId, userEmail, mockName, false);
 
       expect(user.getUserId()).toBe(userId);
       expect(user.getClerkId()).toBe(mockClerkId);
       expect(user.getEmail()).toBe(userEmail);
       expect(user.getName()).toBe(mockName);
       expect(user.getBlocked()).toBe(false);
-      expect(user.getProvider()).toBe(mockProvider);
     });
 
     it('should create User with blocked status true', () => {
       const userId = UserId.create();
       const userEmail = UserEmail.fromString(mockEmail);
 
-      const user = new User(
-        userId,
-        mockClerkId,
-        userEmail,
-        mockName,
-        true,
-        mockProvider,
-      );
+      const user = new User(userId, mockClerkId, userEmail, mockName, true);
 
       expect(user.getBlocked()).toBe(true);
     });
@@ -49,7 +33,7 @@ describe('User', () => {
 
   describe('create', () => {
     it('should create User with generated UserId and UserEmail from string', () => {
-      const user = User.create(mockClerkId, mockEmail, mockName, mockProvider);
+      const user = User.create(mockClerkId, mockEmail, mockName);
 
       expect(user.getUserId()).toBeInstanceOf(UserId);
       expect(user.getClerkId()).toBe(mockClerkId);
@@ -57,34 +41,23 @@ describe('User', () => {
       expect(user.getEmail().value).toBe(mockEmail);
       expect(user.getName()).toBe(mockName);
       expect(user.getBlocked()).toBe(false);
-      expect(user.getProvider()).toBe(mockProvider);
     });
 
     it('should create different users with different UserIds', () => {
-      const user1 = User.create(mockClerkId, mockEmail, mockName, mockProvider);
+      const user1 = User.create(mockClerkId, mockEmail, mockName);
       const user2 = User.create(
         'clerk_987654321',
         'other@example.com',
         'Jane Doe',
-        'facebook',
       );
 
       expect(user1.getUserId().equals(user2.getUserId())).toBe(false);
     });
 
     it('should create user with default blocked status false', () => {
-      const user = User.create(mockClerkId, mockEmail, mockName, mockProvider);
+      const user = User.create(mockClerkId, mockEmail, mockName);
 
       expect(user.getBlocked()).toBe(false);
-    });
-
-    it('should handle different providers', () => {
-      const providers = ['google', 'facebook', 'github', 'email'];
-
-      providers.forEach((provider) => {
-        const user = User.create(mockClerkId, mockEmail, mockName, provider);
-        expect(user.getProvider()).toBe(provider);
-      });
     });
 
     it('should handle different email formats', () => {
@@ -96,7 +69,7 @@ describe('User', () => {
       ];
 
       validEmails.forEach((email) => {
-        const user = User.create(mockClerkId, email, mockName, mockProvider);
+        const user = User.create(mockClerkId, email, mockName);
         expect(user.getEmail().value).toBe(email);
       });
     });
@@ -104,7 +77,7 @@ describe('User', () => {
 
   describe('block', () => {
     it('should set blocked status to true', () => {
-      const user = User.create(mockClerkId, mockEmail, mockName, mockProvider);
+      const user = User.create(mockClerkId, mockEmail, mockName);
 
       expect(user.getBlocked()).toBe(false);
 
@@ -114,7 +87,7 @@ describe('User', () => {
     });
 
     it('should remain blocked when called multiple times', () => {
-      const user = User.create(mockClerkId, mockEmail, mockName, mockProvider);
+      const user = User.create(mockClerkId, mockEmail, mockName);
 
       user.block();
       user.block();
@@ -125,14 +98,7 @@ describe('User', () => {
     it('should block already blocked user', () => {
       const userId = UserId.create();
       const userEmail = UserEmail.fromString(mockEmail);
-      const user = new User(
-        userId,
-        mockClerkId,
-        userEmail,
-        mockName,
-        true,
-        mockProvider,
-      );
+      const user = new User(userId, mockClerkId, userEmail, mockName, true);
 
       user.block();
 
@@ -142,7 +108,7 @@ describe('User', () => {
 
   describe('unblock', () => {
     it('should set blocked status to false', () => {
-      const user = User.create(mockClerkId, mockEmail, mockName, mockProvider);
+      const user = User.create(mockClerkId, mockEmail, mockName);
       user.block();
 
       expect(user.getBlocked()).toBe(true);
@@ -153,7 +119,7 @@ describe('User', () => {
     });
 
     it('should remain unblocked when called multiple times', () => {
-      const user = User.create(mockClerkId, mockEmail, mockName, mockProvider);
+      const user = User.create(mockClerkId, mockEmail, mockName);
 
       user.unblock();
       user.unblock();
@@ -162,7 +128,7 @@ describe('User', () => {
     });
 
     it('should unblock already unblocked user', () => {
-      const user = User.create(mockClerkId, mockEmail, mockName, mockProvider);
+      const user = User.create(mockClerkId, mockEmail, mockName);
 
       user.unblock();
 
@@ -174,20 +140,13 @@ describe('User', () => {
     it('should return the same UserId instance', () => {
       const userId = UserId.create();
       const userEmail = UserEmail.fromString(mockEmail);
-      const user = new User(
-        userId,
-        mockClerkId,
-        userEmail,
-        mockName,
-        false,
-        mockProvider,
-      );
+      const user = new User(userId, mockClerkId, userEmail, mockName, false);
 
       expect(user.getUserId()).toBe(userId);
     });
 
     it('should return UserId for created user', () => {
-      const user = User.create(mockClerkId, mockEmail, mockName, mockProvider);
+      const user = User.create(mockClerkId, mockEmail, mockName);
 
       expect(user.getUserId()).toBeInstanceOf(UserId);
     });
@@ -195,7 +154,7 @@ describe('User', () => {
 
   describe('getClerkId', () => {
     it('should return the clerk ID', () => {
-      const user = User.create(mockClerkId, mockEmail, mockName, mockProvider);
+      const user = User.create(mockClerkId, mockEmail, mockName);
 
       expect(user.getClerkId()).toBe(mockClerkId);
     });
@@ -204,7 +163,7 @@ describe('User', () => {
       const clerkIds = ['clerk_123', 'user_456789', 'auth0|abc123'];
 
       clerkIds.forEach((clerkId) => {
-        const user = User.create(clerkId, mockEmail, mockName, mockProvider);
+        const user = User.create(clerkId, mockEmail, mockName);
         expect(user.getClerkId()).toBe(clerkId);
       });
     });
@@ -214,20 +173,13 @@ describe('User', () => {
     it('should return the same UserEmail instance', () => {
       const userId = UserId.create();
       const userEmail = UserEmail.fromString(mockEmail);
-      const user = new User(
-        userId,
-        mockClerkId,
-        userEmail,
-        mockName,
-        false,
-        mockProvider,
-      );
+      const user = new User(userId, mockClerkId, userEmail, mockName, false);
 
       expect(user.getEmail()).toBe(userEmail);
     });
 
     it('should return UserEmail for created user', () => {
-      const user = User.create(mockClerkId, mockEmail, mockName, mockProvider);
+      const user = User.create(mockClerkId, mockEmail, mockName);
 
       expect(user.getEmail()).toBeInstanceOf(UserEmail);
       expect(user.getEmail().value).toBe(mockEmail);
@@ -236,7 +188,7 @@ describe('User', () => {
 
   describe('getName', () => {
     it('should return the user name', () => {
-      const user = User.create(mockClerkId, mockEmail, mockName, mockProvider);
+      const user = User.create(mockClerkId, mockEmail, mockName);
 
       expect(user.getName()).toBe(mockName);
     });
@@ -245,7 +197,7 @@ describe('User', () => {
       const names = ['John Doe', 'jane.smith', 'User123', 'María García'];
 
       names.forEach((name) => {
-        const user = User.create(mockClerkId, mockEmail, name, mockProvider);
+        const user = User.create(mockClerkId, mockEmail, name);
         expect(user.getName()).toBe(name);
       });
     });
@@ -253,7 +205,7 @@ describe('User', () => {
 
   describe('getBlocked', () => {
     it('should return current blocked status', () => {
-      const user = User.create(mockClerkId, mockEmail, mockName, mockProvider);
+      const user = User.create(mockClerkId, mockEmail, mockName);
 
       expect(user.getBlocked()).toBe(false);
 
@@ -265,33 +217,9 @@ describe('User', () => {
     });
   });
 
-  describe('getProvider', () => {
-    it('should return the authentication provider', () => {
-      const user = User.create(mockClerkId, mockEmail, mockName, mockProvider);
-
-      expect(user.getProvider()).toBe(mockProvider);
-    });
-
-    it('should handle different provider names', () => {
-      const providers = [
-        'google',
-        'facebook',
-        'github',
-        'twitter',
-        'email',
-        'saml',
-      ];
-
-      providers.forEach((provider) => {
-        const user = User.create(mockClerkId, mockEmail, mockName, provider);
-        expect(user.getProvider()).toBe(provider);
-      });
-    });
-  });
-
   describe('integration scenarios', () => {
     it('should handle complete user lifecycle', () => {
-      const user = User.create(mockClerkId, mockEmail, mockName, mockProvider);
+      const user = User.create(mockClerkId, mockEmail, mockName);
 
       // Initial state
       expect(user.getBlocked()).toBe(false);
@@ -308,11 +236,10 @@ describe('User', () => {
       expect(user.getClerkId()).toBe(mockClerkId);
       expect(user.getEmail().value).toBe(mockEmail);
       expect(user.getName()).toBe(mockName);
-      expect(user.getProvider()).toBe(mockProvider);
     });
 
     it('should maintain immutability of readonly properties', () => {
-      const user = User.create(mockClerkId, mockEmail, mockName, mockProvider);
+      const user = User.create(mockClerkId, mockEmail, mockName);
       const initialUserId = user.getUserId();
       const initialEmail = user.getEmail();
 
@@ -325,7 +252,6 @@ describe('User', () => {
       expect(user.getEmail()).toBe(initialEmail);
       expect(user.getClerkId()).toBe(mockClerkId);
       expect(user.getName()).toBe(mockName);
-      expect(user.getProvider()).toBe(mockProvider);
     });
   });
 });
