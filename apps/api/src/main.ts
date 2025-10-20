@@ -3,12 +3,19 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
+import { clerkMiddleware } from '@clerk/express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(helmet());
   app.enableCors();
   app.setGlobalPrefix('api');
+
+  app.use(
+    clerkMiddleware({
+      publishableKey: process.env.CLERK_PUBLIC_KEY,
+    }),
+  );
 
   app.useGlobalPipes(
     new ValidationPipe({

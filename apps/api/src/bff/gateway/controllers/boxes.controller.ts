@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -7,7 +7,9 @@ import {
 } from '@nestjs/swagger';
 import { BoxApiService } from '../../../box/application/services/box-api.service';
 import { GetBoxesListQueryDto } from '../dtos/get-boxes-list-query.dto';
+import { ClerkAuthGuard } from '../auth/clerk-auth.guard';
 
+@UseGuards(ClerkAuthGuard)
 @ApiTags('App Boxes')
 @Controller('boxes')
 export class BoxesController {

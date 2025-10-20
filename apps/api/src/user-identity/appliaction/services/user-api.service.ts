@@ -5,6 +5,8 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetUsersListQuery } from '../queries/get-users-list.query';
 import { BlockUserCommand } from '../commands/block-user.command';
 import { UnblockUserCommand } from '../commands/unblock-user.command';
+import { UserView } from '../../views/user.view';
+import { GetUserByClerkIdQuery } from '../queries/get-user-by-clerk-id.query';
 
 @Injectable()
 export class UserApiService implements UserApi {
@@ -29,5 +31,10 @@ export class UserApiService implements UserApi {
   async unblockUser(userId: string): Promise<void> {
     const command = new UnblockUserCommand(userId);
     return await this.commandBus.execute(command);
+  }
+
+  async getUserByClerkId(clerkId: string): Promise<UserView | null> {
+    const query = new GetUserByClerkIdQuery(clerkId);
+    return await this.queryBus.execute(query);
   }
 }

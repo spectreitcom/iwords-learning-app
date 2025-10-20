@@ -24,4 +24,10 @@ export const envSchema = Joi.object({
   CLERK_WEBHOOK_SECRET: Joi.string()
     .required()
     .description('Clerk webhook secret'),
+
+  CLERK_SECRET_KEY: Joi.string().required().description('Clerk secret key'),
+
+  CLERK_PUBLISHABLE_KEY: Joi.string()
+    .required()
+    .description('Clerk publishable key'),
 });
