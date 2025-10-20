@@ -1,4 +1,11 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -9,7 +16,9 @@ import { AnswerApiService } from '../../../answer/application/services/answer-ap
 import { CheckAnswerForSimpleTranslationDto } from '../dtos/check-answer-for-simple-translation.dto';
 import { CheckAnswerForIrregularVerbDto } from '../dtos/check-answer-for-irregular-verb.dto';
 import { CheckAnswerForSentenceDto } from '../dtos/check-answer-for-sentence.dto';
+import { ClerkAuthGuard } from '../auth/clerk-auth.guard';
 
+@UseGuards(ClerkAuthGuard)
 @ApiTags('App Answers')
 @Controller('answers')
 export class AnswerController {
