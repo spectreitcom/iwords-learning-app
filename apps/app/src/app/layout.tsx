@@ -37,7 +37,10 @@ export default function RootLayout({
           >
             <SidebarProvider>
               <AppSidebar />
-              {children}
+              <div className={"w-full"}>
+                <div>Topbar</div>
+                <main className={"p-8"}>{children}</main>
+              </div>
             </SidebarProvider>
           </body>
         </html>
