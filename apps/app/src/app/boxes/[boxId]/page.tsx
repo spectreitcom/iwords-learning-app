@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/table";
 import { expressionTypeMap } from "@/features/boxes/utils";
 import { capitalizeFirstLetter } from "@/lib/utils";
+import { Search } from "lucide-react";
 
 type Props = {
   params: Promise<{ boxId: string }>;
@@ -34,11 +35,17 @@ async function AwaitedContent({ boxId }: { boxId: string }) {
     <div>
       <h2 className={"text-2xl"}>Box - {boxDetails.title}</h2>
 
-      <div className={"mt-8 flex flex-col gap-4"}>
-        {boxDetails.items.map((item) => (
-          <BoxItemPreview key={item.expressionContextId} item={item} />
-        ))}
-      </div>
+      {!!boxDetails.items.length ? (
+        <div className={"mt-8 flex flex-col gap-4"}>
+          {boxDetails.items.map((item) => (
+            <BoxItemPreview key={item.expressionContextId} item={item} />
+          ))}
+        </div>
+      ) : (
+        <div className={"mt-8"}>
+          <NoItems />
+        </div>
+      )}
     </div>
   );
 }
@@ -104,4 +111,22 @@ function IrregularVerbTable({ forms }: { forms: string[] }) {
 
 function Loader() {
   return <Spinner className={"w-8 h-8"} />;
+}
+
+function NoItems() {
+  return (
+    <Card className="w-full mx-auto">
+      <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+          <Search className="w-8 h-8 text-gray-400" />
+        </div>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          Brak elementów w tym boxie
+        </h3>
+        <p className="text-sm text-gray-500">
+          Ten box nie zawiera jeszcze żadnych pozycji do nauki.
+        </p>
+      </CardContent>
+    </Card>
+  );
 }
