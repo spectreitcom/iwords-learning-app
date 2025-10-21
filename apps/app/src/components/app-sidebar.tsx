@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Sidebar,
   SidebarContent,
@@ -11,8 +13,11 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { SidebarBoxesList } from "@/features/boxes/components/sidebar-boxes-list";
+import { usePathname } from "next/navigation";
 
 export function AppSidebar() {
+  const pathname = usePathname();
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -23,7 +28,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton asChild isActive={pathname === "/"}>
                   <Link href={"/"}>Dashboard</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
