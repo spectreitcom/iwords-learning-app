@@ -33,6 +33,8 @@ export class ClerkAuthGuard implements CanActivate {
 
     const user = await this.userApiService.getUserByClerkId(userId);
 
+    request.user = { ...user };
+
     if (!user || user.blocked) {
       throw new AppError('UNAUTHORIZED');
     }
