@@ -7,6 +7,7 @@ import { BlockUserCommand } from '../commands/block-user.command';
 import { UnblockUserCommand } from '../commands/unblock-user.command';
 import { UserView } from '../../views/user.view';
 import { GetUserByClerkIdQuery } from '../queries/get-user-by-clerk-id.query';
+import { GetUserByIdQuery } from '../queries/get-user-by-id.query';
 
 @Injectable()
 export class UserApiService implements UserApi {
@@ -35,6 +36,11 @@ export class UserApiService implements UserApi {
 
   async getUserByClerkId(clerkId: string): Promise<UserView | null> {
     const query = new GetUserByClerkIdQuery(clerkId);
+    return await this.queryBus.execute(query);
+  }
+
+  async getUserById(userId: string): Promise<UserView> {
+    const query = new GetUserByIdQuery(userId);
     return await this.queryBus.execute(query);
   }
 }
