@@ -28,6 +28,7 @@ export class GetSentenceByIdQueryHandler
       sentence.id,
       sentence.content,
       sentence.translation,
+      sentence.expressionContextId,
     );
   }
 }

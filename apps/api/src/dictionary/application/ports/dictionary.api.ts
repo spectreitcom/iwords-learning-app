@@ -10,6 +10,7 @@ import { ExpressionView } from '../../views/expression.view';
 import { GetExpressionListQueryResponse } from '../query-handlers/get-expressions-list.query-handler';
 import { GetExpressionContextsListQueryResponse } from '../query-handlers/get-expression-contexts-list.query-handler';
 import { DictionaryReadModel } from '../../read-models/dictionary-read-model';
+import { SentenceView } from '../../views/sentence.view';
 
 export abstract class DictionaryApi {
   abstract createExpression(
@@ -115,7 +116,7 @@ export abstract class DictionaryApi {
     expressionContextId: string,
   ): Promise<ExpressionView>;
 
-  abstract getSentenceById(sentenceId: string): Promise<ExpressionView>;
+  abstract getSentenceById(sentenceId: string): Promise<SentenceView>;
 
   abstract getExpressionsList(
     searchText: string | undefined,
@@ -132,4 +133,8 @@ export abstract class DictionaryApi {
   abstract getDictionaryReadModelsByExpressionContextIds(
     expressionContextIds: string[],
   ): Promise<DictionaryReadModel[]>;
+
+  abstract getSentencesByExpressionContextIds(
+    expressionContextIds: string[],
+  ): Promise<SentenceView[]>;
 }

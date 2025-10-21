@@ -3,5 +3,6 @@ export class SentenceView {
     public readonly sentenceId: string,
     public readonly content: string,
     public readonly translation: string,
+    public readonly expressionContextId: string,
   ) {}
 }
