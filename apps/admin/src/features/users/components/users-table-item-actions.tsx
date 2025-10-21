@@ -38,7 +38,7 @@ export function UsersTableItemActions({ user }: Props) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem>Edytuj</DropdownMenuItem>
+          {/*<DropdownMenuItem>Edytuj</DropdownMenuItem>*/}
           {user.blocked ? (
             <DropdownMenuItem
               variant={"default"}

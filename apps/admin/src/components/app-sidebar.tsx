@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Sidebar,
   SidebarContent,
@@ -10,8 +12,11 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function AppSidebar() {
+  const pathname = usePathname();
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -23,7 +28,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton asChild isActive={pathname === "/"}>
                   <Link href={"/"}>Dashboard</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -35,7 +40,10 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/expressions"}
+                >
                   <Link href={"/expressions"}>Lista wyrażeń</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -47,7 +55,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton asChild isActive={pathname === "/boxes"}>
                   <Link href={"/boxes"}>Lista boxów</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -59,7 +67,10 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/admin-users"}
+                >
                   <Link href={"/admin-users"}>Lista administratorów</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -71,7 +82,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton asChild isActive={pathname === "/users"}>
                   <Link href={"/users"}>Lista użytkowników</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
