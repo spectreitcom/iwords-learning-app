@@ -4,6 +4,7 @@ import { BACKEND_URL } from "@/lib/constants";
 import { CollectionWithPagination } from "@/lib/types";
 import { Box, BoxDetails } from "@/features/boxes/types";
 import { authFetch } from "@/lib/auth-fetch";
+import { redirect } from "next/navigation";
 
 export async function getBoxesList(page = 1, take = 20) {
   const urlSearchParams = new URLSearchParams({
@@ -29,6 +30,8 @@ export async function getBoxDetails(boxId: string) {
       "Content-Type": "application/json",
     },
   });
+
+  if (response.status === 404 || response.status === 400) return redirect("/");
 
   return (await response.json()) as BoxDetails;
 }
