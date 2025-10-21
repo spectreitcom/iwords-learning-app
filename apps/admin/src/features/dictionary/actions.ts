@@ -93,6 +93,9 @@ export async function getExpression(expressionId: string) {
     },
   );
 
+  if (response.status === 404 || response.status === 400)
+    return redirect("/expressions");
+
   return (await response.json()) as Expression;
 }
 
@@ -129,6 +132,9 @@ export async function getExpressionContextDetails(expressionContextId: string) {
       },
     },
   );
+
+  if (response.status === 404 || response.status === 400)
+    return redirect("/expressions");
 
   return (await response.json()) as ExpressionContextDetails;
 }

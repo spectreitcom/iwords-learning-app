@@ -6,6 +6,7 @@ import { CollectionWithPagination } from "@/lib/types";
 import { Box, BoxDetails } from "@/features/boxes/types";
 import { CreateBoxData } from "@/features/boxes/schemas";
 import { revalidatePath } from "next/cache";
+import { notFound, redirect } from "next/navigation";
 
 export async function getBoxes(page = 1, take = 20) {
   const urlSearchParams = new URLSearchParams();
@@ -32,6 +33,9 @@ export async function getBoxDetails(boxId: string) {
       "Content-Type": "application/json",
     },
   });
+
+  if (response.status === 404 || response.status === 400)
+    return redirect("/boxes");
 
   return (await response.json()) as BoxDetails;
 }
