@@ -6,10 +6,11 @@ import { BoxesController } from './controllers/boxes.controller';
 import { ClerkAuthGuard } from './auth/clerk-auth.guard';
 import { UserIdentityModule } from '../../user-identity/appliaction/user-identity.module';
 import { DictionaryModule } from '../../dictionary/application/dictionary.module';
+import { UsersController } from './controllers/users.controller';
 
 @Module({
   imports: [AnswerModule, BoxModule, UserIdentityModule, DictionaryModule],
-  controllers: [AnswerController, BoxesController],
+  controllers: [AnswerController, BoxesController, UsersController],
   providers: [ClerkAuthGuard],
 })
 export class GatewayModule {}
