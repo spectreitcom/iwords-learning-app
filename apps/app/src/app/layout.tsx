@@ -6,6 +6,7 @@ import { ClerkProvider } from "@/services/clerk/components/clerk-provider";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { QueryClientProvider } from "@/services/tanstack/components/query-client-provider";
+import { Topbar } from "@/components/topbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,7 +39,7 @@ export default function RootLayout({
             <SidebarProvider>
               <AppSidebar />
               <div className={"w-full"}>
-                <div>Topbar</div>
+                <Topbar />
                 <main className={"p-8"}>{children}</main>
               </div>
             </SidebarProvider>
