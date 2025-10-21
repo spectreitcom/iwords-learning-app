@@ -9,6 +9,7 @@ import { CreateUserCommandHandler } from './command-handlers/create-user.command
 import { DeleteUserCommandHandler } from './command-handlers/delete-user.command-handler';
 import { OutboxModule } from '../../common/outbox/outbox.module';
 import { GetUserByClerkIdQueryHandler } from './query-handlers/get-user-by-clerk-id.query-handler';
+import { GetUserByIdQueryHandler } from './query-handlers/get-user-by-id.query-handler';
 
 const EVENT_HANDLERS = [];
 
@@ -19,7 +20,11 @@ const COMMAND_HANDLERS = [
   DeleteUserCommandHandler,
 ];
 
-const QUERY_HANDLERS = [GetUsersListQueryHandler, GetUserByClerkIdQueryHandler];
+const QUERY_HANDLERS = [
+  GetUsersListQueryHandler,
+  GetUserByClerkIdQueryHandler,
+  GetUserByIdQueryHandler,
+];
 
 @Module({
   imports: [InfrastructureModule, PrismaModule, OutboxModule],

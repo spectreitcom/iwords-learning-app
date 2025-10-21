@@ -12,4 +12,6 @@ export abstract class UserApi {
   abstract unblockUser(userId: string): Promise<void>;
 
   abstract getUserByClerkId(clerkId: string): Promise<UserView | null>;
+
+  abstract getUserById(userId: string): Promise<UserView>;
 }
