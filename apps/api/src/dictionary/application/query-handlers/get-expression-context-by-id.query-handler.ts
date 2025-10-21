@@ -43,7 +43,12 @@ export class GetExpressionContextByIdQueryHandler
         : null,
       expressionContext.sentences.map(
         (sentence) =>
-          new SentenceView(sentence.id, sentence.content, sentence.translation),
+          new SentenceView(
+            sentence.id,
+            sentence.content,
+            sentence.translation,
+            sentence.expressionContextId,
+          ),
       ),
     );
   }
