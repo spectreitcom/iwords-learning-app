@@ -14,6 +14,7 @@ import {
 import { expressionTypeMap } from "@/features/boxes/utils";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { Search } from "lucide-react";
+import { StartLearningButton } from "@/features/boxes/components/start-learning-button";
 
 type Props = {
   params: Promise<{ boxId: string }>;
@@ -33,7 +34,13 @@ async function AwaitedContent({ boxId }: { boxId: string }) {
 
   return (
     <div>
-      <h2 className={"text-2xl"}>Box - {boxDetails.title}</h2>
+      <div className={"flex justify-between items-center"}>
+        <h2 className={"text-2xl"}>Box - {boxDetails.title}</h2>
+        <StartLearningButton
+          boxId={boxDetails.boxId}
+          isBoxStarted={boxDetails.isBoxStarted}
+        />
+      </div>
 
       {!!boxDetails.items.length ? (
         <div className={"mt-8 flex flex-col gap-4"}>
