@@ -16,6 +16,7 @@ import { BoxApiService } from '../../../box/application/services/box-api.service
 import { GetBoxesListQueryDto } from '../dtos/get-boxes-list-query.dto';
 import { ClerkAuthGuard } from '../auth/clerk-auth.guard';
 import { DictionaryApiService } from '../../../dictionary/application/services/dictionary-api.service';
+import { CurrentUserId } from '../auth/current-user-id.decorator';
 
 @UseGuards(ClerkAuthGuard)
 @ApiTags('App Boxes')
@@ -68,6 +69,7 @@ export class BoxesController {
       properties: {
         boxId: { type: 'string', format: 'uuid' },
         title: { type: 'string' },
+        isBoxStarted: { type: 'boolean' },
         items: {
           type: 'array',
           items: {
@@ -107,7 +109,10 @@ export class BoxesController {
     description: 'Box not found',
   })
   @Get(':boxId')
-  async getBoxDetails(@Param('boxId', new ParseUUIDPipe()) boxId: string) {
+  async getBoxDetails(
+    @Param('boxId', new ParseUUIDPipe()) boxId: string,
+    @CurrentUserId() userId: string,
+  ) {
     const box = await this.boxApiService.getBoxById(boxId);
 
     const items =
@@ -120,9 +125,15 @@ export class BoxesController {
         items.map((i) => i.expressionContextId),
       );
 
+    const isBoxStarted = await this.boxApiService.isBoxStarted(
+      userId,
+      box.boxId,
+    );
+
     return {
       boxId: box.boxId,
       title: box.title,
+      isBoxStarted,
       items: items.map((item) => ({
         ...item,
         sentences: sentences

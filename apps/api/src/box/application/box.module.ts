@@ -15,6 +15,7 @@ import { GetBoxesListQueryHandler } from './query-handlers/get-boxes-list.query-
 import { AddExpressionContextIdCommandHandler } from './command-handlers/add-expression-context-id.command-handler';
 import { RemoveExpressionContextIdCommandHandler } from './command-handlers/remove-expression-context-id.command-handler';
 import { BeginBoxCommandHandler } from './command-handlers/begin-box.command-handler';
+import { IsBoxStartedQueryHandler } from './query-handlers/is-box-started.query-handler';
 
 const EVENT_HANDLERS = [
   BoxCreatedEventHandler,
@@ -33,7 +34,11 @@ const COMMAND_HANDLERS = [
   BeginBoxCommandHandler,
 ];
 
-const QUERY_HANDLERS = [GetBoxByIdQueryHandler, GetBoxesListQueryHandler];
+const QUERY_HANDLERS = [
+  GetBoxByIdQueryHandler,
+  GetBoxesListQueryHandler,
+  IsBoxStartedQueryHandler,
+];
 
 @Module({
   imports: [InfrastructureModule, PrismaModule],
