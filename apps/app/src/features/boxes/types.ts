@@ -31,5 +31,6 @@ export type BoxItem = {
 };
 
 export type BoxDetails = Exclude<Box, "expressionContextIds"> & {
+  isBoxStarted: boolean;
   items: BoxItem[];
 };
