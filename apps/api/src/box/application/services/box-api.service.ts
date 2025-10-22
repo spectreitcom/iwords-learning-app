@@ -10,6 +10,7 @@ import { GetBoxesListQuery } from '../queries/get-boxes-list.query';
 import { GetBoxesListQueryResponse } from '../query-handlers/get-boxes-list.query-handler';
 import { AddExpressionContextIdCommand } from '../commands/add-expression-context-id.command';
 import { RemoveExpressionContextIdCommand } from '../commands/remove-expression-context-id.command';
+import { BeginBoxCommand } from '../commands/begin-box.command';
 
 @Injectable()
 export class BoxApiService implements BoxApi {
@@ -65,6 +66,11 @@ export class BoxApiService implements BoxApi {
       boxId,
       expressionContextId,
     );
+    return await this.commandBus.execute(command);
+  }
+
+  async beginBox(userId: string, boxId: string): Promise<void> {
+    const command = new BeginBoxCommand(boxId, userId);
     return await this.commandBus.execute(command);
   }
 }
