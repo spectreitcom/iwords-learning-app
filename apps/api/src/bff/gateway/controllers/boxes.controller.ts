@@ -1,8 +1,11 @@
 import {
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseUUIDPipe,
+  Post,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -148,5 +151,20 @@ export class BoxesController {
           })),
       })),
     };
+  }
+
+  @ApiBearerAuth('app-auth')
+  @ApiOperation({ summary: 'Marks the box as in learning' })
+  @ApiResponse({
+    status: 200,
+    description: 'Box marked as in learning',
+  })
+  @Post(':boxId/start')
+  @HttpCode(HttpStatus.OK)
+  async startBox(
+    @Param('boxId', new ParseUUIDPipe()) boxId: string,
+    @CurrentUserId() userId: string,
+  ) {
+    return await this.boxApiService.beginBox(userId, boxId);
   }
 }
