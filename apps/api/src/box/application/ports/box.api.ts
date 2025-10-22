@@ -18,4 +18,6 @@ export abstract class BoxApi {
     boxId: string,
     expressionContextId: string,
   ): Promise<void>;
+
+  abstract beginBox(userId: string, boxId: string): Promise<void>;
 }

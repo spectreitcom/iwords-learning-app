@@ -14,6 +14,7 @@ import { UpdateBoxCommandHandler } from './command-handlers/update-box.command-h
 import { GetBoxesListQueryHandler } from './query-handlers/get-boxes-list.query-handler';
 import { AddExpressionContextIdCommandHandler } from './command-handlers/add-expression-context-id.command-handler';
 import { RemoveExpressionContextIdCommandHandler } from './command-handlers/remove-expression-context-id.command-handler';
+import { BeginBoxCommandHandler } from './command-handlers/begin-box.command-handler';
 
 const EVENT_HANDLERS = [
   BoxCreatedEventHandler,
@@ -29,6 +30,7 @@ const COMMAND_HANDLERS = [
   UpdateBoxCommandHandler,
   AddExpressionContextIdCommandHandler,
   RemoveExpressionContextIdCommandHandler,
+  BeginBoxCommandHandler,
 ];
 
 const QUERY_HANDLERS = [GetBoxByIdQueryHandler, GetBoxesListQueryHandler];
