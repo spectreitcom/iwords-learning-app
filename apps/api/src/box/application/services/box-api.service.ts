@@ -11,6 +11,7 @@ import { GetBoxesListQueryResponse } from '../query-handlers/get-boxes-list.quer
 import { AddExpressionContextIdCommand } from '../commands/add-expression-context-id.command';
 import { RemoveExpressionContextIdCommand } from '../commands/remove-expression-context-id.command';
 import { BeginBoxCommand } from '../commands/begin-box.command';
+import { IsBoxStartedQuery } from '../queries/is-box-started.query';
 
 @Injectable()
 export class BoxApiService implements BoxApi {
@@ -72,5 +73,10 @@ export class BoxApiService implements BoxApi {
   async beginBox(userId: string, boxId: string): Promise<void> {
     const command = new BeginBoxCommand(boxId, userId);
     return await this.commandBus.execute(command);
+  }
+
+  async isBoxStarted(userId: string, boxId: string): Promise<boolean> {
+    const query = new IsBoxStartedQuery(boxId, userId);
+    return await this.queryBus.execute(query);
   }
 }
