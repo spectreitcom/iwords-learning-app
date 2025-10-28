@@ -33,6 +33,8 @@ export class AnswerController {
       type: 'object',
       properties: {
         correct: { type: 'boolean' },
+        userAnswer: { type: 'string' },
+        correctAnswer: { type: 'string' },
       },
     },
   })
@@ -63,9 +65,31 @@ export class AnswerController {
     schema: {
       type: 'object',
       properties: {
-        form1: { type: 'object', properties: { correct: { type: 'boolean' } } },
-        form2: { type: 'object', properties: { correct: { type: 'boolean' } } },
-        form3: { type: 'object', properties: { correct: { type: 'boolean' } } },
+        form1: {
+          type: 'object',
+          properties: {
+            correct: { type: 'boolean' },
+            userAnswer: { type: 'string' },
+            correctAnswer: { type: 'string' },
+          },
+        },
+        form2: {
+          type: 'object',
+          properties: {
+            correct: { type: 'boolean' },
+            userAnswer: { type: 'string' },
+            correctAnswer: { type: 'string' },
+          },
+        },
+        form3: {
+          type: 'object',
+          properties: {
+            correct: { type: 'boolean' },
+            userAnswer: { type: 'string' },
+            correctAnswer: { type: 'string' },
+          },
+        },
+        allCorrect: { type: 'boolean' },
       },
     },
   })
@@ -97,6 +121,8 @@ export class AnswerController {
       type: 'object',
       properties: {
         correct: { type: 'boolean' },
+        userAnswer: { type: 'string' },
+        correctAnswer: { type: 'string' },
       },
     },
   })

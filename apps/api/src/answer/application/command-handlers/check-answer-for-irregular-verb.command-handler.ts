@@ -1,11 +1,13 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CheckAnswerForIrregularVerbCommand } from '../commands/check-answer-for-irregular-verb.command';
 import { PrismaService } from '../../../common/prisma/prisma.service';
+import { AppError } from '../../../common/errors';
 
 export type CheckAnswerForIrregularVerbCommandResponse = {
-  form1: { correct: boolean };
-  form2: { correct: boolean };
-  form3: { correct: boolean };
+  form1: { correct: boolean; userAnswer: string; correctAnswer: string };
+  form2: { correct: boolean; userAnswer: string; correctAnswer: string };
+  form3: { correct: boolean; userAnswer: string; correctAnswer: string };
+  allCorrect: boolean;
 };
 
 @CommandHandler(CheckAnswerForIrregularVerbCommand)
@@ -29,7 +31,8 @@ export class CheckAnswerForIrregularVerbCommandHandler
       });
 
     if (!answerExpressionContext) {
-      throw new Error(
+      throw new AppError(
+        'ENTITY_NOT_FOUND',
         `Answer expression context with id ${expressionContextId} not found`,
       );
     }
@@ -40,10 +43,26 @@ export class CheckAnswerForIrregularVerbCommandHandler
     const form2 = forms[1];
     const form3 = forms[2];
 
+    const allCorrect =
+      form1 === answer[0] && form2 === answer[1] && form3 === answer[2];
+
     return {
-      form1: { correct: form1 === answer[0] },
-      form2: { correct: form2 === answer[1] },
-      form3: { correct: form3 === answer[2] },
+      form1: {
+        correct: form1 === answer[0],
+        userAnswer: answer[0],
+        correctAnswer: form1,
+      },
+      form2: {
+        correct: form2 === answer[1],
+        userAnswer: answer[1],
+        correctAnswer: form2,
+      },
+      form3: {
+        correct: form3 === answer[2],
+        userAnswer: answer[2],
+        correctAnswer: form3,
+      },
+      allCorrect,
     };
   }
 }

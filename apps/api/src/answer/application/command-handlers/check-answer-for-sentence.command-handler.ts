@@ -5,6 +5,8 @@ import { AppError } from '../../../common/errors';
 
 export type CheckAnswerForSentenceCommandResponse = {
   correct: boolean;
+  userAnswer: string;
+  correctAnswer: string;
 };
 
 @CommandHandler(CheckAnswerForSentenceCommand)
@@ -36,6 +38,8 @@ export class CheckAnswerForSentenceCommandHandler
 
     return {
       correct: answer === answerSentence.content,
+      userAnswer: answer,
+      correctAnswer: answerSentence.content,
     };
   }
 }
