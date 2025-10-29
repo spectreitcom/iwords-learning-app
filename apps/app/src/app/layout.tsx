@@ -7,6 +7,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { QueryClientProvider } from "@/services/tanstack/components/query-client-provider";
 import { Topbar } from "@/components/topbar";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,6 +42,7 @@ export default function RootLayout({
               <div className={"w-full"}>
                 <Topbar />
                 <main className={"p-8"}>{children}</main>
+                <Toaster position={"top-center"} />
               </div>
             </SidebarProvider>
           </body>
