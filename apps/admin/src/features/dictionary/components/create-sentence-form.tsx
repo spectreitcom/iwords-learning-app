@@ -18,9 +18,14 @@ import { Button } from "@/components/ui/button";
 type Props = {
   onSubmitted: (data: CreateSentenceData) => void;
   defaultValues?: CreateSentenceData;
+  pending?: boolean;
 };
 
-export function CreateSentenceForm({ defaultValues, onSubmitted }: Props) {
+export function CreateSentenceForm({
+  defaultValues,
+  onSubmitted,
+  pending,
+}: Props) {
   const form = useForm<CreateSentenceData>({
     resolver: zodResolver(createSentenceSchema),
     defaultValues: {
@@ -65,7 +70,10 @@ export function CreateSentenceForm({ defaultValues, onSubmitted }: Props) {
         />
 
         <div className={"flex justify-end"}>
-          <Button type={"submit"} disabled={form.formState.isSubmitting}>
+          <Button
+            type={"submit"}
+            disabled={form.formState.isSubmitting || pending}
+          >
             Zapisz
           </Button>
         </div>

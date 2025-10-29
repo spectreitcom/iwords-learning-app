@@ -20,12 +20,14 @@ type Props = {
   onSubmitted: (data: CreateExpressionData) => void;
   showInfoPanel?: boolean;
   defaultValues?: CreateExpressionData;
+  pending?: boolean;
 };
 
 export function CreateExpressionForm({
   onSubmitted,
   showInfoPanel,
   defaultValues,
+  pending,
 }: Props) {
   const form = useForm({
     resolver: zodResolver(createExpressionSchema),
@@ -58,7 +60,10 @@ export function CreateExpressionForm({
         />
 
         <div className={"flex justify-end"}>
-          <Button type={"submit"} disabled={form.formState.isSubmitting}>
+          <Button
+            type={"submit"}
+            disabled={form.formState.isSubmitting || pending}
+          >
             Zapisz
           </Button>
         </div>

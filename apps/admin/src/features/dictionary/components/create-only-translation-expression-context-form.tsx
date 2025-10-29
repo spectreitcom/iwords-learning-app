@@ -18,11 +18,13 @@ import { Button } from "@/components/ui/button";
 type Props = {
   onSubmitted: (data: CreateOnlyTranslationExpressionContextData) => void;
   defaultValues?: CreateOnlyTranslationExpressionContextData;
+  pending?: boolean;
 };
 
 export function CreateOnlyTranslationExpressionContextForm({
   onSubmitted,
   defaultValues,
+  pending,
 }: Props) {
   const form = useForm({
     resolver: zodResolver(createOnlyTranslationExpressionContextSchema),
@@ -53,7 +55,10 @@ export function CreateOnlyTranslationExpressionContextForm({
         />
 
         <div className={"flex justify-end"}>
-          <Button type={"submit"} disabled={form.formState.isSubmitting}>
+          <Button
+            type={"submit"}
+            disabled={form.formState.isSubmitting || pending}
+          >
             Zapisz
           </Button>
         </div>

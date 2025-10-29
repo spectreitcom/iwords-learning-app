@@ -131,11 +131,16 @@ function AddVerbModal({
   onClose,
   expressionId,
 }: Omit<DialogProps, "title" | "children"> & { expressionId: string }) {
+  const [pending, setPending] = useState(false);
+
   return (
     <Modal open={open} onClose={onClose} title={"Dodaj czasownik"}>
       <CreateOnlyTranslationExpressionContextForm
+        pending={pending}
         onSubmitted={async (data) => {
+          setPending(true);
           await createVerbExpressionContext(expressionId, data);
+          setPending(false);
           onClose();
         }}
       />
@@ -148,11 +153,16 @@ function AddPhrasalVerbModal({
   onClose,
   expressionId,
 }: Omit<DialogProps, "title" | "children"> & { expressionId: string }) {
+  const [pending, setPending] = useState(false);
+
   return (
     <Modal open={open} onClose={onClose} title={"Dodaj czasownik frazowy"}>
       <CreateOnlyTranslationExpressionContextForm
+        pending={pending}
         onSubmitted={async (data) => {
+          setPending(true);
           await createPhrasalVerbExpressionContext(expressionId, data);
+          setPending(false);
           onClose();
         }}
       />
@@ -165,11 +175,16 @@ function AddNounModal({
   onClose,
   expressionId,
 }: Omit<DialogProps, "title" | "children"> & { expressionId: string }) {
+  const [pending, setPending] = useState(false);
+
   return (
     <Modal open={open} onClose={onClose} title={"Dodaj rzeczownik"}>
       <CreateNounExpressionContextForm
+        pending={pending}
         onSubmitted={async (data) => {
+          setPending(true);
           await createNounExpressionContext(expressionId, data);
+          setPending(false);
           onClose();
         }}
       />
@@ -182,11 +197,16 @@ function AddAdverbModal({
   onClose,
   expressionId,
 }: Omit<DialogProps, "title" | "children"> & { expressionId: string }) {
+  const [pending, setPending] = useState(false);
+
   return (
     <Modal open={open} onClose={onClose} title={"Dodaj przysłówek"}>
       <CreateOnlyTranslationExpressionContextForm
+        pending={pending}
         onSubmitted={async (data) => {
+          setPending(true);
           await createAdverbExpressionContext(expressionId, data);
+          setPending(false);
           onClose();
         }}
       />
@@ -199,11 +219,16 @@ function AddIrregularVerbModal({
   onClose,
   expressionId,
 }: Omit<DialogProps, "title" | "children"> & { expressionId: string }) {
+  const [pending, setPending] = useState(false);
+
   return (
     <Modal open={open} onClose={onClose} title={"Dodaj czasownik nieregularny"}>
       <CreateIrregularVerbExpressionContextForm
+        pending={pending}
         onSubmitted={async (data) => {
+          setPending(true);
           await createIrregularVerbExpressionContext(expressionId, data);
+          setPending(false);
           onClose();
         }}
       />
@@ -216,11 +241,16 @@ function AddAdjectiveModal({
   onClose,
   expressionId,
 }: Omit<DialogProps, "title" | "children"> & { expressionId: string }) {
+  const [pending, setPending] = useState(false);
+
   return (
     <Modal open={open} onClose={onClose} title={"Dodaj przymiotnik"}>
       <CreateOnlyTranslationExpressionContextForm
+        pending={pending}
         onSubmitted={async (data) => {
+          setPending(true);
           await createAdjectiveExpressionContext(expressionId, data);
+          setPending(false);
           onClose();
         }}
       />

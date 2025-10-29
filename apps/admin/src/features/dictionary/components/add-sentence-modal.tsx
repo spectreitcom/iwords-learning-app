@@ -19,6 +19,7 @@ type Props = {
 
 export function AddSentenceModal({ expressionContextId, expressionId }: Props) {
   const [show, setShow] = useState(false);
+  const [pending, setPending] = useState(false);
 
   return (
     <Dialog open={show} onOpenChange={setShow}>
@@ -30,8 +31,11 @@ export function AddSentenceModal({ expressionContextId, expressionId }: Props) {
           <DialogTitle>Dodaj nowe zdanie</DialogTitle>
         </DialogHeader>
         <CreateSentenceForm
+          pending={pending}
           onSubmitted={async (data) => {
+            setPending(true);
             await createSentence(expressionId, expressionContextId, data);
+            setPending(false);
             setShow(false);
           }}
         />

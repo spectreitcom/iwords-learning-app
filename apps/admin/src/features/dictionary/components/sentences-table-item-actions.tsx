@@ -156,17 +156,22 @@ function EditModal({
   expressionId: string;
   sentence: Sentence;
 }) {
+  const [pending, setPending] = useState(false);
+
   return (
     <Modal open={open} onClose={onClose} title={"Edycja zdania"}>
       <CreateSentenceForm
+        pending={pending}
         defaultValues={sentence}
         onSubmitted={async (data) => {
+          setPending(true);
           await updateSentence(
             sentence.sentenceId,
             expressionId,
             expressionContextId,
             data,
           );
+          setPending(false);
           onClose();
         }}
       />

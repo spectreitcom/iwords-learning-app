@@ -183,6 +183,7 @@ function EditVerbModal({
   const [expressionContextDetails, setExpressionContextDetails] =
     useState<ExpressionContextDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pending, setPending] = useState(false);
 
   useEffect(() => {
     if (open && expressionContextId) {
@@ -200,15 +201,18 @@ function EditVerbModal({
 
       {expressionContextDetails && !loading && (
         <CreateOnlyTranslationExpressionContextForm
+          pending={pending || loading}
           defaultValues={{
             translation: expressionContextDetails.translation,
           }}
           onSubmitted={async (data) => {
+            setPending(true);
             await updateVerbExpressionContext(
               expressionContextId,
               expressionContextDetails.expressionId,
               data,
             );
+            setPending(false);
             setExpressionContextDetails(null);
             onClose();
           }}
@@ -226,6 +230,7 @@ function EditIrregularVerbModal({
   const [expressionContextDetails, setExpressionContextDetails] =
     useState<ExpressionContextDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pending, setPending] = useState(false);
 
   useEffect(() => {
     if (open && expressionContextId) {
@@ -247,6 +252,7 @@ function EditIrregularVerbModal({
 
       {expressionContextDetails && !loading && (
         <CreateIrregularVerbExpressionContextForm
+          pending={pending || loading}
           defaultValues={{
             translation: expressionContextDetails.translation,
             form1: expressionContextDetails?.forms?.at(0) ?? "",
@@ -254,11 +260,13 @@ function EditIrregularVerbModal({
             form3: expressionContextDetails?.forms?.at(2) ?? "",
           }}
           onSubmitted={async (data) => {
+            setPending(true);
             await updateIrregularVerbExpressionContext(
               expressionContextId,
               expressionContextDetails.expressionId,
               data,
             );
+            setPending(false);
             setExpressionContextDetails(null);
             onClose();
           }}
@@ -276,6 +284,7 @@ function EditNounModal({
   const [expressionContextDetails, setExpressionContextDetails] =
     useState<ExpressionContextDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pending, setPending] = useState(false);
 
   useEffect(() => {
     if (open && expressionContextId) {
@@ -293,16 +302,19 @@ function EditNounModal({
 
       {expressionContextDetails && !loading && (
         <CreateNounExpressionContextForm
+          pending={pending || loading}
           defaultValues={{
             translation: expressionContextDetails.translation,
             isCountable: expressionContextDetails.isCountable,
           }}
           onSubmitted={async (data) => {
+            setPending(true);
             await updateNounExpressionContext(
               expressionContextId,
               expressionContextDetails.expressionId,
               data,
             );
+            setPending(false);
             setExpressionContextDetails(null);
             onClose();
           }}
@@ -320,6 +332,7 @@ function EditPhrasalVerbModal({
   const [expressionContextDetails, setExpressionContextDetails] =
     useState<ExpressionContextDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pending, setPending] = useState(false);
 
   useEffect(() => {
     if (open && expressionContextId) {
@@ -337,15 +350,18 @@ function EditPhrasalVerbModal({
 
       {expressionContextDetails && !loading && (
         <CreateOnlyTranslationExpressionContextForm
+          pending={pending || loading}
           defaultValues={{
             translation: expressionContextDetails.translation,
           }}
           onSubmitted={async (data) => {
+            setPending(true);
             await updatePhrasalAdverbExpressionContext(
               expressionContextId,
               expressionContextDetails.expressionId,
               data,
             );
+            setPending(false);
             setExpressionContextDetails(null);
             onClose();
           }}
@@ -363,6 +379,7 @@ function EditAdverbModal({
   const [expressionContextDetails, setExpressionContextDetails] =
     useState<ExpressionContextDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pending, setPending] = useState(false);
 
   useEffect(() => {
     if (open && expressionContextId) {
@@ -380,15 +397,18 @@ function EditAdverbModal({
 
       {expressionContextDetails && !loading && (
         <CreateOnlyTranslationExpressionContextForm
+          pending={pending || loading}
           defaultValues={{
             translation: expressionContextDetails.translation,
           }}
           onSubmitted={async (data) => {
+            setPending(true);
             await updateAdverbExpressionContext(
               expressionContextId,
               expressionContextDetails.expressionId,
               data,
             );
+            setPending(false);
             setExpressionContextDetails(null);
             onClose();
           }}
@@ -406,6 +426,7 @@ function EditAdjectiveModal({
   const [expressionContextDetails, setExpressionContextDetails] =
     useState<ExpressionContextDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pending, setPending] = useState(false);
 
   useEffect(() => {
     if (open && expressionContextId) {
@@ -423,15 +444,18 @@ function EditAdjectiveModal({
 
       {expressionContextDetails && !loading && (
         <CreateOnlyTranslationExpressionContextForm
+          pending={pending || loading}
           defaultValues={{
             translation: expressionContextDetails.translation,
           }}
           onSubmitted={async (data) => {
+            setPending(true);
             await updateAdjectiveExpressionContext(
               expressionContextId,
               expressionContextDetails.expressionId,
               data,
             );
+            setPending(false);
             setExpressionContextDetails(null);
             onClose();
           }}
