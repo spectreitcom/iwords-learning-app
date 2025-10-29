@@ -108,7 +108,12 @@ export function LearningMain({ boxItems, boxTitle, boxId }: Props) {
       <div className="text-center">
         <div className="text-2xl font-semibold tracking-tight">{boxTitle}</div>
         <div className="mt-1 text-sm text-muted-foreground">
-          Krok {Math.min(currentIndex + 1, Math.max(linkedListRef.current.length, 1))} z {linkedListRef.current.length}
+          Krok{" "}
+          {Math.min(
+            currentIndex + 1,
+            Math.max(linkedListRef.current.length, 1),
+          )}{" "}
+          z {linkedListRef.current.length}
         </div>
       </div>
 
@@ -116,9 +121,13 @@ export function LearningMain({ boxItems, boxTitle, boxId }: Props) {
       <div className="mt-6">
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
           <span>Postęp</span>
-          <span>{calcProgress(currentIndex, linkedListRef.current.length)}%</span>
+          <span>
+            {calcProgress(currentIndex, linkedListRef.current.length)}%
+          </span>
         </div>
-        <Progress value={calcProgress(currentIndex, linkedListRef.current.length)} />
+        <Progress
+          value={calcProgress(currentIndex, linkedListRef.current.length)}
+        />
       </div>
 
       {/* Exercise card */}
@@ -137,7 +146,9 @@ export function LearningMain({ boxItems, boxTitle, boxId }: Props) {
               <>
                 <SimpleTranslationView
                   currentView={currentItem?.value.learningViewType}
-                  expressionContextId={currentItem.value?.expressionContextId ?? ""}
+                  expressionContextId={
+                    currentItem.value?.expressionContextId ?? ""
+                  }
                   onAnswerChecked={(res) => {
                     setAnswerData(res);
                   }}
@@ -151,7 +162,9 @@ export function LearningMain({ boxItems, boxTitle, boxId }: Props) {
                 />
                 <IrregularVerbTranslationView
                   currentView={currentItem.value.learningViewType}
-                  expressionContextId={currentItem.value?.expressionContextId ?? ""}
+                  expressionContextId={
+                    currentItem.value?.expressionContextId ?? ""
+                  }
                   onAnswerChecked={(res) => {
                     setIrregularVerbAnswerData(res);
                   }}

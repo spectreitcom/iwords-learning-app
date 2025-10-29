@@ -83,7 +83,9 @@ export function AnswerModal({
               </span>
             </div>
             <div className="text-sm">
-              <span className="text-muted-foreground">Poprawna odpowiedź: </span>
+              <span className="text-muted-foreground">
+                Poprawna odpowiedź:{" "}
+              </span>
               <span className="font-semibold text-emerald-700">
                 {answerData.correctAnswer}
               </span>
@@ -179,7 +181,7 @@ export function IrregularVerbAnswerModal({
                     <div className="space-y-1">
                       <div>
                         <span className="text-muted-foreground">
-                          Twoja odpowiedź: 
+                          Twoja odpowiedź:
                         </span>
                         <span className="font-medium line-through decoration-rose-500/60">
                           {f.data.userAnswer || "(puste)"}
@@ -187,7 +189,7 @@ export function IrregularVerbAnswerModal({
                       </div>
                       <div>
                         <span className="text-muted-foreground">
-                          Poprawna odpowiedź: 
+                          Poprawna odpowiedź:
                         </span>
                         <span className="font-semibold text-emerald-700">
                           {f.data.correctAnswer}
