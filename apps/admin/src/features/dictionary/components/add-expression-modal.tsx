@@ -17,6 +17,7 @@ export function AddExpressionModal() {
   const [existingExpressionId, setExistingExpressionId] = useState<
     string | null
   >(null);
+  const [pending, setPending] = useState(false);
 
   return (
     <Dialog open={show} onOpenChange={setShow}>
@@ -28,8 +29,11 @@ export function AddExpressionModal() {
           <DialogTitle>Dodaj nowe wyrażenie</DialogTitle>
         </DialogHeader>
         <CreateExpressionForm
+          pending={pending}
           onSubmitted={async (data) => {
+            setPending(true);
             const responseData = await createExpression(data);
+            setPending(false);
             if (responseData.existingExpressionId) {
               setExistingExpressionId(responseData.existingExpressionId);
               return;

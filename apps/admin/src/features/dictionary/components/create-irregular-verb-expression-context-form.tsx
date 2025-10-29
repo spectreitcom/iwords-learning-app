@@ -18,11 +18,13 @@ import { Button } from "@/components/ui/button";
 type Props = {
   onSubmitted: (data: CreateIrregularVerbExpressionContextData) => void;
   defaultValues?: CreateIrregularVerbExpressionContextData;
+  pending?: boolean;
 };
 
 export function CreateIrregularVerbExpressionContextForm({
   onSubmitted,
   defaultValues,
+  pending,
 }: Props) {
   const form = useForm({
     resolver: zodResolver(createIrregularVerbExpressionContextSchema),
@@ -98,7 +100,10 @@ export function CreateIrregularVerbExpressionContextForm({
         />
 
         <div className={"flex justify-end"}>
-          <Button type={"submit"} disabled={form.formState.isSubmitting}>
+          <Button
+            type={"submit"}
+            disabled={form.formState.isSubmitting || pending}
+          >
             Zapisz
           </Button>
         </div>

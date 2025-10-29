@@ -21,11 +21,13 @@ import { Label } from "@/components/ui/label";
 type Props = {
   onSubmitted: (data: CreateNounExpressionContextData) => void;
   defaultValues?: CreateNounExpressionContextData;
+  pending?: boolean;
 };
 
 export function CreateNounExpressionContextForm({
   onSubmitted,
   defaultValues,
+  pending,
 }: Props) {
   const form = useForm({
     resolver: zodResolver(createNounExpressionContextSchema),
@@ -81,7 +83,10 @@ export function CreateNounExpressionContextForm({
         />
 
         <div className={"flex justify-end"}>
-          <Button type={"submit"} disabled={form.formState.isSubmitting}>
+          <Button
+            type={"submit"}
+            disabled={form.formState.isSubmitting || pending}
+          >
             Zapisz
           </Button>
         </div>
