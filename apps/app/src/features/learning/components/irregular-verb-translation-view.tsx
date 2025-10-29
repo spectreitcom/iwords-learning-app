@@ -9,8 +9,16 @@ import { useEffect, useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { checkAnswerIrregularVerbTranslation } from "@/features/learning/actions";
 import { toast } from "sonner";
-import { FormField, FormItem, FormLabel, Form } from "@/components/ui/form";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  Form,
+  FormMessage,
+} from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type Props = {
   currentView: LearningViewType;
@@ -18,7 +26,13 @@ type Props = {
   expressionContextId: string;
 };
 
-type Inputs = { form1: string; form2: string; form3: string };
+const schema = z.object({
+  form1: z.string().min(1, { message: "To pole jest wymagane" }),
+  form2: z.string().min(1, { message: "To pole jest wymagane" }),
+  form3: z.string().min(1, { message: "To pole jest wymagane" }),
+});
+
+type Inputs = z.infer<typeof schema>;
 
 export function IrregularVerbTranslationView({
   currentView,
@@ -49,6 +63,7 @@ export function IrregularVerbTranslationView({
       form2: "",
       form3: "",
     },
+    resolver: zodResolver(schema),
   });
 
   const input1Ref = useRef<HTMLInputElement>(null);
@@ -77,6 +92,7 @@ export function IrregularVerbTranslationView({
                 <FormItem>
                   <FormLabel>I forma</FormLabel>
                   <Input {...field} autoComplete={"off"} ref={input1Ref} />
+                  <FormMessage />
                 </FormItem>
               )}
               name={"form1"}
@@ -87,6 +103,7 @@ export function IrregularVerbTranslationView({
                 <FormItem>
                   <FormLabel>II forma</FormLabel>
                   <Input {...field} autoComplete={"off"} />
+                  <FormMessage />
                 </FormItem>
               )}
               name={"form2"}
@@ -97,6 +114,7 @@ export function IrregularVerbTranslationView({
                 <FormItem>
                   <FormLabel>III forma</FormLabel>
                   <Input {...field} autoComplete={"off"} />
+                  <FormMessage />
                 </FormItem>
               )}
               name={"form3"}

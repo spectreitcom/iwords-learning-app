@@ -6,8 +6,10 @@ import { useMutation } from "@tanstack/react-query";
 import { checkAnswerSentenceTranslation } from "@/features/learning/actions";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { Form, FormField, FormItem } from "@/components/ui/form";
+import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type Props = {
   currentView: LearningViewType;
@@ -15,7 +17,11 @@ type Props = {
   sentenceId: string;
 };
 
-type Inputs = { answer: string };
+const schema = z.object({
+  answer: z.string().min(1, { message: "To pole jest wymagane" }),
+});
+
+type Inputs = z.infer<typeof schema>;
 
 export function SentenceTranslationView({
   currentView,
@@ -44,6 +50,7 @@ export function SentenceTranslationView({
     defaultValues: {
       answer: "",
     },
+    resolver: zodResolver(schema),
   });
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -70,6 +77,7 @@ export function SentenceTranslationView({
               render={({ field }) => (
                 <FormItem>
                   <Textarea {...field} ref={inputRef} autoComplete={"off"} />
+                  <FormMessage />
                 </FormItem>
               )}
               name={"answer"}

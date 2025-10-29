@@ -7,7 +7,9 @@ import { checkAnswerSimpleTranslation } from "@/features/learning/actions";
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { Form, FormField, FormItem } from "@/components/ui/form";
+import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type Props = {
   currentView: LearningViewType;
@@ -15,9 +17,11 @@ type Props = {
   expressionContextId: string;
 };
 
-type Inputs = {
-  answer: string;
-};
+const schema = z.object({
+  answer: z.string().min(1, { message: "To pole jest wymagane" }),
+});
+
+type Inputs = z.infer<typeof schema>;
 
 export function SimpleTranslationView({
   currentView,
@@ -46,6 +50,7 @@ export function SimpleTranslationView({
     defaultValues: {
       answer: "",
     },
+    resolver: zodResolver(schema),
   });
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -77,6 +82,7 @@ export function SimpleTranslationView({
                     autoComplete={"off"}
                     ref={inputRef}
                   />
+                  <FormMessage />
                 </FormItem>
               )}
               name={"answer"}
