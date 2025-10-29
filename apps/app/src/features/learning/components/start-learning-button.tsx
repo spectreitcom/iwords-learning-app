@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { beginBox } from "@/features/boxes/actions";
 import { redirect } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
+import { beginBox } from "@/features/learning/actions";
 
 type Props = {
   isBoxStarted: boolean;

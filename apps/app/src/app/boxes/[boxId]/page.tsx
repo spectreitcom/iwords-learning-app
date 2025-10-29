@@ -14,7 +14,7 @@ import {
 import { expressionTypeMap } from "@/features/boxes/utils";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { Search } from "lucide-react";
-import { StartLearningButton } from "@/features/boxes/components/start-learning-button";
+import { StartLearningButton } from "@/features/learning/components/start-learning-button";
 
 type Props = {
   params: Promise<{ boxId: string }>;

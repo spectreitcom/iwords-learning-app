@@ -35,12 +35,3 @@ export async function getBoxDetails(boxId: string) {
 
   return (await response.json()) as BoxDetails;
 }
-
-export async function beginBox(boxId: string) {
-  await authFetch(`${BACKEND_URL}/boxes/${boxId}/start`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-}
