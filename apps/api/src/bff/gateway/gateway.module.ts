@@ -7,10 +7,23 @@ import { ClerkAuthGuard } from './auth/clerk-auth.guard';
 import { UserIdentityModule } from '../../user-identity/appliaction/user-identity.module';
 import { DictionaryModule } from '../../dictionary/application/dictionary.module';
 import { UsersController } from './controllers/users.controller';
+import { GamificationModule } from '../../gamification/application/gamification.module';
+import { GamificationController } from './controllers/gamification.controller';
 
 @Module({
-  imports: [AnswerModule, BoxModule, UserIdentityModule, DictionaryModule],
-  controllers: [AnswerController, BoxesController, UsersController],
+  imports: [
+    AnswerModule,
+    BoxModule,
+    UserIdentityModule,
+    DictionaryModule,
+    GamificationModule,
+  ],
+  controllers: [
+    AnswerController,
+    BoxesController,
+    UsersController,
+    GamificationController,
+  ],
   providers: [ClerkAuthGuard],
 })
 export class GatewayModule {}
