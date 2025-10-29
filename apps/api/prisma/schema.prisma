@@ -191,3 +191,12 @@ model AnswerSentenceReadModel {
 }
 
 //----------------------------------
+
+// Gamificatin Bounded Context
+model UserDailyGoal {
+  id     String @id @default(uuid())
+  userId String @unique
+  goal   Int    @default(0)
+}
+
+//----------------------------------
