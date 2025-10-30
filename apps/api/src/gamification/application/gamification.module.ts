@@ -11,7 +11,10 @@ const EVENT_HANDLERS = [AnswerCheckedEventHandler];
 
 const COMMAND_HANDLERS = [SetUpDailyGoalCommandHandler];
 
-const QUERY_HANDLERS = [GetUserDailyGoalQueryHandler, GetUserTodayPointsQueryHandler];
+const QUERY_HANDLERS = [
+  GetUserDailyGoalQueryHandler,
+  GetUserTodayPointsQueryHandler,
+];
 
 @Module({
   imports: [InfrastructureModule, PrismaModule],
