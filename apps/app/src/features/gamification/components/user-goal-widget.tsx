@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
-import { Trophy, RefreshCw } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Trophy, RefreshCw, Pencil } from "lucide-react";
 import { useGamificationUserGoal } from "@/features/gamification/hooks";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -12,6 +12,26 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { updateDailyGoal } from "@/features/gamification/actions";
 
 function clamp(n: number, min = 0, max = 100) {
   return Math.max(min, Math.min(max, n));
@@ -28,11 +48,48 @@ export function UserGoalWidget() {
     return clamp(Math.round((today / goal) * 100));
   }, [data?.goal, data?.todayPoints]);
 
+  const [open, setOpen] = useState(false);
+
+  type FormValues = { goal: number };
+  const form = useForm<FormValues>({
+    defaultValues: { goal: data?.goal ?? 10 },
+    mode: "onSubmit",
+  });
+
+  // Keep form default in sync when data changes (first open)
+  const handleOpenChange = (next: boolean) => {
+    if (next) {
+      form.reset({ goal: data?.goal ?? 10 });
+    }
+    setOpen(next);
+  };
+
+  const onSubmit = async (values: FormValues) => {
+    const normalized = Number(values.goal);
+    if (!Number.isFinite(normalized) || normalized <= 0) {
+      form.setError("goal", {
+        type: "validate",
+        message: "Enter a positive number",
+      });
+      return;
+    }
+    try {
+      await updateDailyGoal(Math.round(normalized));
+      setOpen(false);
+      await refetch();
+    } catch {
+      form.setError("goal", {
+        type: "server",
+        message: "Failed to update. Try again.",
+      });
+    }
+  };
+
   return (
-    <div className="flex items-center gap-3 min-w-[220px]">
+    <div className="flex items-center gap-3 min-w-[260px]">
       <Badge className="gap-2 px-3 py-1 rounded-md">
         <Trophy className="text-yellow-500" />
-        <span className="font-medium">Daily goal</span>
+        <span className="font-medium">Dzienny cel</span>
       </Badge>
 
       <div className="w-40">
@@ -68,9 +125,82 @@ export function UserGoalWidget() {
         </Tooltip>
       </TooltipProvider>
 
+      <TooltipProvider delayDuration={200}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              onClick={() => handleOpenChange(true)}
+              className="inline-flex h-7 w-7 items-center justify-center rounded-md border text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+              aria-label="Set daily goal"
+              title="Set goal"
+            >
+              <Pencil className="h-4 w-4" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>Ustaw swój dzienny cel</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
       {isError && (
         <span className="text-xs text-destructive">Failed to load</span>
       )}
+
+      <Dialog open={open} onOpenChange={handleOpenChange}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Set your daily goal</DialogTitle>
+            <DialogDescription>
+              Wybierz ile punktów dziennie chcesz osiągnąć.
+            </DialogDescription>
+          </DialogHeader>
+
+          <Form {...form}>
+            <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name="goal"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Dzienny cel (punkty)</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        min={1}
+                        max={500}
+                        step={1}
+                        inputMode="numeric"
+                        value={
+                          typeof field.value === "number" && Number.isFinite(field.value)
+                            ? field.value
+                            : ""
+                        }
+                        onChange={(e) =>
+                          field.onChange(e.currentTarget.valueAsNumber)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => handleOpenChange(false)}
+                >
+                  Anuluj
+                </Button>
+                <Button type="submit" disabled={form.formState.isSubmitting}>
+                  {form.formState.isSubmitting ? "Zapisuję…" : "Zapisz"}
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
