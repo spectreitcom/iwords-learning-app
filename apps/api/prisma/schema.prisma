@@ -199,4 +199,13 @@ model UserDailyGoal {
   goal   Int    @default(0)
 }
 
+model UserDailyStats {
+  id        String   @id @default(uuid())
+  userId    String
+  points    Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, createdAt])
+}
+
 //----------------------------------

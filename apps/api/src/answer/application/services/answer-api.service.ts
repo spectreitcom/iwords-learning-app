@@ -15,10 +15,12 @@ export class AnswerApiService implements AnswerApi {
   async checkAnswerForSimpleTranslation(
     answer: string,
     expressionContextId: string,
+    userId: string,
   ): Promise<CheckAnswerForSimpleTranslationCommandResponse> {
     const command = new CheckAnswerForSimpleTranslationCommand(
       answer,
       expressionContextId,
+      userId,
     );
     return await this.commandBus.execute(command);
   }
@@ -26,10 +28,12 @@ export class AnswerApiService implements AnswerApi {
   async checkAnswerForIrregularVerb(
     answer: [string, string, string],
     expressionContextId: string,
+    userId: string,
   ): Promise<CheckAnswerForIrregularVerbCommandResponse> {
     const command = new CheckAnswerForIrregularVerbCommand(
       answer,
       expressionContextId,
+      userId,
     );
     return await this.commandBus.execute(command);
   }
@@ -37,8 +41,13 @@ export class AnswerApiService implements AnswerApi {
   async checkAnswerForSentence(
     answer: string,
     sentenceId: string,
+    userId: string,
   ): Promise<CheckAnswerForSentenceCommandResponse> {
-    const command = new CheckAnswerForSentenceCommand(answer, sentenceId);
+    const command = new CheckAnswerForSentenceCommand(
+      answer,
+      sentenceId,
+      userId,
+    );
     return await this.commandBus.execute(command);
   }
 }

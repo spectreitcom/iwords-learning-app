@@ -6,15 +6,18 @@ export abstract class AnswerApi {
   abstract checkAnswerForSimpleTranslation(
     answer: string,
     expressionContextId: string,
+    userId: string,
   ): Promise<CheckAnswerForSimpleTranslationCommandResponse>;
 
   abstract checkAnswerForIrregularVerb(
     answer: [string, string, string],
     expressionContextId: string,
+    userId: string,
   ): Promise<CheckAnswerForIrregularVerbCommandResponse>;
 
   abstract checkAnswerForSentence(
     answer: string,
     sentenceId: string,
+    userId: string,
   ): Promise<CheckAnswerForSentenceCommandResponse>;
 }

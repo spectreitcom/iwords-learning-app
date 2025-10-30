@@ -27,7 +27,7 @@ export class CheckAnswerForSimpleTranslationCommandHandler
   async execute(
     command: CheckAnswerForSimpleTranslationCommand,
   ): Promise<CheckAnswerForSimpleTranslationCommandResponse> {
-    const { answer, expressionContextId } = command;
+    const { answer, expressionContextId, userId } = command;
 
     return this.prismaService.$transaction(async (prisma) => {
       const answerExpressionContext =
@@ -48,11 +48,13 @@ export class CheckAnswerForSimpleTranslationCommandHandler
         expressionContextId?: string;
         sentenceId?: string;
         correct: boolean;
+        userId: string;
       }> = new IntegrationEvent(
         'answer.answer-checked',
         {
           correct,
           expressionContextId,
+          userId,
         },
         {
           aggregateId: answerExpressionContext.expressionContextId,
