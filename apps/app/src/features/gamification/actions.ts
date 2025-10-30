@@ -12,5 +12,7 @@ export async function getUserGoal() {
     },
   });
 
+  console.log(response.status); // todo;
+
   return (await response.json()) as GamificationUserGoal;
 }
