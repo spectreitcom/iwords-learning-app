@@ -5,12 +5,16 @@ import { SetUpDailyGoalCommandHandler } from './command-handlers/set-up-daily-go
 import { GamificationApiService } from './services/gamification-api.service';
 import { GetUserDailyGoalQueryHandler } from './query-handlers/get-user-daily-goal.query-handler';
 import { AnswerCheckedEventHandler } from './event-handlers/answer-checked.event-handler';
+import { GetUserTodayPointsQueryHandler } from './query-handlers/get-user-today-points.query-handler';
 
 const EVENT_HANDLERS = [AnswerCheckedEventHandler];
 
 const COMMAND_HANDLERS = [SetUpDailyGoalCommandHandler];
 
-const QUERY_HANDLERS = [GetUserDailyGoalQueryHandler];
+const QUERY_HANDLERS = [
+  GetUserDailyGoalQueryHandler,
+  GetUserTodayPointsQueryHandler,
+];
 
 @Module({
   imports: [InfrastructureModule, PrismaModule],
