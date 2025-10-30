@@ -4,8 +4,9 @@ import { PrismaModule } from '../../common/prisma/prisma.module';
 import { SetUpDailyGoalCommandHandler } from './command-handlers/set-up-daily-goal.command-handler';
 import { GamificationApiService } from './services/gamification-api.service';
 import { GetUserDailyGoalQueryHandler } from './query-handlers/get-user-daily-goal.query-handler';
+import { AnswerCheckedEventHandler } from './event-handlers/answer-checked.event-handler';
 
-const EVENT_HANDLERS = [];
+const EVENT_HANDLERS = [AnswerCheckedEventHandler];
 
 const COMMAND_HANDLERS = [SetUpDailyGoalCommandHandler];
 
