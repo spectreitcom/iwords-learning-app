@@ -171,7 +171,8 @@ export function UserGoalWidget() {
                         step={1}
                         inputMode="numeric"
                         value={
-                          typeof field.value === "number" && Number.isFinite(field.value)
+                          typeof field.value === "number" &&
+                          Number.isFinite(field.value)
                             ? field.value
                             : ""
                         }
