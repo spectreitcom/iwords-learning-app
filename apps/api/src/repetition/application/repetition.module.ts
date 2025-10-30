@@ -3,10 +3,11 @@ import { InfrastructureModule } from '../infrastructure/infrastructure.module';
 import { PrismaModule } from '../../common/prisma/prisma.module';
 import { GetUserRepetitionsQueryHandler } from './query-handlers/get-user-repetitions.query-handler';
 import { RepetitionApiService } from './services/repetition-api.service';
+import { DeleteAllUserRepetitionsCommandHandler } from './command-handlers/delete-all-user-repetitions.command-handler';
 
 const EVENT_HANDLERS = [];
 
-const COMMAND_HANDLERS = [];
+const COMMAND_HANDLERS = [DeleteAllUserRepetitionsCommandHandler];
 
 const QUERY_HANDLERS = [GetUserRepetitionsQueryHandler];
 
