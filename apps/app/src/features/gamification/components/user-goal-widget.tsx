@@ -37,9 +37,7 @@ export function UserGoalWidget() {
 
       <div className="w-40">
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
-          <span>
-            {isPending || isLoading ? "Loading…" : `${percent}%`}
-          </span>
+          <span>{isPending || isLoading ? "Loading…" : `${percent}%`}</span>
           <span>
             {isPending || isLoading
               ? "—/—"
