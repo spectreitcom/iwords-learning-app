@@ -17,6 +17,7 @@ import { CheckAnswerForSimpleTranslationDto } from '../dtos/check-answer-for-sim
 import { CheckAnswerForIrregularVerbDto } from '../dtos/check-answer-for-irregular-verb.dto';
 import { CheckAnswerForSentenceDto } from '../dtos/check-answer-for-sentence.dto';
 import { ClerkAuthGuard } from '../auth/clerk-auth.guard';
+import { CurrentUserId } from '../auth/current-user-id.decorator';
 
 @UseGuards(ClerkAuthGuard)
 @ApiTags('App Answers')
@@ -50,10 +51,12 @@ export class AnswerController {
   @HttpCode(HttpStatus.OK)
   async checkAnswerForSimpleTranslation(
     @Body() payload: CheckAnswerForSimpleTranslationDto,
+    @CurrentUserId() userId: string,
   ) {
     return await this.answerApiService.checkAnswerForSimpleTranslation(
       payload.answer,
       payload.expressionContextId,
+      userId,
     );
   }
 
@@ -105,10 +108,12 @@ export class AnswerController {
   @HttpCode(HttpStatus.OK)
   async checkAnswerForIrregularVerb(
     @Body() payload: CheckAnswerForIrregularVerbDto,
+    @CurrentUserId() userId: string,
   ) {
     return await this.answerApiService.checkAnswerForIrregularVerb(
       payload.answer,
       payload.expressionContextId,
+      userId,
     );
   }
 
@@ -136,10 +141,14 @@ export class AnswerController {
   })
   @Post('sentence')
   @HttpCode(HttpStatus.OK)
-  async checkAnswerForSentence(@Body() payload: CheckAnswerForSentenceDto) {
+  async checkAnswerForSentence(
+    @Body() payload: CheckAnswerForSentenceDto,
+    @CurrentUserId() userId: string,
+  ) {
     return await this.answerApiService.checkAnswerForSentence(
       payload.answer,
       payload.sentenceId,
+      userId,
     );
   }
 }

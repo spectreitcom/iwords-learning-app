@@ -28,7 +28,7 @@ export class CheckAnswerForIrregularVerbCommandHandler
   async execute(
     command: CheckAnswerForIrregularVerbCommand,
   ): Promise<CheckAnswerForIrregularVerbCommandResponse> {
-    const { answer, expressionContextId } = command;
+    const { answer, expressionContextId, userId } = command;
 
     return this.prismaService.$transaction(async (prisma) => {
       const answerExpressionContext =
@@ -56,11 +56,13 @@ export class CheckAnswerForIrregularVerbCommandHandler
         expressionContextId?: string;
         sentenceId?: string;
         correct: boolean;
+        userId: string;
       }> = new IntegrationEvent(
         'answer.answer-checked',
         {
           correct: allCorrect,
           expressionContextId,
+          userId,
         },
         {
           aggregateId: answerExpressionContext.expressionContextId,
