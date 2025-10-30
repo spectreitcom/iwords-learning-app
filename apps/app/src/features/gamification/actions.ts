@@ -14,3 +14,13 @@ export async function getUserGoal() {
 
   return (await response.json()) as GamificationUserGoal;
 }
+
+export async function updateDailyGoal(goal: number) {
+  await authFetch(`${BACKEND_URL}/gamification/goals`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ goal }),
+  });
+}
