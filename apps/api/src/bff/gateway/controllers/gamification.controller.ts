@@ -53,6 +53,7 @@ export class GamificationController {
       type: 'object',
       properties: {
         goal: { type: 'number' },
+        todayPoints: { type: 'number' },
       },
     },
   })
@@ -60,8 +61,13 @@ export class GamificationController {
   async getUserDailyGoal(@CurrentUserId() userId: string) {
     const userDailyGoal =
       await this.gamificationApiService.getUserDailyGoal(userId);
+
+    const todayPoints =
+      await this.gamificationApiService.getUserTodayPoints(userId);
+
     return {
       goal: userDailyGoal,
+      todayPoints,
     };
   }
 }
