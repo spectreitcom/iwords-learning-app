@@ -216,6 +216,8 @@ model Repetition {
   expressionContextId String
   userId              String
   nextRepetition      DateTime
+
+  @@unique([expressionContextId, userId])
 }
 
 //----------------------------------
