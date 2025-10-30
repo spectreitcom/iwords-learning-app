@@ -11,6 +11,7 @@ import { CheckAnswerForSimpleTranslationCommandHandler } from './command-handler
 import { CheckAnswerForIrregularVerbCommandHandler } from './command-handlers/check-answer-for-irregular-verb.command-handler';
 import { CheckAnswerForSentenceCommandHandler } from './command-handlers/check-answer-for-sentence.command-handler';
 import { AnswerApiService } from './services/answer-api.service';
+import { OutboxModule } from '../../common/outbox/outbox.module';
 
 const EVENT_HANDLERS = [
   DictionaryExpressionContextCreatedEventHandler,
@@ -28,7 +29,7 @@ const COMMAND_HANDLERS = [
 ];
 
 @Module({
-  imports: [InfrastructureModule, PrismaModule],
+  imports: [InfrastructureModule, PrismaModule, OutboxModule],
   providers: [...EVENT_HANDLERS, ...COMMAND_HANDLERS, AnswerApiService],
   exports: [AnswerApiService],
 })

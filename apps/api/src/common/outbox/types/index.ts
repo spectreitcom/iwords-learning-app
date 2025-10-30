@@ -12,7 +12,8 @@ export type IntegrationEventType =
   | 'dictionary.expression-updated'
   | 'dictionary.expression-deleted'
   | 'user-identity.user-created'
-  | 'user-identity.user-deleted';
+  | 'user-identity.user-deleted'
+  | 'answer.answer-checked';
 
 export class IntegrationEvent<T extends Record<string, any> | JsonValue> {
   constructor(
