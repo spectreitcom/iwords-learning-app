@@ -209,3 +209,15 @@ model UserDailyStats {
 }
 
 //----------------------------------
+
+// Repetition Bounded Context
+model Repetition {
+  id                  String   @id @default(uuid())
+  expressionContextId String
+  userId              String
+  nextRepetition      DateTime
+
+  @@unique([expressionContextId, userId])
+}
+
+//----------------------------------
