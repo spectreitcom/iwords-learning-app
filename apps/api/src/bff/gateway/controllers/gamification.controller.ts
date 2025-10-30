@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -41,5 +42,26 @@ export class GamificationController {
       userId,
       payload.goal,
     );
+  }
+
+  @ApiBearerAuth('app-auth')
+  @ApiOperation({ summary: 'Get user daily goal' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Returns the user daily goal',
+    schema: {
+      type: 'object',
+      properties: {
+        goal: { type: 'number' },
+      },
+    },
+  })
+  @Get('user-goal')
+  async getUserDailyGoal(@CurrentUserId() userId: string) {
+    const userDailyGoal =
+      await this.gamificationApiService.getUserDailyGoal(userId);
+    return {
+      goal: userDailyGoal,
+    };
   }
 }
