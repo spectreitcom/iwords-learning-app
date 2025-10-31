@@ -9,6 +9,8 @@ import { DictionaryModule } from '../../dictionary/application/dictionary.module
 import { UsersController } from './controllers/users.controller';
 import { GamificationModule } from '../../gamification/application/gamification.module';
 import { GamificationController } from './controllers/gamification.controller';
+import { RepetitionsController } from './controllers/repetitions.controller';
+import { RepetitionModule } from '../../repetition/application/repetition.module';
 
 @Module({
   imports: [
@@ -17,12 +19,14 @@ import { GamificationController } from './controllers/gamification.controller';
     UserIdentityModule,
     DictionaryModule,
     GamificationModule,
+    RepetitionModule,
   ],
   controllers: [
     AnswerController,
     BoxesController,
     UsersController,
     GamificationController,
+    RepetitionsController,
   ],
   providers: [ClerkAuthGuard],
 })
