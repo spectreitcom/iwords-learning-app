@@ -50,4 +50,10 @@ export class PrismaRepetitionRepository implements RepetitionRepository {
       where: { expressionContextId_userId: { expressionContextId, userId } },
     });
   }
+
+  async delete(userId: string, repetitionId: string): Promise<void> {
+    await this.prismaService.repetition.delete({
+      where: { id: repetitionId, userId },
+    });
+  }
 }

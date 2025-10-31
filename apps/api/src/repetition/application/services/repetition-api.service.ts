@@ -24,12 +24,9 @@ export class RepetitionApiService implements RepetitionApi {
 
   async deleteOneUserRepetition(
     userId: string,
-    expressionContextId: string,
+    repetitionId: string,
   ): Promise<void> {
-    const command = new DeleteOneUserRepetitionCommand(
-      userId,
-      expressionContextId,
-    );
+    const command = new DeleteOneUserRepetitionCommand(userId, repetitionId);
     return await this.commandBus.execute(command);
   }
 }
