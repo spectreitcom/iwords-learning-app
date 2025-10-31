@@ -3,6 +3,7 @@ import { RepetitionApi } from '../ports/repetition.api';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetUserRepetitionsQuery } from '../queries/get-user-repetitions.query';
 import { DeleteAllUserRepetitionsCommand } from '../commands/delete-all-user-repetitions.command';
+import { DeleteOneUserRepetitionCommand } from '../commands/delete-one-user-repetition.command';
 
 @Injectable()
 export class RepetitionApiService implements RepetitionApi {
@@ -18,6 +19,17 @@ export class RepetitionApiService implements RepetitionApi {
 
   async deleteAllUserRepetitions(userId: string): Promise<void> {
     const command = new DeleteAllUserRepetitionsCommand(userId);
+    return await this.commandBus.execute(command);
+  }
+
+  async deleteOneUserRepetition(
+    userId: string,
+    expressionContextId: string,
+  ): Promise<void> {
+    const command = new DeleteOneUserRepetitionCommand(
+      userId,
+      expressionContextId,
+    );
     return await this.commandBus.execute(command);
   }
 }
