@@ -8,4 +8,5 @@ export abstract class RepetitionRepository {
     userId: string,
     expressionContextId: string,
   ): Promise<void>;
+  abstract delete(userId: string, repetitionId: string): Promise<void>;
 }

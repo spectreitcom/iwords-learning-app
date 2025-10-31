@@ -3,6 +3,6 @@ export abstract class RepetitionApi {
   abstract deleteAllUserRepetitions(userId: string): Promise<void>;
   abstract deleteOneUserRepetition(
     userId: string,
-    expressionContextId: string,
+    repetitionId: string,
   ): Promise<void>;
 }

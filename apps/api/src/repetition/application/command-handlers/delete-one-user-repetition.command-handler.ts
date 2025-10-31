@@ -9,7 +9,7 @@ export class DeleteOneUserRepetitionCommandHandler
   constructor(private readonly repetitionRepository: RepetitionRepository) {}
 
   async execute(command: DeleteOneUserRepetitionCommand): Promise<void> {
-    const { userId, expressionContextId } = command;
-    await this.repetitionRepository.deleteOne(userId, expressionContextId);
+    const { userId, repetitionId } = command;
+    await this.repetitionRepository.delete(userId, repetitionId);
   }
 }
