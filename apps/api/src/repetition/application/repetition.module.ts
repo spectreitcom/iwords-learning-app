@@ -4,10 +4,14 @@ import { PrismaModule } from '../../common/prisma/prisma.module';
 import { GetUserRepetitionsQueryHandler } from './query-handlers/get-user-repetitions.query-handler';
 import { RepetitionApiService } from './services/repetition-api.service';
 import { DeleteAllUserRepetitionsCommandHandler } from './command-handlers/delete-all-user-repetitions.command-handler';
+import { DeleteOneUserRepetitionCommandHandler } from './command-handlers/delete-one-user-repetition.command-handler';
 
 const EVENT_HANDLERS = [];
 
-const COMMAND_HANDLERS = [DeleteAllUserRepetitionsCommandHandler];
+const COMMAND_HANDLERS = [
+  DeleteAllUserRepetitionsCommandHandler,
+  DeleteOneUserRepetitionCommandHandler,
+];
 
 const QUERY_HANDLERS = [GetUserRepetitionsQueryHandler];
 
