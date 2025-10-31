@@ -4,6 +4,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetUserRepetitionsQuery } from '../queries/get-user-repetitions.query';
 import { DeleteAllUserRepetitionsCommand } from '../commands/delete-all-user-repetitions.command';
 import { DeleteOneUserRepetitionCommand } from '../commands/delete-one-user-repetition.command';
+import { RepetitionView } from '../../views/repetition.view';
 
 @Injectable()
 export class RepetitionApiService implements RepetitionApi {
@@ -12,7 +13,7 @@ export class RepetitionApiService implements RepetitionApi {
     private readonly commandBus: CommandBus,
   ) {}
 
-  async getUserRepetitions(userId: string): Promise<string[]> {
+  async getUserRepetitions(userId: string): Promise<RepetitionView[]> {
     const query = new GetUserRepetitionsQuery(userId);
     return await this.queryBus.execute(query);
   }
