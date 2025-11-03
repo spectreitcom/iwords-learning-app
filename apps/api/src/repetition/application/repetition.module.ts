@@ -5,8 +5,9 @@ import { GetUserRepetitionsQueryHandler } from './query-handlers/get-user-repeti
 import { RepetitionApiService } from './services/repetition-api.service';
 import { DeleteAllUserRepetitionsCommandHandler } from './command-handlers/delete-all-user-repetitions.command-handler';
 import { DeleteOneUserRepetitionCommandHandler } from './command-handlers/delete-one-user-repetition.command-handler';
+import { AnswerCheckedEventHandler } from './event-handlers/answer-checked.event-handler';
 
-const EVENT_HANDLERS = [];
+const EVENT_HANDLERS = [AnswerCheckedEventHandler];
 
 const COMMAND_HANDLERS = [
   DeleteAllUserRepetitionsCommandHandler,

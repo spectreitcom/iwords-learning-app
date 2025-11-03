@@ -4,7 +4,7 @@ import { PrismaService } from '../../../common/prisma/prisma.service';
 import { Logger } from '@nestjs/common';
 
 type EventPayload = {
-  expressionContextId?: string;
+  expressionContextId: string;
   sentenceId?: string;
   correct: boolean;
   userId: string;
@@ -20,7 +20,6 @@ export class AnswerCheckedEventHandler
 
   async handle(event: IntegrationEvent<EventPayload>) {
     if (event.type !== 'answer.answer-checked') return;
-
     this.logger.debug(JSON.stringify(event));
 
     const { correct, userId } = event.payload;

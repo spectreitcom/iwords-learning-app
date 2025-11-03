@@ -53,7 +53,7 @@ export class CheckAnswerForIrregularVerbCommandHandler
         form1 === answer[0] && form2 === answer[1] && form3 === answer[2];
 
       const event: IntegrationEvent<{
-        expressionContextId?: string;
+        expressionContextId: string;
         sentenceId?: string;
         correct: boolean;
         userId: string;
