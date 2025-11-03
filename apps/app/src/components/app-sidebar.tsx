@@ -32,6 +32,14 @@ export function AppSidebar() {
                   <Link href={"/"}>Dashboard</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/repetitions"}
+                >
+                  <Link href={"/repetitions"}>Powtórki</Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
               <SidebarBoxesList />
             </SidebarMenu>
           </SidebarGroupContent>
