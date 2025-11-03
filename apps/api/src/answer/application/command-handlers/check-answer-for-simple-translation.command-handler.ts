@@ -45,7 +45,7 @@ export class CheckAnswerForSimpleTranslationCommandHandler
       const correct = answer === answerExpressionContext.phrase;
 
       const event: IntegrationEvent<{
-        expressionContextId?: string;
+        expressionContextId: string;
         sentenceId?: string;
         correct: boolean;
         userId: string;

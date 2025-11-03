@@ -45,13 +45,14 @@ export class CheckAnswerForSentenceCommandHandler
       const correct = answer === answerSentence.content;
 
       const event: IntegrationEvent<{
-        expressionContextId?: string;
+        expressionContextId: string;
         sentenceId?: string;
         correct: boolean;
         userId: string;
       }> = new IntegrationEvent(
         'answer.answer-checked',
         {
+          expressionContextId: answerSentence.expressionContextId,
           correct,
           sentenceId,
           userId,
