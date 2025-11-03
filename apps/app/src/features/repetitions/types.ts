@@ -1,9 +1,11 @@
+import { BoxItemType } from "@/features/boxes/types";
+
 export type RepetitionExpressionContext = {
   expressionContextId: string;
   expressionId: string;
   phrase: string;
   translation: string;
-  type: string;
+  type: BoxItemType;
   forms: string[];
   isCountable: boolean;
   isIrregular: boolean;

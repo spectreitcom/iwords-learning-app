@@ -3,6 +3,7 @@
 import { authFetch } from "@/lib/auth-fetch";
 import { BACKEND_URL } from "@/lib/constants";
 import { Repetition } from "@/features/repetitions/types";
+import { revalidatePath } from "next/cache";
 
 export async function getRepetitions() {
   const response = await authFetch(`${BACKEND_URL}/repetitions`, {
@@ -22,6 +23,8 @@ export async function removeAllRepetitions() {
       "Content-Type": "application/json",
     },
   });
+
+  revalidatePath("/repetitions");
 }
 
 export async function removeRepetition(repetitionId: string) {
@@ -31,4 +34,6 @@ export async function removeRepetition(repetitionId: string) {
       "Content-Type": "application/json",
     },
   });
+
+  revalidatePath("/repetitions");
 }
