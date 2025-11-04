@@ -63,6 +63,27 @@ export class DictionaryController {
   }
 
   @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Get expression number' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns the number of expressions',
+    schema: {
+      type: 'object',
+      properties: {
+        expressionsNumber: { type: 'number' },
+      },
+    },
+  })
+  @Get('expressions/count')
+  async getExpressionsNumber() {
+    const expressionsNumber =
+      await this.dictionaryApiService.getExpressionsNumber();
+    return {
+      expressionsNumber,
+    };
+  }
+
+  @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Get expression by id' })
   @ApiResponse({
     status: 200,
