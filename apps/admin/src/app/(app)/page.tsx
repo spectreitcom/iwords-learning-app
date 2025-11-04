@@ -7,6 +7,10 @@ import {
   ExpressionsNumberSkeleton,
   ExpressionsNumberWidget,
 } from "@/features/dictionary/components/expressions-number-widget";
+import {
+  BoxesNumberSkeleton,
+  BoxesNumberWidget,
+} from "@/features/boxes/components/boxes-number-widget";
 
 export default function Home() {
   return (
@@ -24,6 +28,9 @@ export default function Home() {
         </Suspense>
         <Suspense fallback={<ExpressionsNumberSkeleton />}>
           <ExpressionsNumberWidget />
+        </Suspense>
+        <Suspense fallback={<BoxesNumberSkeleton />}>
+          <BoxesNumberWidget />
         </Suspense>
       </div>
     </div>

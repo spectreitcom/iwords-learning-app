@@ -103,3 +103,14 @@ export async function removeItemFromBox(
 
   revalidatePath(`/boxes/${boxId}`);
 }
+
+export async function getBoxesNumber() {
+  const response = await authFetch(`${BACKEND_URL}/boxes/count`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return (await response.json()) as { boxesNumber: number };
+}
