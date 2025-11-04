@@ -56,6 +56,23 @@ export class UsersController {
   }
 
   @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Get users number' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    schema: {
+      type: 'object',
+      properties: {
+        usersNumber: { type: 'number', format: 'int32', example: 100 },
+      },
+    },
+  })
+  @Get('count')
+  async getUsersNumber() {
+    const usersNumber = await this.userApiService.getUsersNumber();
+    return { usersNumber };
+  }
+
+  @ApiBearerAuth('admin-auth')
   @ApiOperation({
     summary: 'Block user',
     description: 'Blocks the user by ID',
