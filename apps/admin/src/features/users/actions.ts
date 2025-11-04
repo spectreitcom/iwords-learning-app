@@ -46,3 +46,14 @@ export async function unblockUser(userId: string) {
 
   revalidatePath("/users");
 }
+
+export async function getUsersNumber() {
+  const response = await authFetch(`${BACKEND_URL}/users/count`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return (await response.json()) as { usersNumber: number };
+}
