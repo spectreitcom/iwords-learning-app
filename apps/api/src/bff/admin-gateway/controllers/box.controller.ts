@@ -36,6 +36,25 @@ export class BoxController {
   ) {}
 
   @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Get boxes number' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns the number of boxes',
+    schema: {
+      type: 'object',
+      properties: {
+        boxesNumber: { type: 'number', format: 'int32' },
+      },
+    },
+  })
+  @Get('count')
+  @HttpCode(HttpStatus.OK)
+  async getBoxesNumber() {
+    const boxesNumber = await this.boxApiService.getBoxesNumber();
+    return { boxesNumber };
+  }
+
+  @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Creates the new box' })
   @ApiResponse({
     status: 201,
