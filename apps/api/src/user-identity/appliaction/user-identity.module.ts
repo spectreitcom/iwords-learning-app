@@ -10,6 +10,7 @@ import { DeleteUserCommandHandler } from './command-handlers/delete-user.command
 import { OutboxModule } from '../../common/outbox/outbox.module';
 import { GetUserByClerkIdQueryHandler } from './query-handlers/get-user-by-clerk-id.query-handler';
 import { GetUserByIdQueryHandler } from './query-handlers/get-user-by-id.query-handler';
+import { GetUsersNumberQueryHandler } from './query-handlers/get-users-number.query-handler';
 
 const EVENT_HANDLERS = [];
 
@@ -24,6 +25,7 @@ const QUERY_HANDLERS = [
   GetUsersListQueryHandler,
   GetUserByClerkIdQueryHandler,
   GetUserByIdQueryHandler,
+  GetUsersNumberQueryHandler,
 ];
 
 @Module({

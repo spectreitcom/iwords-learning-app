@@ -14,4 +14,6 @@ export abstract class UserApi {
   abstract getUserByClerkId(clerkId: string): Promise<UserView | null>;
 
   abstract getUserById(userId: string): Promise<UserView>;
+
+  abstract getUsersNumber(): Promise<number>;
 }
