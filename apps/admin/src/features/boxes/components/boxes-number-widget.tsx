@@ -36,7 +36,9 @@ export function BoxesNumberSkeleton() {
       </CardHeader>
       <CardContent>
         <Skeleton className="h-8 w-24" />
-        <div className="mt-1 text-muted-foreground text-sm">Loading total boxes…</div>
+        <div className="mt-1 text-muted-foreground text-sm">
+          Loading total boxes…
+        </div>
       </CardContent>
     </Card>
   );
