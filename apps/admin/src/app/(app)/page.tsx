@@ -3,6 +3,10 @@ import {
   UsersNumberSkeleton,
   UsersNumberWidget,
 } from "@/features/users/components/users-number-widget";
+import {
+  ExpressionsNumberSkeleton,
+  ExpressionsNumberWidget,
+} from "@/features/dictionary/components/expressions-number-widget";
 
 export default function Home() {
   return (
@@ -17,6 +21,9 @@ export default function Home() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Suspense fallback={<UsersNumberSkeleton />}>
           <UsersNumberWidget />
+        </Suspense>
+        <Suspense fallback={<ExpressionsNumberSkeleton />}>
+          <ExpressionsNumberWidget />
         </Suspense>
       </div>
     </div>

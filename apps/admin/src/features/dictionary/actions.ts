@@ -468,3 +468,17 @@ export async function searchDictionaryExpressions(
 
   return (await response.json()) as CollectionWithPagination<SearchedDictionaryExpression>;
 }
+
+export async function getExpressionsNumber() {
+  const response = await authFetch(
+    `${BACKEND_URL}/dictionary/expressions/count`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  return (await response.json()) as { expressionsNumber: number };
+}
