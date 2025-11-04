@@ -12,6 +12,7 @@ import { AddExpressionContextIdCommand } from '../commands/add-expression-contex
 import { RemoveExpressionContextIdCommand } from '../commands/remove-expression-context-id.command';
 import { BeginBoxCommand } from '../commands/begin-box.command';
 import { IsBoxStartedQuery } from '../queries/is-box-started.query';
+import { GetBoxesNumberQuery } from '../queries/get-boxes-number.query';
 
 @Injectable()
 export class BoxApiService implements BoxApi {
@@ -77,6 +78,11 @@ export class BoxApiService implements BoxApi {
 
   async isBoxStarted(userId: string, boxId: string): Promise<boolean> {
     const query = new IsBoxStartedQuery(boxId, userId);
+    return await this.queryBus.execute(query);
+  }
+
+  async getBoxesNumber(): Promise<number> {
+    const query = new GetBoxesNumberQuery();
     return await this.queryBus.execute(query);
   }
 }

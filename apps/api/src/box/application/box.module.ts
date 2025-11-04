@@ -16,6 +16,7 @@ import { AddExpressionContextIdCommandHandler } from './command-handlers/add-exp
 import { RemoveExpressionContextIdCommandHandler } from './command-handlers/remove-expression-context-id.command-handler';
 import { BeginBoxCommandHandler } from './command-handlers/begin-box.command-handler';
 import { IsBoxStartedQueryHandler } from './query-handlers/is-box-started.query-handler';
+import { GetBoxesNumberQueryHandler } from './query-handlers/get-boxes-number.query-handler';
 
 const EVENT_HANDLERS = [
   BoxCreatedEventHandler,
@@ -38,6 +39,7 @@ const QUERY_HANDLERS = [
   GetBoxByIdQueryHandler,
   GetBoxesListQueryHandler,
   IsBoxStartedQueryHandler,
+  GetBoxesNumberQueryHandler,
 ];
 
 @Module({
