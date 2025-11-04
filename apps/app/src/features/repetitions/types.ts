@@ -12,7 +12,7 @@ export type RepetitionExpressionContext = {
   phrase: string;
   translation: string;
   type: RepetitionExpressionContextType;
-  forms: string[];
+  forms: [string, string, string] | null;
   isCountable: boolean;
   isIrregular: boolean;
   sentences: {
