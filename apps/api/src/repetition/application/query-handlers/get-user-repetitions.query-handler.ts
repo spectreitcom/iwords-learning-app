@@ -13,7 +13,7 @@ export class GetUserRepetitionsQueryHandler
     const { userId } = query;
 
     const repetitions = await this.prismaService.repetition.findMany({
-      where: { userId },
+      where: { userId, nextRepetition: { lte: new Date() } },
       orderBy: { nextRepetition: 'asc' },
       take: 10,
       select: { expressionContextId: true, id: true },
