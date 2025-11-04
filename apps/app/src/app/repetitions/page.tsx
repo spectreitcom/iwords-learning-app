@@ -11,6 +11,7 @@ import { expressionTypeMap } from "@/features/boxes/utils";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { Search, Trash2 } from "lucide-react";
 import { Repetition } from "@/features/repetitions/types";
+import Link from "next/link";
 
 export default async function RepetitionsPage() {
   return (
@@ -28,14 +29,20 @@ async function AwaitedContent() {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl">Powtórki</h2>
         {!!repetitions.length && (
-          <Button
-            type="submit"
-            variant="destructive"
-            size="sm"
-            onClick={removeAllRepetitions}
-          >
-            <Trash2 className="w-4 h-4 mr-2" /> Usuń wszystkie
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              type="submit"
+              variant="destructive"
+              size="sm"
+              onClick={removeAllRepetitions}
+            >
+              <Trash2 className="w-4 h-4 mr-2" /> Usuń wszystkie
+            </Button>
+
+            <Button asChild size={"sm"}>
+              <Link href={"/repetitions/learning"}>Zacznij powtórkę</Link>
+            </Button>
+          </div>
         )}
       </div>
 
@@ -83,7 +90,7 @@ function RepetitionItem({
             </div>
 
             {expressionContext.type === "irregular_verb" &&
-              expressionContext.forms?.length >= 3 && (
+              expressionContext.forms && (
                 <div className="mt-4 grid grid-cols-3 gap-2 text-sm">
                   <div>
                     <div className="text-muted-foreground">I forma</div>

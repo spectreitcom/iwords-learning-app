@@ -21,7 +21,7 @@ async function AwaitedContent({ boxId }: { boxId: string }) {
   return (
     <LearningMain
       boxItems={boxDetails.items}
-      boxTitle={boxDetails.title}
+      title={boxDetails.title}
       boxId={boxDetails.boxId}
     />
   );

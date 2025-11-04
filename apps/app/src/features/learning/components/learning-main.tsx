@@ -23,8 +23,8 @@ import { Button } from "@/components/ui/button";
 
 type Props = {
   boxItems: BoxItem[];
-  boxTitle: string;
-  boxId: string;
+  title?: string;
+  boxId?: string;
 };
 
 type ListData = {
@@ -48,7 +48,7 @@ function calcProgress(currentIndex: number, totalItems: number): number {
   return Math.round((currentIndex / totalItems) * 100);
 }
 
-export function LearningMain({ boxItems, boxTitle, boxId }: Props) {
+export function LearningMain({ boxItems, title, boxId }: Props) {
   const [currentItem, setCurrentItem] =
     useState<LinkedListNode<ListData> | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -90,7 +90,7 @@ export function LearningMain({ boxItems, boxTitle, boxId }: Props) {
   if (canShowSummary) {
     return (
       <LearningSummary
-        boxTitle={boxTitle}
+        title={title ?? ""}
         learned={currentIndex}
         total={linkedListRef.current.length}
         onBackToBox={() => router.push(`/boxes/${boxId}`)}
@@ -106,7 +106,7 @@ export function LearningMain({ boxItems, boxTitle, boxId }: Props) {
     <div className="max-w-2xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="text-center">
-        <div className="text-2xl font-semibold tracking-tight">{boxTitle}</div>
+        <div className="text-2xl font-semibold tracking-tight">{title}</div>
         <div className="mt-1 text-sm text-muted-foreground">
           Krok{" "}
           {Math.min(
@@ -204,13 +204,13 @@ export function LearningMain({ boxItems, boxTitle, boxId }: Props) {
 }
 
 function LearningSummary({
-  boxTitle,
+  title,
   learned,
   total,
   onBackToBox,
   onRestart,
 }: {
-  boxTitle: string;
+  title: string;
   learned: number;
   total: number;
   onBackToBox: () => void;
@@ -226,7 +226,7 @@ function LearningSummary({
             <Trophy className="w-10 h-10 text-emerald-600" />
           </div>
           <h3 className="text-2xl font-semibold">Lekcja ukończona!</h3>
-          <p className="text-muted-foreground mt-1">{boxTitle}</p>
+          <p className="text-muted-foreground mt-1">{title}</p>
 
           <div className="mt-6">
             <div className="text-5xl font-bold tracking-tight">{percent}%</div>
