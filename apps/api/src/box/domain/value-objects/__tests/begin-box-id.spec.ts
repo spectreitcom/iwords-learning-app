@@ -31,19 +31,19 @@ describe('BeginBoxId', () => {
     });
 
     it('should throw error for null value', () => {
-      expect(() => BeginBoxId.fromString(null as any)).toThrow(
+      expect(() => BeginBoxId.fromString(null as unknown as string)).toThrow(
         'BeginBoxId is not valid',
       );
     });
 
     it('should throw error for undefined value', () => {
-      expect(() => BeginBoxId.fromString(undefined as any)).toThrow(
-        'BeginBoxId is not valid',
-      );
+      expect(() =>
+        BeginBoxId.fromString(undefined as unknown as string),
+      ).toThrow('BeginBoxId is not valid');
     });
 
     it('should throw error for non-string value', () => {
-      expect(() => BeginBoxId.fromString(123 as any)).toThrow(
+      expect(() => BeginBoxId.fromString(123 as unknown as string)).toThrow(
         'BeginBoxId is not valid',
       );
     });

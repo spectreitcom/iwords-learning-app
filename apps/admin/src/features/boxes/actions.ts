@@ -6,7 +6,7 @@ import { CollectionWithPagination } from "@/lib/types";
 import { Box, BoxDetails } from "@/features/boxes/types";
 import { CreateBoxData } from "@/features/boxes/schemas";
 import { revalidatePath } from "next/cache";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export async function getBoxes(page = 1, take = 20) {
   const urlSearchParams = new URLSearchParams();

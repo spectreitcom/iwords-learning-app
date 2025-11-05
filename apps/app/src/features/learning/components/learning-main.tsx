@@ -82,7 +82,7 @@ export function LearningMain({ boxItems, title, boxId }: Props) {
     }
 
     setCurrentItem(linkedList.getHead());
-  }, [boxId]);
+  }, [boxId, boxItems]);
 
   const canShowSummary =
     currentIndex > 0 && currentIndex > linkedListRef.current.length - 1;

@@ -24,21 +24,21 @@ describe('ExpressionContextId', () => {
     });
 
     it('should throw error for null value', () => {
-      expect(() => ExpressionContextId.fromString(null as any)).toThrow(
-        'ExpressionContextId is not valid',
-      );
+      expect(() =>
+        ExpressionContextId.fromString(null as unknown as string),
+      ).toThrow('ExpressionContextId is not valid');
     });
 
     it('should throw error for undefined value', () => {
-      expect(() => ExpressionContextId.fromString(undefined as any)).toThrow(
-        'ExpressionContextId is not valid',
-      );
+      expect(() =>
+        ExpressionContextId.fromString(undefined as unknown as string),
+      ).toThrow('ExpressionContextId is not valid');
     });
 
     it('should throw error for non-string value', () => {
-      expect(() => ExpressionContextId.fromString(123 as any)).toThrow(
-        'ExpressionContextId is not valid',
-      );
+      expect(() =>
+        ExpressionContextId.fromString(123 as unknown as string),
+      ).toThrow('ExpressionContextId is not valid');
     });
   });
 

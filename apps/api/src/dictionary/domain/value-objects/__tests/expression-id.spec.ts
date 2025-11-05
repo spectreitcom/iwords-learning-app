@@ -31,19 +31,19 @@ describe('ExpressionId', () => {
     });
 
     it('should throw error for null value', () => {
-      expect(() => ExpressionId.fromString(null as any)).toThrow(
+      expect(() => ExpressionId.fromString(null as unknown as string)).toThrow(
         'ExpressionId is not valid',
       );
     });
 
     it('should throw error for undefined value', () => {
-      expect(() => ExpressionId.fromString(undefined as any)).toThrow(
-        'ExpressionId is not valid',
-      );
+      expect(() =>
+        ExpressionId.fromString(undefined as unknown as string),
+      ).toThrow('ExpressionId is not valid');
     });
 
     it('should throw error for non-string value', () => {
-      expect(() => ExpressionId.fromString(123 as any)).toThrow(
+      expect(() => ExpressionId.fromString(123 as unknown as string)).toThrow(
         'ExpressionId is not valid',
       );
     });

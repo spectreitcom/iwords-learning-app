@@ -27,17 +27,21 @@ describe('BoxId', () => {
     });
 
     it('should throw error for null value', () => {
-      expect(() => BoxId.fromString(null as any)).toThrow('BoxId is not valid');
+      expect(() => BoxId.fromString(null as unknown as string)).toThrow(
+        'BoxId is not valid',
+      );
     });
 
     it('should throw error for undefined value', () => {
-      expect(() => BoxId.fromString(undefined as any)).toThrow(
+      expect(() => BoxId.fromString(undefined as unknown as string)).toThrow(
         'BoxId is not valid',
       );
     });
 
     it('should throw error for non-string value', () => {
-      expect(() => BoxId.fromString(123 as any)).toThrow('BoxId is not valid');
+      expect(() => BoxId.fromString(123 as unknown as string)).toThrow(
+        'BoxId is not valid',
+      );
     });
   });
 
