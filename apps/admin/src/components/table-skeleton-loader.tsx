@@ -16,7 +16,7 @@ type Props = {
 
 export function TableSkeletonLoader({
   headers,
-  rows = 20,
+  rows = 10,
   showPagination = false,
   cellWidths = [],
 }: Props) {
