@@ -33,7 +33,7 @@ export class BoxesController {
   @ApiBearerAuth('app-auth')
   @ApiOperation({ summary: 'Get boxes list' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Returns a list of boxes',
     schema: {
       type: 'object',
@@ -65,7 +65,7 @@ export class BoxesController {
   @ApiBearerAuth('app-auth')
   @ApiOperation({ summary: 'Returns the box details' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Returns the box details',
     schema: {
       type: 'object',
@@ -108,7 +108,7 @@ export class BoxesController {
     },
   })
   @ApiResponse({
-    status: 404,
+    status: HttpStatus.NOT_FOUND,
     description: 'Box not found',
   })
   @Get(':boxId')
@@ -156,7 +156,7 @@ export class BoxesController {
   @ApiBearerAuth('app-auth')
   @ApiOperation({ summary: 'Marks the box as in learning' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Box marked as in learning',
   })
   @Post(':boxId/start')
