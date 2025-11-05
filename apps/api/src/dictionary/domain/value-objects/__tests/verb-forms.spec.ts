@@ -41,31 +41,43 @@ describe('VerbForms', () => {
   describe('validation', () => {
     it('should throw error when array has less than 3 elements', () => {
       expect(() => {
-        VerbForms.fromArray(['go', 'went'] as any);
+        VerbForms.fromArray(['go', 'went'] as unknown as [
+          string,
+          string,
+          string,
+        ]);
       }).toThrow('VerbForms must have 3 elements');
     });
 
     it('should throw error when array has more than 3 elements', () => {
       expect(() => {
-        VerbForms.fromArray(['go', 'went', 'gone', 'going'] as any);
+        VerbForms.fromArray(['go', 'went', 'gone', 'going'] as unknown as [
+          string,
+          string,
+          string,
+        ]);
       }).toThrow('VerbForms must have 3 elements');
     });
 
     it('should throw error when array is empty', () => {
       expect(() => {
-        VerbForms.fromArray([] as any);
+        VerbForms.fromArray([] as unknown as [string, string, string]);
       }).toThrow('VerbForms must have 3 elements');
     });
 
     it('should throw error when array has only 1 element', () => {
       expect(() => {
-        VerbForms.fromArray(['go'] as any);
+        VerbForms.fromArray(['go'] as unknown as [string, string, string]);
       }).toThrow('VerbForms must have 3 elements');
     });
 
     it('should throw error when array has only 2 elements', () => {
       expect(() => {
-        VerbForms.fromArray(['go', 'went'] as any);
+        VerbForms.fromArray(['go', 'went'] as unknown as [
+          string,
+          string,
+          string,
+        ]);
       }).toThrow('VerbForms must have 3 elements');
     });
   });

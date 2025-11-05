@@ -31,19 +31,19 @@ describe('SentenceId', () => {
     });
 
     it('should throw error for null value', () => {
-      expect(() => SentenceId.fromString(null as any)).toThrow(
+      expect(() => SentenceId.fromString(null as unknown as string)).toThrow(
         'SentenceId is not valid',
       );
     });
 
     it('should throw error for undefined value', () => {
-      expect(() => SentenceId.fromString(undefined as any)).toThrow(
-        'SentenceId is not valid',
-      );
+      expect(() =>
+        SentenceId.fromString(undefined as unknown as string),
+      ).toThrow('SentenceId is not valid');
     });
 
     it('should throw error for non-string value', () => {
-      expect(() => SentenceId.fromString(123 as any)).toThrow(
+      expect(() => SentenceId.fromString(123 as unknown as string)).toThrow(
         'SentenceId is not valid',
       );
     });

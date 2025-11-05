@@ -86,13 +86,13 @@ describe('ExpressionType', () => {
 
     it('should throw error for undefined', () => {
       expect(() => {
-        ExpressionType.fromString(undefined as any);
+        ExpressionType.fromString(undefined as unknown as string);
       }).toThrow('ExpressionType is not valid');
     });
 
     it('should throw error for null', () => {
       expect(() => {
-        ExpressionType.fromString(null as any);
+        ExpressionType.fromString(null as unknown as string);
       }).toThrow('ExpressionType is not valid');
     });
 

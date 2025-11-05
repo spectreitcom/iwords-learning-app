@@ -22,19 +22,19 @@ describe('UserId', () => {
     });
 
     it('should throw error for null value', () => {
-      expect(() => UserId.fromString(null as any)).toThrow(
+      expect(() => UserId.fromString(null as unknown as string)).toThrow(
         'UserId is not valid',
       );
     });
 
     it('should throw error for undefined value', () => {
-      expect(() => UserId.fromString(undefined as any)).toThrow(
+      expect(() => UserId.fromString(undefined as unknown as string)).toThrow(
         'UserId is not valid',
       );
     });
 
     it('should throw error for non-string value', () => {
-      expect(() => UserId.fromString(123 as any)).toThrow(
+      expect(() => UserId.fromString(123 as unknown as string)).toThrow(
         'UserId is not valid',
       );
     });
