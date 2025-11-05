@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards, HttpStatus } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -18,7 +18,7 @@ export class UsersController {
   @ApiBearerAuth('app-auth')
   @ApiOperation({ summary: 'Get current logged user' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Returns the current logged user',
     schema: {
       type: 'object',
@@ -31,11 +31,11 @@ export class UsersController {
     },
   })
   @ApiResponse({
-    status: 401,
+    status: HttpStatus.UNAUTHORIZED,
     description: 'Unauthorized',
   })
   @ApiResponse({
-    status: 404,
+    status: HttpStatus.NOT_FOUND,
     description: 'User not found',
   })
   @Get('me')

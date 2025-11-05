@@ -38,7 +38,7 @@ export class BoxController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Get boxes number' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Returns the number of boxes',
     schema: {
       type: 'object',
@@ -57,7 +57,7 @@ export class BoxController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Creates the new box' })
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     description: 'Box created successfully',
   })
   @Post()
@@ -69,7 +69,7 @@ export class BoxController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Gets the list of boxes' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Returns a list of boxes',
     schema: {
       type: 'object',
@@ -102,10 +102,10 @@ export class BoxController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Update the box by id' })
   @ApiResponse({
-    status: 204,
+    status: HttpStatus.NO_CONTENT,
     description: 'Box updated successfully',
   })
-  @ApiResponse({ status: 404, description: 'Box not found' })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Box not found' })
   @Put(':boxId')
   @HttpCode(HttpStatus.NO_CONTENT)
   updateBox(
@@ -118,10 +118,10 @@ export class BoxController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Delete the box by id' })
   @ApiResponse({
-    status: 204,
+    status: HttpStatus.NO_CONTENT,
     description: 'Box deleted successfully',
   })
-  @ApiResponse({ status: 404, description: 'Box not found' })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Box not found' })
   @Delete(':boxId')
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteBox(@Param('boxId', new ParseUUIDPipe()) boxId: string) {
@@ -131,7 +131,7 @@ export class BoxController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Get box details' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Returns the box details',
     schema: {
       type: 'object',
@@ -152,7 +152,7 @@ export class BoxController {
       },
     },
   })
-  @ApiResponse({ status: 404, description: 'Box not found' })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Box not found' })
   @Get(':boxId')
   @HttpCode(HttpStatus.OK)
   async getBoxDetails(@Param('boxId', new ParseUUIDPipe()) boxId: string) {
@@ -175,10 +175,10 @@ export class BoxController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Add item to box' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Item added to box successfully',
   })
-  @ApiResponse({ status: 404, description: 'Box not found' })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Box not found' })
   @Post(':boxId/add-item')
   @HttpCode(HttpStatus.OK)
   async addExpressionContextId(
@@ -194,10 +194,10 @@ export class BoxController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Add item to box' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Item removed from the box successfully',
   })
-  @ApiResponse({ status: 404, description: 'Box not found' })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Box not found' })
   @Delete(':boxId/remove-item/:expressionContextId')
   async removeExpressionContextId(
     @Param('boxId', new ParseUUIDPipe()) boxId: string,

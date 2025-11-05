@@ -43,7 +43,7 @@ export class AuthController {
   @Public()
   @ApiOperation({ summary: 'Sign in admin user' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'User signed in successfully',
     schema: {
       type: 'object',
@@ -61,7 +61,10 @@ export class AuthController {
       },
     },
   })
-  @ApiResponse({ status: 401, description: 'Wrong email or password' })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Wrong email or password',
+  })
   @ApiBody({
     schema: {
       type: 'object',
@@ -81,7 +84,7 @@ export class AuthController {
   @Public()
   @ApiOperation({ summary: 'Refresh access token' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Access token refreshed successfully',
     schema: {
       type: 'object',
@@ -99,7 +102,10 @@ export class AuthController {
       },
     },
   })
-  @ApiResponse({ status: 401, description: 'Invalid refresh token' })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Invalid refresh token',
+  })
   @Post('auth/refresh-token')
   @HttpCode(HttpStatus.OK)
   async refreshToken(@Body() payload: RefreshTokenDto) {
@@ -119,11 +125,14 @@ export class AuthController {
   @Public()
   @ApiOperation({ summary: 'Request reset password' })
   @ApiResponse({
-    status: 204,
+    status: HttpStatus.NO_CONTENT,
     description: 'Email with reset password link sent to the user.',
   })
-  @ApiResponse({ status: 400, description: 'Validation error' })
-  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Validation error',
+  })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found' })
   @Post('auth/request-reset-password')
   @HttpCode(HttpStatus.NO_CONTENT)
   async requestResetPassword(@Body() payload: AdminRequestResetPasswordDto) {
@@ -135,11 +144,17 @@ export class AuthController {
   @Public()
   @ApiOperation({ summary: 'Reset password' })
   @ApiResponse({
-    status: 204,
+    status: HttpStatus.NO_CONTENT,
     description: 'Password reset successfully',
   })
-  @ApiResponse({ status: 400, description: 'Validation error' })
-  @ApiResponse({ status: 401, description: 'Wrong reset password token' })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Validation error',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Wrong reset password token',
+  })
   @Post('auth/reset-password')
   @HttpCode(HttpStatus.NO_CONTENT)
   async resetPassword(@Body() payload: ResetPasswordDto) {
@@ -152,7 +167,7 @@ export class AuthController {
   @Public()
   @ApiOperation({ summary: 'Validate reset password token' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Check if the token is valid and not expired.',
     schema: {
       type: 'object',
@@ -172,10 +187,13 @@ export class AuthController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Change password for logged user' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Password changed successfully',
   })
-  @ApiResponse({ status: 400, description: 'Validation error' })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Validation error',
+  })
   @Patch('auth/change-password')
   changePasswordForLoggedUser(
     @CurrentAdminUserId() userId: string,
@@ -191,7 +209,7 @@ export class AuthController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Get admin users list' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Returns a list of admin users',
     schema: {
       type: 'object',
@@ -228,11 +246,17 @@ export class AuthController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Block admin user' })
   @ApiResponse({
-    status: 204,
+    status: HttpStatus.NO_CONTENT,
     description: 'Admin user blocked successfully',
   })
-  @ApiResponse({ status: 400, description: 'Validation error' })
-  @ApiResponse({ status: 404, description: 'Admin user not found' })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Validation error',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Admin user not found',
+  })
   @Post('admin-users/block')
   @HttpCode(HttpStatus.NO_CONTENT)
   async blockAdminUser(
@@ -248,11 +272,17 @@ export class AuthController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Unblock admin user' })
   @ApiResponse({
-    status: 204,
+    status: HttpStatus.NO_CONTENT,
     description: 'Admin user unblocked successfully',
   })
-  @ApiResponse({ status: 400, description: 'Validation error' })
-  @ApiResponse({ status: 404, description: 'Admin user not found' })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Validation error',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Admin user not found',
+  })
   @Post('admin-users/unblock')
   @HttpCode(HttpStatus.NO_CONTENT)
   async unblockAdminUser(
@@ -268,10 +298,13 @@ export class AuthController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Invite admin user' })
   @ApiResponse({
-    status: 204,
+    status: HttpStatus.NO_CONTENT,
     description: 'Admin user invited successfully',
   })
-  @ApiResponse({ status: 400, description: 'Validation error' })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Validation error',
+  })
   @Post('admin-users/invite')
   @HttpCode(HttpStatus.NO_CONTENT)
   async invite(@Body() payload: InviteAdminUserDto) {
@@ -284,11 +317,17 @@ export class AuthController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Resend invitation email' })
   @ApiResponse({
-    status: 204,
+    status: HttpStatus.NO_CONTENT,
     description: 'Invitation email resent successfully',
   })
-  @ApiResponse({ status: 400, description: 'Validation error' })
-  @ApiResponse({ status: 404, description: 'Admin user not found' })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Validation error',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Admin user not found',
+  })
   @Post('admin-users/resend-invitation-email')
   @HttpCode(HttpStatus.NO_CONTENT)
   async resendInvitationEmail(@Body() payload: ResendAdminInvitationEmailDto) {

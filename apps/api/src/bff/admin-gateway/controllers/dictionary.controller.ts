@@ -49,7 +49,7 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Search in dictionary' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Returns a list of matching expressions',
   })
   @Get('search')
@@ -65,7 +65,7 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Get expression number' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Returns the number of expressions',
     schema: {
       type: 'object',
@@ -86,10 +86,13 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Get expression by id' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Returns the expression by id',
   })
-  @ApiResponse({ status: 404, description: 'Expression not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression not found',
+  })
   @Get('expressions/:expressionId')
   @HttpCode(HttpStatus.OK)
   async getExpression(
@@ -101,7 +104,7 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Get expressions list' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Returns a list of expressions',
   })
   @Get('expressions')
@@ -117,7 +120,7 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Create expression' })
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     description: 'Returns either the new expressionId or the existing one',
     schema: {
       type: 'object',
@@ -137,9 +140,18 @@ export class DictionaryController {
 
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Update expression' })
-  @ApiResponse({ status: 200, description: 'Expression updated successfully' })
-  @ApiResponse({ status: 404, description: 'Expression not found' })
-  @ApiResponse({ status: 400, description: 'Expression phrase already taken' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Expression updated successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Expression phrase already taken',
+  })
   @Put('expressions/:expressionId')
   @HttpCode(HttpStatus.OK)
   async updateExpression(
@@ -157,8 +169,14 @@ export class DictionaryController {
   @Delete('expressions/:expressionId')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth('admin-auth')
-  @ApiResponse({ status: 204, description: 'Expression deleted successfully' })
-  @ApiResponse({ status: 404, description: 'Expression not found' })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'Expression deleted successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression not found',
+  })
   async deleteExpression(
     @Param('expressionId', new ParseUUIDPipe()) expressionId: string,
   ) {
@@ -168,10 +186,13 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Expression context by id' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Returns the expression context by id',
   })
-  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression context not found',
+  })
   @Get('expression-contexts/:expressionContextId')
   async getExpressionContext(
     @Param('expressionContextId', new ParseUUIDPipe())
@@ -185,7 +206,7 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Expression contexts list' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Returns a list of expression contexts',
   })
   @Get('expression-contexts')
@@ -203,7 +224,7 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Create verb expression context' })
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     description: 'Expression context created successfully',
     schema: {
       type: 'object',
@@ -212,7 +233,10 @@ export class DictionaryController {
       },
     },
   })
-  @ApiResponse({ status: 404, description: 'Expression not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression not found',
+  })
   @Post('expression-contexts/verb')
   @HttpCode(HttpStatus.CREATED)
   async createVerbExpressionContext(
@@ -227,7 +251,7 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Create phrasal verb expression context' })
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     description: 'Expression context created successfully',
     schema: {
       type: 'object',
@@ -236,7 +260,10 @@ export class DictionaryController {
       },
     },
   })
-  @ApiResponse({ status: 404, description: 'Expression not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression not found',
+  })
   @Post('expression-contexts/phrasal-verb')
   @HttpCode(HttpStatus.CREATED)
   async createPhrasalVerbExpressionContext(
@@ -251,7 +278,7 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Create noun expression context' })
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     description: 'Expression context created successfully',
     schema: {
       type: 'object',
@@ -260,7 +287,10 @@ export class DictionaryController {
       },
     },
   })
-  @ApiResponse({ status: 404, description: 'Expression not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression not found',
+  })
   @Post('expression-contexts/noun')
   @HttpCode(HttpStatus.CREATED)
   async createNounExpressionContext(
@@ -276,7 +306,7 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Create adjective expression context' })
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     description: 'Expression context created successfully',
     schema: {
       type: 'object',
@@ -285,7 +315,10 @@ export class DictionaryController {
       },
     },
   })
-  @ApiResponse({ status: 404, description: 'Expression not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression not found',
+  })
   @Post('expression-contexts/adjective')
   @HttpCode(HttpStatus.CREATED)
   async createAdjectiveExpressionContext(
@@ -300,7 +333,7 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Create adverb expression context' })
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     description: 'Expression context created successfully',
     schema: {
       type: 'object',
@@ -309,7 +342,10 @@ export class DictionaryController {
       },
     },
   })
-  @ApiResponse({ status: 404, description: 'Expression not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression not found',
+  })
   @Post('expression-contexts/adverb')
   @HttpCode(HttpStatus.CREATED)
   async createAdverbExpressionContext(
@@ -324,7 +360,7 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Create irregular verb expression context' })
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     description: 'Expression context created successfully',
     schema: {
       type: 'object',
@@ -333,7 +369,10 @@ export class DictionaryController {
       },
     },
   })
-  @ApiResponse({ status: 404, description: 'Expression not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression not found',
+  })
   @Post('expression-contexts/irregular-verb')
   @HttpCode(HttpStatus.CREATED)
   async createIrregularVerbExpressionContext(
@@ -348,8 +387,14 @@ export class DictionaryController {
 
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Update verb expression context' })
-  @ApiResponse({ status: 200, description: 'Expression context updated' })
-  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Expression context updated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression context not found',
+  })
   @Put('expression-contexts/:expressionContextId/verb')
   @HttpCode(HttpStatus.OK)
   async updateVerbExpressionContext(
@@ -365,8 +410,14 @@ export class DictionaryController {
 
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Update adjective expression context' })
-  @ApiResponse({ status: 200, description: 'Expression context updated' })
-  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Expression context updated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression context not found',
+  })
   @Put('expression-contexts/:expressionContextId/adjective')
   @HttpCode(HttpStatus.OK)
   async updateAdjectiveExpressionContext(
@@ -382,8 +433,14 @@ export class DictionaryController {
 
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Update noun expression context' })
-  @ApiResponse({ status: 200, description: 'Expression context updated' })
-  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Expression context updated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression context not found',
+  })
   @Put('expression-contexts/:expressionContextId/noun')
   @HttpCode(HttpStatus.OK)
   async updateNounExpressionContext(
@@ -400,8 +457,14 @@ export class DictionaryController {
 
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Update adverb expression context' })
-  @ApiResponse({ status: 200, description: 'Expression context updated' })
-  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Expression context updated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression context not found',
+  })
   @Put('expression-contexts/:expressionContextId/adverb')
   @HttpCode(HttpStatus.OK)
   async updateAdverbExpressionContext(
@@ -417,8 +480,14 @@ export class DictionaryController {
 
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Update phrasal verb expression context' })
-  @ApiResponse({ status: 200, description: 'Expression context updated' })
-  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Expression context updated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression context not found',
+  })
   @Put('expression-contexts/:expressionContextId/phrasal-verb')
   @HttpCode(HttpStatus.OK)
   async updatePhrasalVerbExpressionContext(
@@ -434,8 +503,14 @@ export class DictionaryController {
 
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Update irregular verb expression context' })
-  @ApiResponse({ status: 200, description: 'Expression context updated' })
-  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Expression context updated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression context not found',
+  })
   @Put('expression-contexts/:expressionContextId/irregular-verb')
   @HttpCode(HttpStatus.OK)
   async updateIrregularVerbExpressionContext(
@@ -454,8 +529,14 @@ export class DictionaryController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Delete expression context' })
-  @ApiResponse({ status: 204, description: 'Expression context deleted' })
-  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'Expression context deleted',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression context not found',
+  })
   async deleteExpressionContext(
     @Param('expressionContextId', new ParseUUIDPipe())
     expressionContextId: string,
@@ -468,10 +549,13 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Get sentence by id' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Returns the sentence by id',
   })
-  @ApiResponse({ status: 404, description: 'Sentence not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Sentence not found',
+  })
   @Get('sentences/:sentenceId')
   @HttpCode(HttpStatus.OK)
   async getSentence(
@@ -483,10 +567,13 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Add sentence to the context' })
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     description: 'Sentence added to the context successfully',
   })
-  @ApiResponse({ status: 404, description: 'Expression context not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression context not found',
+  })
   @Post('sentences')
   @HttpCode(HttpStatus.CREATED)
   async addSentence(@Body() payload: CreateSentenceDto) {
@@ -500,10 +587,13 @@ export class DictionaryController {
   @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Delete sentence from the context' })
   @ApiResponse({
-    status: 204,
+    status: HttpStatus.NO_CONTENT,
     description: 'Sentence deleted from the context successfully',
   })
-  @ApiResponse({ status: 404, description: 'Sentence not found' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Sentence not found',
+  })
   @Delete('sentences/:sentenceId')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteSentence(
@@ -517,8 +607,14 @@ export class DictionaryController {
   @Put('sentences/:sentenceId')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Update sentence' })
-  @ApiResponse({ status: 200, description: 'Sentence updated successfully' })
-  @ApiResponse({ status: 404, description: 'Sentence not found' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Sentence updated successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Sentence not found',
+  })
   async updateSentence(
     @Body() payload: UpdateSentenceDto,
     @Param('sentenceId', new ParseUUIDPipe()) sentenceId: string,
