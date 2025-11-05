@@ -16,7 +16,7 @@ import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 import { AdminUsersTableItemActions } from "@/features/admin-users/components/admin-users-table-item-actions";
 import { Badge } from "@/components/ui/badge";
 
-const TAKE = 20;
+const TAKE = 10;
 
 type Props = {
   searchParams: Promise<{

@@ -16,7 +16,7 @@ import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 import { BoxesTableItemActions } from "@/features/boxes/components/boxes-table-item-actions";
 
-const TAKE = 20;
+const TAKE = 10;
 
 type Props = {
   searchParams: Promise<{
