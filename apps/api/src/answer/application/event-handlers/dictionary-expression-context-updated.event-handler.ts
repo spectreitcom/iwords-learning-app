@@ -17,7 +17,7 @@ export class DictionaryExpressionContextUpdatedEventHandler
   implements IEventHandler<IntegrationEvent<EventPayload>>
 {
   private readonly logger = new Logger(
-    DictionaryExpressionContextUpdatedEventHandler.name,
+    `Answer Domain - ${DictionaryExpressionContextUpdatedEventHandler.name}`,
   );
 
   constructor(private readonly prismaService: PrismaService) {}

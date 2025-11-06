@@ -14,7 +14,9 @@ type EventPayload = {
 export class AdminAdminUserInvitedEventHandler
   implements IEventHandler<IntegrationEvent<EventPayload>>
 {
-  private readonly logger = new Logger(AdminAdminUserInvitedEventHandler.name);
+  private readonly logger = new Logger(
+    `Email Notification Domain - ${AdminAdminUserInvitedEventHandler.name}`,
+  );
 
   constructor(
     private readonly emailService: EmailService,

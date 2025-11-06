@@ -12,7 +12,7 @@ export class DictionarySentenceDeletedEventHandler
   implements IEventHandler<IntegrationEvent<EventPayload>>
 {
   private readonly logger = new Logger(
-    DictionarySentenceDeletedEventHandler.name,
+    `Answer Domain - ${DictionarySentenceDeletedEventHandler.name}`,
   );
 
   constructor(private readonly prismaService: PrismaService) {}

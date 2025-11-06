@@ -14,7 +14,9 @@ type EventPayload = {
 export class AnswerCheckedEventHandler
   implements IEventHandler<IntegrationEvent<EventPayload>>
 {
-  private readonly logger = new Logger(AnswerCheckedEventHandler.name);
+  private readonly logger = new Logger(
+    `Gamification Domain - ${AnswerCheckedEventHandler.name}`,
+  );
 
   constructor(private readonly prismaService: PrismaService) {}
 

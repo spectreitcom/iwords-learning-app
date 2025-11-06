@@ -4,7 +4,9 @@ import { Logger } from '@nestjs/common';
 
 @EventsHandler(BoxDeletedEvent)
 export class BoxDeletedEventHandler implements IEventHandler<BoxDeletedEvent> {
-  private readonly logger = new Logger(BoxDeletedEventHandler.name);
+  private readonly logger = new Logger(
+    `Box Domain - ${BoxDeletedEventHandler.name}`,
+  );
 
   handle(event: BoxDeletedEvent) {
     this.logger.debug(JSON.stringify(event));

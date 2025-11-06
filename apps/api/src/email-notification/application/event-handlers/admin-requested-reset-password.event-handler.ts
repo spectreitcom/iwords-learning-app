@@ -15,7 +15,7 @@ export class AdminRequestedResetPasswordEventHandler
   implements IEventHandler<IntegrationEvent<EventPayload>>
 {
   private readonly logger = new Logger(
-    AdminRequestedResetPasswordEventHandler.name,
+    `Email Notification Domain - ${AdminRequestedResetPasswordEventHandler.name}`,
   );
 
   constructor(

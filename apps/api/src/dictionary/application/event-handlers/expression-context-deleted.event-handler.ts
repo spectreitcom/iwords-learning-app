@@ -8,7 +8,7 @@ export class ExpressionContextDeletedEventHandler
   implements IEventHandler<ExpressionContextDeletedEvent>
 {
   private readonly logger = new Logger(
-    ExpressionContextDeletedEventHandler.name,
+    `Dictionary Domain - ${ExpressionContextDeletedEventHandler.name}`,
   );
 
   constructor(private readonly prismaService: PrismaService) {}
