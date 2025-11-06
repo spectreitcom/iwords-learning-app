@@ -22,6 +22,8 @@ import { UpdateAdjectiveExpressionContextCommandHandler } from './command-handle
 import { UpdateAdverbExpressionContextCommandHandler } from './command-handlers/update-adverb-expression-context.command-handler';
 import { UpdateNounExpressionContextCommandHandler } from './command-handlers/update-noun-expression-context.command-handler';
 import { UpdatePhrasalVerbExpressionContextCommandHandler } from './command-handlers/update-phrasal-verb-expression-context.command-handler';
+import { CreateSimpleExpressionContextCommandHandler } from './command-handlers/create-simple-expression-context.command-handler';
+import { UpdateSimpleExpressionContextCommandHandler } from './command-handlers/update-simple-expression-context.command-handler';
 import { SentenceCreatedEventHandler } from './event-handlers/sentence-created.event-handler';
 import { CreateSentenceCommandHandler } from './command-handlers/create-sentence.command-handler';
 import { SentenceDeletedEventHandler } from './event-handlers/sentence-deleted.event-handler';
@@ -73,6 +75,8 @@ const COMMAND_HANDLERS = [
   CreateSentenceCommandHandler,
   DeleteSentenceCommandHandler,
   UpdateSentenceCommandHandler,
+  CreateSimpleExpressionContextCommandHandler,
+  UpdateSimpleExpressionContextCommandHandler,
 ];
 
 const QUERY_HANDLERS = [
