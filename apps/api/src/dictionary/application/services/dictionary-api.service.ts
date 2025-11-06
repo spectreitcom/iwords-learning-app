@@ -6,6 +6,7 @@ import { CreateExpressionCommandResponse } from '../command-handlers/create-expr
 import { CreateIrregularVerbExpressionContextCommandResponse } from '../command-handlers/create-irregular-verb-expression-context.command-handler';
 import { CreateNounExpressionContextCommandResponse } from '../command-handlers/create-noun-expression-context.command-handler';
 import { CreatePhrasalVerbExpressionContextCommandResponse } from '../command-handlers/create-phrasal-verb-expression-context.command-handler';
+import { CreateSimpleExpressionContextCommandResponse } from '../command-handlers/create-simple-expression-context.command-handler';
 import { CreateVerbExpressionContextCommandResponse } from '../command-handlers/create-verb-expression-context.command-handler';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateExpressionCommand } from '../commands/create-expression.command';
@@ -23,6 +24,8 @@ import { CreateIrregularVerbExpressionContextCommand } from '../commands/create-
 import { UpdateIrregularVerbExpressionContextCommand } from '../commands/update-irregular-verb-expression-context.command';
 import { CreatePhrasalVerbExpressionContextCommand } from '../commands/create-phrasal-verb-expression-context.command';
 import { UpdatePhrasalVerbExpressionContextCommand } from '../commands/update-phrasal-verb-expression-context.command';
+import { CreateSimpleExpressionContextCommand } from '../commands/create-simple-expression-context.command';
+import { UpdateSimpleExpressionContextCommand } from '../commands/update-simple-expression-context.command';
 import { DeleteExpressionContextCommand } from '../commands/delete-expression-context.command';
 import { CreateSentenceCommand } from '../commands/create-sentence.command';
 import { UpdateSentenceCommand } from '../commands/update-sentence.command';
@@ -66,6 +69,17 @@ export class DictionaryApiService implements DictionaryApi {
     translation: string,
   ): Promise<CreateAdverbExpressionContextCommandResponse> {
     const command = new CreateAdverbExpressionContextCommand(
+      expressionId,
+      translation,
+    );
+    return await this.commandBus.execute(command);
+  }
+
+  async createSimpleExpressionContext(
+    expressionId: string,
+    translation: string,
+  ): Promise<CreateSimpleExpressionContextCommandResponse> {
+    const command = new CreateSimpleExpressionContextCommand(
       expressionId,
       translation,
     );
@@ -171,6 +185,17 @@ export class DictionaryApiService implements DictionaryApi {
     translation: string,
   ): Promise<void> {
     const command = new UpdateAdverbExpressionContextCommand(
+      expressionContextId,
+      translation,
+    );
+    return await this.commandBus.execute(command);
+  }
+
+  async updateSimpleExpressionContext(
+    expressionContextId: string,
+    translation: string,
+  ): Promise<void> {
+    const command = new UpdateSimpleExpressionContextCommand(
       expressionContextId,
       translation,
     );

@@ -264,6 +264,36 @@ describe('ExpressionContext', () => {
     });
   });
 
+  describe('crateSimpleExpression', () => {
+    it('should create a simple expression context', () => {
+      const expressionContext = ExpressionContext.crateSimpleExpression(
+        mockTranslation,
+        mockExpressionId,
+      );
+
+      expect(expressionContext.getTranslation()).toBe(mockTranslation);
+      expect(expressionContext.getExpressionId().value).toBe(mockExpressionId);
+      expect(expressionContext.getIsCountable()).toBe(false);
+      expect(expressionContext.getType().value).toBe('simple_expression');
+      expect(expressionContext.getForms()).toBeNull();
+      expect(expressionContext.getIsIrregular()).toBe(false);
+    });
+
+    it('should emit ExpressionContextCreatedEvent for simple expression', () => {
+      const expressionContext = ExpressionContext.crateSimpleExpression(
+        mockTranslation,
+        mockExpressionId,
+      );
+      const events = expressionContext.getUncommittedEvents();
+
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(ExpressionContextCreatedEvent);
+
+      const event = events[0] as ExpressionContextCreatedEvent;
+      expect(event.type).toBe('simple_expression');
+    });
+  });
+
   describe('delete', () => {
     it('should emit ExpressionContextDeletedEvent', () => {
       const expressionContext = ExpressionContext.createVerb(
@@ -421,6 +451,28 @@ describe('ExpressionContext', () => {
       const event = events[1] as ExpressionContextUpdatedEvent;
       expect(event.translation).toBe(newTranslation);
       expect(event.type).toBe('phrasal_verb');
+    });
+  });
+
+  describe('updateSimpleExpression', () => {
+    it('should update simple expression translation and emit event', () => {
+      const expressionContext = ExpressionContext.crateSimpleExpression(
+        mockTranslation,
+        mockExpressionId,
+      );
+
+      const newTranslation = 'updated translation';
+      expressionContext.updateSimpleExpression(newTranslation);
+
+      expect(expressionContext.getTranslation()).toBe(newTranslation);
+
+      const events = expressionContext.getUncommittedEvents();
+      expect(events).toHaveLength(2); // Creation event + update event
+      expect(events[1]).toBeInstanceOf(ExpressionContextUpdatedEvent);
+
+      const event = events[1] as ExpressionContextUpdatedEvent;
+      expect(event.translation).toBe(newTranslation);
+      expect(event.type).toBe('simple_expression');
     });
   });
 
