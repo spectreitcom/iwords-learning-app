@@ -41,6 +41,13 @@ export function AddItemToBoxModal({
   const debouncedSearchText = useDebounceCallback(setSearchText, 500);
 
   useEffect(() => {
+    if (!open) {
+      setSearchText("");
+      setSearchedItems([]);
+      setSelectedExpressionContextId(null);
+      return;
+    }
+
     if (open && boxId) {
       setSearchedItems([]);
       setSelectedExpressionContextId(null);
