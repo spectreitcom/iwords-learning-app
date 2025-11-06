@@ -39,6 +39,8 @@ import { SearchDictionaryQueryDto } from '../dtos/search-dictionary-query.dto';
 import { GetExpressionsListQueryDto } from '../dtos/get-expressions-list-query.dto';
 import { GetExpressionContextsListQueryDto } from '../dtos/get-expression-contexts-list-query.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CreateSimpleExpressionContextDto } from '../dtos/create-simple-expression-context.dto';
+import { UpdateSimpleExpressionContextDto } from '../dtos/update-simple-expression-context.dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('Admin Dictionary')
@@ -358,6 +360,33 @@ export class DictionaryController {
   }
 
   @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Create simple expression context' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Expression context created successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string', format: 'uuid' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression not found',
+  })
+  @Post('expression-contexts/simple')
+  @HttpCode(HttpStatus.CREATED)
+  async createSimpleExpressionContext(
+    @Body() payload: CreateSimpleExpressionContextDto,
+  ) {
+    return await this.dictionaryApiService.createSimpleExpressionContext(
+      payload.expressionId,
+      payload.translation,
+    );
+  }
+
+  @ApiBearerAuth('admin-auth')
   @ApiOperation({ summary: 'Create irregular verb expression context' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -473,6 +502,29 @@ export class DictionaryController {
     expressionContextId: string,
   ) {
     return await this.dictionaryApiService.updateAdverbExpressionContext(
+      expressionContextId,
+      payload.translation,
+    );
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Update simple expression context' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Expression context updated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression context not found',
+  })
+  @Put('expression-contexts/:expressionContextId/simple')
+  @HttpCode(HttpStatus.OK)
+  async updateSimpleExpressionContext(
+    @Body() payload: UpdateSimpleExpressionContextDto,
+    @Param('expressionContextId', new ParseUUIDPipe())
+    expressionContextId: string,
+  ) {
+    return await this.dictionaryApiService.updateSimpleExpressionContext(
       expressionContextId,
       payload.translation,
     );
