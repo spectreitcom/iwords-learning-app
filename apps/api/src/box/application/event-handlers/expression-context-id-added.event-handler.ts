@@ -7,7 +7,7 @@ export class ExpressionContextIdAddedEventHandler
   implements IEventHandler<ExpressionContextIdAddedEvent>
 {
   private readonly logger = new Logger(
-    ExpressionContextIdAddedEventHandler.name,
+    `Box Domain - ${ExpressionContextIdAddedEventHandler.name}`,
   );
 
   handle(event: ExpressionContextIdAddedEvent) {

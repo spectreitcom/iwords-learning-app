@@ -7,7 +7,9 @@ import { PrismaService } from '../../../common/prisma/prisma.service';
 export class SentenceDeletedEventHandler
   implements IEventHandler<SentenceDeletedEvent>
 {
-  private readonly logger = new Logger(SentenceDeletedEventHandler.name);
+  private readonly logger = new Logger(
+    `Dictionary Domain - ${SentenceDeletedEventHandler.name}`,
+  );
 
   constructor(private readonly prismaService: PrismaService) {}
 

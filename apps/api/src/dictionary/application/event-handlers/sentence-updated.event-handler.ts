@@ -6,7 +6,9 @@ import { Logger } from '@nestjs/common';
 export class SentenceUpdatedEventHandler
   implements IEventHandler<SentenceUpdatedEvent>
 {
-  private readonly logger = new Logger(SentenceUpdatedEventHandler.name);
+  private readonly logger = new Logger(
+    `Dictionary Domain - ${SentenceUpdatedEventHandler.name}`,
+  );
 
   handle(event: SentenceUpdatedEvent) {
     this.logger.debug(JSON.stringify(event));

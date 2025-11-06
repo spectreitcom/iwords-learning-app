@@ -13,7 +13,7 @@ export class UserIdentityUserCreatedEventHandler
   implements IEventHandler<IntegrationEvent<EventPayload>>
 {
   private readonly logger = new Logger(
-    UserIdentityUserCreatedEventHandler.name,
+    `Email Notification Domain - ${UserIdentityUserCreatedEventHandler.name}`,
   );
 
   constructor(private readonly emailService: EmailService) {}

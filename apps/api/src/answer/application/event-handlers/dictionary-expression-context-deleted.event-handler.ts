@@ -12,7 +12,7 @@ export class DictionaryExpressionContextDeletedEventHandler
   implements IEventHandler<IntegrationEvent<EventPayload>>
 {
   private readonly logger = new Logger(
-    DictionaryExpressionContextDeletedEventHandler.name,
+    `Answer Domain - ${DictionaryExpressionContextDeletedEventHandler.name}`,
   );
 
   constructor(private readonly prismaService: PrismaService) {}

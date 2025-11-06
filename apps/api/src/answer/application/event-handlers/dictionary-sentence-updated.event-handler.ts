@@ -14,7 +14,7 @@ export class DictionarySentenceUpdatedEventHandler
   implements IEventHandler<IntegrationEvent<EventPayload>>
 {
   private readonly logger = new Logger(
-    DictionarySentenceUpdatedEventHandler.name,
+    `Answer Domain - ${DictionarySentenceUpdatedEventHandler.name}`,
   );
 
   constructor(private readonly prismaService: PrismaService) {}

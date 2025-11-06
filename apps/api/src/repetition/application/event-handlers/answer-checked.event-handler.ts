@@ -15,7 +15,7 @@ export class AnswerCheckedEventHandler
   implements IEventHandler<IntegrationEvent<EventPayload>>
 {
   private readonly logger = new Logger(
-    `Repetition - ${AnswerCheckedEventHandler.name}`,
+    `Repetition Domain - ${AnswerCheckedEventHandler.name}`,
   );
 
   constructor(private readonly prismaService: PrismaService) {}

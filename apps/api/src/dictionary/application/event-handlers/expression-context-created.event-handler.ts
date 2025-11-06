@@ -8,7 +8,7 @@ export class ExpressionContextCreatedEventHandler
   implements IEventHandler<ExpressionContextCreatedEvent>
 {
   private readonly logger = new Logger(
-    ExpressionContextCreatedEventHandler.name,
+    `Dictionary Domain - ${ExpressionContextCreatedEventHandler.name}`,
   );
 
   constructor(private readonly prismaService: PrismaService) {}
