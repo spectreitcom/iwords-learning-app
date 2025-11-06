@@ -72,13 +72,13 @@ export function LearningMain({ boxItems, title, boxId }: Props) {
         learningViewType: getLearningViewType(item.type),
       });
 
-      for (const sentence of item.sentences) {
-        linkedList.append({
-          sentenceId: sentence.sentenceId,
-          translation: sentence.translation,
-          learningViewType: "SENTENCE_TRANSLATION_VIEW",
-        });
-      }
+      // for (const sentence of item.sentences) {
+      //   linkedList.append({
+      //     sentenceId: sentence.sentenceId,
+      //     translation: sentence.translation,
+      //     learningViewType: "SENTENCE_TRANSLATION_VIEW",
+      //   });
+      // }
     }
 
     setCurrentItem(linkedList.getHead());
