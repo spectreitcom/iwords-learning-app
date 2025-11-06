@@ -5,11 +5,20 @@ import {
   IRREGULAR_VERB,
   NOUN,
   PHRASAL_VERB,
+  SIMPLE_EXPRESSION,
   VERB,
 } from '../constants';
 
 export class ExpressionType {
-  @IsIn([VERB, NOUN, ADJECTIVE, ADVERB, PHRASAL_VERB, IRREGULAR_VERB])
+  @IsIn([
+    VERB,
+    NOUN,
+    ADJECTIVE,
+    ADVERB,
+    PHRASAL_VERB,
+    IRREGULAR_VERB,
+    SIMPLE_EXPRESSION,
+  ])
   public readonly value: string;
 
   private constructor(value: string) {
@@ -46,6 +55,10 @@ export class ExpressionType {
 
   static phrasalVerb() {
     return new ExpressionType(PHRASAL_VERB);
+  }
+
+  static simpleExpression() {
+    return new ExpressionType(SIMPLE_EXPRESSION);
   }
 
   static fromString(value: string): ExpressionType {

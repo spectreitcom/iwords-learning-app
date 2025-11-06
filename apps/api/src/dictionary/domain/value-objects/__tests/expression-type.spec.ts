@@ -6,6 +6,7 @@ import {
   ADVERB,
   PHRASAL_VERB,
   IRREGULAR_VERB,
+  SIMPLE_EXPRESSION,
 } from '../../constants';
 
 describe('ExpressionType', () => {
@@ -38,6 +39,11 @@ describe('ExpressionType', () => {
     it('should create irregular verb expression type', () => {
       const expressionType = ExpressionType.irregularVerb();
       expect(expressionType.value).toBe(IRREGULAR_VERB);
+    });
+
+    it('should create simple expression type', () => {
+      const expressionType = ExpressionType.simpleExpression();
+      expect(expressionType.value).toBe(SIMPLE_EXPRESSION);
     });
   });
 

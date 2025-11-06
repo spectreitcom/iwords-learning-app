@@ -201,6 +201,32 @@ export class ExpressionContext extends AggregateRoot {
     return expressionContext;
   }
 
+  static crateSimpleExpression(translation: string, expressionId: string) {
+    const expressionContext = new ExpressionContext(
+      ExpressionContextId.create(),
+      ExpressionId.fromString(expressionId),
+      translation,
+      false,
+      ExpressionType.simpleExpression(),
+      null,
+      false,
+    );
+
+    expressionContext.apply(
+      new ExpressionContextCreatedEvent(
+        expressionContext.getExpressionContextId().value,
+        expressionContext.getExpressionId().value,
+        expressionContext.getTranslation(),
+        false,
+        expressionContext.getType().value,
+        null,
+        false,
+      ),
+    );
+
+    return expressionContext;
+  }
+
   delete() {
     this.apply(
       new ExpressionContextDeletedEvent(
@@ -288,6 +314,21 @@ export class ExpressionContext extends AggregateRoot {
   }
 
   updatePhrasalVerb(translation: string) {
+    this.translation = translation;
+    this.apply(
+      new ExpressionContextUpdatedEvent(
+        this.expressionContextId.value,
+        this.expressionId.value,
+        this.translation,
+        false,
+        this.type.value,
+        null,
+        false,
+      ),
+    );
+  }
+
+  updateSimpleExpression(translation: string) {
     this.translation = translation;
     this.apply(
       new ExpressionContextUpdatedEvent(
