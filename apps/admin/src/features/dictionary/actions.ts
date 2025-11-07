@@ -263,6 +263,26 @@ export async function createIrregularVerbExpressionContext(
   return (await response.json()) as CreateExpressionContextResponse;
 }
 
+export async function createSimpleExpressionExpressionContext(
+  expressionId: string,
+  data: CreateOnlyTranslationExpressionContextData,
+) {
+  const response = await authFetch(
+    `${BACKEND_URL}/dictionary/expression-contexts/simple`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...data, expressionId }),
+    },
+  );
+
+  revalidatePath(`/expressions/${expressionId}`);
+
+  return (await response.json()) as CreateExpressionContextResponse;
+}
+
 export async function deleteExpressionContext(expressionContextId: string) {
   await authFetch(
     `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}`,
@@ -436,6 +456,25 @@ export async function updateIrregularVerbExpressionContext(
         translation: data.translation,
         forms: [data.form1, data.form2, data.form3],
       }),
+    },
+  );
+
+  revalidatePath(`/expressions/${expressionId}`);
+}
+
+export async function updateSimpleExpressionExpressionContext(
+  expressionContextId: string,
+  expressionId: string,
+  data: CreateOnlyTranslationExpressionContextData,
+) {
+  await authFetch(
+    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/simple`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...data }),
     },
   );
 
