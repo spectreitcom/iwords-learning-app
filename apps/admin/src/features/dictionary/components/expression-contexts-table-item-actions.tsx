@@ -31,6 +31,7 @@ import {
   updateIrregularVerbExpressionContext,
   updateNounExpressionContext,
   updatePhrasalAdverbExpressionContext,
+  updateSimpleExpressionExpressionContext,
   updateVerbExpressionContext,
 } from "@/features/dictionary/actions";
 import {
@@ -58,6 +59,8 @@ export function ExpressionContextsTableItemActions({
     useState(false);
   const [showEditNounModal, setShowEditNounModal] = useState(false);
   const [showEditIrregularVerbModal, setShowEditIrregularVerbModal] =
+    useState(false);
+  const [showEditSimpleExpressionModal, setShowEditSimpleExpressionModal] =
     useState(false);
 
   return (
@@ -97,6 +100,13 @@ export function ExpressionContextsTableItemActions({
           {expressionContext.type === "irregular_verb" && (
             <DropdownMenuItem
               onClick={() => setShowEditIrregularVerbModal(true)}
+            >
+              Edytuj
+            </DropdownMenuItem>
+          )}
+          {expressionContext.type === "simple_expression" && (
+            <DropdownMenuItem
+              onClick={() => setShowEditSimpleExpressionModal(true)}
             >
               Edytuj
             </DropdownMenuItem>
@@ -144,6 +154,12 @@ export function ExpressionContextsTableItemActions({
         open={showEditIrregularVerbModal}
         expressionContextId={expressionContext.expressionContextId}
         onClose={() => setShowEditIrregularVerbModal(false)}
+      />
+
+      <EditSimpleExpressionModal
+        open={showEditSimpleExpressionModal}
+        expressionContextId={expressionContext.expressionContextId}
+        onClose={() => setShowEditSimpleExpressionModal(false)}
       />
 
       <Alert
@@ -404,6 +420,53 @@ function EditAdverbModal({
           onSubmitted={async (data) => {
             setPending(true);
             await updateAdverbExpressionContext(
+              expressionContextId,
+              expressionContextDetails.expressionId,
+              data,
+            );
+            setPending(false);
+            setExpressionContextDetails(null);
+            onClose();
+          }}
+        />
+      )}
+    </Modal>
+  );
+}
+
+function EditSimpleExpressionModal({
+  open,
+  onClose,
+  expressionContextId,
+}: Omit<ModalProps, "title" | "children"> & { expressionContextId: string }) {
+  const [expressionContextDetails, setExpressionContextDetails] =
+    useState<ExpressionContextDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [pending, setPending] = useState(false);
+
+  useEffect(() => {
+    if (open && expressionContextId) {
+      getExpressionContextDetails(expressionContextId)
+        .then((expressionContextDetails) => {
+          setExpressionContextDetails(expressionContextDetails);
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [open, expressionContextId]);
+
+  return (
+    <Modal open={open} onClose={onClose} title={"Edycja prostego wyrażenia"}>
+      {loading && <ModalLoader />}
+
+      {expressionContextDetails && !loading && (
+        <CreateOnlyTranslationExpressionContextForm
+          pending={pending || loading}
+          defaultValues={{
+            translation: expressionContextDetails.translation,
+          }}
+          onSubmitted={async (data) => {
+            setPending(true);
+            await updateSimpleExpressionExpressionContext(
               expressionContextId,
               expressionContextDetails.expressionId,
               data,

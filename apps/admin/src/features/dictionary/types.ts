@@ -14,7 +14,8 @@ export type ExpressionContextType =
   | "adjective"
   | "adverb"
   | "phrasal_verb"
-  | "irregular_verb";
+  | "irregular_verb"
+  | "simple_expression";
 
 export type ExpressionContext = {
   expressionContextId: string;

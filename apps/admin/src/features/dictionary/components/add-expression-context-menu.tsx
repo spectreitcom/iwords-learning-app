@@ -21,6 +21,7 @@ import {
   createIrregularVerbExpressionContext,
   createNounExpressionContext,
   createPhrasalVerbExpressionContext,
+  createSimpleExpressionExpressionContext,
   createVerbExpressionContext,
 } from "@/features/dictionary/actions";
 import { CreateNounExpressionContextForm } from "@/features/dictionary/components/create-noun-translation-expression-context-form";
@@ -37,6 +38,8 @@ export function AddExpressionContextMenu({ expressionId }: Props) {
   const [showAddAdverbModal, setShowAddAdverbModal] = useState(false);
   const [showAddNounModal, setShowAddNounModal] = useState(false);
   const [showAddIrregularVerbModal, setShowAddIrregularVerbModal] =
+    useState(false);
+  const [showAddSimpleExpressionModal, setShowAddSimpleExpressionModal] =
     useState(false);
 
   return (
@@ -63,6 +66,11 @@ export function AddExpressionContextMenu({ expressionId }: Props) {
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setShowAddIrregularVerbModal(true)}>
             Czasownik nieregularny
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => setShowAddSimpleExpressionModal(true)}
+          >
+            Wyrażenie
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -101,6 +109,12 @@ export function AddExpressionContextMenu({ expressionId }: Props) {
         open={showAddIrregularVerbModal}
         expressionId={expressionId}
         onClose={() => setShowAddIrregularVerbModal(false)}
+      />
+
+      <AddSimpleExpressionModal
+        open={showAddSimpleExpressionModal}
+        expressionId={expressionId}
+        onClose={() => setShowAddSimpleExpressionModal(false)}
       />
     </>
   );
@@ -250,6 +264,28 @@ function AddAdjectiveModal({
         onSubmitted={async (data) => {
           setPending(true);
           await createAdjectiveExpressionContext(expressionId, data);
+          setPending(false);
+          onClose();
+        }}
+      />
+    </Modal>
+  );
+}
+
+function AddSimpleExpressionModal({
+  open,
+  onClose,
+  expressionId,
+}: Omit<DialogProps, "title" | "children"> & { expressionId: string }) {
+  const [pending, setPending] = useState(false);
+
+  return (
+    <Modal open={open} onClose={onClose} title={"Dodaj proste wyrażenie"}>
+      <CreateOnlyTranslationExpressionContextForm
+        pending={pending}
+        onSubmitted={async (data) => {
+          setPending(true);
+          await createSimpleExpressionExpressionContext(expressionId, data);
           setPending(false);
           onClose();
         }}
