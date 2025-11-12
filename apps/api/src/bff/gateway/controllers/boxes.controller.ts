@@ -167,4 +167,23 @@ export class BoxesController {
   ) {
     return await this.boxApiService.beginBox(userId, boxId);
   }
+
+  @ApiBearerAuth('app-auth')
+  @ApiOperation({ summary: 'Marks the box as finished' })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'Box marked as finished',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Box not found',
+  })
+  @Post(':boxId/finish')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async markBoxAsFinished(
+    @Param('boxId', new ParseUUIDPipe()) boxId: string,
+    @CurrentUserId() userId: string,
+  ) {
+    return await this.boxApiService.markBoxAsFinished(boxId, userId);
+  }
 }
