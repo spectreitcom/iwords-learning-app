@@ -5,5 +5,6 @@ export function useBoxesListQuery(page = 1) {
   return useQuery({
     queryKey: ["boxes", page],
     queryFn: () => getBoxesList(page),
+    refetchInterval: 1000 * 20,
   });
 }

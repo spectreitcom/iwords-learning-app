@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ExpressionContextType } from "@/lib/types";
 import { expressionTypeMap } from "@/features/boxes/utils";
+import { finishBox } from "@/features/boxes/actions";
 
 type Props = {
   boxItems: BoxItem[];
@@ -106,6 +107,7 @@ export function LearningMain({
         title={title ?? ""}
         learned={currentIndex}
         total={linkedListRef.current.length}
+        boxId={boxId}
         onBackToBox={() => router.push(`/boxes/${boxId}`)}
         onRestart={() => {
           setCurrentItem(linkedListRef.current.getHead());
@@ -230,6 +232,7 @@ function LearningSummary({
   onBackToBox,
   onRestart,
   repetitionMode,
+  boxId,
 }: {
   title: string;
   learned: number;
@@ -237,8 +240,15 @@ function LearningSummary({
   onBackToBox: () => void;
   onRestart: () => void;
   repetitionMode?: boolean;
+  boxId?: string;
 }) {
   const percent = total > 0 ? Math.round((learned / total) * 100) : 0;
+
+  useEffect(() => {
+    if (boxId && !repetitionMode) {
+      finishBox(boxId).then();
+    }
+  }, [boxId, repetitionMode]);
 
   return (
     <div className="max-w-xl mx-auto mt-16">
