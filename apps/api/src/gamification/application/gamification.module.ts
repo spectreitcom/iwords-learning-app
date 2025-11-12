@@ -6,6 +6,7 @@ import { GamificationApiService } from './services/gamification-api.service';
 import { GetUserDailyGoalQueryHandler } from './query-handlers/get-user-daily-goal.query-handler';
 import { AnswerCheckedEventHandler } from './event-handlers/answer-checked.event-handler';
 import { GetUserTodayPointsQueryHandler } from './query-handlers/get-user-today-points.query-handler';
+import { GetLastXDaysGoalsProgressQueryHandler } from './query-handlers/get-last-x-days-goals-progress.query-handler';
 
 const EVENT_HANDLERS = [AnswerCheckedEventHandler];
 
@@ -14,6 +15,7 @@ const COMMAND_HANDLERS = [SetUpDailyGoalCommandHandler];
 const QUERY_HANDLERS = [
   GetUserDailyGoalQueryHandler,
   GetUserTodayPointsQueryHandler,
+  GetLastXDaysGoalsProgressQueryHandler,
 ];
 
 @Module({
