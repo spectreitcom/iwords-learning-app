@@ -70,4 +70,49 @@ export class GamificationController {
       todayPoints,
     };
   }
+
+  @ApiBearerAuth('app-auth')
+  @Get('last-daily-goals-progress')
+  @ApiOperation({
+    summary: 'Get last 7 days of daily goals progress',
+    description:
+      "Returns the user's daily goal progress for the last 7 days as an array sorted by date.",
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of daily progress for the last 7 days',
+    schema: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          date: {
+            type: 'string',
+            description: 'Date in ISO format (YYYY-MM-DD)',
+            example: '2025-11-06',
+          },
+          progress: {
+            type: 'number',
+            description: 'Accumulated points (or goal progress) for the day',
+            example: 20,
+          },
+        },
+      },
+      example: [
+        { date: '2025-11-01', progress: 20 },
+        { date: '2025-11-02', progress: 20 },
+        { date: '2025-11-03', progress: 20 },
+        { date: '2025-11-04', progress: 20 },
+        { date: '2025-11-05', progress: 20 },
+        { date: '2025-11-06', progress: 20 },
+        { date: '2025-11-07', progress: 35 },
+      ],
+    },
+  })
+  async getLastDailyGoalsProgress(@CurrentUserId() userId: string) {
+    return await this.gamificationApiService.getLastXDaysGoalsProgress(
+      userId,
+      7,
+    );
+  }
 }
