@@ -27,6 +27,7 @@ type Props = {
   boxItems: BoxItem[];
   title?: string;
   boxId?: string;
+  repetitionMode?: boolean;
 };
 
 type ListData = {
@@ -53,7 +54,12 @@ function calcProgress(currentIndex: number, totalItems: number): number {
   return Math.round((currentIndex / totalItems) * 100);
 }
 
-export function LearningMain({ boxItems, title, boxId }: Props) {
+export function LearningMain({
+  boxItems,
+  title,
+  boxId,
+  repetitionMode,
+}: Props) {
   const [currentItem, setCurrentItem] =
     useState<LinkedListNode<ListData> | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -96,6 +102,7 @@ export function LearningMain({ boxItems, title, boxId }: Props) {
   if (canShowSummary) {
     return (
       <LearningSummary
+        repetitionMode={repetitionMode}
         title={title ?? ""}
         learned={currentIndex}
         total={linkedListRef.current.length}
@@ -138,51 +145,54 @@ export function LearningMain({ boxItems, title, boxId }: Props) {
 
       {/* Exercise card */}
       <Card className="mt-8">
-        <CardContent className="p-6">
-          {/* Translation */}
-          <div className="text-center">
-            <h3 className="text-3xl font-semibold tracking-tight">
-              {currentItem?.value.translation}
-            </h3>
-            <span className={"italic"}>
-              ({expressionTypeMap.get(currentItem?.value.expressionContextType)}
-              )
-            </span>
-          </div>
+        {currentItem && (
+          <CardContent className="p-6">
+            {/* Translation */}
+            <div className="text-center">
+              <h3 className="text-3xl font-semibold tracking-tight">
+                {currentItem.value.translation}
+              </h3>
+              <span className={"italic"}>
+                (
+                {expressionTypeMap.get(currentItem.value.expressionContextType)}
+                )
+              </span>
+            </div>
 
-          {/* Translation view */}
-          <div className="mt-6">
-            {currentItem && (
-              <>
-                <SimpleTranslationView
-                  currentView={currentItem?.value.learningViewType}
-                  expressionContextId={
-                    currentItem.value?.expressionContextId ?? ""
-                  }
-                  onAnswerChecked={(res) => {
-                    setAnswerData(res);
-                  }}
-                />
-                <SentenceTranslationView
-                  currentView={currentItem.value.learningViewType}
-                  sentenceId={currentItem.value?.sentenceId ?? ""}
-                  onAnswerChecked={(res) => {
-                    setAnswerData(res);
-                  }}
-                />
-                <IrregularVerbTranslationView
-                  currentView={currentItem.value.learningViewType}
-                  expressionContextId={
-                    currentItem.value?.expressionContextId ?? ""
-                  }
-                  onAnswerChecked={(res) => {
-                    setIrregularVerbAnswerData(res);
-                  }}
-                />
-              </>
-            )}
-          </div>
-        </CardContent>
+            {/* Translation view */}
+            <div className="mt-6">
+              {currentItem && (
+                <>
+                  <SimpleTranslationView
+                    currentView={currentItem?.value.learningViewType}
+                    expressionContextId={
+                      currentItem.value?.expressionContextId ?? ""
+                    }
+                    onAnswerChecked={(res) => {
+                      setAnswerData(res);
+                    }}
+                  />
+                  <SentenceTranslationView
+                    currentView={currentItem.value.learningViewType}
+                    sentenceId={currentItem.value?.sentenceId ?? ""}
+                    onAnswerChecked={(res) => {
+                      setAnswerData(res);
+                    }}
+                  />
+                  <IrregularVerbTranslationView
+                    currentView={currentItem.value.learningViewType}
+                    expressionContextId={
+                      currentItem.value?.expressionContextId ?? ""
+                    }
+                    onAnswerChecked={(res) => {
+                      setIrregularVerbAnswerData(res);
+                    }}
+                  />
+                </>
+              )}
+            </div>
+          </CardContent>
+        )}
       </Card>
 
       {/* Modals */}
@@ -219,12 +229,14 @@ function LearningSummary({
   total,
   onBackToBox,
   onRestart,
+  repetitionMode,
 }: {
   title: string;
   learned: number;
   total: number;
   onBackToBox: () => void;
   onRestart: () => void;
+  repetitionMode?: boolean;
 }) {
   const percent = total > 0 ? Math.round((learned / total) * 100) : 0;
 
@@ -246,9 +258,11 @@ function LearningSummary({
           </div>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-            <Button variant="secondary" onClick={onBackToBox}>
-              Wróć do boxa
-            </Button>
+            {!repetitionMode && (
+              <Button variant="secondary" onClick={onBackToBox}>
+                Wróć do boxa
+              </Button>
+            )}
             <Button onClick={onRestart}>Zacznij od nowa</Button>
           </div>
         </CardContent>
