@@ -70,4 +70,13 @@ export class GamificationController {
       todayPoints,
     };
   }
+
+  @ApiBearerAuth('app-auth')
+  @Get('last-daily-goals-progress')
+  async getLastDailyGoalsProgress(@CurrentUserId() userId: string) {
+    return await this.gamificationApiService.getLastXDaysGoalsProgress(
+      userId,
+      7,
+    );
+  }
 }
