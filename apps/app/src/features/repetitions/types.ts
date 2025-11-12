@@ -1,17 +1,11 @@
-export type RepetitionExpressionContextType =
-  | "verb"
-  | "noun"
-  | "adjective"
-  | "adverb"
-  | "phrasal_verb"
-  | "irregular_verb";
+import { ExpressionContextType } from "@/lib/types";
 
 export type RepetitionExpressionContext = {
   expressionContextId: string;
   expressionId: string;
   phrase: string;
   translation: string;
-  type: RepetitionExpressionContextType;
+  type: ExpressionContextType;
   forms: [string, string, string] | null;
   isCountable: boolean;
   isIrregular: boolean;

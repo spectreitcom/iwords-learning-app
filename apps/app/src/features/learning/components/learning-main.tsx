@@ -1,6 +1,6 @@
 "use client";
 
-import { BoxItem, BoxItemType } from "@/features/boxes/types";
+import { BoxItem } from "@/features/boxes/types";
 import { Progress } from "@/components/ui/progress";
 import { SimpleTranslationView } from "@/features/learning/components/simple-translation-view";
 import { LinkedList, LinkedListNode } from "@/lib/linked-list";
@@ -20,6 +20,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Trophy } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { ExpressionContextType } from "@/lib/types";
 
 type Props = {
   boxItems: BoxItem[];
@@ -34,8 +35,10 @@ type ListData = {
   sentenceId?: string;
 };
 
-function getLearningViewType(boxItemType: BoxItemType): LearningViewType {
-  switch (boxItemType) {
+function getLearningViewType(
+  expressionContextType: ExpressionContextType,
+): LearningViewType {
+  switch (expressionContextType) {
     case "irregular_verb":
       return "IRREGULAR_VERB_TRANSLATION_VIEW";
     default:
