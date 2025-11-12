@@ -21,6 +21,7 @@ async function AwaitedContent() {
 
   return (
     <LearningMain
+      repetitionMode
       boxItems={repetitions?.map((r) => r.expressionContext) ?? []}
       title={"Powtórki"}
     />
