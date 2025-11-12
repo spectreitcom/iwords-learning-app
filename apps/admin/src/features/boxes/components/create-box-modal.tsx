@@ -14,6 +14,7 @@ import { createBox } from "@/features/boxes/actions";
 
 export function CreateBoxModal() {
   const [show, setShow] = useState(false);
+  const [pending, setPending] = useState(false);
 
   return (
     <Dialog open={show} onOpenChange={setShow}>
@@ -25,9 +26,12 @@ export function CreateBoxModal() {
           <DialogTitle>Dodaj nowy box</DialogTitle>
         </DialogHeader>
         <CreateBoxForm
+          pending={pending}
           onSubmitted={async (data) => {
+            setPending(true);
             await createBox(data);
             setShow(false);
+            setPending(false);
           }}
         />
       </DialogContent>
