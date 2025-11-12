@@ -21,6 +21,7 @@ import { Trophy } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ExpressionContextType } from "@/lib/types";
+import { expressionTypeMap } from "@/features/boxes/utils";
 
 type Props = {
   boxItems: BoxItem[];
@@ -33,6 +34,7 @@ type ListData = {
   translation: string;
   expressionContextId?: string;
   sentenceId?: string;
+  expressionContextType: ExpressionContextType;
 };
 
 function getLearningViewType(
@@ -73,6 +75,7 @@ export function LearningMain({ boxItems, title, boxId }: Props) {
         expressionContextId: item.expressionContextId,
         translation: item.translation,
         learningViewType: getLearningViewType(item.type),
+        expressionContextType: item.type,
       });
 
       // for (const sentence of item.sentences) {
@@ -141,6 +144,10 @@ export function LearningMain({ boxItems, title, boxId }: Props) {
             <h3 className="text-3xl font-semibold tracking-tight">
               {currentItem?.value.translation}
             </h3>
+            <span className={"italic"}>
+              ({expressionTypeMap.get(currentItem?.value.expressionContextType)}
+              )
+            </span>
           </div>
 
           {/* Translation view */}
