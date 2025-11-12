@@ -11,12 +11,7 @@ import Link from "next/link";
 import { useBoxesListQuery } from "@/features/boxes/hooks";
 import { Spinner } from "@/components/ui/spinner";
 import { usePathname } from "next/navigation";
-import {
-  CheckCircle,
-  CheckCircle2,
-  CheckCircle2Icon,
-  CheckIcon,
-} from "lucide-react";
+import { CheckCircle } from "lucide-react";
 
 export function SidebarBoxesList() {
   const { data, isFetching, isLoading, isPending } = useBoxesListQuery();
