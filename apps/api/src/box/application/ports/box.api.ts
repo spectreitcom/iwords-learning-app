@@ -30,4 +30,6 @@ export abstract class BoxApi {
   abstract isBoxStarted(userId: string, boxId: string): Promise<boolean>;
 
   abstract getBoxesNumber(): Promise<number>;
+
+  abstract markBoxAsFinished(boxId: string, userId: string): Promise<void>;
 }
