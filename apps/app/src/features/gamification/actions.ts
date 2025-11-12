@@ -30,7 +30,7 @@ export async function updateDailyGoal(goal: number) {
 
 export async function getLastSevenDaysGoalsProgress() {
   const response = await authFetch(
-    `${BACKEND_URL}/gamification/goals/last-daily-goals-progress`,
+    `${BACKEND_URL}/gamification/last-daily-goals-progress`,
     {
       method: "GET",
       headers: {
