@@ -45,6 +45,7 @@ export class BoxesController {
             properties: {
               boxId: { type: 'string', format: 'uuid' },
               title: { type: 'string' },
+              isFinished: { type: 'boolean' },
               expressionContextIds: {
                 type: 'array',
                 items: { type: 'string', format: 'uuid' },
@@ -59,7 +60,27 @@ export class BoxesController {
   })
   @Get()
   async getBoxesList(@Query() query: GetBoxesListQueryDto) {
-    return await this.boxApiService.getBoxesList(query.take, query.page);
+    const response = await this.boxApiService.getBoxesList(
+      query.take,
+      query.page,
+    );
+
+    const finishedBoxesData =
+      await this.boxApiService.getInformationIfBoxIsFinishedByBoxIds(
+        response.data.map((box) => box.boxId),
+      );
+
+    const data = response.data.map((box) => ({
+      ...box,
+      isFinished:
+        finishedBoxesData.find((item) => item.boxId === box.boxId)
+          ?.isFinished ?? false,
+    }));
+
+    return {
+      ...response,
+      data,
+    };
   }
 
   @ApiBearerAuth('app-auth')
