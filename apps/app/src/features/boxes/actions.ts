@@ -21,7 +21,9 @@ export async function getBoxesList(page = 1, take = 20) {
     },
   );
 
-  return (await response.json()) as CollectionWithPagination<Box>;
+  return (await response.json()) as CollectionWithPagination<
+    Box & { isFinished: boolean }
+  >;
 }
 
 export async function getBoxDetails(boxId: string) {
