@@ -11,6 +11,12 @@ import Link from "next/link";
 import { useBoxesListQuery } from "@/features/boxes/hooks";
 import { Spinner } from "@/components/ui/spinner";
 import { usePathname } from "next/navigation";
+import {
+  CheckCircle,
+  CheckCircle2,
+  CheckCircle2Icon,
+  CheckIcon,
+} from "lucide-react";
 
 export function SidebarBoxesList() {
   const { data, isFetching, isLoading, isPending } = useBoxesListQuery();
@@ -26,7 +32,15 @@ export function SidebarBoxesList() {
               asChild
               isActive={pathname.includes(`/boxes/${boxItem.boxId}`)}
             >
-              <Link href={`/boxes/${boxItem.boxId}`}>{boxItem.title}</Link>
+              <Link
+                href={`/boxes/${boxItem.boxId}`}
+                className={"flex justify-between items-center"}
+              >
+                {boxItem.title}
+                {boxItem.isFinished && (
+                  <CheckCircle className={"stroke-green-600"} />
+                )}
+              </Link>
             </SidebarMenuSubButton>
           </SidebarMenuSubItem>
         ))}
