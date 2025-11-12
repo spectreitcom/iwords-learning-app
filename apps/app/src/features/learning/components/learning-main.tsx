@@ -1,6 +1,6 @@
 "use client";
 
-import { BoxItem, BoxItemType } from "@/features/boxes/types";
+import { BoxItem } from "@/features/boxes/types";
 import { Progress } from "@/components/ui/progress";
 import { SimpleTranslationView } from "@/features/learning/components/simple-translation-view";
 import { LinkedList, LinkedListNode } from "@/lib/linked-list";
@@ -20,6 +20,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Trophy } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { ExpressionContextType } from "@/lib/types";
+import { expressionTypeMap } from "@/features/boxes/utils";
 
 type Props = {
   boxItems: BoxItem[];
@@ -32,10 +34,13 @@ type ListData = {
   translation: string;
   expressionContextId?: string;
   sentenceId?: string;
+  expressionContextType: ExpressionContextType;
 };
 
-function getLearningViewType(boxItemType: BoxItemType): LearningViewType {
-  switch (boxItemType) {
+function getLearningViewType(
+  expressionContextType: ExpressionContextType,
+): LearningViewType {
+  switch (expressionContextType) {
     case "irregular_verb":
       return "IRREGULAR_VERB_TRANSLATION_VIEW";
     default:
@@ -70,6 +75,7 @@ export function LearningMain({ boxItems, title, boxId }: Props) {
         expressionContextId: item.expressionContextId,
         translation: item.translation,
         learningViewType: getLearningViewType(item.type),
+        expressionContextType: item.type,
       });
 
       // for (const sentence of item.sentences) {
@@ -138,6 +144,10 @@ export function LearningMain({ boxItems, title, boxId }: Props) {
             <h3 className="text-3xl font-semibold tracking-tight">
               {currentItem?.value.translation}
             </h3>
+            <span className={"italic"}>
+              ({expressionTypeMap.get(currentItem?.value.expressionContextType)}
+              )
+            </span>
           </div>
 
           {/* Translation view */}

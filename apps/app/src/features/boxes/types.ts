@@ -1,3 +1,5 @@
+import { ExpressionContextType } from "@/lib/types";
+
 export type Box = {
   boxId: string;
   title: string;
@@ -10,20 +12,12 @@ export type BoxSentence = {
   translation: string;
 };
 
-export type BoxItemType =
-  | "verb"
-  | "noun"
-  | "adjective"
-  | "adverb"
-  | "phrasal_verb"
-  | "irregular_verb";
-
 export type BoxItem = {
   expressionContextId: string;
   expressionId: string;
   phrase: string;
   translation: string;
-  type: BoxItemType;
+  type: ExpressionContextType;
   forms: [string, string, string] | null;
   isCountable: boolean;
   isIrregular: boolean;
