@@ -18,6 +18,7 @@ import { BeginBoxCommandHandler } from './command-handlers/begin-box.command-han
 import { IsBoxStartedQueryHandler } from './query-handlers/is-box-started.query-handler';
 import { GetBoxesNumberQueryHandler } from './query-handlers/get-boxes-number.query-handler';
 import { MarkBoxAsFinishedCommandHandler } from './command-handlers/mark-box-as-finished.command-handler';
+import { GetInformationIfBoxIsFinishedByBoxIdsQueryHandler } from './query-handlers/get-information-if-box-is-finished-by-box-ids.query-handler';
 
 const EVENT_HANDLERS = [
   BoxCreatedEventHandler,
@@ -42,6 +43,7 @@ const QUERY_HANDLERS = [
   GetBoxesListQueryHandler,
   IsBoxStartedQueryHandler,
   GetBoxesNumberQueryHandler,
+  GetInformationIfBoxIsFinishedByBoxIdsQueryHandler,
 ];
 
 @Module({

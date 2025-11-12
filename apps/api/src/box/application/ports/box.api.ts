@@ -1,5 +1,6 @@
 import { BoxView } from '../../view/box.view';
 import { GetBoxesListQueryResponse } from '../query-handlers/get-boxes-list.query-handler';
+import { BoxIsFinishedView } from '../../view/box-is-finished.view';
 
 export abstract class BoxApi {
   abstract createBox(title: string): Promise<void>;
@@ -32,4 +33,8 @@ export abstract class BoxApi {
   abstract getBoxesNumber(): Promise<number>;
 
   abstract markBoxAsFinished(boxId: string, userId: string): Promise<void>;
+
+  abstract getInformationIfBoxIsFinishedByBoxIds(
+    boxIds: string[],
+  ): Promise<BoxIsFinishedView[]>;
 }
