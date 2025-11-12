@@ -17,6 +17,7 @@ import { RemoveExpressionContextIdCommandHandler } from './command-handlers/remo
 import { BeginBoxCommandHandler } from './command-handlers/begin-box.command-handler';
 import { IsBoxStartedQueryHandler } from './query-handlers/is-box-started.query-handler';
 import { GetBoxesNumberQueryHandler } from './query-handlers/get-boxes-number.query-handler';
+import { MarkBoxAsFinishedCommandHandler } from './command-handlers/mark-box-as-finished.command-handler';
 
 const EVENT_HANDLERS = [
   BoxCreatedEventHandler,
@@ -33,6 +34,7 @@ const COMMAND_HANDLERS = [
   AddExpressionContextIdCommandHandler,
   RemoveExpressionContextIdCommandHandler,
   BeginBoxCommandHandler,
+  MarkBoxAsFinishedCommandHandler,
 ];
 
 const QUERY_HANDLERS = [

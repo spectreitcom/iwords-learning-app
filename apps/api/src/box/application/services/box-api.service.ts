@@ -13,6 +13,7 @@ import { RemoveExpressionContextIdCommand } from '../commands/remove-expression-
 import { BeginBoxCommand } from '../commands/begin-box.command';
 import { IsBoxStartedQuery } from '../queries/is-box-started.query';
 import { GetBoxesNumberQuery } from '../queries/get-boxes-number.query';
+import { MarkBoxAsFinishedCommand } from '../commands/mark-box-as-finished.command';
 
 @Injectable()
 export class BoxApiService implements BoxApi {
@@ -84,5 +85,10 @@ export class BoxApiService implements BoxApi {
   async getBoxesNumber(): Promise<number> {
     const query = new GetBoxesNumberQuery();
     return await this.queryBus.execute(query);
+  }
+
+  async markBoxAsFinished(boxId: string, userId: string): Promise<void> {
+    const command = new MarkBoxAsFinishedCommand(boxId, userId);
+    return await this.commandBus.execute(command);
   }
 }

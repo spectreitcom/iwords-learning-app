@@ -146,11 +146,12 @@ model DictionaryReadModel {
 
 // Box Bounded Context
 model Box {
-  id                   String     @id @default(uuid())
+  id                   String            @id @default(uuid())
   title                String
-  createdAt            DateTime   @default(now())
-  expressionContextIds String[]   @default([])
+  createdAt            DateTime          @default(now())
+  expressionContextIds String[]          @default([])
   beginBoxes           BeginBox[]
+  learnedBoxed         DailyLearnedBox[]
 }
 
 model BeginBox {
@@ -161,6 +162,14 @@ model BeginBox {
   box       Box      @relation(fields: [boxId], references: [id], onDelete: Cascade)
 
   @@unique([userId, boxId])
+}
+
+model DailyLearnedBox {
+  id        String   @id @default(uuid())
+  userId    String
+  createdAt DateTime @default(now()) @db.Date
+  boxId     String
+  box       Box      @relation(fields: [boxId], references: [id], onDelete: Cascade)
 }
 
 //----------------------------------
