@@ -4,6 +4,8 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { SetUpDailyGoalCommand } from '../commands/set-up-daily-goal.command';
 import { GetUserDailyGoalQuery } from '../queries/get-user-daily-goal.query';
 import { GetUserTodayPointsQuery } from '../queries/get-user-today-points.query';
+import { GetLastXDaysGoalsProgressQuery } from '../queries/get-last-x-days-goals-progress.query';
+import { DailyProgressView } from '../../views/daily-progress.view';
 
 @Injectable()
 export class GamificationApiService implements GamificationApi {
@@ -24,6 +26,14 @@ export class GamificationApiService implements GamificationApi {
 
   async getUserTodayPoints(userId: string): Promise<number> {
     const query = new GetUserTodayPointsQuery(userId);
+    return await this.queryBus.execute(query);
+  }
+
+  async getLastXDaysGoalsProgress(
+    userId: string,
+    days: number,
+  ): Promise<DailyProgressView[]> {
+    const query = new GetLastXDaysGoalsProgressQuery(userId, days);
     return await this.queryBus.execute(query);
   }
 }
