@@ -2,6 +2,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Suspense } from "react";
 import { getBoxDetails } from "@/features/boxes/actions";
 import { LearningMain } from "@/features/learning/components/learning-main";
+import _ from "lodash";
 
 type Props = {
   params: Promise<{ boxId: string }>;
@@ -18,9 +19,10 @@ export default async function LearningPage({ params }: Props) {
 
 async function AwaitedContent({ boxId }: { boxId: string }) {
   const boxDetails = await getBoxDetails(boxId);
+  const items = _.shuffle(boxDetails.items);
   return (
     <LearningMain
-      boxItems={boxDetails.items}
+      boxItems={items}
       title={boxDetails.title}
       boxId={boxDetails.boxId}
     />
