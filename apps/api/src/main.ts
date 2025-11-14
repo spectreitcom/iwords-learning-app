@@ -3,11 +3,49 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
+import type { Request, Response, NextFunction } from 'express';
 import { clerkMiddleware } from '@clerk/express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(helmet());
+  const isProd = process.env.NODE_ENV === 'production';
+
+  const helmetOptions: Parameters<typeof helmet>[0] = {
+    // Strict CSP for the API; Swagger (/api/docs) is excluded below
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'"],
+        imgSrc: ["'self'", 'data:'],
+        fontSrc: ["'self'"],
+        connectSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        frameAncestors: ["'none'"],
+        // Enables automatic upgrade of http:// to https:// on supported browsers
+        // (expressed as presence-only directive; empty array is how helmet enables it)
+        upgradeInsecureRequests: [],
+      },
+    },
+    // Only enable HSTS when running behind HTTPS (typically in production)
+    hsts: isProd
+      ? {
+          maxAge: 15552000, // 180 days
+          includeSubDomains: true,
+          preload: true,
+        }
+      : false,
+    referrerPolicy: { policy: 'no-referrer' },
+  };
+
+  // Apply Helmet to all routes except Swagger docs under /api/docs
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    if (req.path.startsWith('/api/docs')) {
+      return next();
+    }
+    return helmet(helmetOptions)(req, res, next);
+  });
   app.enableCors();
   app.setGlobalPrefix('api');
 
