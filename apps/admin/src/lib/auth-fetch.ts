@@ -1,5 +1,4 @@
 import { getSession } from "@/lib/session";
-import { redirect } from "next/navigation";
 
 interface AuthFetchOptions extends RequestInit {
   headers?: Record<string, string>;
@@ -18,12 +17,8 @@ export async function authFetch(
 
   const response = await fetch(url, init);
 
-  if (response.status === 401) {
-    redirect("/auth/sign-in");
-    // const newAccessToken = await refreshToken();
-    // init.headers.Authorization = `Bearer ${newAccessToken}`;
-    // response = await fetch(url, init);
-  }
-
+  // UWAGA: Nie wykonujemy tutaj redirectów. Helper zwraca odpowiedź,
+  // a decyzja o nawigacji (np. przekierowanie na stronę logowania przy 401)
+  // pozostaje wyżej (akcja/strona). Patrz: info/admin.md — punkt 4.
   return response;
 }
