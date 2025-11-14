@@ -20,20 +20,42 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const res: Response = host.switchToHttp().getResponse();
 
     if (exception instanceof HttpException) {
-      return res.status(exception.getStatus()).json({
-        title: exception.getStatus().toString(),
+      // Cast to HttpStatus enum to avoid unsafe enum comparison warnings
+      const status: HttpStatus = exception.getStatus() as HttpStatus;
+
+      // Explicit handling for auth/permission errors with constant messages
+      if (status === HttpStatus.UNAUTHORIZED) {
+        return res.status(HttpStatus.UNAUTHORIZED).json({
+          title: 'UNAUTHORIZED',
+          detail: 'Unauthorized',
+          status: HttpStatus.UNAUTHORIZED,
+        });
+      }
+
+      if (status === HttpStatus.FORBIDDEN) {
+        return res.status(HttpStatus.FORBIDDEN).json({
+          title: 'FORBIDDEN',
+          detail: 'Forbidden',
+          status: HttpStatus.FORBIDDEN,
+        });
+      }
+
+      // Hide details for server-side errors (5xx)
+      if (status >= HttpStatus.INTERNAL_SERVER_ERROR) {
+        return res.status(status).json({
+          title: 'SERVER_ERROR',
+          detail: 'Internal server error',
+          status,
+        });
+      }
+
+      // Default for other HttpExceptions (typically 4xx)
+      return res.status(status).json({
+        title: status.toString(),
         detail: exception.message,
-        status: exception.getStatus(),
+        status,
       });
     }
-
-    // if (exception instanceof UnauthorizedException) {
-    //   return res.status(HttpStatus.UNAUTHORIZED).json({
-    //     title: 'UNAUTHORIZED',
-    //     detail: 'Unauthorized',
-    //     status: HttpStatus.UNAUTHORIZED,
-    //   });
-    // }
 
     if (exception?.code && codeToStatus[exception.code]) {
       const status = codeToStatus[exception.code];
@@ -45,7 +67,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-      title: 'INTERNAL_SERVER_ERROR',
+      title: 'SERVER_ERROR',
+      detail: 'Internal server error',
       status: HttpStatus.INTERNAL_SERVER_ERROR,
     });
   }
