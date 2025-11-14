@@ -9,6 +9,7 @@ import {
 import { updateBox } from "@/features/boxes/actions";
 import { CreateBoxForm } from "@/features/boxes/components/create-box-form";
 import { Box } from "@/features/boxes/types";
+import { useState } from "react";
 
 type Props = {
   box: Box;
@@ -17,6 +18,8 @@ type Props = {
 };
 
 export function EditBoxModal({ box, open, onClose }: Props) {
+  const [pending, setPending] = useState(false);
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
@@ -25,8 +28,11 @@ export function EditBoxModal({ box, open, onClose }: Props) {
         </DialogHeader>
         <CreateBoxForm
           defaultValues={{ ...box }}
+          pending={pending}
           onSubmitted={async (data) => {
+            setPending(true);
             await updateBox(box.boxId, data);
+            setPending(false);
             onClose();
           }}
         />
