@@ -1,6 +1,6 @@
 "use server";
 
-import { SECRET_KEY } from "@/lib/constants";
+import { SECRET_KEY } from "@/lib/env-server";
 import { cookies } from "next/headers";
 import { jwtVerify, SignJWT } from "jose";
 
