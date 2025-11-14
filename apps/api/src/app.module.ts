@@ -8,10 +8,11 @@ import { OutboxModule } from './common/outbox/outbox.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { EmailNotificationModule } from './email-notification/application/email-notification.module';
 import { GatewayModule } from './bff/gateway/gateway.module';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { HttpExceptionFilter } from './bff/filters/http-exception.filter';
 import { WebhooksModule } from './bff/webhooks/webhooks.module';
 import { InboxModule } from './common/inbox/inbox.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -22,6 +23,14 @@ import { InboxModule } from './common/inbox/inbox.module';
         allowUnknown: true,
         abortEarly: true,
       },
+    }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000,
+          limit: 10,
+        },
+      ],
     }),
     ScheduleModule.forRoot(),
     EmailNotificationModule,
@@ -37,6 +46,10 @@ import { InboxModule } from './common/inbox/inbox.module';
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
 })

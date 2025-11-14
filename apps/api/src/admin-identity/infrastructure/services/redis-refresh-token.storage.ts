@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnApplicationShutdown } from '@nestjs/common';
 import { RefreshTokenStorage } from '../../application/ports/refresh-token.storage';
 import Redis from 'ioredis';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class RedisRefreshTokenStorage implements RefreshTokenStorage {
+export class RedisRefreshTokenStorage
+  implements RefreshTokenStorage, OnApplicationShutdown
+{
   private readonly redisClient: Redis;
 
   constructor(configService: ConfigService) {
@@ -28,5 +30,9 @@ export class RedisRefreshTokenStorage implements RefreshTokenStorage {
 
   private getKey(userId: string) {
     return `refreshToken:${userId}`;
+  }
+
+  async onApplicationShutdown() {
+    await this.redisClient.quit();
   }
 }

@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnApplicationShutdown } from '@nestjs/common';
 import { ResetPasswordTokensStorage } from '../../application/ports/reset-password-tokens.storage';
 import Redis from 'ioredis';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class RedisResetPasswordTokensStorage
-  implements ResetPasswordTokensStorage
+  implements ResetPasswordTokensStorage, OnApplicationShutdown
 {
   private readonly redisClient: Redis;
 
@@ -34,5 +34,9 @@ export class RedisResetPasswordTokensStorage
 
   private getKey(userId: string) {
     return `resetPasswordToken:${userId}`;
+  }
+
+  async onApplicationShutdown() {
+    await this.redisClient.quit();
   }
 }
