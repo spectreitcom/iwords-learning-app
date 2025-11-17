@@ -20,7 +20,7 @@ export async function ExpressionsNumberWidget() {
       </CardHeader>
       <CardContent>
         <div className="text-3xl font-bold tabular-nums">
-          {expressionsNumber.toLocaleString()}
+          {expressionsNumber}
         </div>
         <CardDescription>Total dictionary expressions</CardDescription>
       </CardContent>

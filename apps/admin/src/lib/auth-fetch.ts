@@ -1,8 +1,8 @@
 import { getSession } from "@/lib/session";
-import { redirect } from "next/navigation";
 
 interface AuthFetchOptions extends RequestInit {
   headers?: Record<string, string>;
+  noAuthRedirect?: boolean;
 }
 
 export async function authFetch(
@@ -18,11 +18,9 @@ export async function authFetch(
 
   const response = await fetch(url, init);
 
-  if (response.status === 401) {
-    redirect("/auth/sign-in");
-    // const newAccessToken = await refreshToken();
-    // init.headers.Authorization = `Bearer ${newAccessToken}`;
-    // response = await fetch(url, init);
+  if (response.status === 401 && !init.noAuthRedirect) {
+    const { redirect } = await import("next/navigation");
+    redirect("/api/auth/sign-out");
   }
 
   return response;

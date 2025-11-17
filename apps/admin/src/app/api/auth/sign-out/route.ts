@@ -1,12 +1,13 @@
 import { deleteSession } from "@/lib/session";
-import { redirect, RedirectType } from "next/navigation";
 import { authFetch } from "@/lib/auth-fetch";
 import { BACKEND_URL } from "@/lib/constants";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   await authFetch(`${BACKEND_URL}/auth/sign-out`, {
     method: "POST",
+    noAuthRedirect: true,
   });
   await deleteSession();
-  redirect("/auth/sign-in", RedirectType.push);
+  return NextResponse.redirect(new URL("/auth/sign-in", req.url));
 }

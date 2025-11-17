@@ -19,9 +19,7 @@ export async function UsersNumberWidget() {
         <UsersIcon className="h-5 w-5 text-muted-foreground" />
       </CardHeader>
       <CardContent>
-        <div className="text-3xl font-bold tabular-nums">
-          {usersNumber.toLocaleString()}
-        </div>
+        <div className="text-3xl font-bold tabular-nums">{usersNumber}</div>
         <CardDescription>Total registered users</CardDescription>
       </CardContent>
     </Card>

@@ -45,6 +45,8 @@ export function AddItemToBoxModal({
       setSearchText("");
       setSearchedItems([]);
       setSelectedExpressionContextId(null);
+      // Reset także flagę pobierania przy zamykaniu modala dla spójności stanów
+      setIsFetching(false);
       return;
     }
 

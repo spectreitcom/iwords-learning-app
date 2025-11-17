@@ -1,6 +1,6 @@
 "use server";
 
-import { SECRET_KEY } from "@/lib/constants";
+import { SECRET_KEY } from "@/lib/env-server";
 import { cookies } from "next/headers";
 import { jwtVerify, SignJWT } from "jose";
 
@@ -28,7 +28,7 @@ export async function createSession(payload: Session) {
   const cookiesStore = await cookies();
   cookiesStore.set("session", session, {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
     expires: expiredAt,
     sameSite: "lax",
     path: "/",
