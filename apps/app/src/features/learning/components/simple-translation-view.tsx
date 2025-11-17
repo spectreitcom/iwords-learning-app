@@ -69,15 +69,20 @@ export function SimpleTranslationView({
   if (currentView !== SIMPLE_TRANSLATION_VIEW) return null;
 
   return (
-    <div>
+    <div className="max-w-3xl mx-auto px-4">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleCheckAnswer)}>
-          <div className={"max-w-2/3 mx-auto"}>
+        <form
+          onSubmit={form.handleSubmit(handleCheckAnswer)}
+          className="glass rounded-2xl p-6 md:p-8 shadow-md"
+        >
+          <div className={"max-w-2xl mx-auto"}>
             <FormField
               render={({ field }) => (
                 <FormItem>
                   <Input
-                    className={"text-center"}
+                    className={
+                      "text-center h-12 md:h-14 text-lg md:text-xl rounded-xl"
+                    }
                     {...field}
                     autoComplete={"off"}
                     ref={inputRef}
@@ -90,8 +95,13 @@ export function SimpleTranslationView({
             />
           </div>
 
-          <div className={"flex items-center justify-end mt-8"}>
-            <Button type={"submit"} disabled={isPending}>
+          <div className={"flex items-center justify-end mt-6 md:mt-8"}>
+            <Button
+              type={"submit"}
+              disabled={isPending}
+              size="lg"
+              className="shadow-md"
+            >
               {isPending
                 ? "Sprawdzam odpowiedź..."
                 : "Sprawdź odpowiedź (ENTER)"}

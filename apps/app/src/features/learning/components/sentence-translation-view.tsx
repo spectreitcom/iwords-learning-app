@@ -69,14 +69,22 @@ export function SentenceTranslationView({
   if (currentView !== SENTENCE_TRANSLATION_VIEW) return null;
 
   return (
-    <div>
+    <div className="max-w-3xl mx-auto px-4">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleCheckAnswer)}>
-          <div className={"max-w-2/3 mx-auto"}>
+        <form
+          onSubmit={form.handleSubmit(handleCheckAnswer)}
+          className="glass rounded-2xl p-6 md:p-8 shadow-md"
+        >
+          <div className={"max-w-2xl mx-auto"}>
             <FormField
               render={({ field }) => (
                 <FormItem>
-                  <Textarea {...field} ref={inputRef} autoComplete={"off"} />
+                  <Textarea
+                    {...field}
+                    ref={inputRef}
+                    autoComplete={"off"}
+                    className="min-h-28 md:min-h-36 text-base md:text-lg rounded-xl"
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -85,8 +93,13 @@ export function SentenceTranslationView({
             />
           </div>
 
-          <div className={"flex items-center justify-end mt-8"}>
-            <Button type={"submit"} disabled={isPending}>
+          <div className={"flex items-center justify-end mt-6 md:mt-8"}>
+            <Button
+              type={"submit"}
+              disabled={isPending}
+              size="lg"
+              className="shadow-md"
+            >
               {isPending
                 ? "Sprawdzam odpowiedź..."
                 : "Sprawdź odpowiedź (ENTER)"}
