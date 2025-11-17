@@ -21,7 +21,13 @@ export function StartLearningButton({ isBoxStarted, boxId }: Props) {
   };
 
   return (
-    <Button onClick={handleClick} disabled={isPending}>
+    <Button
+      onClick={handleClick}
+      disabled={isPending}
+      variant={"shine"}
+      size={"lg"}
+      className="shadow-md"
+    >
       {isBoxStarted ? "Kontynuuj naukę" : "Rozpocznij naukę"}
     </Button>
   );

@@ -29,7 +29,9 @@ export function SidebarBoxesList() {
             >
               <Link
                 href={`/boxes/${boxItem.boxId}`}
-                className={"flex justify-between items-center"}
+                className={
+                  "flex justify-between items-center rounded-lg px-2 py-1.5 transition-colors hover:bg-accent/60 dark:hover:bg-accent/30"
+                }
               >
                 {boxItem.title}
                 {boxItem.isFinished && (
