@@ -111,8 +111,8 @@ export function UserGoalWidget() {
               type="button"
               onClick={() => refetch()}
               className="inline-flex h-7 w-7 items-center justify-center rounded-md border text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-              aria-label="Refresh goal"
-              title="Refresh"
+              aria-label="Odśwież"
+              title="Odśwież"
             >
               {isFetching ? (
                 <Spinner className="h-4 w-4" />
@@ -121,7 +121,7 @@ export function UserGoalWidget() {
               )}
             </button>
           </TooltipTrigger>
-          <TooltipContent>Refresh goal</TooltipContent>
+          <TooltipContent>Odśwież cel</TooltipContent>
         </Tooltip>
       </TooltipProvider>
 
@@ -132,8 +132,8 @@ export function UserGoalWidget() {
               type="button"
               onClick={() => handleOpenChange(true)}
               className="inline-flex h-7 w-7 items-center justify-center rounded-md border text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-              aria-label="Set daily goal"
-              title="Set goal"
+              aria-label="Ustaw dzienny cel"
+              title="Ustaw cel"
             >
               <Pencil className="h-4 w-4" />
             </button>
@@ -142,14 +142,12 @@ export function UserGoalWidget() {
         </Tooltip>
       </TooltipProvider>
 
-      {isError && (
-        <span className="text-xs text-destructive">Failed to load</span>
-      )}
+      {isError && <span className="text-xs text-destructive">Błąd</span>}
 
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Set your daily goal</DialogTitle>
+            <DialogTitle>Ustaw swój dzienny cel</DialogTitle>
             <DialogDescription>
               Wybierz ile punktów dziennie chcesz osiągnąć.
             </DialogDescription>

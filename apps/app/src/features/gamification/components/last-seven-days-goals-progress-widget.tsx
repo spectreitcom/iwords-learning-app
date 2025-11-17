@@ -26,7 +26,7 @@ export function LastSevenDaysGoalsProgressWidget() {
     <div className="w-full rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
       <div className="mb-4 flex items-baseline justify-between">
         <h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-200">
-          Last 7 days
+          Ostatnie 7 dni
         </h3>
         <div className="flex items-center gap-2">
           {(isPending || isLoading || isFetching) && (
@@ -36,11 +36,11 @@ export function LastSevenDaysGoalsProgressWidget() {
             type="button"
             onClick={() => refetch()}
             className="inline-flex items-center gap-1 rounded-md border border-zinc-200 px-2 py-1 text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
-            title="Refresh"
+            title="Odśwież"
             aria-label="Refresh last 7 days progress"
           >
             <RefreshCw className="h-3.5 w-3.5" />
-            Refresh
+            Odśwież
           </button>
         </div>
       </div>
