@@ -19,9 +19,7 @@ export async function BoxesNumberWidget() {
         <BoxesIcon className="h-5 w-5 text-muted-foreground" />
       </CardHeader>
       <CardContent>
-        <div className="text-3xl font-bold tabular-nums">
-          {boxesNumber.toLocaleString()}
-        </div>
+        <div className="text-3xl font-bold tabular-nums">{boxesNumber}</div>
         <CardDescription>Total boxes</CardDescription>
       </CardContent>
     </Card>
