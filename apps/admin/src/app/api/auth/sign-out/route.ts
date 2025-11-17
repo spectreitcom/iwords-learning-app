@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   await authFetch(`${BACKEND_URL}/auth/sign-out`, {
     method: "POST",
+    noAuthRedirect: true,
   });
   await deleteSession();
   return NextResponse.redirect(new URL("/auth/sign-in", req.url));

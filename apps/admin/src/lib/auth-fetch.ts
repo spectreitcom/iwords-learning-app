@@ -2,6 +2,7 @@ import { getSession } from "@/lib/session";
 
 interface AuthFetchOptions extends RequestInit {
   headers?: Record<string, string>;
+  noAuthRedirect?: boolean;
 }
 
 export async function authFetch(
@@ -15,5 +16,12 @@ export async function authFetch(
     Authorization: `Bearer ${session?.accessToken}`,
   };
 
-  return await fetch(url, init);
+  const response = await fetch(url, init);
+
+  if (response.status === 401 && !init.noAuthRedirect) {
+    const { redirect } = await import("next/navigation");
+    redirect("/api/auth/sign-out");
+  }
+
+  return response;
 }
