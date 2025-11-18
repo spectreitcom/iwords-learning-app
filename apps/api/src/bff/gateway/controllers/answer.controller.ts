@@ -18,6 +18,7 @@ import { CheckAnswerForIrregularVerbDto } from '../dtos/check-answer-for-irregul
 import { CheckAnswerForSentenceDto } from '../dtos/check-answer-for-sentence.dto';
 import { ClerkAuthGuard } from '../auth/clerk-auth.guard';
 import { CurrentUserId } from '../auth/current-user-id.decorator';
+import { ValidateSentenceUsingAiDto } from '../dtos/validate-sentence-using-ai.dto';
 
 @UseGuards(ClerkAuthGuard)
 @ApiTags('App Answers')
@@ -149,6 +150,40 @@ export class AnswerController {
       payload.answer,
       payload.sentenceId,
       userId,
+    );
+  }
+
+  @ApiBearerAuth('app-auth')
+  @ApiOperation({ summary: 'Validate sentence using AI' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Validated sentence',
+    schema: {
+      type: 'object',
+      properties: {
+        score: { type: 'number' },
+        answer: { type: 'string' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Validation error or AI error',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression context not found',
+  })
+  @Post('ai/validate-sentence')
+  @HttpCode(HttpStatus.OK)
+  async validateSentenceUsingAi(
+    @CurrentUserId() userId: string,
+    @Body() payload: ValidateSentenceUsingAiDto,
+  ) {
+    return await this.answerApiService.validateSentenceUsingAi(
+      payload.expressionContextId,
+      userId,
+      payload.userSentence,
     );
   }
 }
