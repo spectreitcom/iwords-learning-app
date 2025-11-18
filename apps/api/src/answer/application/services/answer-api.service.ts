@@ -7,6 +7,8 @@ import { CommandBus } from '@nestjs/cqrs';
 import { CheckAnswerForSimpleTranslationCommand } from '../commands/check-answer-for-simple-translation.command';
 import { CheckAnswerForIrregularVerbCommand } from '../commands/check-answer-for-irregular-verb.command';
 import { CheckAnswerForSentenceCommand } from '../commands/check-answer-for-sentence.command';
+import { ValidateSentenceUsingAiCommandResponse } from '../command-handlers/validate-sentence-using-ai.command-handler';
+import { ValidateSentenceUsingAiCommand } from '../commands/validate-sentence-using-ai.command';
 
 @Injectable()
 export class AnswerApiService implements AnswerApi {
@@ -47,6 +49,19 @@ export class AnswerApiService implements AnswerApi {
       answer,
       sentenceId,
       userId,
+    );
+    return await this.commandBus.execute(command);
+  }
+
+  async validateSentenceUsingAi(
+    expressionContextId: string,
+    userId: string,
+    userSentence: string,
+  ): Promise<ValidateSentenceUsingAiCommandResponse> {
+    const command = new ValidateSentenceUsingAiCommand(
+      userId,
+      expressionContextId,
+      userSentence,
     );
     return await this.commandBus.execute(command);
   }

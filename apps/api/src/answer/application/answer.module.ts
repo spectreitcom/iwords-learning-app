@@ -12,6 +12,7 @@ import { CheckAnswerForIrregularVerbCommandHandler } from './command-handlers/ch
 import { CheckAnswerForSentenceCommandHandler } from './command-handlers/check-answer-for-sentence.command-handler';
 import { AnswerApiService } from './services/answer-api.service';
 import { OutboxModule } from '../../common/outbox/outbox.module';
+import { ValidateSentenceUsingAiCommandHandler } from './command-handlers/validate-sentence-using-ai.command-handler';
 
 const EVENT_HANDLERS = [
   DictionaryExpressionContextCreatedEventHandler,
@@ -26,6 +27,7 @@ const COMMAND_HANDLERS = [
   CheckAnswerForSimpleTranslationCommandHandler,
   CheckAnswerForIrregularVerbCommandHandler,
   CheckAnswerForSentenceCommandHandler,
+  ValidateSentenceUsingAiCommandHandler,
 ];
 
 @Module({

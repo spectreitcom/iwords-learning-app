@@ -5,7 +5,8 @@ export type AppErrorCode =
   | 'VALIDATION_ERROR'
   | 'ALREADY_EXISTS'
   | 'WRONG_CREDENTIALS'
-  | 'UNAUTHORIZED';
+  | 'UNAUTHORIZED'
+  | 'SIMPLE_ERROR';
 
 export const codeToStatus: Record<AppErrorCode, number> = {
   ENTITY_NOT_FOUND: HttpStatus.NOT_FOUND,
@@ -13,6 +14,7 @@ export const codeToStatus: Record<AppErrorCode, number> = {
   ALREADY_EXISTS: HttpStatus.BAD_REQUEST,
   WRONG_CREDENTIALS: HttpStatus.UNAUTHORIZED,
   UNAUTHORIZED: HttpStatus.UNAUTHORIZED,
+  SIMPLE_ERROR: HttpStatus.BAD_REQUEST,
 };
 
 export class AppError extends Error {

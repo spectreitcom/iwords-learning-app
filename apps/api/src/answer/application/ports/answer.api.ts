@@ -1,6 +1,7 @@
 import { CheckAnswerForSimpleTranslationCommandResponse } from '../command-handlers/check-answer-for-simple-translation.command-handler';
 import { CheckAnswerForIrregularVerbCommandResponse } from '../command-handlers/check-answer-for-irregular-verb.command-handler';
 import { CheckAnswerForSentenceCommandResponse } from '../command-handlers/check-answer-for-sentence.command-handler';
+import { ValidateSentenceUsingAiCommandResponse } from '../command-handlers/validate-sentence-using-ai.command-handler';
 
 export abstract class AnswerApi {
   abstract checkAnswerForSimpleTranslation(
@@ -20,4 +21,10 @@ export abstract class AnswerApi {
     sentenceId: string,
     userId: string,
   ): Promise<CheckAnswerForSentenceCommandResponse>;
+
+  abstract validateSentenceUsingAi(
+    expressionContextId: string,
+    userId: string,
+    userSentence: string,
+  ): Promise<ValidateSentenceUsingAiCommandResponse>;
 }
