@@ -11,6 +11,7 @@ import { GamificationModule } from '../../gamification/application/gamification.
 import { GamificationController } from './controllers/gamification.controller';
 import { RepetitionsController } from './controllers/repetitions.controller';
 import { RepetitionModule } from '../../repetition/application/repetition.module';
+import { DictionaryController } from './controllers/dictionary.controller';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { RepetitionModule } from '../../repetition/application/repetition.module
     UsersController,
     GamificationController,
     RepetitionsController,
+    DictionaryController,
   ],
   providers: [ClerkAuthGuard],
 })
