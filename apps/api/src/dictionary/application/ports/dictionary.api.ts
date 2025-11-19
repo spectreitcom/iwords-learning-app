@@ -12,6 +12,7 @@ import { GetExpressionListQueryResponse } from '../query-handlers/get-expression
 import { GetExpressionContextsListQueryResponse } from '../query-handlers/get-expression-contexts-list.query-handler';
 import { DictionaryReadModel } from '../../read-models/dictionary-read-model';
 import { SentenceView } from '../../views/sentence.view';
+import { ExpressionContextView } from '../../views/expression-context.view';
 
 export abstract class DictionaryApi {
   abstract createExpression(
@@ -125,7 +126,7 @@ export abstract class DictionaryApi {
 
   abstract getExpressionContextById(
     expressionContextId: string,
-  ): Promise<ExpressionView>;
+  ): Promise<ExpressionContextView>;
 
   abstract getSentenceById(sentenceId: string): Promise<SentenceView>;
 

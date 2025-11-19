@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 
 export class ValidateSentenceUsingAiDto {
   @ApiProperty({
@@ -14,5 +15,6 @@ export class ValidateSentenceUsingAiDto {
     example: 'Some sentence',
   })
   @IsNotEmpty()
+  @Transform(({ value }: { value: string }) => value.toLowerCase().trim())
   readonly userSentence: string;
 }
