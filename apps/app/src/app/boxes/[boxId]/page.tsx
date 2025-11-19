@@ -13,8 +13,17 @@ import {
 } from "@/components/ui/table";
 import { expressionTypeMap } from "@/features/boxes/utils";
 import { capitalizeFirstLetter } from "@/lib/utils";
-import { Search } from "lucide-react";
+import { MoreVertical, Search } from "lucide-react";
 import { StartLearningButton } from "@/features/learning/components/start-learning-button";
+import Link from "next/link";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   params: Promise<{ boxId: string }>;
@@ -61,9 +70,31 @@ function BoxItemPreview({ item }: { item: BoxItem }) {
   return (
     <Card className={"group"}>
       <CardContent>
-        <h3 className={"text-lg"}>
-          <strong>{item.phrase}</strong> - {item.translation}
-        </h3>
+        <div className={"flex items-start justify-between gap-2"}>
+          <h3 className={"text-lg"}>
+            <strong>{item.phrase}</strong> - {item.translation}
+          </h3>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity"
+                aria-label="Akcje pozycji"
+              >
+                <MoreVertical className="text-muted-foreground" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem asChild>
+                <Link href={`/sentence-training/${item.expressionContextId}`}>
+                  Trenuj wyrażenie w zdaniach
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
 
         <div className={"mt-2"}>
           <p>Typ wyrażenia: {expressionTypeMap.get(item.type)}</p>

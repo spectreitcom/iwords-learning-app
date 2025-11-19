@@ -28,15 +28,19 @@ export class OpenaiAiService implements AiService {
           content: `Jesteś nauczycielem języka angielskiego. 
             Sparawdź zdanie: „${userSentence}” pod kątem gramatyki i ogólnej zgodności z językiem angielskim.
             Zwróć szczególną uwagę na użycie słówka ${phrase} (${type}) - ${translation}. 
-            Nie używaj składni markdown. 
-            Odpwiedź ma być zwięzła oraz w formacie json {score: <number>, answer: <string>} oraz w języku polskim. 
-            Score ma być 1.0 jeżeli wszystko jest wporządku. Jeżeli znajdzie się drobny błąd to score 0.8, a jeżeli odpwiedź jest błędna to odpowiednio niższy score`,
+            Odpwiedź ma być zwięzła oraz w formacie json {score: <number>, answer: <string>} oraz w języku polskim. Nie używaj znaczników markdown w odpowiedzi. 
+            Score ma być 1.0 jeżeli wszystko jest wporządku. Jeżeli znajdzie się drobny błąd to score 0.8, a jeżeli odpwiedź jest błędna to odpowiednio niższy score.`,
         },
       ],
       stream: false,
     });
 
-    const parsed: unknown = JSON.parse(res.choices[0].message.content!);
+    const parsed: unknown = JSON.parse(
+      res.choices[0].message
+        .content!.replace('```json', '')
+        .replace('```', '')
+        .trim(),
+    );
 
     if (typeof parsed !== 'object' || parsed === null) {
       throw new Error('Invalid Response');
