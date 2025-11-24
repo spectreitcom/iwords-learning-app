@@ -677,4 +677,31 @@ export class DictionaryController {
       payload.content,
     );
   }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Generate definition of expression context' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Definition generated successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        definition: { type: 'string' },
+        translation: { type: 'string' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression context or expression not found',
+  })
+  @Get('ai/expression-context/:expressionContextId/generate-definition')
+  async generateDefinitionOfExpressionContext(
+    @Param('expressionContextId', new ParseUUIDPipe())
+    expressionContextId: string,
+  ) {
+    return await this.dictionaryApiService.generateDefinitionOfExpressionContext(
+      expressionContextId,
+    );
+  }
 }
