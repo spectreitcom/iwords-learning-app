@@ -46,6 +46,8 @@ import { SentenceView } from '../../views/sentence.view';
 import { GetSentencesByExpressionContextIdsQuery } from '../queries/get-sentences-by-expression-context-ids.query';
 import { GetExpressionsNumberQuery } from '../queries/get-expressions-number.query';
 import { ExpressionContextView } from '../../views/expression-context.view';
+import { GenerateDefinitionOfTheExpressionContextQueryResponse } from '../query-handlers/generate-definition-of-the-expression-context.query-handler';
+import { GenerateDefinitionOfTheExpressionContextQuery } from '../queries/generate-definition-of-the-expression-context.query';
 
 @Injectable()
 export class DictionaryApiService implements DictionaryApi {
@@ -329,6 +331,15 @@ export class DictionaryApiService implements DictionaryApi {
 
   async getExpressionsNumber(): Promise<number> {
     const query = new GetExpressionsNumberQuery();
+    return await this.queryBus.execute(query);
+  }
+
+  async generateDefinitionOfExpressionContext(
+    expressionContextId: string,
+  ): Promise<GenerateDefinitionOfTheExpressionContextQueryResponse> {
+    const query = new GenerateDefinitionOfTheExpressionContextQuery(
+      expressionContextId,
+    );
     return await this.queryBus.execute(query);
   }
 }
