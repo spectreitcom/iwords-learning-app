@@ -13,6 +13,7 @@ import { GetExpressionContextsListQueryResponse } from '../query-handlers/get-ex
 import { DictionaryReadModel } from '../../read-models/dictionary-read-model';
 import { SentenceView } from '../../views/sentence.view';
 import { ExpressionContextView } from '../../views/expression-context.view';
+import { GenerateDefinitionOfTheExpressionContextQueryResponse } from '../query-handlers/generate-definition-of-the-expression-context.query-handler';
 
 export abstract class DictionaryApi {
   abstract createExpression(
@@ -151,4 +152,8 @@ export abstract class DictionaryApi {
   ): Promise<SentenceView[]>;
 
   abstract getExpressionsNumber(): Promise<number>;
+
+  abstract generateDefinitionOfExpressionContext(
+    expressionContextId: string,
+  ): Promise<GenerateDefinitionOfTheExpressionContextQueryResponse>;
 }
