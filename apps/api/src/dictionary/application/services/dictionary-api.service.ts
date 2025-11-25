@@ -48,6 +48,7 @@ import { GetExpressionsNumberQuery } from '../queries/get-expressions-number.que
 import { ExpressionContextView } from '../../views/expression-context.view';
 import { GenerateDefinitionOfTheExpressionContextQueryResponse } from '../query-handlers/generate-definition-of-the-expression-context.query-handler';
 import { GenerateDefinitionOfTheExpressionContextQuery } from '../queries/generate-definition-of-the-expression-context.query';
+import { UpdateExpressionContextDefinitionCommand } from '../commands/update-expression-context-definition.command';
 
 @Injectable()
 export class DictionaryApiService implements DictionaryApi {
@@ -341,5 +342,18 @@ export class DictionaryApiService implements DictionaryApi {
       expressionContextId,
     );
     return await this.queryBus.execute(query);
+  }
+
+  async updateExpressionContextDefinition(
+    expressionContextId: string,
+    definition: string,
+    definitionTranslation: string,
+  ): Promise<void> {
+    const command = new UpdateExpressionContextDefinitionCommand(
+      expressionContextId,
+      definition,
+      definitionTranslation,
+    );
+    return await this.commandBus.execute(command);
   }
 }

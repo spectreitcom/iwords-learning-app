@@ -15,6 +15,8 @@ export class ExpressionContext extends AggregateRoot {
   private readonly type: ExpressionType;
   private forms: VerbForms | null;
   private readonly isIrregular: boolean;
+  private definition: string | null = null;
+  private definitionTranslation: string | null = null;
 
   constructor(
     expressionContextId: ExpressionContextId,
@@ -24,6 +26,8 @@ export class ExpressionContext extends AggregateRoot {
     type: ExpressionType,
     forms: VerbForms | null,
     isIrregular: boolean,
+    definition: string | null,
+    definitionTranslation: string | null,
   ) {
     super();
     this.expressionContextId = expressionContextId;
@@ -33,6 +37,8 @@ export class ExpressionContext extends AggregateRoot {
     this.type = type;
     this.forms = forms ? forms : null;
     this.isIrregular = isIrregular;
+    this.definition = definition;
+    this.definitionTranslation = definitionTranslation;
   }
 
   static createVerb(translation: string, expressionId: string) {
@@ -44,6 +50,8 @@ export class ExpressionContext extends AggregateRoot {
       ExpressionType.verb(),
       null,
       false,
+      null,
+      null,
     );
 
     expressionContext.apply(
@@ -76,6 +84,8 @@ export class ExpressionContext extends AggregateRoot {
       ExpressionType.irregularVerb(),
       VerbForms.fromArray(forms),
       true,
+      null,
+      null,
     );
 
     expressionContext.apply(
@@ -102,6 +112,8 @@ export class ExpressionContext extends AggregateRoot {
       ExpressionType.adverb(),
       null,
       false,
+      null,
+      null,
     );
 
     expressionContext.apply(
@@ -128,6 +140,8 @@ export class ExpressionContext extends AggregateRoot {
       ExpressionType.adjective(),
       null,
       false,
+      null,
+      null,
     );
 
     expressionContext.apply(
@@ -158,6 +172,8 @@ export class ExpressionContext extends AggregateRoot {
       ExpressionType.noun(),
       null,
       false,
+      null,
+      null,
     );
 
     expressionContext.apply(
@@ -184,6 +200,8 @@ export class ExpressionContext extends AggregateRoot {
       ExpressionType.phrasalVerb(),
       null,
       false,
+      null,
+      null,
     );
 
     expressionContext.apply(
@@ -210,6 +228,8 @@ export class ExpressionContext extends AggregateRoot {
       ExpressionType.simpleExpression(),
       null,
       false,
+      null,
+      null,
     );
 
     expressionContext.apply(
@@ -247,6 +267,8 @@ export class ExpressionContext extends AggregateRoot {
         this.type.value,
         null,
         false,
+        this.definition,
+        this.definitionTranslation,
       ),
     );
   }
@@ -263,6 +285,8 @@ export class ExpressionContext extends AggregateRoot {
         this.type.value,
         this.forms.value,
         true,
+        this.definition,
+        this.definitionTranslation,
       ),
     );
   }
@@ -278,6 +302,8 @@ export class ExpressionContext extends AggregateRoot {
         this.type.value,
         null,
         false,
+        this.definition,
+        this.definitionTranslation,
       ),
     );
   }
@@ -293,6 +319,8 @@ export class ExpressionContext extends AggregateRoot {
         this.type.value,
         null,
         false,
+        this.definition,
+        this.definitionTranslation,
       ),
     );
   }
@@ -309,6 +337,8 @@ export class ExpressionContext extends AggregateRoot {
         this.type.value,
         null,
         false,
+        this.definition,
+        this.definitionTranslation,
       ),
     );
   }
@@ -324,6 +354,8 @@ export class ExpressionContext extends AggregateRoot {
         this.type.value,
         null,
         false,
+        this.definition,
+        this.definitionTranslation,
       ),
     );
   }
@@ -339,6 +371,27 @@ export class ExpressionContext extends AggregateRoot {
         this.type.value,
         null,
         false,
+        this.definition,
+        this.definitionTranslation,
+      ),
+    );
+  }
+
+  updateDefinition(definition: string, definitionTranslation: string) {
+    this.definition = definition;
+    this.definitionTranslation = definitionTranslation;
+
+    this.apply(
+      new ExpressionContextUpdatedEvent(
+        this.expressionContextId.value,
+        this.expressionId.value,
+        this.translation,
+        this.isCountable,
+        this.type.value,
+        this.forms?.value ?? null,
+        this.isIrregular,
+        this.definition,
+        this.definitionTranslation,
       ),
     );
   }
@@ -369,5 +422,13 @@ export class ExpressionContext extends AggregateRoot {
 
   getIsIrregular() {
     return this.isIrregular;
+  }
+
+  getDefinition() {
+    return this.definition;
+  }
+
+  getDefinitionTranslation() {
+    return this.definitionTranslation;
   }
 }

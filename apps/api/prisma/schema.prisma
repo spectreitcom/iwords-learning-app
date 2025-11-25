@@ -98,13 +98,15 @@ model Expression {
 }
 
 model ExpressionContext {
-  id          String   @id @default(uuid())
-  translation String
-  isCountable Boolean  @default(false)
-  type        String
-  forms       String[] @default([])
-  isIrregular Boolean  @default(false)
-  createdAt   DateTime @default(now())
+  id                    String   @id @default(uuid())
+  translation           String
+  isCountable           Boolean  @default(false)
+  type                  String
+  forms                 String[] @default([])
+  isIrregular           Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  definition            String?
+  definitionTranslation String?
 
   expressionId String
   expression   Expression @relation(fields: [expressionId], references: [id], onDelete: Cascade)

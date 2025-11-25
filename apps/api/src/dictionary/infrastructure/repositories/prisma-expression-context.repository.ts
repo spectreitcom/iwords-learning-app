@@ -32,6 +32,8 @@ export class PrismaExpressionContextRepository
         type: expressionContext.getType().value,
         forms: forms ? forms.value : [],
         isIrregular: expressionContext.getIsIrregular(),
+        definition: expressionContext.getDefinition(),
+        definitionTranslation: expressionContext.getDefinitionTranslation(),
       },
       create: {
         id: expressionContext.getExpressionContextId().value,
@@ -41,6 +43,8 @@ export class PrismaExpressionContextRepository
         forms: forms ? forms.value : [],
         isIrregular: expressionContext.getIsIrregular(),
         expressionId: expressionContext.getExpressionId().value,
+        definition: expressionContext.getDefinition(),
+        definitionTranslation: expressionContext.getDefinitionTranslation(),
       },
     });
   }
@@ -69,6 +73,8 @@ export class PrismaExpressionContextRepository
       ExpressionType.fromString(record.type),
       forms,
       record.isIrregular,
+      record.definition,
+      record.definitionTranslation,
     );
   }
 
@@ -104,6 +110,8 @@ export class PrismaExpressionContextRepository
       ExpressionType.fromString(record.type),
       forms,
       record.isIrregular,
+      record.definition,
+      record.definitionTranslation,
     );
   }
 }

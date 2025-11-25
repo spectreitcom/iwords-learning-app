@@ -156,4 +156,10 @@ export abstract class DictionaryApi {
   abstract generateDefinitionOfExpressionContext(
     expressionContextId: string,
   ): Promise<GenerateDefinitionOfTheExpressionContextQueryResponse>;
+
+  abstract updateExpressionContextDefinition(
+    expressionContextId: string,
+    definition: string,
+    definitionTranslation: string,
+  ): Promise<void>;
 }

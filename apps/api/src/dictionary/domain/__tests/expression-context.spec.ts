@@ -26,6 +26,8 @@ describe('ExpressionContext', () => {
         type,
         forms,
         true,
+        'some definition',
+        'jakaś definicja',
       );
 
       expect(expressionContext.getExpressionContextId()).toBe(
@@ -37,6 +39,10 @@ describe('ExpressionContext', () => {
       expect(expressionContext.getType()).toBe(type);
       expect(expressionContext.getForms()).toBe(forms);
       expect(expressionContext.getIsIrregular()).toBe(true);
+      expect(expressionContext.getDefinition()).toBe('some definition');
+      expect(expressionContext.getDefinitionTranslation()).toBe(
+        'jakaś definicja',
+      );
     });
 
     it('should handle null forms', () => {
@@ -52,9 +58,13 @@ describe('ExpressionContext', () => {
         type,
         null,
         false,
+        null,
+        null,
       );
 
       expect(expressionContext.getForms()).toBeNull();
+      expect(expressionContext.getDefinition()).toBeNull();
+      expect(expressionContext.getDefinitionTranslation()).toBeNull();
     });
   });
 
@@ -334,6 +344,8 @@ describe('ExpressionContext', () => {
       const event = events[1] as ExpressionContextUpdatedEvent;
       expect(event.translation).toBe(newTranslation);
       expect(event.type).toBe('verb');
+      expect(event.definition).toBeNull();
+      expect(event.definitionTranslation).toBeNull();
     });
   });
 
@@ -360,6 +372,8 @@ describe('ExpressionContext', () => {
       const event = events[1] as ExpressionContextUpdatedEvent;
       expect(event.translation).toBe(newTranslation);
       expect(event.forms).toEqual(newForms);
+      expect(event.definition).toBeNull();
+      expect(event.definitionTranslation).toBeNull();
     });
   });
 
@@ -382,6 +396,8 @@ describe('ExpressionContext', () => {
       const event = events[1] as ExpressionContextUpdatedEvent;
       expect(event.translation).toBe(newTranslation);
       expect(event.type).toBe('adverb');
+      expect(event.definition).toBeNull();
+      expect(event.definitionTranslation).toBeNull();
     });
   });
 
@@ -404,6 +420,8 @@ describe('ExpressionContext', () => {
       const event = events[1] as ExpressionContextUpdatedEvent;
       expect(event.translation).toBe(newTranslation);
       expect(event.type).toBe('adjective');
+      expect(event.definition).toBeNull();
+      expect(event.definitionTranslation).toBeNull();
     });
   });
 
@@ -429,6 +447,8 @@ describe('ExpressionContext', () => {
       expect(event.translation).toBe(newTranslation);
       expect(event.isCountable).toBe(true);
       expect(event.type).toBe('noun');
+      expect(event.definition).toBeNull();
+      expect(event.definitionTranslation).toBeNull();
     });
   });
 
@@ -451,6 +471,8 @@ describe('ExpressionContext', () => {
       const event = events[1] as ExpressionContextUpdatedEvent;
       expect(event.translation).toBe(newTranslation);
       expect(event.type).toBe('phrasal_verb');
+      expect(event.definition).toBeNull();
+      expect(event.definitionTranslation).toBeNull();
     });
   });
 
@@ -473,6 +495,8 @@ describe('ExpressionContext', () => {
       const event = events[1] as ExpressionContextUpdatedEvent;
       expect(event.translation).toBe(newTranslation);
       expect(event.type).toBe('simple_expression');
+      expect(event.definition).toBeNull();
+      expect(event.definitionTranslation).toBeNull();
     });
   });
 
@@ -491,6 +515,38 @@ describe('ExpressionContext', () => {
       expect(expressionContext.getType().value).toBe('noun');
       expect(expressionContext.getForms()).toBeNull();
       expect(expressionContext.getIsIrregular()).toBe(false);
+      expect(expressionContext.getDefinition()).toBeNull();
+      expect(expressionContext.getDefinitionTranslation()).toBeNull();
+    });
+  });
+
+  describe('updateDefinition', () => {
+    it('should update definition and definitionTranslation and emit event with full payload', () => {
+      const expressionContext = ExpressionContext.createVerb(
+        mockTranslation,
+        mockExpressionId,
+      );
+
+      const def = 'to move from one place to another';
+      const defTr = 'przemieszczać się z jednego miejsca do drugiego';
+
+      expressionContext.updateDefinition(def, defTr);
+
+      expect(expressionContext.getDefinition()).toBe(def);
+      expect(expressionContext.getDefinitionTranslation()).toBe(defTr);
+
+      const events = expressionContext.getUncommittedEvents();
+      expect(events).toHaveLength(2); // Creation + updateDefinition
+      expect(events[1]).toBeInstanceOf(ExpressionContextUpdatedEvent);
+
+      const event = events[1] as ExpressionContextUpdatedEvent;
+      expect(event.definition).toBe(def);
+      expect(event.definitionTranslation).toBe(defTr);
+      expect(event.translation).toBe(mockTranslation);
+      expect(event.isCountable).toBe(false);
+      expect(event.type).toBe('verb');
+      expect(event.forms).toBeNull();
+      expect(event.isIrregular).toBe(false);
     });
   });
 });

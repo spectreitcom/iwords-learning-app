@@ -9,5 +9,7 @@ export class ExpressionContextUpdatedEvent implements IEvent {
     public readonly type: string,
     public readonly forms: [string, string, string] | null,
     public readonly isIrregular: boolean,
+    public readonly definition: string | null,
+    public readonly definitionTranslation: string | null,
   ) {}
 }
