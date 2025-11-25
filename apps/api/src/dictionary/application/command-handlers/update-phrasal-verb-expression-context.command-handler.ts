@@ -50,6 +50,8 @@ export class UpdatePhrasalVerbExpressionContextCommandHandler
         forms: [string, string, string] | null;
         isIrregular: boolean;
         isCountable: boolean;
+        definition: string | null;
+        definitionTranslation: string | null;
       }> = new IntegrationEvent(
         'dictionary.expression-context-updated',
         {
@@ -59,6 +61,8 @@ export class UpdatePhrasalVerbExpressionContextCommandHandler
           isCountable: expressionContext.getIsCountable(),
           isIrregular: expressionContext.getIsIrregular(),
           translation: expressionContext.getTranslation(),
+          definition: expressionContext.getDefinition(),
+          definitionTranslation: expressionContext.getDefinitionTranslation(),
         },
         {
           aggregateId: expressionContext.getExpressionId().value,

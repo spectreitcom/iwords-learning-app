@@ -1,32 +1,30 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
-import { UpdateSimpleExpressionContextCommand } from '../commands/update-simple-expression-context.command';
+import { UpdateExpressionContextDefinitionCommand } from '../commands/update-expression-context-definition.command';
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
-import { SIMPLE_EXPRESSION } from '../../domain/constants';
 import { AppError } from '../../../common/errors';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { IntegrationEvent } from '../../../common/outbox/types';
 
-@CommandHandler(UpdateSimpleExpressionContextCommand)
-export class UpdateSimpleExpressionContextCommandHandler
-  implements ICommandHandler<UpdateSimpleExpressionContextCommand, void>
+@CommandHandler(UpdateExpressionContextDefinitionCommand)
+export class UpdateExpressionContextDefinitionCommandHandler
+  implements ICommandHandler<UpdateExpressionContextDefinitionCommand, void>
 {
   constructor(
-    private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly eventPublisher: EventPublisher,
+    private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
   ) {}
 
-  async execute(command: UpdateSimpleExpressionContextCommand): Promise<void> {
-    const { expressionContextId, translation } = command;
+  async execute(
+    command: UpdateExpressionContextDefinitionCommand,
+  ): Promise<void> {
+    const { expressionContextId, definition, definitionTranslation } = command;
 
     await this.prismaService.$transaction(async (prisma) => {
       const expressionContext =
-        await this.expressionContextRepository.findByIdAndType(
-          expressionContextId,
-          SIMPLE_EXPRESSION,
-        );
+        await this.expressionContextRepository.findById(expressionContextId);
 
       if (!expressionContext) {
         throw new AppError(
@@ -37,7 +35,7 @@ export class UpdateSimpleExpressionContextCommandHandler
 
       this.eventPublisher.mergeObjectContext(expressionContext);
 
-      expressionContext.updateSimpleExpression(translation.toLowerCase());
+      expressionContext.updateDefinition(definition, definitionTranslation);
 
       await this.expressionContextRepository.save(expressionContext, prisma);
 
