@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Put,
   Query,
@@ -41,6 +42,7 @@ import { GetExpressionContextsListQueryDto } from '../dtos/get-expression-contex
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateSimpleExpressionContextDto } from '../dtos/create-simple-expression-context.dto';
 import { UpdateSimpleExpressionContextDto } from '../dtos/update-simple-expression-context.dto';
+import { UpdateExpressionContextDefinitionDto } from '../dtos/update-expression-context-definition.dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('Admin Dictionary')
@@ -411,6 +413,29 @@ export class DictionaryController {
       payload.expressionId,
       payload.translation,
       payload.forms,
+    );
+  }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Update expression context definition' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Expression context definition updated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression context not found',
+  })
+  @Patch('expression-contexts/:expressionContextId/definition')
+  async updateExpressionContextDefinition(
+    @Body() payload: UpdateExpressionContextDefinitionDto,
+    @Param('expressionContextId', new ParseUUIDPipe())
+    expressionContextId: string,
+  ) {
+    return await this.dictionaryApiService.updateExpressionContextDefinition(
+      expressionContextId,
+      payload.definition,
+      payload.definitionTranslation,
     );
   }
 
