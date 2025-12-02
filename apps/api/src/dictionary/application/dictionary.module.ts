@@ -43,6 +43,7 @@ import { OutboxModule } from '../../common/outbox/outbox.module';
 import { GetSentencesByExpressionContextIdsQueryHandler } from './query-handlers/get-sentences-by-expression-context-ids.query-handler';
 import { GetExpressionsNumberQueryHandler } from './query-handlers/get-expressions-number.query-handler';
 import { UpdateExpressionContextDefinitionCommandHandler } from './command-handlers/update-expression-context-definition.command-handler';
+import { GenerateDefinitionOfTheExpressionContextQueryHandler } from './query-handlers/generate-definition-of-the-expression-context.query-handler';
 
 const EVENT_HANDLERS = [
   ExpressionCreatedEventHandler,
@@ -91,6 +92,7 @@ const QUERY_HANDLERS = [
   GetDictionaryReadModelsByExpressionContextIdsQueryHandler,
   GetSentencesByExpressionContextIdsQueryHandler,
   GetExpressionsNumberQueryHandler,
+  GenerateDefinitionOfTheExpressionContextQueryHandler,
 ];
 
 @Module({

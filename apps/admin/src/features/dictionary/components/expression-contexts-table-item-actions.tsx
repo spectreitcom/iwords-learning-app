@@ -43,6 +43,7 @@ import {
 import { CreateOnlyTranslationExpressionContextForm } from "@/features/dictionary/components/create-only-translation-expression-context-form";
 import { CreateNounExpressionContextForm } from "@/features/dictionary/components/create-noun-translation-expression-context-form";
 import { CreateIrregularVerbExpressionContextForm } from "@/features/dictionary/components/create-irregular-verb-expression-context-form";
+import Link from "next/link";
 
 type Props = {
   expressionContext: ExpressionContext;
@@ -111,6 +112,13 @@ export function ExpressionContextsTableItemActions({
               Edytuj
             </DropdownMenuItem>
           )}
+          <DropdownMenuItem asChild>
+            <Link
+              href={`/expressions/${expressionContext.expressionId}/context/${expressionContext.expressionContextId}/definition`}
+            >
+              Definicja
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuItem
             variant={"destructive"}
             onClick={() => setOpen(true)}

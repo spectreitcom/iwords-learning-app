@@ -48,3 +48,14 @@ export const createSentenceSchema = z.object({
 });
 
 export type CreateSentenceData = z.infer<typeof createSentenceSchema>;
+
+export const createExpressionContextDefinitionSchema = z.object({
+  definition: z.string().min(1, { message: "To pole jest wymagane" }),
+  definitionTranslation: z
+    .string()
+    .min(1, { message: "To pole jest wymagane" }),
+});
+
+export type CreateExpressionContextDefinitionData = z.infer<
+  typeof createExpressionContextDefinitionSchema
+>;

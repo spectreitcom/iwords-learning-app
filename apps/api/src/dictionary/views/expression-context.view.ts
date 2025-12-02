@@ -10,5 +10,7 @@ export class ExpressionContextView {
     public readonly type: string,
     public readonly forms: [string, string, string] | null,
     public readonly sentences: SentenceView[],
+    public readonly definition: string | null,
+    public readonly definitionTranslation: string | null,
   ) {}
 }

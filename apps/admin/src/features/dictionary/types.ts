@@ -39,6 +39,8 @@ export type ExpressionContextDetails = ExpressionContext & {
   isIrregular: false;
   forms: [];
   sentences: Sentence[];
+  definition: string | null;
+  definitionTranslation: string | null;
 };
 
 export type SearchedDictionaryExpression = {
@@ -51,4 +53,9 @@ export type SearchedDictionaryExpression = {
   forms: string[];
   isCountable: boolean;
   isIrregular: boolean;
+};
+
+export type GenerateExpressionContextDefinitionResponse = {
+  definition: string;
+  translation: string;
 };
