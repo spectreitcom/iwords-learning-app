@@ -7,6 +7,7 @@ import Link from "next/link";
 import { ChevronLeftIcon } from "lucide-react";
 import { expressionTypeMap } from "@/features/dictionary/utils";
 import { ExpressionContextDefinitionForm } from "@/features/dictionary/components/expression-context-definition-form";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Props = {
   params: Promise<{ expressionId: string; expressionContextId: string }>;
@@ -68,5 +69,31 @@ async function AwaitedContent({
 }
 
 function Loader() {
-  return null;
+  return (
+    <div>
+      <div>
+        <Skeleton className="h-6 w-24 mb-2" />
+        <Skeleton className="h-8 w-64 mt-2" />
+        <Skeleton className="h-5 w-32 mt-2" />
+      </div>
+      <div className="mt-8">
+        <div className="flex justify-end mb-4">
+          <Skeleton className="h-10 w-40" />
+        </div>
+        <div className="space-y-4">
+          <div>
+            <Skeleton className="h-5 w-20 mb-2" />
+            <Skeleton className="h-24 w-full" />
+          </div>
+          <div>
+            <Skeleton className="h-5 w-24 mb-2" />
+            <Skeleton className="h-24 w-full" />
+          </div>
+          <div className="flex justify-end">
+            <Skeleton className="h-10 w-24" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
