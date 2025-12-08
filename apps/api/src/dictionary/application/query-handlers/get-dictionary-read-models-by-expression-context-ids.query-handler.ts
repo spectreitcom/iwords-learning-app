@@ -40,6 +40,8 @@ export class GetDictionaryReadModelsByExpressionContextIdsQueryHandler
           record.forms ? (record.forms as [string, string, string]) : null,
           record.isCountable,
           record.isIrregular,
+          record.definition,
+          record.definitionTranslation,
         ),
     );
   }

@@ -102,6 +102,20 @@ function BoxItemPreview({ item }: { item: BoxItem }) {
           )}
         </div>
 
+        {item.definition && (
+          <div className={"mt-4"}>
+            <p>
+              <strong>Definicja:</strong> {item.definition}
+            </p>
+            {item.definitionTranslation && (
+              <p className={"mt-4"}>
+                <strong>Tłumaczenie definicji:</strong>{" "}
+                {item.definitionTranslation}
+              </p>
+            )}
+          </div>
+        )}
+
         {item.type === "irregular_verb" && (
           <div className={"mt-4"}>
             <IrregularVerbTable forms={item.forms ?? []} />

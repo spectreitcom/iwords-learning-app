@@ -9,5 +9,7 @@ export class DictionaryReadModel {
     public readonly forms: [string, string, string] | null,
     public readonly isCountable: boolean,
     public readonly isIrregular: boolean,
+    public readonly definition: string | null,
+    public readonly definitionTranslation: string | null,
   ) {}
 }

@@ -124,16 +124,18 @@ model Sentence {
 }
 
 model DictionaryReadModel {
-  id                  String   @id @default(uuid())
-  phrase              String
-  expressionId        String
-  expressionContextId String   @unique
-  type                String
-  translation         String
-  forms               String[] @default([])
-  isIrregular         Boolean  @default(false)
-  isCountable         Boolean  @default(false)
-  sentenceIds         String[] @default([])
+  id                    String   @id @default(uuid())
+  phrase                String
+  expressionId          String
+  expressionContextId   String   @unique
+  type                  String
+  translation           String
+  forms                 String[] @default([])
+  isIrregular           Boolean  @default(false)
+  isCountable           Boolean  @default(false)
+  sentenceIds           String[] @default([])
+  definition            String?
+  definitionTranslation String?
 
   @@unique([expressionId, expressionContextId])
   @@index([phrase])
