@@ -2,6 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { AiService } from '../../application/ports/ai.service';
 import OpenAI from 'openai';
 import { ConfigService } from '@nestjs/config';
+import { z } from 'zod';
+
+const generateDefinitionSchema = z.object({
+  definition: z.string(),
+  translation: z.string(),
+});
 
 @Injectable()
 export class OpenaiAiService implements AiService {
@@ -39,19 +45,12 @@ export class OpenaiAiService implements AiService {
         .trim(),
     );
 
-    if (typeof parsed !== 'object' || parsed === null) {
+    const validationResult = generateDefinitionSchema.safeParse(parsed);
+
+    if (!validationResult.success) {
       throw new Error('Invalid Response');
     }
 
-    const maybe = parsed as { definition?: unknown; translation?: unknown };
-
-    if (
-      typeof maybe.definition !== 'string' ||
-      typeof maybe.translation !== 'string'
-    ) {
-      throw new Error('Invalid Response');
-    }
-
-    return { definition: maybe.definition, translation: maybe.translation };
+    return validationResult.data;
   }
 }
