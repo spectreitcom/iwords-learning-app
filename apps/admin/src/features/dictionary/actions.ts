@@ -8,11 +8,13 @@ import {
   Expression,
   ExpressionContext,
   ExpressionContextDetails,
+  GenerateExpressionContextDefinitionResponse,
   SearchedDictionaryExpression,
 } from "@/features/dictionary/types";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
+  CreateExpressionContextDefinitionData,
   CreateExpressionData,
   CreateIrregularVerbExpressionContextData,
   CreateNounExpressionContextData,
@@ -520,4 +522,40 @@ export async function getExpressionsNumber() {
   );
 
   return (await response.json()) as { expressionsNumber: number };
+}
+
+export async function updateExpressionContextDefinition(
+  expressionContextId: string,
+  data: CreateExpressionContextDefinitionData,
+) {
+  await authFetch(
+    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/definition`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...data }),
+    },
+  );
+}
+
+export async function generateExpressionContextDefinition(
+  expressionContextId: string,
+) {
+  const response = await authFetch(
+    `${BACKEND_URL}/dictionary/ai/expression-context/${expressionContextId}/generate-definition`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to generate definition");
+  }
+
+  return (await response.json()) as GenerateExpressionContextDefinitionResponse;
 }

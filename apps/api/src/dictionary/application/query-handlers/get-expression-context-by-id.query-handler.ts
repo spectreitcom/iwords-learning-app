@@ -50,6 +50,8 @@ export class GetExpressionContextByIdQueryHandler
             sentence.expressionContextId,
           ),
       ),
+      expressionContext.definition,
+      expressionContext.definitionTranslation,
     );
   }
 }

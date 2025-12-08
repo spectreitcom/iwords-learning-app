@@ -14,6 +14,7 @@ import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 import { UsersTableItemActions } from "@/features/users/components/users-table-item-actions";
 import { Badge } from "@/components/ui/badge";
+import { PageHeader } from "@/components/page-header";
 
 const TAKE = 10;
 
@@ -27,19 +28,17 @@ export default async function UsersPage({ searchParams }: Props) {
   const searchParamsValues = await searchParams;
   return (
     <div>
-      <h1 className={"text-2xl"}>Lista użytkowników</h1>
-      <div className={"mt-8"}>
-        <Suspense
-          fallback={
-            <TableSkeletonLoader
-              headers={["Email", "Imię i nazwisko", "Status", ""]}
-              showPagination={true}
-            />
-          }
-        >
-          <AwaitedContent searchParamsValues={searchParamsValues} />
-        </Suspense>
-      </div>
+      <PageHeader title="Lista użytkowników" />
+      <Suspense
+        fallback={
+          <TableSkeletonLoader
+            headers={["Email", "Imię i nazwisko", "Status", ""]}
+            showPagination={true}
+          />
+        }
+      >
+        <AwaitedContent searchParamsValues={searchParamsValues} />
+      </Suspense>
     </div>
   );
 }

@@ -15,6 +15,7 @@ import { CreateBoxModal } from "@/features/boxes/components/create-box-modal";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 import { BoxesTableItemActions } from "@/features/boxes/components/boxes-table-item-actions";
+import { PageHeader } from "@/components/page-header";
 
 const TAKE = 10;
 
@@ -28,11 +29,11 @@ export default async function BoxesPage({ searchParams }: Props) {
   const searchParamsValues = await searchParams;
   return (
     <div>
-      <h1 className={"text-2xl"}>Lista boxów</h1>
-      <div className={"mt-8"}>
-        <div className={"mt-4 flex justify-end"}>
-          <CreateBoxModal />
-        </div>
+      <PageHeader title="Lista boxów" />
+      <div className={"flex justify-end"}>
+        <CreateBoxModal />
+      </div>
+      <div className={"mt-4"}>
         <Suspense
           fallback={
             <TableSkeletonLoader

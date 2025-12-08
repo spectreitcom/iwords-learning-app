@@ -15,6 +15,7 @@ import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 import { AdminUsersTableItemActions } from "@/features/admin-users/components/admin-users-table-item-actions";
 import { Badge } from "@/components/ui/badge";
+import { PageHeader } from "@/components/page-header";
 
 const TAKE = 10;
 
@@ -28,11 +29,11 @@ export default async function AdminUsersPage({ searchParams }: Props) {
   const searchParamsValues = await searchParams;
   return (
     <div>
-      <h1 className={"text-2xl"}>Lista administratorów</h1>
-      <div className={"mt-8"}>
-        <div className={"mt-4 flex justify-end"}>
-          <InviteAdminUserModal />
-        </div>
+      <PageHeader title="Lista administratorów" />
+      <div className={"flex justify-end"}>
+        <InviteAdminUserModal />
+      </div>
+      <div className={"mt-4"}>
         <Suspense
           fallback={
             <TableSkeletonLoader

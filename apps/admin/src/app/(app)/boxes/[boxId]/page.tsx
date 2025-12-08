@@ -1,6 +1,4 @@
 import { Suspense } from "react";
-import Link from "next/link";
-import { ChevronLeftIcon } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -15,6 +13,7 @@ import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 import { AddItemToBoxModal } from "@/features/boxes/components/add-item-to-box-modal";
 import { RemoveBoxItemButton } from "@/features/boxes/components/remove-box-item-button";
+import { PageHeader } from "@/components/page-header";
 
 type Props = {
   params: Promise<{ boxId: string }>;
@@ -26,14 +25,11 @@ export default async function BoxDetailPage({ params }: Props) {
 
   return (
     <div>
-      <div>
-        <Link href={"/boxes"} className={"flex items-center gap-2"}>
-          <ChevronLeftIcon />
-          Powrót
-        </Link>
-        <h1 className={"text-2xl mt-2"}>Box - {boxDetails.title}</h1>
-      </div>
-      <div className={"mt-8 flex justify-end"}>
+      <PageHeader
+        title={`Box - ${boxDetails.title}`}
+        backLink={{ href: "/boxes" }}
+      />
+      <div className={"flex justify-end"}>
         <AddItemToBoxModal
           boxId={boxDetails.boxId}
           chosenExpressionContextIds={

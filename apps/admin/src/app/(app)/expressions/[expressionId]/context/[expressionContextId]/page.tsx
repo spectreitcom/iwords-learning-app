@@ -3,8 +3,6 @@ import {
   getExpression,
   getExpressionContextDetails,
 } from "@/features/dictionary/actions";
-import Link from "next/link";
-import { ChevronLeftIcon } from "lucide-react";
 import { expressionTypeMap } from "@/features/dictionary/utils";
 import {
   Table,
@@ -19,6 +17,7 @@ import { SentencesTableItemActions } from "@/features/dictionary/components/sent
 import { AddSentenceModal } from "@/features/dictionary/components/add-sentence-modal";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
+import { PageHeader } from "@/components/page-header";
 
 type Props = {
   params: Promise<{ expressionId: string; expressionContextId: string }>;
@@ -56,20 +55,12 @@ async function AwaitedContent({
 
   return (
     <div>
-      <div>
-        <Link
-          href={`/expressions/${expressionId}`}
-          className={"flex items-center gap-2"}
-        >
-          <ChevronLeftIcon />
-          Powrót
-        </Link>
-        <h1 className={"text-2xl mt-2"}>
-          {expression.phrase} - {expressionContext.translation}
-        </h1>
-        <p>Typ: {expressionTypeMap.get(expressionContext.type)}</p>
-      </div>
-      <div className={"mt-8 flex justify-end"}>
+      <PageHeader
+        title={`${expression.phrase} - ${expressionContext.translation}`}
+        backLink={{ href: `/expressions/${expressionId}` }}
+        subtitle={`Typ: ${expressionTypeMap.get(expressionContext.type)}`}
+      />
+      <div className={"flex justify-end"}>
         <AddSentenceModal
           expressionId={expressionId}
           expressionContextId={expressionContextId}

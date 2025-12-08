@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { ChevronLeftIcon } from "lucide-react";
 import {
   getExpression,
   getExpressionContexts,
@@ -20,6 +19,7 @@ import { AddExpressionContextMenu } from "@/features/dictionary/components/add-e
 import { ExpressionContextsTableItemActions } from "@/features/dictionary/components/expression-contexts-table-item-actions";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
+import { PageHeader } from "@/components/page-header";
 
 const TAKE = 10;
 
@@ -37,16 +37,11 @@ export default async function ExpressionContextsPage({
   const expression = await getExpression(expressionId);
   return (
     <div>
-      <div>
-        <Link href={"/expressions"} className={"flex items-center gap-2"}>
-          <ChevronLeftIcon />
-          Powrót
-        </Link>
-        <h1 className={"text-2xl mt-2"}>
-          {expression.phrase} - Lista kontekstów
-        </h1>
-      </div>
-      <div className={"mt-8 flex justify-end"}>
+      <PageHeader
+        title={`${expression.phrase} - Lista kontekstów`}
+        backLink={{ href: "/expressions" }}
+      />
+      <div className={"flex justify-end"}>
         <AddExpressionContextMenu expressionId={expressionId} />
       </div>
       <div className={"mt-4"}>
