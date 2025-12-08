@@ -15,7 +15,14 @@ export class ExpressionContextUpdatedEventHandler
 
   async handle(event: ExpressionContextUpdatedEvent) {
     this.logger.debug(JSON.stringify(event));
-    const { expressionContextId, isCountable, translation, forms } = event;
+    const {
+      expressionContextId,
+      isCountable,
+      translation,
+      forms,
+      definition,
+      definitionTranslation,
+    } = event;
 
     await this.prismaService.dictionaryReadModel.update({
       where: { expressionContextId },
@@ -23,6 +30,8 @@ export class ExpressionContextUpdatedEventHandler
         isCountable,
         translation,
         forms: forms ? forms : [],
+        definition,
+        definitionTranslation,
       },
     });
   }

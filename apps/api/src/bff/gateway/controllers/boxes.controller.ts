@@ -103,6 +103,8 @@ export class BoxesController {
               expressionId: { type: 'string', format: 'uuid' },
               phrase: { type: 'string' },
               translation: { type: 'string' },
+              definition: { type: 'string' },
+              definitionTranslation: { type: 'string' },
               type: { type: 'string' },
               forms: {
                 type: 'array',
