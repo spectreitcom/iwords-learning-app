@@ -49,8 +49,7 @@ async function AwaitedContent({
         expressionContextId={expressionContextId}
         defaultValues={{
           definition: expressionContext.definition ?? "",
-          definitionTranslation:
-            expressionContext.definitionTranslation ?? "",
+          definitionTranslation: expressionContext.definitionTranslation ?? "",
         }}
       />
     </div>
