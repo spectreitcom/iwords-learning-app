@@ -22,6 +22,8 @@ export type BoxItem = {
   isCountable: boolean;
   isIrregular: boolean;
   sentences: BoxSentence[];
+  definition: string | null;
+  definitionTranslation: string | null;
 };
 
 export type BoxDetails = Exclude<Box, "expressionContextIds"> & {
