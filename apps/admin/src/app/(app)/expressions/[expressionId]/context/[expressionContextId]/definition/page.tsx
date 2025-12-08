@@ -3,11 +3,10 @@ import {
   getExpression,
   getExpressionContextDetails,
 } from "@/features/dictionary/actions";
-import Link from "next/link";
-import { ChevronLeftIcon } from "lucide-react";
 import { expressionTypeMap } from "@/features/dictionary/utils";
 import { ExpressionContextDefinitionForm } from "@/features/dictionary/components/expression-context-definition-form";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PageHeader } from "@/components/page-header";
 
 type Props = {
   params: Promise<{ expressionId: string; expressionContextId: string }>;
@@ -41,29 +40,19 @@ async function AwaitedContent({
 
   return (
     <div>
-      <div>
-        <Link
-          href={`/expressions/${expressionId}`}
-          className={"flex items-center gap-2"}
-        >
-          <ChevronLeftIcon />
-          Powrót
-        </Link>
-        <h1 className={"text-2xl mt-2"}>
-          {expression.phrase} - {expressionContext.translation}
-        </h1>
-        <p>Typ: {expressionTypeMap.get(expressionContext.type)}</p>
-      </div>
-      <div className={"mt-8"}>
-        <ExpressionContextDefinitionForm
-          expressionContextId={expressionContextId}
-          defaultValues={{
-            definition: expressionContext.definition ?? "",
-            definitionTranslation:
-              expressionContext.definitionTranslation ?? "",
-          }}
-        />
-      </div>
+      <PageHeader
+        title={`${expression.phrase} - ${expressionContext.translation}`}
+        backLink={{ href: `/expressions/${expressionId}` }}
+        subtitle={`Typ: ${expressionTypeMap.get(expressionContext.type)}`}
+      />
+      <ExpressionContextDefinitionForm
+        expressionContextId={expressionContextId}
+        defaultValues={{
+          definition: expressionContext.definition ?? "",
+          definitionTranslation:
+            expressionContext.definitionTranslation ?? "",
+        }}
+      />
     </div>
   );
 }

@@ -16,6 +16,7 @@ import { AddExpressionModal } from "@/features/dictionary/components/add-express
 import Link from "next/link";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
+import { PageHeader } from "@/components/page-header";
 
 const TAKE = 10;
 
@@ -30,28 +31,26 @@ export default async function ExpressionsPage({ searchParams }: Props) {
   const searchParamsValues = await searchParams;
   return (
     <div>
-      <h1 className={"text-2xl"}>Lista wyrażeń</h1>
-      <div className={"mt-8"}>
-        <div className={"flex justify-end"}>
-          <AddExpressionModal />
-        </div>
-        <div className={"mt-4"}>
-          <SearchExpressionsInput
-            searchText={searchParamsValues.searchText ?? ""}
-            otherSearchParams={searchParamsValues}
-          />
-        </div>
-        <Suspense
-          fallback={
-            <TableSkeletonLoader
-              headers={["Wyrażenie", ""]}
-              showPagination={true}
-            />
-          }
-        >
-          <AwaitedContent searchParamsValues={searchParamsValues} />
-        </Suspense>
+      <PageHeader title="Lista wyrażeń" />
+      <div className={"flex justify-end"}>
+        <AddExpressionModal />
       </div>
+      <div className={"mt-4"}>
+        <SearchExpressionsInput
+          searchText={searchParamsValues.searchText ?? ""}
+          otherSearchParams={searchParamsValues}
+        />
+      </div>
+      <Suspense
+        fallback={
+          <TableSkeletonLoader
+            headers={["Wyrażenie", ""]}
+            showPagination={true}
+          />
+        }
+      >
+        <AwaitedContent searchParamsValues={searchParamsValues} />
+      </Suspense>
     </div>
   );
 }
