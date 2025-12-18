@@ -729,4 +729,34 @@ export class DictionaryController {
       expressionContextId,
     );
   }
+
+  @ApiBearerAuth('admin-auth')
+  @ApiOperation({ summary: 'Generate sentences for the expression context' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Sentences generated successfully',
+    schema: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          sentence: { type: 'string' },
+          translation: { type: 'string' },
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Expression context or expression not found',
+  })
+  @Get('ai/expression-context/:expressionContextId/generate-sentences')
+  async generateSentencesForExpressionContext(
+    @Param('expressionContextId', new ParseUUIDPipe())
+    expressionContextId: string,
+  ) {
+    return await this.dictionaryApiService.generateSentencesOfExpressionContext(
+      expressionContextId,
+    );
+  }
 }
