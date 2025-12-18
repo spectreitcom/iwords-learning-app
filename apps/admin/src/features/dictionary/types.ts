@@ -59,3 +59,8 @@ export type GenerateExpressionContextDefinitionResponse = {
   definition: string;
   translation: string;
 };
+
+export type GenerateSentencesForExpressionContextResponse = {
+  sentence: string;
+  translation: string;
+}[];
