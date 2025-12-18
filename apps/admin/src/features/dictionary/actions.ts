@@ -9,6 +9,7 @@ import {
   ExpressionContext,
   ExpressionContextDetails,
   GenerateExpressionContextDefinitionResponse,
+  GenerateSentencesForExpressionContextResponse,
   SearchedDictionaryExpression,
 } from "@/features/dictionary/types";
 import { revalidatePath } from "next/cache";
@@ -558,4 +559,24 @@ export async function generateExpressionContextDefinition(
   }
 
   return (await response.json()) as GenerateExpressionContextDefinitionResponse;
+}
+
+export async function generateSentencesForExpressionContext(
+  expressionContextId: string,
+) {
+  const response = await authFetch(
+    `${BACKEND_URL}/dictionary/ai/expression-context/${expressionContextId}/generate-sentences`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to generate sentences");
+  }
+
+  return (await response.json()) as GenerateSentencesForExpressionContextResponse;
 }

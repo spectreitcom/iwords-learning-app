@@ -18,6 +18,7 @@ import { AddSentenceModal } from "@/features/dictionary/components/add-sentence-
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 import { PageHeader } from "@/components/page-header";
+import { GenerateSentences } from "@/features/dictionary/components/generate-sentences";
 
 type Props = {
   params: Promise<{ expressionId: string; expressionContextId: string }>;
@@ -62,6 +63,12 @@ async function AwaitedContent({
       />
       <div className={"flex justify-end"}>
         <AddSentenceModal
+          expressionId={expressionId}
+          expressionContextId={expressionContextId}
+        />
+      </div>
+      <div className={"mt-4"}>
+        <GenerateSentences
           expressionId={expressionId}
           expressionContextId={expressionContextId}
         />
