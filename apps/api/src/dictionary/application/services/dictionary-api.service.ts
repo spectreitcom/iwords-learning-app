@@ -49,6 +49,8 @@ import { ExpressionContextView } from '../../views/expression-context.view';
 import { GenerateDefinitionOfTheExpressionContextQueryResponse } from '../query-handlers/generate-definition-of-the-expression-context.query-handler';
 import { GenerateDefinitionOfTheExpressionContextQuery } from '../queries/generate-definition-of-the-expression-context.query';
 import { UpdateExpressionContextDefinitionCommand } from '../commands/update-expression-context-definition.command';
+import { GenerateSentencesForExpressionContextQueryResponse } from '../query-handlers/generate-sentences-for-expression-context.query-handler';
+import { GenerateSentencesForExpressionContextQuery } from '../queries/generate-sentences-for-expression-context.query';
 
 @Injectable()
 export class DictionaryApiService implements DictionaryApi {
@@ -355,5 +357,14 @@ export class DictionaryApiService implements DictionaryApi {
       definitionTranslation,
     );
     return await this.commandBus.execute(command);
+  }
+
+  async generateSentencesOfExpressionContext(
+    expressionContextId: string,
+  ): Promise<GenerateSentencesForExpressionContextQueryResponse> {
+    const query = new GenerateSentencesForExpressionContextQuery(
+      expressionContextId,
+    );
+    return await this.queryBus.execute(query);
   }
 }

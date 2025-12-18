@@ -9,6 +9,10 @@ const generateDefinitionSchema = z.object({
   translation: z.string(),
 });
 
+const generateSentencesSchema = z.array(
+  z.object({ sentence: z.string(), translation: z.string() }),
+);
+
 @Injectable()
 export class OpenaiAiService implements AiService {
   private readonly client: OpenAI;
@@ -46,6 +50,39 @@ export class OpenaiAiService implements AiService {
     );
 
     const validationResult = generateDefinitionSchema.safeParse(parsed);
+
+    if (!validationResult.success) {
+      throw new Error('Invalid Response');
+    }
+
+    return validationResult.data;
+  }
+
+  async generateSentences(
+    phrase: string,
+    translation: string,
+  ): Promise<{ sentence: string; translation: string }[]> {
+    const res = await this.client.chat.completions.create({
+      model: this.configService.get<string>('OPENAI_MODEL')!,
+      stream: false,
+      messages: [
+        {
+          role: 'user',
+          content: `Jesteś nauczycielem języka angielskiego. 
+                    Utwórz 10 różnych zdań po angielsku (używaj różnych czasów) wraz z tłumaczeniem po polsku dla wyrażenia „${phrase} - ${translation}”. 
+                    Odpowiedź zwróć w formacie JSON [{„sentence": <sentence in english>, „translation”: <translation in polish> }]`,
+        },
+      ],
+    });
+
+    const parsed: unknown = JSON.parse(
+      res.choices[0].message
+        .content!.replace('```json', '')
+        .replace('```', '')
+        .trim(),
+    );
+
+    const validationResult = generateSentencesSchema.safeParse(parsed);
 
     if (!validationResult.success) {
       throw new Error('Invalid Response');

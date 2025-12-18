@@ -44,6 +44,7 @@ import { GetSentencesByExpressionContextIdsQueryHandler } from './query-handlers
 import { GetExpressionsNumberQueryHandler } from './query-handlers/get-expressions-number.query-handler';
 import { UpdateExpressionContextDefinitionCommandHandler } from './command-handlers/update-expression-context-definition.command-handler';
 import { GenerateDefinitionOfTheExpressionContextQueryHandler } from './query-handlers/generate-definition-of-the-expression-context.query-handler';
+import { GenerateSentencesForExpressionContextQueryHandler } from './query-handlers/generate-sentences-for-expression-context.query-handler';
 
 const EVENT_HANDLERS = [
   ExpressionCreatedEventHandler,
@@ -93,6 +94,7 @@ const QUERY_HANDLERS = [
   GetSentencesByExpressionContextIdsQueryHandler,
   GetExpressionsNumberQueryHandler,
   GenerateDefinitionOfTheExpressionContextQueryHandler,
+  GenerateSentencesForExpressionContextQueryHandler,
 ];
 
 @Module({
