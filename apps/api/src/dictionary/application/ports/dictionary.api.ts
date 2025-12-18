@@ -14,6 +14,7 @@ import { DictionaryReadModel } from '../../read-models/dictionary-read-model';
 import { SentenceView } from '../../views/sentence.view';
 import { ExpressionContextView } from '../../views/expression-context.view';
 import { GenerateDefinitionOfTheExpressionContextQueryResponse } from '../query-handlers/generate-definition-of-the-expression-context.query-handler';
+import { GenerateSentencesForExpressionContextQueryResponse } from '../query-handlers/generate-sentences-for-expression-context.query-handler';
 
 export abstract class DictionaryApi {
   abstract createExpression(
@@ -162,4 +163,8 @@ export abstract class DictionaryApi {
     definition: string,
     definitionTranslation: string,
   ): Promise<void>;
+
+  abstract generateSentencesOfExpressionContext(
+    expressionContextId: string,
+  ): Promise<GenerateSentencesForExpressionContextQueryResponse>;
 }
