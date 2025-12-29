@@ -47,6 +47,7 @@ async function AwaitedContent({ boxId }: { boxId: string }) {
         <StartLearningButton
           boxId={boxDetails.boxId}
           isBoxStarted={boxDetails.isBoxStarted}
+          disabled={!boxDetails.items.length}
         />
       </div>
 
