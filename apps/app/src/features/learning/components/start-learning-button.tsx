@@ -8,9 +8,10 @@ import { beginBox } from "@/features/learning/actions";
 type Props = {
   isBoxStarted: boolean;
   boxId: string;
+  disabled?: boolean;
 };
 
-export function StartLearningButton({ isBoxStarted, boxId }: Props) {
+export function StartLearningButton({ isBoxStarted, boxId, disabled }: Props) {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: (boxId: string) => beginBox(boxId),
   });
@@ -23,7 +24,7 @@ export function StartLearningButton({ isBoxStarted, boxId }: Props) {
   return (
     <Button
       onClick={handleClick}
-      disabled={isPending}
+      disabled={isPending || disabled}
       variant={"shine"}
       size={"lg"}
       className="shadow-md"
