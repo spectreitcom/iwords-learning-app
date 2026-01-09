@@ -19,6 +19,7 @@ import { IsBoxStartedQueryHandler } from './query-handlers/is-box-started.query-
 import { GetBoxesNumberQueryHandler } from './query-handlers/get-boxes-number.query-handler';
 import { MarkBoxAsFinishedCommandHandler } from './command-handlers/mark-box-as-finished.command-handler';
 import { GetInformationIfBoxIsFinishedByBoxIdsQueryHandler } from './query-handlers/get-information-if-box-is-finished-by-box-ids.query-handler';
+import { OutboxModule } from '../../common/outbox/outbox.module';
 
 const EVENT_HANDLERS = [
   BoxCreatedEventHandler,
@@ -47,7 +48,7 @@ const QUERY_HANDLERS = [
 ];
 
 @Module({
-  imports: [InfrastructureModule, PrismaModule],
+  imports: [InfrastructureModule, PrismaModule, OutboxModule],
   providers: [
     ...EVENT_HANDLERS,
     ...COMMAND_HANDLERS,

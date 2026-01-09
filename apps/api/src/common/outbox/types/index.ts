@@ -13,7 +13,8 @@ export type IntegrationEventType =
   | 'dictionary.expression-deleted'
   | 'user-identity.user-created'
   | 'user-identity.user-deleted'
-  | 'answer.answer-checked';
+  | 'answer.answer-checked'
+  | 'box.marked-as-finished';
 
 export class IntegrationEvent<T extends Record<string, any> | JsonValue> {
   constructor(
