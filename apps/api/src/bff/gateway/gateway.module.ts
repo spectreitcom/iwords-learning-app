@@ -12,6 +12,7 @@ import { GamificationController } from './controllers/gamification.controller';
 import { RepetitionsController } from './controllers/repetitions.controller';
 import { RepetitionModule } from '../../repetition/application/repetition.module';
 import { DictionaryController } from './controllers/dictionary.controller';
+import { BoxRepetitionModule } from '../../box-repetition/application/box-repetition.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { DictionaryController } from './controllers/dictionary.controller';
     DictionaryModule,
     GamificationModule,
     RepetitionModule,
+    BoxRepetitionModule,
   ],
   controllers: [
     AnswerController,
