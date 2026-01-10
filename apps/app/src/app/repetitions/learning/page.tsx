@@ -15,7 +15,7 @@ export default async function RepetitionsLearningPage() {
 async function AwaitedContent() {
   const repetitions = await getRepetitions();
 
-  if (!repetitions || !repetitions.length) {
+  if (!repetitions?.length) {
     redirect("/repetitions");
   }
 

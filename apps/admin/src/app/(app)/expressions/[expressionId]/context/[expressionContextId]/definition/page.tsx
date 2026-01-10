@@ -8,9 +8,9 @@ import { ExpressionContextDefinitionForm } from "@/features/dictionary/component
 import { Skeleton } from "@/components/ui/skeleton";
 import { PageHeader } from "@/components/page-header";
 
-type Props = {
+type Props = Readonly<{
   params: Promise<{ expressionId: string; expressionContextId: string }>;
-};
+}>;
 
 export default async function ExpressionContextDefinitionPage({
   params,
@@ -30,10 +30,10 @@ export default async function ExpressionContextDefinitionPage({
 async function AwaitedContent({
   expressionId,
   expressionContextId,
-}: {
+}: Readonly<{
   expressionId: string;
   expressionContextId: string;
-}) {
+}>) {
   const expression = await getExpression(expressionId);
   const expressionContext =
     await getExpressionContextDetails(expressionContextId);

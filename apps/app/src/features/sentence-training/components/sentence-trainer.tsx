@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { validateSentence } from "@/features/sentence-training/actions";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { randomUUID } from "node:crypto";
 
 type Props = Readonly<{
   expressionContextId: string;
@@ -86,7 +87,7 @@ export function SentenceTrainer({
           </p>
         )}
 
-        {items.map((item, index) => {
+        {items.map((item) => {
           const scoreColor =
             item.score >= 80
               ? "bg-emerald-100 text-emerald-800"
@@ -95,7 +96,7 @@ export function SentenceTrainer({
                 : "bg-rose-100 text-rose-800";
           return (
             <div
-              key={index}
+              key={randomUUID()}
               className="rounded-md border p-3 hover:bg-muted/40"
             >
               <div className="mb-1 flex items-center justify-between gap-3">
@@ -119,7 +120,7 @@ export function SentenceTrainer({
 
       <form onSubmit={onSubmit} className="flex flex-col gap-3">
         <Input
-          placeholder={`Napisz zdanie używając słówka \"${phrase}\" i naciśnij Enter`}
+          placeholder={`Napisz zdanie używając słówka "${phrase}" i naciśnij Enter`}
           ref={inputRef}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
