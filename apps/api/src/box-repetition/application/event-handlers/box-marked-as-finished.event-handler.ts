@@ -20,7 +20,7 @@ export class BoxMarkedAsFinishedEventHandler
 
   async handle(event: IntegrationEvent<EventPayload>) {
     if (event.type !== 'box.marked-as-finished') return;
-    this.logger.log(JSON.stringify(event));
+    this.logger.debug(JSON.stringify(event));
 
     const { boxId, userId } = event.payload;
 
