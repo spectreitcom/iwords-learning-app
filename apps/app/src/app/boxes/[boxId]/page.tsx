@@ -51,7 +51,7 @@ async function AwaitedContent({ boxId }: Readonly<{ boxId: string }>) {
         />
       </div>
 
-      {!!boxDetails.items.length ? (
+      {boxDetails.items.length ? (
         <div className={"mt-8 flex flex-col gap-4"}>
           {boxDetails.items.map((item) => (
             <BoxItemPreview key={item.expressionContextId} item={item} />
@@ -123,7 +123,7 @@ function BoxItemPreview({ item }: Readonly<{ item: BoxItem }>) {
           </div>
         )}
 
-        {!!item.sentences.length && (
+        {item.sentences.length && (
           <div className={"mt-4 flex flex-col gap-1"}>
             {item.sentences.map((sentence) => (
               <div key={sentence.sentenceId}>

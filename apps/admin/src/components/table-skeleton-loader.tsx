@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { randomUUID } from "node:crypto";
 
 type Props = Readonly<{
   headers: string[];
@@ -43,13 +44,13 @@ export function TableSkeletonLoader({
         <TableHeader>
           <TableRow>
             {headers.map((header, index) => (
-              <TableHead key={index}>{header}</TableHead>
+              <TableHead key={randomUUID()}>{header}</TableHead>
             ))}
           </TableRow>
         </TableHeader>
         <TableBody>
           {Array.from({ length: rows }).map((_, i) => (
-            <TableRow key={i} className="border-b">
+            <TableRow key={randomUUID()} className="border-b">
               {headers.map((_, cellIndex) => {
                 const isLast = cellIndex === headers.length - 1;
                 const width = getSkeletonWidth(cellIndex, isLast);
@@ -79,7 +80,7 @@ export function TableSkeletonLoader({
           <div className="flex items-center space-x-2">
             {Array.from({ length: 3 }).map((_, i) => (
               <div
-                key={i}
+                key={randomUUID()}
                 className="w-8 h-8 bg-gray-200 animate-pulse rounded"
                 style={shimmerStyle}
               />

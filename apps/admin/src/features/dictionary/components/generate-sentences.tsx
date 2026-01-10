@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { randomUUID } from "node:crypto";
 
 type GeneratedSentence = {
   sentence: string;
@@ -90,7 +91,7 @@ export function GenerateSentences({
             </TableHeader>
             <TableBody>
               {generatedSentences.map((sentence, index) => (
-                <TableRow key={index}>
+                <TableRow key={randomUUID()}>
                   <TableCell>{sentence.sentence}</TableCell>
                   <TableCell>{sentence.translation}</TableCell>
                   <TableCell className="flex justify-end">

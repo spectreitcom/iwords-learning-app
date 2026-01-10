@@ -46,7 +46,7 @@ async function AwaitedContent() {
         )}
       </div>
 
-      {!!repetitions.length ? (
+      {repetitions.length ? (
         <div className="mt-8 flex flex-col gap-4">
           {repetitions.map((rep) => (
             <RepetitionItem key={rep.repetitionId} repetition={rep} />
@@ -113,7 +113,7 @@ function RepetitionItem({
                 </div>
               )}
 
-            {!!expressionContext.sentences?.length && (
+            {expressionContext.sentences?.length && (
               <div className="mt-4 flex flex-col gap-1">
                 {expressionContext.sentences.map((s) => (
                   <div key={s.sentenceId}>

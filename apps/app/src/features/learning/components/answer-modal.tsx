@@ -22,8 +22,9 @@ function useEnterToContinue(enabled: boolean, onOk: () => void) {
         onOk();
       }
     };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+
+    globalThis.addEventListener("keydown", handler);
+    return () => globalThis.removeEventListener("keydown", handler);
   }, [enabled, onOk]);
 }
 

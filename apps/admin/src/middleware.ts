@@ -1,12 +1,12 @@
 import { getSession } from "@/lib/session";
 import { NextRequest, NextResponse } from "next/server";
 
-const PUBLIC_PATHS = ["/auth/sign-in", "/auth/reset-password"];
+const publicPaths = new Set(["/auth/sign-in", "/auth/reset-password"]);
 
 export async function middleware(request: NextRequest) {
   if (
     request.nextUrl.pathname.startsWith("/") &&
-    !PUBLIC_PATHS.includes(request.nextUrl.pathname)
+    !publicPaths.has(request.nextUrl.pathname)
   ) {
     const session = await getSession();
 
