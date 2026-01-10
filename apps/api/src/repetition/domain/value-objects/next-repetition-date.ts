@@ -15,7 +15,7 @@ export class NextRepetitionDate {
     if (
       errors.length ||
       !(this.value instanceof Date) ||
-      isNaN(this.value.getTime()) ||
+      Number.isNaN(this.value.getTime()) ||
       this.value.getTime() <= now.getTime()
     ) {
       throw new Error('NextRepetitionDate is not valid');

@@ -35,7 +35,7 @@ export class ExpressionContext extends AggregateRoot {
     this.translation = translation;
     this.isCountable = isCountable;
     this.type = type;
-    this.forms = forms ? forms : null;
+    this.forms = forms ?? null;
     this.isIrregular = isIrregular;
     this.definition = definition;
     this.definitionTranslation = definitionTranslation;

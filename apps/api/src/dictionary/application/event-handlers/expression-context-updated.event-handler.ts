@@ -29,7 +29,7 @@ export class ExpressionContextUpdatedEventHandler
       data: {
         isCountable,
         translation,
-        forms: forms ? forms : [],
+        forms: forms ?? [],
         definition,
         definitionTranslation,
       },
