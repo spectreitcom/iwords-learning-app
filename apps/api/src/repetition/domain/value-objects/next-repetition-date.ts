@@ -14,7 +14,6 @@ export class NextRepetitionDate {
     const now = new Date();
     if (
       errors.length ||
-      !(this.value instanceof Date) ||
       Number.isNaN(this.value.getTime()) ||
       this.value.getTime() <= now.getTime()
     ) {
