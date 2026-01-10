@@ -89,31 +89,32 @@ function RepetitionItem({
               )}
             </div>
 
-            {expressionContext.type === "irregular_verb" &&
-              expressionContext.forms && (
-                <div className="mt-4 grid grid-cols-3 gap-2 text-sm">
-                  <div>
-                    <div className="text-muted-foreground">I forma</div>
-                    <div className="font-medium">
-                      {expressionContext.forms[0]}
+            {expressionContext.type === "irregular_verb"
+              ? expressionContext.forms && (
+                  <div className="mt-4 grid grid-cols-3 gap-2 text-sm">
+                    <div>
+                      <div className="text-muted-foreground">I forma</div>
+                      <div className="font-medium">
+                        {expressionContext.forms[0]}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-muted-foreground">II forma</div>
+                      <div className="font-medium">
+                        {expressionContext.forms[1]}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-muted-foreground">III forma</div>
+                      <div className="font-medium">
+                        {expressionContext.forms[2]}
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <div className="text-muted-foreground">II forma</div>
-                    <div className="font-medium">
-                      {expressionContext.forms[1]}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-muted-foreground">III forma</div>
-                    <div className="font-medium">
-                      {expressionContext.forms[2]}
-                    </div>
-                  </div>
-                </div>
-              )}
+                )
+              : ""}
 
-            {expressionContext.sentences?.length && (
+            {expressionContext.sentences?.length ? (
               <div className="mt-4 flex flex-col gap-1">
                 {expressionContext.sentences.map((s) => (
                   <div key={s.sentenceId}>
@@ -124,6 +125,8 @@ function RepetitionItem({
                   </div>
                 ))}
               </div>
+            ) : (
+              ""
             )}
           </div>
 
