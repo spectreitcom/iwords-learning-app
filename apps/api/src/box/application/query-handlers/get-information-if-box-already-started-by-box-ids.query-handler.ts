@@ -26,10 +26,10 @@ export class GetInformationIfBoxAlreadyStartedByBoxIdsQueryHandler
       },
     });
 
-    const alreadyStartedIds = records.map((r) => r.boxId);
+    const alreadyStartedIds = new Set(records.map((r) => r.boxId));
 
     return boxIds.map(
-      (boxId) => new BoxIsStartedView(boxId, alreadyStartedIds.includes(boxId)),
+      (boxId) => new BoxIsStartedView(boxId, alreadyStartedIds.has(boxId)),
     );
   }
 }
