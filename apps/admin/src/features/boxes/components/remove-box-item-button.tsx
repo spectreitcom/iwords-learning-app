@@ -15,12 +15,12 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-type Props = {
+type Props = Readonly<{
   boxId: string;
   expressionContextId: string;
   phrase: string;
   translation: string;
-};
+}>;
 
 export function RemoveBoxItemButton({
   boxId,
@@ -59,7 +59,7 @@ function Alert({
   expressionContextId,
   phrase,
   translation,
-}: Props & { open: boolean; onClose: () => void }) {
+}: Props & Readonly<{ open: boolean; onClose: () => void }>) {
   const [removing, setRemoving] = useState(false);
 
   const handleDelete = async () => {

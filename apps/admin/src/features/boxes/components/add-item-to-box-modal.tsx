@@ -19,10 +19,10 @@ import { Badge } from "@/components/ui/badge";
 import { useDebounceCallback } from "usehooks-ts";
 import { addItemToBox } from "@/features/boxes/actions";
 
-type Props = {
+type Props = Readonly<{
   boxId: string;
   chosenExpressionContextIds: string[];
-};
+}>;
 
 export function AddItemToBoxModal({
   boxId,
@@ -124,12 +124,12 @@ function Item({
   selected,
   chosen,
   onClick,
-}: {
+}: Readonly<{
   item: SearchedDictionaryExpression;
   selected?: boolean;
   chosen?: boolean;
   onClick: () => void;
-}) {
+}>) {
   const handleClick = () => {
     if (chosen) return;
     onClick();

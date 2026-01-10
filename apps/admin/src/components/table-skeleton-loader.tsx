@@ -7,12 +7,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-type Props = {
+type Props = Readonly<{
   headers: string[];
   rows?: number;
   showPagination?: boolean;
   cellWidths?: (string | number)[];
-};
+}>;
 
 export function TableSkeletonLoader({
   headers,

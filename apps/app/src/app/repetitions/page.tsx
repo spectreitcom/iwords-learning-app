@@ -63,9 +63,9 @@ async function AwaitedContent() {
 
 function RepetitionItem({
   repetition: { repetitionId, expressionContext },
-}: {
+}: Readonly<{
   repetition: Repetition;
-}) {
+}>) {
   return (
     <Card className="group">
       <CardContent>

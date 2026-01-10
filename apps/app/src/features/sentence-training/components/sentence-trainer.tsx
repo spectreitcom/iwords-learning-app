@@ -7,11 +7,11 @@ import { validateSentence } from "@/features/sentence-training/actions";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
-type Props = {
+type Props = Readonly<{
   expressionContextId: string;
   phrase: string;
   translation: string;
-};
+}>;
 
 export function SentenceTrainer({
   expressionContextId,

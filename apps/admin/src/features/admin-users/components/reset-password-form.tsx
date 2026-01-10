@@ -28,9 +28,9 @@ type FormMsg = {
   message: string;
 };
 
-type Props = {
+type Props = Readonly<{
   token: string;
-};
+}>;
 
 export function ResetPasswordForm({ token }: Props) {
   const [validatingToken, setValidatingToken] = useState(false);

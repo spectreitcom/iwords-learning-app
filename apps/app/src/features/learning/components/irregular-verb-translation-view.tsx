@@ -20,11 +20,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-type Props = {
+type Props = Readonly<{
   currentView: LearningViewType;
   onAnswerChecked: (data: IrregularVerbAnswer) => void;
   expressionContextId: string;
-};
+}>;
 
 const schema = z.object({
   form1: z.string().min(1, { message: "To pole jest wymagane" }),

@@ -15,10 +15,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-type Props = {
+type Props = Readonly<{
   onSubmitted: (data: InviteAdminUserData) => void;
   defaultValues?: InviteAdminUserData;
-};
+}>;
 
 export function InviteAdminUserForm({ onSubmitted, defaultValues }: Props) {
   const form = useForm<InviteAdminUserData>({

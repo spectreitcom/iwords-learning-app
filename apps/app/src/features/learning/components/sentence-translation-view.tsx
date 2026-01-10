@@ -11,11 +11,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-type Props = {
+type Props = Readonly<{
   currentView: LearningViewType;
   onAnswerChecked: (data: GeneralAnswer) => void;
   sentenceId: string;
-};
+}>;
 
 const schema = z.object({
   answer: z.string().min(1, { message: "To pole jest wymagane" }),

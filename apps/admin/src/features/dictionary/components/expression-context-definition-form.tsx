@@ -23,10 +23,10 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 
-type Props = {
+type Props = Readonly<{
   defaultValues?: CreateExpressionContextDefinitionData;
   expressionContextId: string;
-};
+}>;
 
 export function ExpressionContextDefinitionForm({
   defaultValues,

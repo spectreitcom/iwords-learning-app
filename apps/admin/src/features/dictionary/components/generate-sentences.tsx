@@ -21,10 +21,10 @@ type GeneratedSentence = {
   translation: string;
 };
 
-type Props = {
+type Props = Readonly<{
   expressionId: string;
   expressionContextId: string;
-};
+}>;
 
 export function GenerateSentences({
   expressionId,

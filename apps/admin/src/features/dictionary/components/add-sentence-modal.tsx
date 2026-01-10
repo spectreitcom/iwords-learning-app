@@ -12,10 +12,10 @@ import { Button } from "@/components/ui/button";
 import { CreateSentenceForm } from "@/features/dictionary/components/create-sentence-form";
 import { createSentence } from "@/features/dictionary/actions";
 
-type Props = {
+type Props = Readonly<{
   expressionId: string;
   expressionContextId: string;
-};
+}>;
 
 export function AddSentenceModal({ expressionContextId, expressionId }: Props) {
   const [show, setShow] = useState(false);

@@ -12,11 +12,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-type Props = {
+type Props = Readonly<{
   onSubmitted: (data: CreateBoxData) => void;
   defaultValues?: CreateBoxData;
   pending?: boolean;
-};
+}>;
 
 export function CreateBoxForm({ onSubmitted, defaultValues, pending }: Props) {
   const form = useForm<CreateBoxData>({

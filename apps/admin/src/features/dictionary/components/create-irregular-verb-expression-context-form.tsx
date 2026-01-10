@@ -15,11 +15,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-type Props = {
+type Props = Readonly<{
   onSubmitted: (data: CreateIrregularVerbExpressionContextData) => void;
   defaultValues?: CreateIrregularVerbExpressionContextData;
   pending?: boolean;
-};
+}>;
 
 export function CreateIrregularVerbExpressionContextForm({
   onSubmitted,

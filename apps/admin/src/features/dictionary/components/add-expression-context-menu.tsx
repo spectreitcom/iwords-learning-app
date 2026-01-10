@@ -27,9 +27,9 @@ import {
 import { CreateNounExpressionContextForm } from "@/features/dictionary/components/create-noun-translation-expression-context-form";
 import { CreateIrregularVerbExpressionContextForm } from "@/features/dictionary/components/create-irregular-verb-expression-context-form";
 
-type Props = {
+type Props = Readonly<{
   expressionId: string;
-};
+}>;
 
 export function AddExpressionContextMenu({ expressionId }: Props) {
   const [showAddVerbModal, setShowAddVerbModal] = useState(false);
@@ -120,12 +120,12 @@ export function AddExpressionContextMenu({ expressionId }: Props) {
   );
 }
 
-type DialogProps = {
+type DialogProps = Readonly<{
   open: boolean;
   onClose: () => void;
   title: string;
   children: ReactNode;
-};
+}>;
 
 function Modal({ open, onClose, title, children }: DialogProps) {
   return (
@@ -144,7 +144,9 @@ function AddVerbModal({
   open,
   onClose,
   expressionId,
-}: Omit<DialogProps, "title" | "children"> & { expressionId: string }) {
+}: Readonly<
+  Omit<DialogProps, "title" | "children"> & { expressionId: string }
+>) {
   const [pending, setPending] = useState(false);
 
   return (
@@ -166,7 +168,9 @@ function AddPhrasalVerbModal({
   open,
   onClose,
   expressionId,
-}: Omit<DialogProps, "title" | "children"> & { expressionId: string }) {
+}: Readonly<
+  Omit<DialogProps, "title" | "children"> & { expressionId: string }
+>) {
   const [pending, setPending] = useState(false);
 
   return (
@@ -188,7 +192,9 @@ function AddNounModal({
   open,
   onClose,
   expressionId,
-}: Omit<DialogProps, "title" | "children"> & { expressionId: string }) {
+}: Readonly<
+  Omit<DialogProps, "title" | "children"> & { expressionId: string }
+>) {
   const [pending, setPending] = useState(false);
 
   return (
@@ -210,7 +216,9 @@ function AddAdverbModal({
   open,
   onClose,
   expressionId,
-}: Omit<DialogProps, "title" | "children"> & { expressionId: string }) {
+}: Readonly<
+  Omit<DialogProps, "title" | "children"> & { expressionId: string }
+>) {
   const [pending, setPending] = useState(false);
 
   return (
@@ -232,7 +240,9 @@ function AddIrregularVerbModal({
   open,
   onClose,
   expressionId,
-}: Omit<DialogProps, "title" | "children"> & { expressionId: string }) {
+}: Readonly<
+  Omit<DialogProps, "title" | "children"> & { expressionId: string }
+>) {
   const [pending, setPending] = useState(false);
 
   return (
@@ -254,7 +264,9 @@ function AddAdjectiveModal({
   open,
   onClose,
   expressionId,
-}: Omit<DialogProps, "title" | "children"> & { expressionId: string }) {
+}: Readonly<
+  Omit<DialogProps, "title" | "children"> & { expressionId: string }
+>) {
   const [pending, setPending] = useState(false);
 
   return (
@@ -276,7 +288,9 @@ function AddSimpleExpressionModal({
   open,
   onClose,
   expressionId,
-}: Omit<DialogProps, "title" | "children"> & { expressionId: string }) {
+}: Readonly<
+  Omit<DialogProps, "title" | "children"> & { expressionId: string }
+>) {
   const [pending, setPending] = useState(false);
 
   return (

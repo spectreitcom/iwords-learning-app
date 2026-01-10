@@ -25,9 +25,9 @@ import {
   unblockAdminUser,
 } from "@/features/admin-users/actions";
 
-type Props = {
+type Props = Readonly<{
   adminUser: AdminUser;
-};
+}>;
 
 export function AdminUsersTableItemActions({ adminUser }: Props) {
   const [showAlert, setShowAlert] = useState(false);

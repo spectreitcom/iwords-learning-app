@@ -4,9 +4,9 @@ import { getExpressionContext } from "@/features/sentence-training/actions";
 import { notFound } from "next/navigation";
 import { SentenceTrainer } from "@/features/sentence-training/components/sentence-trainer";
 
-type Props = {
+type Props = Readonly<{
   params: Promise<{ expressionContextId: string }>;
-};
+}>;
 
 export default async function SentenceTrainingPage({ params }: Props) {
   const { expressionContextId } = await params;
@@ -19,9 +19,9 @@ export default async function SentenceTrainingPage({ params }: Props) {
 
 async function AwaitedContent({
   expressionContextId,
-}: {
+}: Readonly<{
   expressionContextId: string;
-}) {
+}>) {
   const expressionContext = await getExpressionContext(expressionContextId);
   if (!expressionContext) notFound();
 

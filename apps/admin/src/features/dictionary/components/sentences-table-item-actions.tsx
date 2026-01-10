@@ -29,11 +29,11 @@ import {
 } from "@/components/ui/dialog";
 import { CreateSentenceForm } from "@/features/dictionary/components/create-sentence-form";
 
-type Props = {
+type Props = Readonly<{
   sentence: Sentence;
   expressionId: string;
   expressionContextId: string;
-};
+}>;
 
 export function SentencesTableItemActions({
   sentence,
@@ -125,12 +125,12 @@ function Alert({
   );
 }
 
-type ModalProps = {
+type ModalProps = Readonly<{
   open: boolean;
   onClose: () => void;
   title: string;
   children: ReactNode;
-};
+}>;
 
 function Modal({ open, onClose, title, children }: ModalProps) {
   return (

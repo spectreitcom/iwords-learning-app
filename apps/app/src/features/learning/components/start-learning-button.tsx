@@ -5,11 +5,11 @@ import { redirect } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { beginBox } from "@/features/learning/actions";
 
-type Props = {
+type Props = Readonly<{
   isBoxStarted: boolean;
   boxId: string;
   disabled?: boolean;
-};
+}>;
 
 export function StartLearningButton({ isBoxStarted, boxId, disabled }: Props) {
   const { mutateAsync, isPending } = useMutation({
