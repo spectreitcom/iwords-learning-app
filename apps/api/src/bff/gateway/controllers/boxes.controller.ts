@@ -20,6 +20,7 @@ import { GetBoxesListQueryDto } from '../dtos/get-boxes-list-query.dto';
 import { ClerkAuthGuard } from '../auth/clerk-auth.guard';
 import { DictionaryApiService } from '../../../dictionary/application/services/dictionary-api.service';
 import { CurrentUserId } from '../auth/current-user-id.decorator';
+import BoxRepetitionApiService from '../../../box-repetition/application/services/box-repetition-api.service';
 
 @UseGuards(ClerkAuthGuard)
 @ApiTags('App Boxes')
@@ -28,6 +29,7 @@ export class BoxesController {
   constructor(
     private readonly boxApiService: BoxApiService,
     private readonly dictionaryApiService: DictionaryApiService,
+    private readonly boxRepetitionApiService: BoxRepetitionApiService,
   ) {}
 
   @ApiBearerAuth('app-auth')
@@ -81,6 +83,52 @@ export class BoxesController {
       ...response,
       data,
     };
+  }
+
+  @ApiBearerAuth('app-auth')
+  @ApiOperation({ summary: 'Returns the boxes for today repetitions' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Returns the boxes for today repetitions',
+    schema: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          boxId: { type: 'string', format: 'uuid' },
+          title: { type: 'string' },
+          expressionsCount: { type: 'number', format: 'int32' },
+          isFinished: { type: 'boolean' },
+          repetitionCount: { type: 'number', format: 'int32' },
+        },
+      },
+    },
+  })
+  @Get('today')
+  async getBoxesForToday(@CurrentUserId() userId: string) {
+    const boxIds =
+      await this.boxRepetitionApiService.getBoxIdsForCurrentRepetition(userId);
+    if (!boxIds.length) return [];
+
+    const boxes = await this.boxApiService.getBoxesByIds(boxIds);
+
+    const boxesData = await this.boxRepetitionApiService.getBoxesRepetitionData(
+      userId,
+      boxIds,
+    );
+
+    const isBoxFinishedArray =
+      await this.boxApiService.getInformationIfBoxIsFinishedByBoxIds(boxIds);
+
+    return boxes.map((box) => ({
+      boxId: box.boxId,
+      title: box.title,
+      expressionsCount: box.expressionContextIds.length,
+      isFinished:
+        isBoxFinishedArray.find((i) => i.boxId === box.boxId)?.isFinished ??
+        false,
+      repetitionCount: boxesData.find((i) => i.boxId === box.boxId)?.count ?? 0,
+    }));
   }
 
   @ApiBearerAuth('app-auth')
