@@ -244,8 +244,11 @@ function LearningSummary({
 }) {
   const percent = total > 0 ? Math.round((learned / total) * 100) : 0;
 
+  const isFinishedBoxFnInvoked = useRef(false);
+
   useEffect(() => {
-    if (boxId && !repetitionMode) {
+    if (boxId && !repetitionMode && !isFinishedBoxFnInvoked.current) {
+      isFinishedBoxFnInvoked.current = true;
       finishBox(boxId).then();
     }
   }, [boxId, repetitionMode]);
