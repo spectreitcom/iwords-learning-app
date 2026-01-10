@@ -19,7 +19,16 @@ export class BasicRepetitionGeneratorService
         orderBy: { lastLearned: 'asc' },
       });
 
-    const boxIds = repetitionItems.map((item) => item.boxId);
+    let boxIds: string[] = [];
+
+    if (!repetitionItems.length) {
+      const boxes = await this.prismaService.box.findMany({
+        take: 10,
+      });
+      boxIds = boxes.map((box) => box.id);
+    } else {
+      boxIds = repetitionItems.map((item) => item.boxId);
+    }
 
     if (!record) {
       await this.prismaService.boxDailyRepetition.create({
