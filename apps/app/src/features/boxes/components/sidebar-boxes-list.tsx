@@ -6,7 +6,6 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-  SidebarMenuBadge,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { useBoxesListQuery } from "@/features/boxes/hooks";
