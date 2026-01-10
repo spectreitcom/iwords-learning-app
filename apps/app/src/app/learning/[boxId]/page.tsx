@@ -4,9 +4,9 @@ import { getBoxDetails } from "@/features/boxes/actions";
 import { LearningMain } from "@/features/learning/components/learning-main";
 import _ from "lodash";
 
-type Props = {
+type Props = Readonly<{
   params: Promise<{ boxId: string }>;
-};
+}>;
 
 export default async function LearningPage({ params }: Props) {
   const { boxId } = await params;
@@ -17,7 +17,7 @@ export default async function LearningPage({ params }: Props) {
   );
 }
 
-async function AwaitedContent({ boxId }: { boxId: string }) {
+async function AwaitedContent({ boxId }: Readonly<{ boxId: string }>) {
   const boxDetails = await getBoxDetails(boxId);
   const items = _.shuffle(boxDetails.items);
   return (

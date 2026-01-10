@@ -22,9 +22,9 @@ import {
 import { User } from "@/features/users/types";
 import { blockUser, unblockUser } from "@/features/users/actions";
 
-type Props = {
+type Props = Readonly<{
   user: User;
-};
+}>;
 
 export function UsersTableItemActions({ user }: Props) {
   const [showAlert, setShowAlert] = useState(false);

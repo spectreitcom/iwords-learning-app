@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-type Props = {
+type Props = Readonly<{
   currentPage: number;
   total: number;
   take: number;
   otherSearchParams?: Record<string, string>;
-};
+}>;
 
 export function Pagination({
   currentPage,

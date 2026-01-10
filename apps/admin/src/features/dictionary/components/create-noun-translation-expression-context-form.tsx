@@ -18,11 +18,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useId } from "react";
 import { Label } from "@/components/ui/label";
 
-type Props = {
+type Props = Readonly<{
   onSubmitted: (data: CreateNounExpressionContextData) => void;
   defaultValues?: CreateNounExpressionContextData;
   pending?: boolean;
-};
+}>;
 
 export function CreateNounExpressionContextForm({
   onSubmitted,

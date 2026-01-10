@@ -24,9 +24,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
-type Props = {
+type Props = Readonly<{
   params: Promise<{ boxId: string }>;
-};
+}>;
 
 export default async function BoxPreviewPage({ params }: Props) {
   const { boxId } = await params;
@@ -37,7 +37,7 @@ export default async function BoxPreviewPage({ params }: Props) {
   );
 }
 
-async function AwaitedContent({ boxId }: { boxId: string }) {
+async function AwaitedContent({ boxId }: Readonly<{ boxId: string }>) {
   const boxDetails = await getBoxDetails(boxId);
 
   return (
@@ -66,7 +66,7 @@ async function AwaitedContent({ boxId }: { boxId: string }) {
   );
 }
 
-function BoxItemPreview({ item }: { item: BoxItem }) {
+function BoxItemPreview({ item }: Readonly<{ item: BoxItem }>) {
   return (
     <Card className={"group"}>
       <CardContent>
@@ -140,7 +140,7 @@ function BoxItemPreview({ item }: { item: BoxItem }) {
   );
 }
 
-function IrregularVerbTable({ forms }: { forms: string[] }) {
+function IrregularVerbTable({ forms }: Readonly<{ forms: string[] }>) {
   return (
     <Table>
       <TableHeader>

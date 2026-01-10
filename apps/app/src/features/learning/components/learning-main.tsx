@@ -24,12 +24,12 @@ import { ExpressionContextType } from "@/lib/types";
 import { expressionTypeMap } from "@/features/boxes/utils";
 import { finishBox } from "@/features/boxes/actions";
 
-type Props = {
+type Props = Readonly<{
   boxItems: BoxItem[];
   title?: string;
   boxId?: string;
   repetitionMode?: boolean;
-};
+}>;
 
 type ListData = {
   learningViewType: LearningViewType;
@@ -233,7 +233,7 @@ function LearningSummary({
   onRestart,
   repetitionMode,
   boxId,
-}: {
+}: Readonly<{
   title: string;
   learned: number;
   total: number;
@@ -241,7 +241,7 @@ function LearningSummary({
   onRestart: () => void;
   repetitionMode?: boolean;
   boxId?: string;
-}) {
+}>) {
   const percent = total > 0 ? Math.round((learned / total) * 100) : 0;
 
   const isFinishedBoxFnInvoked = useRef(false);

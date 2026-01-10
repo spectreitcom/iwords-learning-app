@@ -16,12 +16,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 
-type Props = {
+type Props = Readonly<{
   onSubmitted: (data: CreateExpressionData) => void;
   showInfoPanel?: boolean;
   defaultValues?: CreateExpressionData;
   pending?: boolean;
-};
+}>;
 
 export function CreateExpressionForm({
   onSubmitted,
@@ -72,7 +72,7 @@ export function CreateExpressionForm({
   );
 }
 
-function InfoPanel({ phrase }: { phrase: string }) {
+function InfoPanel({ phrase }: Readonly<{ phrase: string }>) {
   return (
     <Alert variant={"destructive"}>
       <AlertTitle>Wyrażenie {phrase} już istnieje w bazie danych.</AlertTitle>

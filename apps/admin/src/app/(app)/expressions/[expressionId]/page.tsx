@@ -23,10 +23,10 @@ import { PageHeader } from "@/components/page-header";
 
 const TAKE = 10;
 
-type Props = {
-  params: Promise<{ expressionId: string }>;
-  searchParams: Promise<{ page: string }>;
-};
+type Props = Readonly<{
+  params: Promise<Readonly<{ expressionId: string }>>;
+  searchParams: Promise<Readonly<{ page: string }>>;
+}>;
 
 export default async function ExpressionContextsPage({
   params,
@@ -63,13 +63,13 @@ export default async function ExpressionContextsPage({
 async function AwaitedContent({
   expressionId,
   page,
-}: {
+}: Readonly<{
   expressionId: string;
   page: string;
-}) {
+}>) {
   const expressionContextsData = await getExpressionContexts(
     expressionId,
-    page ? parseInt(page) : 1,
+    page ? Number.parseInt(page) : 1,
     TAKE,
   );
 
@@ -102,10 +102,10 @@ async function AwaitedContent({
 function ContextsListTable({
   expressionContexts,
   expressionId,
-}: {
+}: Readonly<{
   expressionContexts: ExpressionContext[];
   expressionId: string;
-}) {
+}>) {
   return (
     <Table>
       <TableHeader>

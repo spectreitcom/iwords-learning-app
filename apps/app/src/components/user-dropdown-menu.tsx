@@ -10,9 +10,9 @@ import {
 } from "admin/src/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
-type Props = {
+type Props = Readonly<{
   loggedUser: CurrentLoggedUser;
-};
+}>;
 
 export function UserDropdownMenu({ loggedUser }: Props) {
   const { signOut } = useAuth();

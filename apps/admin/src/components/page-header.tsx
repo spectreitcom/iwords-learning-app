@@ -2,14 +2,14 @@ import Link from "next/link";
 import { ChevronLeftIcon } from "lucide-react";
 import { ReactNode } from "react";
 
-type PageHeaderProps = {
+type PageHeaderProps = Readonly<{
   title: string;
   backLink?: {
     href: string;
     label?: string;
   };
   subtitle?: ReactNode;
-};
+}>;
 
 export function PageHeader({ title, backLink, subtitle }: PageHeaderProps) {
   return (

@@ -18,11 +18,13 @@ import { PageHeader } from "@/components/page-header";
 
 const TAKE = 10;
 
-type Props = {
-  searchParams: Promise<{
-    page: string;
-  }>;
-};
+type Props = Readonly<{
+  searchParams: Promise<
+    Readonly<{
+      page: string;
+    }>
+  >;
+}>;
 
 export default async function UsersPage({ searchParams }: Props) {
   const searchParamsValues = await searchParams;
@@ -46,9 +48,11 @@ export default async function UsersPage({ searchParams }: Props) {
 async function AwaitedContent({
   searchParamsValues,
 }: {
-  searchParamsValues: { page: string };
+  searchParamsValues: Readonly<{ page: string }>;
 }) {
-  const page = searchParamsValues.page ? parseInt(searchParamsValues.page) : 1;
+  const page = searchParamsValues.page
+    ? Number.parseInt(searchParamsValues.page)
+    : 1;
   const usersData = await getUsers(page, TAKE);
   if (!usersData.data?.length)
     return (
@@ -76,7 +80,7 @@ async function AwaitedContent({
   );
 }
 
-function UsersListTable({ users }: { users: User[] }) {
+function UsersListTable({ users }: Readonly<{ users: User[] }>) {
   return (
     <Table className={"w-full"}>
       <TableHeader>

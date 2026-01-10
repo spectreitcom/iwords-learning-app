@@ -1,11 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Search } from "lucide-react";
 
-type Props = {
+type Props = Readonly<{
   heading: string;
   description: string;
   description2?: string;
-};
+}>;
 
 export function NoDataPlaceholder({
   heading,

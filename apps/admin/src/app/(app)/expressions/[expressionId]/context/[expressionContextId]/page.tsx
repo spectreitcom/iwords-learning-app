@@ -20,9 +20,11 @@ import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 import { PageHeader } from "@/components/page-header";
 import { GenerateSentences } from "@/features/dictionary/components/generate-sentences";
 
-type Props = {
-  params: Promise<{ expressionId: string; expressionContextId: string }>;
-};
+type Props = Readonly<{
+  params: Promise<
+    Readonly<{ expressionId: string; expressionContextId: string }>
+  >;
+}>;
 
 export default async function ExpressionContextDetailsPage({ params }: Props) {
   const { expressionId, expressionContextId } = await params;
@@ -46,10 +48,10 @@ export default async function ExpressionContextDetailsPage({ params }: Props) {
 async function AwaitedContent({
   expressionId,
   expressionContextId,
-}: {
+}: Readonly<{
   expressionId: string;
   expressionContextId: string;
-}) {
+}>) {
   const expression = await getExpression(expressionId);
   const expressionContext =
     await getExpressionContextDetails(expressionContextId);
@@ -88,11 +90,11 @@ function SentencesList({
   sentences,
   expressionId,
   expressionContextId,
-}: {
+}: Readonly<{
   sentences: Sentence[];
   expressionId: string;
   expressionContextId: string;
-}) {
+}>) {
   if (!sentences.length)
     return (
       <NoDataPlaceholder

@@ -45,9 +45,9 @@ import { CreateNounExpressionContextForm } from "@/features/dictionary/component
 import { CreateIrregularVerbExpressionContextForm } from "@/features/dictionary/components/create-irregular-verb-expression-context-form";
 import Link from "next/link";
 
-type Props = {
+type Props = Readonly<{
   expressionContext: ExpressionContext;
-};
+}>;
 
 export function ExpressionContextsTableItemActions({
   expressionContext,
@@ -179,12 +179,12 @@ export function ExpressionContextsTableItemActions({
   );
 }
 
-type ModalProps = {
+type ModalProps = Readonly<{
   open: boolean;
   onClose: () => void;
   title: string;
   children: ReactNode;
-};
+}>;
 
 function Modal({ open, onClose, title, children }: ModalProps) {
   return (

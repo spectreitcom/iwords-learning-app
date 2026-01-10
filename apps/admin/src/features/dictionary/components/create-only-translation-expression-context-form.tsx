@@ -15,11 +15,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-type Props = {
+type Props = Readonly<{
   onSubmitted: (data: CreateOnlyTranslationExpressionContextData) => void;
   defaultValues?: CreateOnlyTranslationExpressionContextData;
   pending?: boolean;
-};
+}>;
 
 export function CreateOnlyTranslationExpressionContextForm({
   onSubmitted,

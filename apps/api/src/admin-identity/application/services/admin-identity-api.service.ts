@@ -25,8 +25,8 @@ import { ValidateResetPasswordTokenQuery } from '../queries/validate-reset-passw
 @Injectable()
 export class AdminIdentityApiService implements AdminIdentityApi {
   constructor(
-    private queryBus: QueryBus,
-    private commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+    private readonly commandBus: CommandBus,
   ) {}
 
   async getUserById(adminUserId: string): Promise<AdminUserView> {

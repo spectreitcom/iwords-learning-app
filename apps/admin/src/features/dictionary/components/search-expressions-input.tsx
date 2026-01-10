@@ -5,10 +5,10 @@ import { useState, useMemo, useCallback } from "react";
 import { redirect } from "next/navigation";
 import { useDebounceCallback } from "usehooks-ts";
 
-type Props = {
+type Props = Readonly<{
   searchText: string;
   otherSearchParams: Record<string, string>;
-};
+}>;
 
 export function SearchExpressionsInput({
   searchText,

@@ -11,11 +11,11 @@ import { CreateExpressionForm } from "@/features/dictionary/components/create-ex
 import { Expression } from "@/features/dictionary/types";
 import { useState } from "react";
 
-type Props = {
+type Props = Readonly<{
   expression: Expression;
   open: boolean;
   onClose: () => void;
-};
+}>;
 
 export function EditExpressionModal({ expression, open, onClose }: Props) {
   const [pending, setPending] = useState(false);

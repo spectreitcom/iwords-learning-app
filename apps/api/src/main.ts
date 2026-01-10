@@ -100,7 +100,7 @@ async function bootstrap() {
   ['SIGINT', 'SIGTERM'].forEach((signal) => {
     process.on(signal as NodeJS.Signals, () => {
       // Avoid returning a Promise from the event listener to satisfy lint rule
-      void app.close().catch((e) => {
+      app.close().catch((e) => {
         console.error('Error during graceful shutdown:', e);
       });
     });

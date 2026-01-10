@@ -23,9 +23,9 @@ import { Box } from "@/features/boxes/types";
 import { deleteBox } from "@/features/boxes/actions";
 import { EditBoxModal } from "@/features/boxes/components/edit-box-modal";
 
-type Props = {
+type Props = Readonly<{
   box: Box;
-};
+}>;
 
 export function BoxesTableItemActions({ box }: Props) {
   const [showAlert, setShowAlert] = useState(false);
@@ -66,7 +66,7 @@ function Alert({
   open,
   onClose,
   box,
-}: Props & { open: boolean; onClose: () => void }) {
+}: Props & Readonly<{ open: boolean; onClose: () => void }>) {
   const [removing, setRemoving] = useState(false);
 
   const handleDelete = async () => {

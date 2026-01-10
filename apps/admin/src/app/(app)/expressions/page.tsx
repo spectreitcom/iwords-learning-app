@@ -20,12 +20,14 @@ import { PageHeader } from "@/components/page-header";
 
 const TAKE = 10;
 
-type Props = {
-  searchParams: Promise<{
-    page: string;
-    searchText: string;
-  }>;
-};
+type Props = Readonly<{
+  searchParams: Promise<
+    Readonly<{
+      page: string;
+      searchText: string;
+    }>
+  >;
+}>;
 
 export default async function ExpressionsPage({ searchParams }: Props) {
   const searchParamsValues = await searchParams;
@@ -58,9 +60,11 @@ export default async function ExpressionsPage({ searchParams }: Props) {
 async function AwaitedContent({
   searchParamsValues,
 }: {
-  searchParamsValues: { page: string; searchText: string };
+  searchParamsValues: Readonly<{ page: string; searchText: string }>;
 }) {
-  const page = searchParamsValues.page ? parseInt(searchParamsValues.page) : 1;
+  const page = searchParamsValues.page
+    ? Number.parseInt(searchParamsValues.page)
+    : 1;
   const searchText = searchParamsValues.searchText || "";
   const expressionsData = await getExpressions(page, searchText, TAKE);
   if (!expressionsData.data?.length)
@@ -90,7 +94,9 @@ async function AwaitedContent({
   );
 }
 
-function ExpressionsListTable({ expressions }: { expressions: Expression[] }) {
+function ExpressionsListTable({
+  expressions,
+}: Readonly<{ expressions: Expression[] }>) {
   return (
     <Table className={"w-full"}>
       <TableHeader>

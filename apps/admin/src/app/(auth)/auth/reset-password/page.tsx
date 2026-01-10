@@ -8,9 +8,9 @@ import {
 import { RequestForResetPasswordForm } from "@/features/admin-users/components/request-for-reset-password-form";
 import { ResetPasswordForm } from "@/features/admin-users/components/reset-password-form";
 
-type Props = {
-  searchParams: Promise<{ token: string }>;
-};
+type Props = Readonly<{
+  searchParams: Promise<Readonly<{ token: string }>>;
+}>;
 
 export default async function ResetPasswordPage({ searchParams }: Props) {
   const { token } = await searchParams;

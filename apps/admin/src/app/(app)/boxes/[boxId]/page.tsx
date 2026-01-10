@@ -15,9 +15,9 @@ import { AddItemToBoxModal } from "@/features/boxes/components/add-item-to-box-m
 import { RemoveBoxItemButton } from "@/features/boxes/components/remove-box-item-button";
 import { PageHeader } from "@/components/page-header";
 
-type Props = {
-  params: Promise<{ boxId: string }>;
-};
+type Props = Readonly<{
+  params: Promise<Readonly<{ boxId: string }>>;
+}>;
 
 export default async function BoxDetailPage({ params }: Props) {
   const { boxId } = await params;
@@ -53,7 +53,9 @@ export default async function BoxDetailPage({ params }: Props) {
   );
 }
 
-async function AwaitedContent({ boxDetails }: { boxDetails: BoxDetails }) {
+async function AwaitedContent({
+  boxDetails,
+}: Readonly<{ boxDetails: BoxDetails }>) {
   if (!boxDetails.boxItems?.length)
     return (
       <NoDataPlaceholder
@@ -73,10 +75,10 @@ async function AwaitedContent({ boxDetails }: { boxDetails: BoxDetails }) {
 function BoxItemsTable({
   boxItems,
   boxId,
-}: {
+}: Readonly<{
   boxItems: BoxItem[];
   boxId: string;
-}) {
+}>) {
   return (
     <Table>
       <TableHeader>

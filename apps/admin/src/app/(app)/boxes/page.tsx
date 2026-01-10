@@ -19,11 +19,13 @@ import { PageHeader } from "@/components/page-header";
 
 const TAKE = 10;
 
-type Props = {
-  searchParams: Promise<{
-    page: string;
-  }>;
-};
+type Props = Readonly<{
+  searchParams: Promise<
+    Readonly<{
+      page: string;
+    }>
+  >;
+}>;
 
 export default async function BoxesPage({ searchParams }: Props) {
   const searchParamsValues = await searchParams;
@@ -52,9 +54,11 @@ export default async function BoxesPage({ searchParams }: Props) {
 async function AwaitedContent({
   searchParamsValues,
 }: {
-  searchParamsValues: { page: string };
+  searchParamsValues: Readonly<{ page: string }>;
 }) {
-  const page = searchParamsValues.page ? parseInt(searchParamsValues.page) : 1;
+  const page = searchParamsValues.page
+    ? Number.parseInt(searchParamsValues.page)
+    : 1;
   const boxesData = await getBoxes(page, TAKE);
   if (!boxesData.data?.length)
     return (
@@ -83,7 +87,7 @@ async function AwaitedContent({
   );
 }
 
-function BoxesListTable({ boxes }: { boxes: Box[] }) {
+function BoxesListTable({ boxes }: Readonly<{ boxes: Box[] }>) {
   return (
     <Table className={"w-full"}>
       <TableHeader>

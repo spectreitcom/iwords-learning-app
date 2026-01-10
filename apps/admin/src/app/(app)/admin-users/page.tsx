@@ -20,9 +20,11 @@ import { PageHeader } from "@/components/page-header";
 const TAKE = 10;
 
 type Props = {
-  searchParams: Promise<{
-    page: string;
-  }>;
+  searchParams: Promise<
+    Readonly<{
+      page: string;
+    }>
+  >;
 };
 
 export default async function AdminUsersPage({ searchParams }: Props) {
@@ -52,9 +54,11 @@ export default async function AdminUsersPage({ searchParams }: Props) {
 async function AwaitedContent({
   searchParamsValues,
 }: {
-  searchParamsValues: { page: string };
+  searchParamsValues: Readonly<{ page: string }>;
 }) {
-  const page = searchParamsValues.page ? parseInt(searchParamsValues.page) : 1;
+  const page = searchParamsValues.page
+    ? Number.parseInt(searchParamsValues.page)
+    : 1;
   const adminUsersData = await getAdminUsers(page, TAKE);
   if (!adminUsersData.data?.length)
     return (
@@ -83,7 +87,9 @@ async function AwaitedContent({
   );
 }
 
-function AdminUsersListTable({ adminUsers }: { adminUsers: AdminUser[] }) {
+function AdminUsersListTable({
+  adminUsers,
+}: Readonly<{ adminUsers: AdminUser[] }>) {
   return (
     <Table className={"w-full"}>
       <TableHeader>

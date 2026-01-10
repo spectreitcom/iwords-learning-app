@@ -30,10 +30,10 @@ function useEnterToContinue(enabled: boolean, onOk: () => void) {
 export function AnswerModal({
   answerData,
   onOk,
-}: {
+}: Readonly<{
   answerData: GeneralAnswer | null;
   onOk: () => void;
-}) {
+}>) {
   const open = !!answerData;
   useEnterToContinue(open, onOk);
 
@@ -106,10 +106,10 @@ export function AnswerModal({
 export function IrregularVerbAnswerModal({
   answerData,
   onOk,
-}: {
+}: Readonly<{
   answerData: IrregularVerbAnswer | null;
   onOk: () => void;
-}) {
+}>) {
   const open = !!answerData;
   useEnterToContinue(open, onOk);
 
