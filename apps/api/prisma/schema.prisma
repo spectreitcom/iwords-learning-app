@@ -234,3 +234,27 @@ model Repetition {
 }
 
 //----------------------------------
+
+// Box Repetions Bounded Context
+
+model BoxRepetitionUserData {
+  id             String   @id @default(uuid())
+  userId         String
+  createdAt      DateTime @default(now()) @db.Date
+  lastLearned    DateTime @db.Date
+  nextRepetition DateTime
+  count          Int      @default(0)
+  boxId          String
+
+  @@unique([boxId, userId])
+}
+
+model BoxDailyRepetition {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  boxIds    String[] @default([])
+  createdAt DateTime @default(now()) @db.Date
+  updatedAt DateTime @updatedAt @db.Date
+}
+
+//----------------------------------

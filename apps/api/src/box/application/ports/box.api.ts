@@ -37,4 +37,6 @@ export abstract class BoxApi {
   abstract getInformationIfBoxIsFinishedByBoxIds(
     boxIds: string[],
   ): Promise<BoxIsFinishedView[]>;
+
+  abstract getBoxesByIds(boxIds: string[]): Promise<BoxView[]>;
 }
