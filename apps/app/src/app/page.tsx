@@ -1,4 +1,5 @@
 import { LastSevenDaysGoalsProgressWidget } from "@/features/gamification/components/last-seven-days-goals-progress-widget";
+import { BoxRepetitionsWidget } from "@/features/box-repetition/components/box-repetitions-widget";
 
 export default async function Home() {
   return (
@@ -7,9 +8,15 @@ export default async function Home() {
         Dashboard
       </h1>
 
-      <section className={"max-w-5xl"}>
-        <LastSevenDaysGoalsProgressWidget />
-      </section>
+      <div className="grid gap-6">
+        <section className={"max-w-5xl"}>
+          <LastSevenDaysGoalsProgressWidget />
+        </section>
+
+        <section className={"max-w-5xl"}>
+          <BoxRepetitionsWidget />
+        </section>
+      </div>
     </div>
   );
 }
