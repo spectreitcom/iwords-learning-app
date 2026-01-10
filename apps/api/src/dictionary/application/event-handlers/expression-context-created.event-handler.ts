@@ -40,7 +40,7 @@ export class ExpressionContextCreatedEventHandler
         isIrregular,
         isCountable,
         translation,
-        forms: forms ? forms : [],
+        forms: forms ?? [],
         phrase: expression.phrase,
         expressionId,
       },

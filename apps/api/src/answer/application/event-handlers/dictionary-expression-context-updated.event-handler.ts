@@ -24,7 +24,6 @@ export class DictionaryExpressionContextUpdatedEventHandler
 
   async handle(event: IntegrationEvent<EventPayload>) {
     if (event.type !== 'dictionary.expression-context-updated') return null;
-
     this.logger.debug(JSON.stringify(event));
 
     const {
@@ -55,7 +54,7 @@ export class DictionaryExpressionContextUpdatedEventHandler
         isCountable,
         isIrregular,
         translation,
-        forms: forms ? forms : [],
+        forms: forms ?? [],
       },
     });
   }

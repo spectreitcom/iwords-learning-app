@@ -26,7 +26,6 @@ export class DictionaryExpressionContextCreatedEventHandler
 
   async handle(event: IntegrationEvent<EventPayload>) {
     if (event.type !== 'dictionary.expression-context-created') return null;
-
     this.logger.debug(JSON.stringify(event));
 
     const {
@@ -48,7 +47,7 @@ export class DictionaryExpressionContextCreatedEventHandler
         isIrregular,
         phrase,
         translation,
-        forms: forms ? forms : [],
+        forms: forms ?? [],
         type,
       },
     });

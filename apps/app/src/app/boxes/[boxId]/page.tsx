@@ -103,7 +103,7 @@ function BoxItemPreview({ item }: Readonly<{ item: BoxItem }>) {
           )}
         </div>
 
-        {item.definition && (
+        {item.definition ? (
           <div className={"mt-4"}>
             <p>
               <strong>Definicja:</strong> {item.definition}
@@ -115,6 +115,8 @@ function BoxItemPreview({ item }: Readonly<{ item: BoxItem }>) {
               </p>
             )}
           </div>
+        ) : (
+          ""
         )}
 
         {item.type === "irregular_verb" && (
@@ -123,7 +125,7 @@ function BoxItemPreview({ item }: Readonly<{ item: BoxItem }>) {
           </div>
         )}
 
-        {item.sentences.length && (
+        {item.sentences.length ? (
           <div className={"mt-4 flex flex-col gap-1"}>
             {item.sentences.map((sentence) => (
               <div key={sentence.sentenceId}>
@@ -134,6 +136,8 @@ function BoxItemPreview({ item }: Readonly<{ item: BoxItem }>) {
               </div>
             ))}
           </div>
+        ) : (
+          ""
         )}
       </CardContent>
     </Card>

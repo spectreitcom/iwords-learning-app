@@ -255,7 +255,7 @@ export class DictionaryApiService implements DictionaryApi {
     content: string,
     translation: string,
   ): Promise<void> {
-    const command = new UpdateSentenceCommand(sentenceId, content, translation);
+    const command = new UpdateSentenceCommand(sentenceId, translation, content);
     return await this.commandBus.execute(command);
   }
 
