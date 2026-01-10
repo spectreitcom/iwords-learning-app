@@ -1,6 +1,5 @@
 "use client";
 
-import { BoxItem } from "@/features/boxes/types";
 import { Progress } from "@/components/ui/progress";
 import { SimpleTranslationView } from "@/features/learning/components/simple-translation-view";
 import { LinkedList, LinkedListNode } from "@/lib/linked-list";
@@ -23,9 +22,10 @@ import { Button } from "@/components/ui/button";
 import { ExpressionContextType } from "@/lib/types";
 import { expressionTypeMap } from "@/features/boxes/utils";
 import { finishBox } from "@/features/boxes/actions";
+import { BoxItem } from "@/features/boxes/types";
 
 type Props = Readonly<{
-  boxItems: BoxItem[];
+  boxItems: Omit<BoxItem, "definition" | "definitionTranslation">[];
   title?: string;
   boxId?: string;
   repetitionMode?: boolean;
