@@ -15,14 +15,24 @@ import { CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export function SidebarBoxesList() {
-  const { data, isFetching, isLoading, isPending } = useBoxesListQuery();
+  const {
+    data,
+    isFetching,
+    isLoading,
+    isPending,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useBoxesListQuery();
   const pathname = usePathname();
+
+  const boxes = data?.pages.flatMap((page) => page.data) || [];
 
   return (
     <SidebarMenuItem>
       <SidebarMenuButton>Boxy</SidebarMenuButton>
       <SidebarMenuSub>
-        {data?.data.map((boxItem) => (
+        {boxes.map((boxItem) => (
           <SidebarMenuSubItem key={boxItem.boxId}>
             <SidebarMenuSubButton
               asChild
@@ -60,7 +70,20 @@ export function SidebarBoxesList() {
             </SidebarMenuSubButton>
           </SidebarMenuSubItem>
         ))}
-        {(isPending || isLoading || isFetching) && <Spinner />}
+        {hasNextPage && (
+          <SidebarMenuSubItem>
+            <SidebarMenuSubButton
+              onClick={() => fetchNextPage()}
+              disabled={isFetchingNextPage}
+              className="text-xs text-muted-foreground hover:text-foreground justify-center"
+            >
+              {isFetchingNextPage ? <Spinner /> : "Załaduj więcej"}
+            </SidebarMenuSubButton>
+          </SidebarMenuSubItem>
+        )}
+        {(isPending || isLoading || (isFetching && !isFetchingNextPage)) && (
+          <Spinner />
+        )}
       </SidebarMenuSub>
     </SidebarMenuItem>
   );
