@@ -56,7 +56,7 @@ export function TableSkeletonLoader({
                 const width = getSkeletonWidth(cellIndex, isLast);
 
                 return (
-                  <TableCell key={cellIndex}>
+                  <TableCell key={randomUUID()}>
                     <div
                       className={`flex items-center ${isLast ? "" : "space-x-3"}`}
                     >
