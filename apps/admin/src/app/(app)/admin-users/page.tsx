@@ -19,13 +19,11 @@ import { PageHeader } from "@/components/page-header";
 
 const TAKE = 10;
 
-type Props = {
-  searchParams: Promise<
-    Readonly<{
-      page: string;
-    }>
-  >;
-};
+type Props = Readonly<{
+  searchParams: Promise<{
+    page: string;
+  }>;
+}>;
 
 export default async function AdminUsersPage({ searchParams }: Props) {
   const searchParamsValues = await searchParams;
@@ -53,9 +51,9 @@ export default async function AdminUsersPage({ searchParams }: Props) {
 
 async function AwaitedContent({
   searchParamsValues,
-}: {
-  searchParamsValues: Readonly<{ page: string }>;
-}) {
+}: Readonly<{
+  searchParamsValues: { page: string };
+}>) {
   const page = searchParamsValues.page
     ? Number.parseInt(searchParamsValues.page)
     : 1;

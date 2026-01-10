@@ -21,12 +21,10 @@ import { PageHeader } from "@/components/page-header";
 const TAKE = 10;
 
 type Props = Readonly<{
-  searchParams: Promise<
-    Readonly<{
-      page: string;
-      searchText: string;
-    }>
-  >;
+  searchParams: Promise<{
+    page: string;
+    searchText: string;
+  }>;
 }>;
 
 export default async function ExpressionsPage({ searchParams }: Props) {
@@ -59,9 +57,9 @@ export default async function ExpressionsPage({ searchParams }: Props) {
 
 async function AwaitedContent({
   searchParamsValues,
-}: {
-  searchParamsValues: Readonly<{ page: string; searchText: string }>;
-}) {
+}: Readonly<{
+  searchParamsValues: { page: string; searchText: string };
+}>) {
   const page = searchParamsValues.page
     ? Number.parseInt(searchParamsValues.page)
     : 1;

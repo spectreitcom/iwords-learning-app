@@ -23,9 +23,9 @@ import { deleteExpression } from "@/features/dictionary/actions";
 import { EditExpressionModal } from "@/features/dictionary/components/edit-expression-modal";
 import { Expression } from "@/features/dictionary/types";
 
-type Props = {
+type Props = Readonly<{
   expression: Expression;
-};
+}>;
 
 export function ExpressionTableItemActions({ expression }: Props) {
   const [open, setOpen] = useState(false);
