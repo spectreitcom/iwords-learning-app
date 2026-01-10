@@ -17,6 +17,8 @@ import { MarkBoxAsFinishedCommand } from '../commands/mark-box-as-finished.comma
 import { BoxIsFinishedView } from '../../view/box-is-finished.view';
 import { GetInformationIfBoxIsFinishedByBoxIdsQuery } from '../queries/get-information-if-box-is-finished-by-box-ids.query';
 import { GetBoxesByIdsQuery } from '../queries/get-boxes-by-ids.query';
+import { BoxIsStartedView } from '../../view/box-is-started.view';
+import { GetInformationIfBoxAlreadyStartedByBoxIdsQuery } from '../queries/get-information-if-box-already-started-by-box-ids.query';
 
 @Injectable()
 export class BoxApiService implements BoxApi {
@@ -104,6 +106,17 @@ export class BoxApiService implements BoxApi {
 
   async getBoxesByIds(boxIds: string[]): Promise<BoxView[]> {
     const query = new GetBoxesByIdsQuery(boxIds);
+    return await this.queryBus.execute(query);
+  }
+
+  async getInformationIfBoxIsAlreadyStartedByBoxIds(
+    userId: string,
+    boxIds: string[],
+  ): Promise<BoxIsStartedView[]> {
+    const query = new GetInformationIfBoxAlreadyStartedByBoxIdsQuery(
+      userId,
+      boxIds,
+    );
     return await this.queryBus.execute(query);
   }
 }
