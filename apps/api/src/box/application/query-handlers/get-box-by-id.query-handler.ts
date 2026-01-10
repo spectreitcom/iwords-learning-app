@@ -20,6 +20,11 @@ export class GetBoxByIdQueryHandler
     if (!record)
       throw new AppError('ENTITY_NOT_FOUND', `Box with id ${boxId} not found`);
 
-    return new BoxView(record.id, record.title, record.expressionContextIds);
+    return new BoxView(
+      record.id,
+      record.title,
+      record.expressionContextIds,
+      record.createdAt,
+    );
   }
 }

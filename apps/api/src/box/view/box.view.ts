@@ -3,5 +3,6 @@ export class BoxView {
     public readonly boxId: string,
     public readonly title: string,
     public readonly expressionContextIds: string[],
+    public readonly createdAt: Date,
   ) {}
 }

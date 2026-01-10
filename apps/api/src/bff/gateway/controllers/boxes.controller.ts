@@ -52,6 +52,8 @@ export class BoxesController {
                 type: 'array',
                 items: { type: 'string', format: 'uuid' },
               },
+              isAlreadyStarted: { type: 'boolean' },
+              isNew: { type: 'boolean' },
             },
           },
         },
@@ -61,15 +63,24 @@ export class BoxesController {
     },
   })
   @Get()
-  async getBoxesList(@Query() query: GetBoxesListQueryDto) {
+  async getBoxesList(
+    @Query() query: GetBoxesListQueryDto,
+    @CurrentUserId() userId: string,
+  ) {
     const response = await this.boxApiService.getBoxesList(
       query.take,
       query.page,
     );
 
+    const boxIds = response.data.map((box) => box.boxId);
+
     const finishedBoxesData =
-      await this.boxApiService.getInformationIfBoxIsFinishedByBoxIds(
-        response.data.map((box) => box.boxId),
+      await this.boxApiService.getInformationIfBoxIsFinishedByBoxIds(boxIds);
+
+    const isBoxAlreadyStartedArray =
+      await this.boxApiService.getInformationIfBoxIsAlreadyStartedByBoxIds(
+        userId,
+        boxIds,
       );
 
     const data = response.data.map((box) => ({
@@ -77,6 +88,13 @@ export class BoxesController {
       isFinished:
         finishedBoxesData.find((item) => item.boxId === box.boxId)
           ?.isFinished ?? false,
+      isAlreadyStarted:
+        isBoxAlreadyStartedArray.find((i) => i.boxId === box.boxId)
+          ?.isStarted ?? false,
+      isNew:
+        Math.abs(new Date().getTime() - box.createdAt.getTime()) /
+          (1000 * 60 * 60 * 24) <
+        2,
     }));
 
     return {

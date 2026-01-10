@@ -26,7 +26,8 @@ export class GetBoxesListQueryHandler
     const total = await this.prismaService.box.count();
 
     const data: BoxView[] = records.map(
-      (rec) => new BoxView(rec.id, rec.title, rec.expressionContextIds),
+      (rec) =>
+        new BoxView(rec.id, rec.title, rec.expressionContextIds, rec.createdAt),
     );
 
     return {

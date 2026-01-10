@@ -1,6 +1,7 @@
 import { BoxView } from '../../view/box.view';
 import { GetBoxesListQueryResponse } from '../query-handlers/get-boxes-list.query-handler';
 import { BoxIsFinishedView } from '../../view/box-is-finished.view';
+import { BoxIsStartedView } from '../../view/box-is-started.view';
 
 export abstract class BoxApi {
   abstract createBox(title: string): Promise<void>;
@@ -39,4 +40,9 @@ export abstract class BoxApi {
   ): Promise<BoxIsFinishedView[]>;
 
   abstract getBoxesByIds(boxIds: string[]): Promise<BoxView[]>;
+
+  abstract getInformationIfBoxIsAlreadyStartedByBoxIds(
+    userId: string,
+    boxIds: string[],
+  ): Promise<BoxIsStartedView[]>;
 }

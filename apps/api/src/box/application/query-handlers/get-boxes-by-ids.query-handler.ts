@@ -18,7 +18,12 @@ export class GetBoxesByIdsQueryHandler
 
     return records.map(
       (record) =>
-        new BoxView(record.id, record.title, record.expressionContextIds),
+        new BoxView(
+          record.id,
+          record.title,
+          record.expressionContextIds,
+          record.createdAt,
+        ),
     );
   }
 }
