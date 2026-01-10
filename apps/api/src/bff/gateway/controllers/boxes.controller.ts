@@ -92,8 +92,7 @@ export class BoxesController {
         isBoxAlreadyStartedArray.find((i) => i.boxId === box.boxId)
           ?.isStarted ?? false,
       isNew:
-        Math.abs(new Date().getTime() - box.createdAt.getTime()) /
-          (1000 * 60 * 60 * 24) <
+        Math.abs(Date.now() - box.createdAt.getTime()) / (1000 * 60 * 60 * 24) <
         2,
     }));
 
