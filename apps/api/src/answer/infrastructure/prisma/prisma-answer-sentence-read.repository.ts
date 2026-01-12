@@ -10,13 +10,13 @@ import { PrismaService } from '../../../common/prisma/prisma.service';
 export class PrismaAnswerSentenceReadRepository
   implements AnswerSentenceReadRepository
 {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   async findBySentenceId(
     sentenceId: string,
     tx?: PrismaTx,
   ): Promise<AnswerSentenceReadModel | null> {
-    const prisma = tx ?? this.prisma;
+    const prisma = tx ?? this.prismaService;
     const record = await prisma.answerSentenceReadModel.findUnique({
       where: { sentenceId },
     });
