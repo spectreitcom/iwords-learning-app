@@ -18,7 +18,6 @@ export abstract class FakeRepetitionClass extends RepetitionRepository {
 }
 
 export class FakeRepetitionRepository implements FakeRepetitionClass {
-  private lastDeletedItems: RepetitionModel[] = [];
   private data = new Map<string, RepetitionModel>();
   private aggregateSaved = false;
 
@@ -30,7 +29,6 @@ export class FakeRepetitionRepository implements FakeRepetitionClass {
     const item = this.data.get(repetitionId);
     if (item) {
       this.data.delete(repetitionId);
-      this.lastDeletedItems = [item];
     }
   }
 
@@ -38,7 +36,6 @@ export class FakeRepetitionRepository implements FakeRepetitionClass {
     for (const [repetitionId, value] of this.data.entries()) {
       if (value.userId === userId) {
         this.data.delete(repetitionId);
-        this.lastDeletedItems.push(value);
       }
     }
   }
@@ -50,7 +47,6 @@ export class FakeRepetitionRepository implements FakeRepetitionClass {
         value.expressionContextId === expressionContextId
       ) {
         this.data.delete(repetitionId);
-        this.lastDeletedItems.push(value);
       }
     }
   }
