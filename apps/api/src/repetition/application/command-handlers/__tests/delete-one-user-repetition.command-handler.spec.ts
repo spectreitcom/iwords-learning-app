@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { FakeRepetitionRepository } from '../../../../../__test/fakes/fake-repetition-repository';
+import { FakeRepetitionRepository } from '../../../../../__tests/fakes/fake-repetition-repository';
 import { DeleteOneUserRepetitionCommandHandler } from '../delete-one-user-repetition.command-handler';
 
 describe('DeleteOneUserRepetitionCommandHandler', () => {

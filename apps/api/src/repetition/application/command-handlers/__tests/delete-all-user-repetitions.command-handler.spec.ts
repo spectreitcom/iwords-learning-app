@@ -1,7 +1,7 @@
 import {
   FakeRepetitionRepository,
   RepetitionModel,
-} from '../../../../../__test/fakes/fake-repetition-repository';
+} from '../../../../../__tests/fakes/fake-repetition-repository';
 import { randomUUID } from 'node:crypto';
 import { DeleteAllUserRepetitionsCommandHandler } from '../delete-all-user-repetitions.command-handler';
 
