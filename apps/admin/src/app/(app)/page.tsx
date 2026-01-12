@@ -12,6 +12,8 @@ import {
   BoxesNumberWidget,
 } from "@/features/boxes/components/boxes-number-widget";
 
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <div className="space-y-6">
