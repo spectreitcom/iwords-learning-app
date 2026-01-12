@@ -1,22 +1,31 @@
-import { ExpressionContextType } from "@/lib/types";
+import { expressionContextTypeSchema } from "@/lib/types";
+import { z } from "zod";
 
-export type RepetitionExpressionContext = {
-  expressionContextId: string;
-  expressionId: string;
-  phrase: string;
-  translation: string;
-  type: ExpressionContextType;
-  forms: [string, string, string] | null;
-  isCountable: boolean;
-  isIrregular: boolean;
-  sentences: {
-    sentenceId: string;
-    content: string;
-    translation: string;
-  }[];
-};
+export const repetitionExpressionContextSchema = z.object({
+  expressionContextId: z.string(),
+  expressionId: z.string(),
+  phrase: z.string(),
+  translation: z.string(),
+  type: expressionContextTypeSchema,
+  forms: z.tuple([z.string(), z.string(), z.string()]).nullable(),
+  isCountable: z.boolean(),
+  isIrregular: z.boolean(),
+  sentences: z.array(
+    z.object({
+      sentenceId: z.string(),
+      content: z.string(),
+      translation: z.string(),
+    }),
+  ),
+});
 
-export type Repetition = {
-  repetitionId: string;
-  expressionContext: RepetitionExpressionContext;
-};
+export type RepetitionExpressionContext = z.infer<
+  typeof repetitionExpressionContextSchema
+>;
+
+export const repetitionSchema = z.object({
+  repetitionId: z.string(),
+  expressionContext: repetitionExpressionContextSchema,
+});
+
+export type Repetition = z.infer<typeof repetitionSchema>;
