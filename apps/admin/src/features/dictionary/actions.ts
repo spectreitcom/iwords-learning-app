@@ -1,16 +1,15 @@
 "use server";
 
 import { BACKEND_URL } from "@/lib/constants";
-import { CollectionWithPagination } from "@/lib/types";
 import {
-  CreateExpressionContextResponse,
-  CreateExpressionResponse,
-  Expression,
-  ExpressionContext,
-  ExpressionContextDetails,
-  GenerateExpressionContextDefinitionResponse,
-  GenerateSentencesForExpressionContextResponse,
-  SearchedDictionaryExpression,
+  createExpressionContextResponseSchema,
+  createExpressionResponseSchema,
+  expressionContextDetailsSchema,
+  expressionContextSchema,
+  expressionSchema,
+  generateExpressionContextDefinitionResponseSchema,
+  generateSentencesForExpressionContextResponseSchema,
+  searchedDictionaryExpressionSchema,
 } from "@/features/dictionary/types";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -23,83 +22,113 @@ import {
   CreateSentenceData,
 } from "@/features/dictionary/schemas";
 import { authFetch } from "@/lib/auth-fetch";
+import { collectionWithPaginationSchema } from "@/lib/types";
+import { z } from "zod";
 
 export async function getExpressions(page = 1, searchText?: string, take = 20) {
-  const urlSearchParams = new URLSearchParams();
-  urlSearchParams.append("page", page.toString());
-  urlSearchParams.append("take", take.toString());
-  if (searchText) {
-    urlSearchParams.append("searchText", searchText);
-  }
-  const response = await authFetch(
-    `${BACKEND_URL}/dictionary/expressions?${urlSearchParams.toString()}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append("page", page.toString());
+    urlSearchParams.append("take", take.toString());
+    if (searchText) {
+      urlSearchParams.append("searchText", searchText);
+    }
+    const response = await authFetch(
+      `${BACKEND_URL}/dictionary/expressions?${urlSearchParams.toString()}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    },
-  );
+    );
 
-  return (await response.json()) as CollectionWithPagination<Expression>;
+    const data = await response.json();
+    return collectionWithPaginationSchema(expressionSchema).parse(data);
+  } catch (error) {
+    console.error("Error in getExpressions:", error);
+    throw error;
+  }
 }
 
 export async function deleteExpression(expressionId: string) {
-  await authFetch(`${BACKEND_URL}/dictionary/expressions/${expressionId}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    await authFetch(`${BACKEND_URL}/dictionary/expressions/${expressionId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  revalidatePath("/expressions");
-  redirect("/expressions");
+    revalidatePath("/expressions");
+    redirect("/expressions");
+  } catch (error) {
+    console.error("Error in deleteExpression:", error);
+    throw error;
+  }
 }
 
 export async function createExpression(data: CreateExpressionData) {
-  const response = await authFetch(`${BACKEND_URL}/dictionary/expressions`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ ...data }),
-  });
+  try {
+    const response = await authFetch(`${BACKEND_URL}/dictionary/expressions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...data }),
+    });
 
-  revalidatePath("/expressions");
+    revalidatePath("/expressions");
 
-  return (await response.json()) as CreateExpressionResponse;
+    const responseData = await response.json();
+    return createExpressionResponseSchema.parse(responseData);
+  } catch (error) {
+    console.error("Error in createExpression:", error);
+    throw error;
+  }
 }
 
 export async function updateExpression(
   expressionId: string,
   data: CreateExpressionData,
 ) {
-  await authFetch(`${BACKEND_URL}/dictionary/expressions/${expressionId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ ...data }),
-  });
-
-  revalidatePath(`/expressions`);
-}
-
-export async function getExpression(expressionId: string) {
-  const response = await authFetch(
-    `${BACKEND_URL}/dictionary/expressions/${expressionId}`,
-    {
-      method: "GET",
+  try {
+    await authFetch(`${BACKEND_URL}/dictionary/expressions/${expressionId}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-    },
-  );
+      body: JSON.stringify({ ...data }),
+    });
 
-  if (response.status === 404 || response.status === 400)
-    return redirect("/expressions");
+    revalidatePath(`/expressions`);
+  } catch (error) {
+    console.error("Error in updateExpression:", error);
+    throw error;
+  }
+}
 
-  return (await response.json()) as Expression;
+export async function getExpression(expressionId: string) {
+  try {
+    const response = await authFetch(
+      `${BACKEND_URL}/dictionary/expressions/${expressionId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    if (response.status === 404 || response.status === 400)
+      return redirect("/expressions");
+
+    const data = await response.json();
+    return expressionSchema.parse(data);
+  } catch (error) {
+    console.error("Error in getExpression:", error);
+    throw error;
+  }
 }
 
 export async function getExpressionContexts(
@@ -107,197 +136,256 @@ export async function getExpressionContexts(
   page = 1,
   take = 20,
 ) {
-  const urlSearchParams = new URLSearchParams();
-  urlSearchParams.append("expressionId", expressionId);
-  urlSearchParams.append("page", page.toString());
-  urlSearchParams.append("take", take.toString());
+  try {
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append("expressionId", expressionId);
+    urlSearchParams.append("page", page.toString());
+    urlSearchParams.append("take", take.toString());
 
-  const response = await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts?${urlSearchParams.toString()}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts?${urlSearchParams.toString()}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    },
-  );
+    );
 
-  return (await response.json()) as CollectionWithPagination<ExpressionContext>;
+    const data = await response.json();
+    return collectionWithPaginationSchema(expressionContextSchema).parse(data);
+  } catch (error) {
+    console.error("Error in getExpressionContexts:", error);
+    throw error;
+  }
 }
 
 export async function getExpressionContextDetails(expressionContextId: string) {
-  const response = await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const response = await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    },
-  );
+    );
 
-  if (response.status === 404 || response.status === 400)
-    return redirect("/expressions");
+    if (response.status === 404 || response.status === 400)
+      return redirect("/expressions");
 
-  return (await response.json()) as ExpressionContextDetails;
+    const data = await response.json();
+    return expressionContextDetailsSchema.parse(data);
+  } catch (error) {
+    console.error("Error in getExpressionContextDetails:", error);
+    throw error;
+  }
 }
 
 export async function createVerbExpressionContext(
   expressionId: string,
   data: CreateOnlyTranslationExpressionContextData,
 ) {
-  const response = await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/verb`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const response = await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/verb`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data, expressionId }),
       },
-      body: JSON.stringify({ ...data, expressionId }),
-    },
-  );
+    );
 
-  revalidatePath(`/expressions/${expressionId}`);
+    revalidatePath(`/expressions/${expressionId}`);
 
-  return (await response.json()) as CreateExpressionContextResponse;
+    const responseData = await response.json();
+    return createExpressionContextResponseSchema.parse(responseData);
+  } catch (error) {
+    console.error("Error in createVerbExpressionContext:", error);
+    throw error;
+  }
 }
 
 export async function createAdjectiveExpressionContext(
   expressionId: string,
   data: CreateOnlyTranslationExpressionContextData,
 ) {
-  const response = await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/adjective`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const response = await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/adjective`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data, expressionId }),
       },
-      body: JSON.stringify({ ...data, expressionId }),
-    },
-  );
+    );
 
-  revalidatePath(`/expressions/${expressionId}`);
+    revalidatePath(`/expressions/${expressionId}`);
 
-  return (await response.json()) as CreateExpressionContextResponse;
+    const responseData = await response.json();
+    return createExpressionContextResponseSchema.parse(responseData);
+  } catch (error) {
+    console.error("Error in createAdjectiveExpressionContext:", error);
+    throw error;
+  }
 }
 
 export async function createPhrasalVerbExpressionContext(
   expressionId: string,
   data: CreateOnlyTranslationExpressionContextData,
 ) {
-  const response = await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/phrasal-verb`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const response = await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/phrasal-verb`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data, expressionId }),
       },
-      body: JSON.stringify({ ...data, expressionId }),
-    },
-  );
+    );
 
-  revalidatePath(`/expressions/${expressionId}`);
+    revalidatePath(`/expressions/${expressionId}`);
 
-  return (await response.json()) as CreateExpressionContextResponse;
+    const responseData = await response.json();
+    return createExpressionContextResponseSchema.parse(responseData);
+  } catch (error) {
+    console.error("Error in createPhrasalVerbExpressionContext:", error);
+    throw error;
+  }
 }
 
 export async function createAdverbExpressionContext(
   expressionId: string,
   data: CreateOnlyTranslationExpressionContextData,
 ) {
-  const response = await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/adverb`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const response = await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/adverb`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data, expressionId }),
       },
-      body: JSON.stringify({ ...data, expressionId }),
-    },
-  );
+    );
 
-  revalidatePath(`/expressions/${expressionId}`);
+    revalidatePath(`/expressions/${expressionId}`);
 
-  return (await response.json()) as CreateExpressionContextResponse;
+    const responseData = await response.json();
+    return createExpressionContextResponseSchema.parse(responseData);
+  } catch (error) {
+    console.error("Error in createAdverbExpressionContext:", error);
+    throw error;
+  }
 }
 
 export async function createNounExpressionContext(
   expressionId: string,
   data: CreateNounExpressionContextData,
 ) {
-  const response = await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/noun`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const response = await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/noun`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data, expressionId }),
       },
-      body: JSON.stringify({ ...data, expressionId }),
-    },
-  );
+    );
 
-  revalidatePath(`/expressions/${expressionId}`);
+    revalidatePath(`/expressions/${expressionId}`);
 
-  return (await response.json()) as CreateExpressionContextResponse;
+    const responseData = await response.json();
+    return createExpressionContextResponseSchema.parse(responseData);
+  } catch (error) {
+    console.error("Error in createNounExpressionContext:", error);
+    throw error;
+  }
 }
 
 export async function createIrregularVerbExpressionContext(
   expressionId: string,
   data: CreateIrregularVerbExpressionContextData,
 ) {
-  const response = await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/irregular-verb`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const response = await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/irregular-verb`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          translation: data.translation,
+          expressionId,
+          forms: [data.form1, data.form2, data.form3],
+        }),
       },
-      body: JSON.stringify({
-        translation: data.translation,
-        expressionId,
-        forms: [data.form1, data.form2, data.form3],
-      }),
-    },
-  );
+    );
 
-  revalidatePath(`/expressions/${expressionId}`);
+    revalidatePath(`/expressions/${expressionId}`);
 
-  return (await response.json()) as CreateExpressionContextResponse;
+    const responseData = await response.json();
+    return createExpressionContextResponseSchema.parse(responseData);
+  } catch (error) {
+    console.error("Error in createIrregularVerbExpressionContext:", error);
+    throw error;
+  }
 }
 
 export async function createSimpleExpressionExpressionContext(
   expressionId: string,
   data: CreateOnlyTranslationExpressionContextData,
 ) {
-  const response = await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/simple`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const response = await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/simple`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data, expressionId }),
       },
-      body: JSON.stringify({ ...data, expressionId }),
-    },
-  );
+    );
 
-  revalidatePath(`/expressions/${expressionId}`);
+    revalidatePath(`/expressions/${expressionId}`);
 
-  return (await response.json()) as CreateExpressionContextResponse;
+    const responseData = await response.json();
+    return createExpressionContextResponseSchema.parse(responseData);
+  } catch (error) {
+    console.error("Error in createSimpleExpressionExpressionContext:", error);
+    throw error;
+  }
 }
 
 export async function deleteExpressionContext(expressionContextId: string) {
-  await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    },
-  );
+    );
 
-  revalidatePath(`/expressions/${expressionContextId}`);
+    revalidatePath(`/expressions/${expressionContextId}`);
+  } catch (error) {
+    console.error("Error in deleteExpressionContext:", error);
+    throw error;
+  }
 }
 
 export async function createSentence(
@@ -305,15 +393,22 @@ export async function createSentence(
   expressionContextId: string,
   payload: CreateSentenceData,
 ) {
-  await authFetch(`${BACKEND_URL}/dictionary/sentences`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ ...payload, expressionContextId }),
-  });
+  try {
+    await authFetch(`${BACKEND_URL}/dictionary/sentences`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...payload, expressionContextId }),
+    });
 
-  revalidatePath(`/expressions/${expressionId}/context/${expressionContextId}`);
+    revalidatePath(
+      `/expressions/${expressionId}/context/${expressionContextId}`,
+    );
+  } catch (error) {
+    console.error("Error in createSentence:", error);
+    throw error;
+  }
 }
 
 export async function deleteSentence(
@@ -321,14 +416,21 @@ export async function deleteSentence(
   expressionId: string,
   expressionContextId: string,
 ) {
-  await authFetch(`${BACKEND_URL}/dictionary/sentences/${sentenceId}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    await authFetch(`${BACKEND_URL}/dictionary/sentences/${sentenceId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  revalidatePath(`/expressions/${expressionId}/context/${expressionContextId}`);
+    revalidatePath(
+      `/expressions/${expressionId}/context/${expressionContextId}`,
+    );
+  } catch (error) {
+    console.error("Error in deleteSentence:", error);
+    throw error;
+  }
 }
 
 export async function updateSentence(
@@ -337,15 +439,22 @@ export async function updateSentence(
   expressionContextId: string,
   data: CreateSentenceData,
 ) {
-  await authFetch(`${BACKEND_URL}/dictionary/sentences/${sentenceId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ ...data }),
-  });
+  try {
+    await authFetch(`${BACKEND_URL}/dictionary/sentences/${sentenceId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...data }),
+    });
 
-  revalidatePath(`/expressions/${expressionId}/context/${expressionContextId}`);
+    revalidatePath(
+      `/expressions/${expressionId}/context/${expressionContextId}`,
+    );
+  } catch (error) {
+    console.error("Error in updateSentence:", error);
+    throw error;
+  }
 }
 
 export async function updateVerbExpressionContext(
@@ -353,18 +462,23 @@ export async function updateVerbExpressionContext(
   expressionId: string,
   data: CreateOnlyTranslationExpressionContextData,
 ) {
-  await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/verb`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/verb`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data }),
       },
-      body: JSON.stringify({ ...data }),
-    },
-  );
+    );
 
-  revalidatePath(`/expressions/${expressionId}`);
+    revalidatePath(`/expressions/${expressionId}`);
+  } catch (error) {
+    console.error("Error in updateVerbExpressionContext:", error);
+    throw error;
+  }
 }
 
 export async function updateAdjectiveExpressionContext(
@@ -372,18 +486,23 @@ export async function updateAdjectiveExpressionContext(
   expressionId: string,
   data: CreateOnlyTranslationExpressionContextData,
 ) {
-  await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/adjective`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/adjective`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data }),
       },
-      body: JSON.stringify({ ...data }),
-    },
-  );
+    );
 
-  revalidatePath(`/expressions/${expressionId}`);
+    revalidatePath(`/expressions/${expressionId}`);
+  } catch (error) {
+    console.error("Error in updateAdjectiveExpressionContext:", error);
+    throw error;
+  }
 }
 
 export async function updateAdverbExpressionContext(
@@ -391,18 +510,23 @@ export async function updateAdverbExpressionContext(
   expressionId: string,
   data: CreateOnlyTranslationExpressionContextData,
 ) {
-  await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/adverb`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/adverb`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data }),
       },
-      body: JSON.stringify({ ...data }),
-    },
-  );
+    );
 
-  revalidatePath(`/expressions/${expressionId}`);
+    revalidatePath(`/expressions/${expressionId}`);
+  } catch (error) {
+    console.error("Error in updateAdverbExpressionContext:", error);
+    throw error;
+  }
 }
 
 export async function updatePhrasalAdverbExpressionContext(
@@ -410,18 +534,23 @@ export async function updatePhrasalAdverbExpressionContext(
   expressionId: string,
   data: CreateOnlyTranslationExpressionContextData,
 ) {
-  await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/phrasal-verb`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/phrasal-verb`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data }),
       },
-      body: JSON.stringify({ ...data }),
-    },
-  );
+    );
 
-  revalidatePath(`/expressions/${expressionId}`);
+    revalidatePath(`/expressions/${expressionId}`);
+  } catch (error) {
+    console.error("Error in updatePhrasalAdverbExpressionContext:", error);
+    throw error;
+  }
 }
 
 export async function updateNounExpressionContext(
@@ -429,18 +558,23 @@ export async function updateNounExpressionContext(
   expressionId: string,
   data: CreateNounExpressionContextData,
 ) {
-  await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/noun`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/noun`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data }),
       },
-      body: JSON.stringify({ ...data }),
-    },
-  );
+    );
 
-  revalidatePath(`/expressions/${expressionId}`);
+    revalidatePath(`/expressions/${expressionId}`);
+  } catch (error) {
+    console.error("Error in updateNounExpressionContext:", error);
+    throw error;
+  }
 }
 
 export async function updateIrregularVerbExpressionContext(
@@ -448,21 +582,26 @@ export async function updateIrregularVerbExpressionContext(
   expressionId: string,
   data: CreateIrregularVerbExpressionContextData,
 ) {
-  await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/irregular-verb`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/irregular-verb`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          translation: data.translation,
+          forms: [data.form1, data.form2, data.form3],
+        }),
       },
-      body: JSON.stringify({
-        translation: data.translation,
-        forms: [data.form1, data.form2, data.form3],
-      }),
-    },
-  );
+    );
 
-  revalidatePath(`/expressions/${expressionId}`);
+    revalidatePath(`/expressions/${expressionId}`);
+  } catch (error) {
+    console.error("Error in updateIrregularVerbExpressionContext:", error);
+    throw error;
+  }
 }
 
 export async function updateSimpleExpressionExpressionContext(
@@ -470,18 +609,23 @@ export async function updateSimpleExpressionExpressionContext(
   expressionId: string,
   data: CreateOnlyTranslationExpressionContextData,
 ) {
-  await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/simple`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/simple`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data }),
       },
-      body: JSON.stringify({ ...data }),
-    },
-  );
+    );
 
-  revalidatePath(`/expressions/${expressionId}`);
+    revalidatePath(`/expressions/${expressionId}`);
+  } catch (error) {
+    console.error("Error in updateSimpleExpressionExpressionContext:", error);
+    throw error;
+  }
 }
 
 export async function searchDictionaryExpressions(
@@ -489,94 +633,129 @@ export async function searchDictionaryExpressions(
   page = 1,
   take = 20,
 ) {
-  const urlSearchParams = new URLSearchParams();
+  try {
+    const urlSearchParams = new URLSearchParams();
 
-  urlSearchParams.append("page", page.toString());
-  urlSearchParams.append("take", take.toString());
+    urlSearchParams.append("page", page.toString());
+    urlSearchParams.append("take", take.toString());
 
-  if (searchText) {
-    urlSearchParams.append("searchText", searchText);
-  }
+    if (searchText) {
+      urlSearchParams.append("searchText", searchText);
+    }
 
-  const response = await authFetch(
-    `${BACKEND_URL}/dictionary/search?${urlSearchParams.toString()}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await authFetch(
+      `${BACKEND_URL}/dictionary/search?${urlSearchParams.toString()}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    },
-  );
+    );
 
-  return (await response.json()) as CollectionWithPagination<SearchedDictionaryExpression>;
+    const data = await response.json();
+    return collectionWithPaginationSchema(
+      searchedDictionaryExpressionSchema,
+    ).parse(data);
+  } catch (error) {
+    console.error("Error in searchDictionaryExpressions:", error);
+    throw error;
+  }
 }
 
 export async function getExpressionsNumber() {
-  const response = await authFetch(
-    `${BACKEND_URL}/dictionary/expressions/count`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const response = await authFetch(
+      `${BACKEND_URL}/dictionary/expressions/count`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    },
-  );
+    );
 
-  return (await response.json()) as { expressionsNumber: number };
+    const data = await response.json();
+    return z.object({ expressionsNumber: z.number() }).parse(data);
+  } catch (error) {
+    console.error("Error in getExpressionsNumber:", error);
+    throw error;
+  }
 }
 
 export async function updateExpressionContextDefinition(
   expressionContextId: string,
   data: CreateExpressionContextDefinitionData,
 ) {
-  await authFetch(
-    `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/definition`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    await authFetch(
+      `${BACKEND_URL}/dictionary/expression-contexts/${expressionContextId}/definition`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data }),
       },
-      body: JSON.stringify({ ...data }),
-    },
-  );
+    );
+  } catch (error) {
+    console.error("Error in updateExpressionContextDefinition:", error);
+    throw error;
+  }
 }
 
 export async function generateExpressionContextDefinition(
   expressionContextId: string,
 ) {
-  const response = await authFetch(
-    `${BACKEND_URL}/dictionary/ai/expression-context/${expressionContextId}/generate-definition`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const response = await authFetch(
+      `${BACKEND_URL}/dictionary/ai/expression-context/${expressionContextId}/generate-definition`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    },
-  );
+    );
 
-  if (!response.ok) {
-    throw new Error("Failed to generate definition");
+    if (!response.ok) {
+      throw new Error("Failed to generate definition");
+    }
+
+    const responseData = await response.json();
+    return generateExpressionContextDefinitionResponseSchema.parse(
+      responseData,
+    );
+  } catch (error) {
+    console.error("Error in generateExpressionContextDefinition:", error);
+    throw error;
   }
-
-  return (await response.json()) as GenerateExpressionContextDefinitionResponse;
 }
 
 export async function generateSentencesForExpressionContext(
   expressionContextId: string,
 ) {
-  const response = await authFetch(
-    `${BACKEND_URL}/dictionary/ai/expression-context/${expressionContextId}/generate-sentences`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const response = await authFetch(
+      `${BACKEND_URL}/dictionary/ai/expression-context/${expressionContextId}/generate-sentences`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    },
-  );
+    );
 
-  if (!response.ok) {
-    throw new Error("Failed to generate sentences");
+    if (!response.ok) {
+      throw new Error("Failed to generate sentences");
+    }
+
+    const responseData = await response.json();
+    return generateSentencesForExpressionContextResponseSchema.parse(
+      responseData,
+    );
+  } catch (error) {
+    console.error("Error in generateSentencesForExpressionContext:", error);
+    throw error;
   }
-
-  return (await response.json()) as GenerateSentencesForExpressionContextResponse;
 }
