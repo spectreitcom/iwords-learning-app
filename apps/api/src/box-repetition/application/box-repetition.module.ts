@@ -5,6 +5,7 @@ import { GetBoxIdsForCurrentRepetitionQueryHandler } from './query-handlers/get-
 import BoxRepetitionApiService from './services/box-repetition-api.service';
 import { InfrastructureModule } from '../infrastructure/infrastructure.module';
 import { GetBoxesRepetitionDataQueryHandler } from './query-handlers/get-boxes-repetition-data.query-handler';
+import { ClockModule } from '../../common/clock/clock.module';
 
 const EVENT_HANDLERS = [BoxMarkedAsFinishedEventHandler];
 
@@ -16,7 +17,7 @@ const QUERY_HANDLERS = [
 ];
 
 @Module({
-  imports: [InfrastructureModule, PrismaModule],
+  imports: [InfrastructureModule, PrismaModule, ClockModule],
   providers: [
     ...EVENT_HANDLERS,
     ...COMMAND_HANDLERS,

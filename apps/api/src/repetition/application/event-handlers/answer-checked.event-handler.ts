@@ -2,6 +2,7 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { IntegrationEvent } from '../../../common/outbox/types';
 import { Logger } from '@nestjs/common';
 import { PrismaService } from '../../../common/prisma/prisma.service';
+import { Clock } from '../../../common/clock/clock';
 
 type EventPayload = {
   expressionContextId: string;
@@ -18,7 +19,10 @@ export class AnswerCheckedEventHandler
     `Repetition Domain - ${AnswerCheckedEventHandler.name}`,
   );
 
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly clock: Clock,
+  ) {}
 
   async handle(event: IntegrationEvent<EventPayload>) {
     if (event.type !== 'answer.answer-checked') return;
@@ -51,7 +55,7 @@ export class AnswerCheckedEventHandler
         data: {
           userId,
           expressionContextId,
-          nextRepetition: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          nextRepetition: this.clock.addDaysFromNow(1),
         },
       });
       return;
@@ -61,7 +65,7 @@ export class AnswerCheckedEventHandler
       await this.prismaService.repetition.update({
         where: { id: repetition.id },
         data: {
-          nextRepetition: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          nextRepetition: this.clock.addDaysFromNow(1),
         },
       });
     }

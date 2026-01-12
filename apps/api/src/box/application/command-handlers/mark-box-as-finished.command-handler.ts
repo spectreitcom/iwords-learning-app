@@ -3,6 +3,7 @@ import { MarkBoxAsFinishedCommand } from '../commands/mark-box-as-finished.comma
 import { PrismaService } from '../../../common/prisma/prisma.service';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { IntegrationEvent } from '../../../common/outbox/types';
+import { Clock } from '../../../common/clock/clock';
 
 @CommandHandler(MarkBoxAsFinishedCommand)
 export class MarkBoxAsFinishedCommandHandler
@@ -11,16 +12,12 @@ export class MarkBoxAsFinishedCommandHandler
   constructor(
     private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
+    private readonly clock: Clock,
   ) {}
 
   async execute(command: MarkBoxAsFinishedCommand): Promise<void> {
     const { boxId, userId } = command;
-
-    const now = new Date();
-    const yyyy = now.getUTCFullYear();
-    const mm = String(now.getUTCMonth() + 1).padStart(2, '0');
-    const dd = String(now.getUTCDate()).padStart(2, '0');
-    const today = new Date(`${yyyy}-${mm}-${dd}T00:00:00.000Z`);
+    const today = this.clock.today();
 
     await this.prismaService.$transaction(async (prisma) => {
       let record = await prisma.dailyLearnedBox.findFirst({

@@ -2,6 +2,7 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { IntegrationEvent } from '../../../common/outbox/types';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 import { Logger } from '@nestjs/common';
+import { Clock } from '../../../common/clock/clock';
 
 type EventPayload = {
   expressionContextId: string;
@@ -18,7 +19,10 @@ export class AnswerCheckedEventHandler
     `Gamification Domain - ${AnswerCheckedEventHandler.name}`,
   );
 
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly clock: Clock,
+  ) {}
 
   async handle(event: IntegrationEvent<EventPayload>) {
     if (event.type !== 'answer.answer-checked') return;
@@ -28,7 +32,7 @@ export class AnswerCheckedEventHandler
 
     if (!correct) return;
 
-    const startOfDayUtc = new Date();
+    const startOfDayUtc = this.clock.now();
     startOfDayUtc.setUTCHours(0, 0, 0, 0);
     const nextDayUtc = new Date(startOfDayUtc);
     nextDayUtc.setUTCDate(nextDayUtc.getUTCDate() + 1);

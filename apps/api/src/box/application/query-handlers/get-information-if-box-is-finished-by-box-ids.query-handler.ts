@@ -2,6 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetInformationIfBoxIsFinishedByBoxIdsQuery } from '../queries/get-information-if-box-is-finished-by-box-ids.query';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 import { BoxIsFinishedView } from '../../view/box-is-finished.view';
+import { Clock } from '../../../common/clock/clock';
 
 @QueryHandler(GetInformationIfBoxIsFinishedByBoxIdsQuery)
 export class GetInformationIfBoxIsFinishedByBoxIdsQueryHandler
@@ -11,17 +12,17 @@ export class GetInformationIfBoxIsFinishedByBoxIdsQueryHandler
       BoxIsFinishedView[]
     >
 {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly clock: Clock,
+  ) {}
 
   async execute(
     query: GetInformationIfBoxIsFinishedByBoxIdsQuery,
   ): Promise<BoxIsFinishedView[]> {
     const { boxIds } = query;
-    const now = new Date();
-    const yyyy = now.getUTCFullYear();
-    const mm = String(now.getUTCMonth() + 1).padStart(2, '0');
-    const dd = String(now.getUTCDate()).padStart(2, '0');
-    const today = new Date(`${yyyy}-${mm}-${dd}T00:00:00.000Z`);
+
+    const today = this.clock.today();
 
     if (!boxIds || boxIds.length === 0) return [];
 

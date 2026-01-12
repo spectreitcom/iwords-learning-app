@@ -5,9 +5,10 @@ import { InboxPublisher } from './inbox.publisher';
 import { INBOX_ROUTER, InboxRouterFn } from './inbox.router';
 import { UserIdentityInboxRouter } from '../../user-identity/infrastructure/user-identity-inbox.router';
 import { InfrastructureModule as UserIdentityInfrastructureModule } from '../../user-identity/infrastructure/infrastructure.module';
+import { ClockModule } from '../clock/clock.module';
 
 @Module({
-  imports: [PrismaModule, UserIdentityInfrastructureModule],
+  imports: [PrismaModule, UserIdentityInfrastructureModule, ClockModule],
   providers: [
     InboxService,
     InboxPublisher,

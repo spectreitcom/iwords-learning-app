@@ -36,7 +36,7 @@ export class PrismaRepetitionRepository implements RepetitionRepository {
           RepetitionId.fromString(r.id),
           UserId.fromString(r.userId),
           ExpressionContextId.fromString(r.expressionContextId),
-          NextRepetitionDate.create(new Date(r.nextRepetition)),
+          NextRepetitionDate.create(r.nextRepetition),
         ),
     );
   }
