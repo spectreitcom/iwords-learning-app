@@ -1,6 +1,6 @@
 import { FakeOutboxService } from '../../../../../__tests/fakes/fake-outbox.service';
 import { FakeTransactionRunner } from '../../../../../__tests/fakes/fake-transaction-runner';
-import { FakeAnswerSentenceReadRepository } from '../../../../../__tests/fakes/fake-answer-sentence-read.repository';
+import { FakeAnswerSentenceReadRepository } from './fakes/fake-answer-sentence-read.repository';
 import { CheckAnswerForSentenceCommandHandler } from '../check-answer-for-sentence.command-handler';
 import { randomUUID } from 'node:crypto';
 import { AppError } from '../../../../common/errors';

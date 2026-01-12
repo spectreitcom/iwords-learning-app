@@ -1,7 +1,7 @@
 import {
   AnswerSentenceReadModel,
   AnswerSentenceReadRepository,
-} from '../../src/answer/application/ports/answer-sentence-read.repository';
+} from '../../../ports/answer-sentence-read.repository';
 
 export abstract class FakeAnswerSentenceReadRepositoryClass extends AnswerSentenceReadRepository {
   abstract getLength(): number;

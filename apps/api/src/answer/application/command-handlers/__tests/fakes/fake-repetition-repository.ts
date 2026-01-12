@@ -1,9 +1,9 @@
-import { RepetitionRepository } from '../../src/repetition/application/ports/repetition.repository';
-import { Repetition } from '../../src/repetition/domain/repetition';
-import { RepetitionId } from '../../src/repetition/domain/value-objects/repetition-id';
-import { UserId } from '../../src/repetition/domain/value-objects/user-id';
-import { ExpressionContextId } from '../../src/repetition/domain/value-objects/expression-context-id';
-import { NextRepetitionDate } from '../../src/repetition/domain/value-objects/next-repetition-date';
+import { RepetitionRepository } from '../../../../../repetition/application/ports/repetition.repository';
+import { Repetition } from '../../../../../repetition/domain/repetition';
+import { RepetitionId } from '../../../../../repetition/domain/value-objects/repetition-id';
+import { UserId } from '../../../../../repetition/domain/value-objects/user-id';
+import { ExpressionContextId } from '../../../../../repetition/domain/value-objects/expression-context-id';
+import { NextRepetitionDate } from '../../../../../repetition/domain/value-objects/next-repetition-date';
 
 export type RepetitionModel = {
   id: string;

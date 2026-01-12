@@ -1,7 +1,7 @@
 import {
   AnswerExpressionContextReadModel,
   AnswerExpressionContextReadRepository,
-} from '../../src/answer/application/ports/answer-expression-context-read.repository';
+} from '../../../ports/answer-expression-context-read.repository';
 
 export abstract class FakeAnswerExpressionContextReadRepositoryClass extends AnswerExpressionContextReadRepository {
   abstract getLength(): number;
