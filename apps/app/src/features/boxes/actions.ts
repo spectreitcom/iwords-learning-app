@@ -1,48 +1,71 @@
 "use server";
 
 import { BACKEND_URL } from "@/lib/constants";
-import { CollectionWithPagination } from "@/lib/types";
-import { Box, BoxDetails } from "@/features/boxes/types";
+import { collectionWithPaginationSchema } from "@/lib/types";
+import { boxDetailsSchema, boxSchema } from "@/features/boxes/types";
 import { authFetch } from "@/lib/auth-fetch";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 
 export async function getBoxesList(page = 1, take = 20) {
-  const urlSearchParams = new URLSearchParams({
-    page: page.toString(),
-    take: take.toString(),
-  });
+  try {
+    const urlSearchParams = new URLSearchParams({
+      page: page.toString(),
+      take: take.toString(),
+    });
 
-  const response = await authFetch(
-    `${BACKEND_URL}/boxes?${urlSearchParams.toString()}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
+    const response = await authFetch(
+      `${BACKEND_URL}/boxes?${urlSearchParams.toString()}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    },
-  );
+    );
 
-  return (await response.json()) as CollectionWithPagination<
-    Box & { isFinished: boolean; isAlreadyStarted: boolean; isNew: boolean }
-  >;
+    const data = await response.json();
+    return collectionWithPaginationSchema(
+      boxSchema.extend({
+        isFinished: z.boolean(),
+        isAlreadyStarted: z.boolean(),
+        isNew: z.boolean(),
+      }),
+    ).parse(data);
+  } catch (error) {
+    console.error("Error in getBoxesList:", error);
+    throw error;
+  }
 }
 
 export async function getBoxDetails(boxId: string) {
-  const response = await authFetch(`${BACKEND_URL}/boxes/${boxId}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    const response = await authFetch(`${BACKEND_URL}/boxes/${boxId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  if (response.status === 404 || response.status === 400) return redirect("/");
+    if (response.status === 404 || response.status === 400)
+      return redirect("/");
 
-  return (await response.json()) as BoxDetails;
+    const data = await response.json();
+    return boxDetailsSchema.parse(data);
+  } catch (error) {
+    console.error("Error in getBoxDetails:", error);
+    throw error;
+  }
 }
 
 export async function finishBox(boxId: string) {
-  await authFetch(`${BACKEND_URL}/boxes/${boxId}/finish`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    await authFetch(`${BACKEND_URL}/boxes/${boxId}/finish`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    console.error("Error in finishBox:", error);
+    throw error;
+  }
 }

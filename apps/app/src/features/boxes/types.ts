@@ -1,32 +1,51 @@
-import { ExpressionContextType } from "@/lib/types";
+import { expressionContextTypeSchema } from "@/lib/types";
+import { z } from "zod";
 
-export type Box = {
-  boxId: string;
-  title: string;
-  expressionContextIds: string[];
-};
+export const boxSchema = z.object({
+  boxId: z.string(),
+  title: z.string(),
+  expressionContextIds: z.array(z.string()),
+});
 
-export type BoxSentence = {
-  sentenceId: string;
-  content: string;
-  translation: string;
-};
+export type Box = z.infer<typeof boxSchema>;
 
-export type BoxItem = {
-  expressionContextId: string;
-  expressionId: string;
-  phrase: string;
-  translation: string;
-  type: ExpressionContextType;
-  forms: [string, string, string] | null;
-  isCountable: boolean;
-  isIrregular: boolean;
-  sentences: BoxSentence[];
-  definition: string | null;
-  definitionTranslation: string | null;
-};
+export const boxSentenceSchema = z.object({
+  sentenceId: z.string(),
+  content: z.string(),
+  translation: z.string(),
+});
 
-export type BoxDetails = Exclude<Box, "expressionContextIds"> & {
-  isBoxStarted: boolean;
-  items: BoxItem[];
-};
+export type BoxSentence = z.infer<typeof boxSentenceSchema>;
+
+export const boxItemSchema = z
+  .object({
+    expressionContextId: z.string(),
+    expressionId: z.string(),
+    phrase: z.string(),
+    translation: z.string(),
+    type: expressionContextTypeSchema,
+    // forms: z.tuple([z.string(), z.string(), z.string()]).nullable(),
+    forms: z.array(z.string()).nullable(),
+    isCountable: z.boolean(),
+    isIrregular: z.boolean(),
+    sentences: z.array(boxSentenceSchema),
+    definition: z.string().nullable(),
+    definitionTranslation: z.string().nullable(),
+  })
+  .refine((item) => {
+    if (Array.isArray(item.forms)) {
+      if (item.forms.length === 0) return true;
+      if (item.forms.length > 0 && item.forms.length < 3) return false;
+    }
+  });
+
+export type BoxItem = z.infer<typeof boxItemSchema>;
+
+export const boxDetailsSchema = boxSchema
+  .omit({ expressionContextIds: true })
+  .extend({
+    isBoxStarted: z.boolean(),
+    items: z.array(boxItemSchema),
+  });
+
+export type BoxDetails = z.infer<typeof boxDetailsSchema>;
