@@ -1,9 +1,9 @@
-import { RepetitionRepository } from '../../src/repetition/application/ports/repetition.repository';
-import { Repetition } from '../../src/repetition/domain/repetition';
-import { RepetitionId } from '../../src/repetition/domain/value-objects/repetition-id';
-import { UserId } from '../../src/repetition/domain/value-objects/user-id';
-import { ExpressionContextId } from '../../src/repetition/domain/value-objects/expression-context-id';
-import { NextRepetitionDate } from '../../src/repetition/domain/value-objects/next-repetition-date';
+import { RepetitionRepository } from '../../../../../repetition/application/ports/repetition.repository';
+import { Repetition } from '../../../../../repetition/domain/repetition';
+import { RepetitionId } from '../../../../../repetition/domain/value-objects/repetition-id';
+import { UserId } from '../../../../../repetition/domain/value-objects/user-id';
+import { ExpressionContextId } from '../../../../../repetition/domain/value-objects/expression-context-id';
+import { NextRepetitionDate } from '../../../../../repetition/domain/value-objects/next-repetition-date';
 
 export type RepetitionModel = {
   id: string;
@@ -14,12 +14,10 @@ export type RepetitionModel = {
 
 export abstract class FakeRepetitionClass extends RepetitionRepository {
   abstract getLength(): number;
-  abstract isAggregateSaved(): boolean;
 }
 
 export class FakeRepetitionRepository implements FakeRepetitionClass {
-  private data = new Map<string, RepetitionModel>();
-  private aggregateSaved = false;
+  private readonly data = new Map<string, RepetitionModel>();
 
   constructor(initData: RepetitionModel[] = []) {
     initData.forEach((d) => this.data.set(d.id, d));
@@ -71,14 +69,17 @@ export class FakeRepetitionRepository implements FakeRepetitionClass {
   }
 
   async save(repetition: Repetition): Promise<void> {
-    this.aggregateSaved = true;
+    const ID = repetition.getRepetitionId().value;
+
+    this.data.set(ID, {
+      id: ID,
+      userId: repetition.getUserId().value,
+      expressionContextId: repetition.getExpressionContextId().value,
+      nextRepetition: repetition.getNextRepetition().value,
+    });
   }
 
   getLength(): number {
     return this.data.size;
-  }
-
-  isAggregateSaved(): boolean {
-    return this.aggregateSaved;
   }
 }

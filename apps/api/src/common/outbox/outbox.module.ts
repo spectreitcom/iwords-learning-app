@@ -4,10 +4,18 @@ import { OutboxService } from './outbox.service';
 import { OutboxPublisher } from './outbox.publisher';
 import { OutboxCron } from './outbox.cron';
 import { ClockModule } from '../clock/clock.module';
+import { LocalOutboxService } from './local-outbox.service';
 
 @Module({
   imports: [PrismaModule, ClockModule],
-  providers: [OutboxService, OutboxPublisher, OutboxCron],
+  providers: [
+    {
+      provide: OutboxService,
+      useClass: LocalOutboxService,
+    },
+    OutboxPublisher,
+    OutboxCron,
+  ],
   exports: [OutboxService],
 })
 export class OutboxModule {}

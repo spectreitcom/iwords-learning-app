@@ -1,9 +1,10 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CheckAnswerForSentenceCommand } from '../commands/check-answer-for-sentence.command';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { AppError } from '../../../common/errors';
 import { IntegrationEvent } from '../../../common/outbox/types';
 import { OutboxService } from '../../../common/outbox/outbox.service';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
+import { AnswerSentenceReadRepository } from '../ports/answer-sentence-read.repository';
 
 export type CheckAnswerForSentenceCommandResponse = {
   correct: boolean;
@@ -20,8 +21,9 @@ export class CheckAnswerForSentenceCommandHandler
     >
 {
   constructor(
-    private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
+    private readonly transactionRunner: TransactionRunner,
+    private readonly answerSentenceReadRepository: AnswerSentenceReadRepository,
   ) {}
 
   async execute(
@@ -29,11 +31,12 @@ export class CheckAnswerForSentenceCommandHandler
   ): Promise<CheckAnswerForSentenceCommandResponse> {
     const { answer, sentenceId, userId } = command;
 
-    return this.prismaService.$transaction(async (prisma) => {
+    return this.transactionRunner.runInTransaction(async (prisma) => {
       const answerSentence =
-        await this.prismaService.answerSentenceReadModel.findUnique({
-          where: { sentenceId },
-        });
+        await this.answerSentenceReadRepository.findBySentenceId(
+          sentenceId,
+          prisma,
+        );
 
       if (!answerSentence) {
         throw new AppError(

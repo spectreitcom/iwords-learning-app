@@ -1,9 +1,10 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CheckAnswerForIrregularVerbCommand } from '../commands/check-answer-for-irregular-verb.command';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { AppError } from '../../../common/errors';
 import { IntegrationEvent } from '../../../common/outbox/types';
 import { OutboxService } from '../../../common/outbox/outbox.service';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
+import { AnswerExpressionContextReadRepository } from '../ports/answer-expression-context-read.repository';
 
 export type CheckAnswerForIrregularVerbCommandResponse = {
   form1: { correct: boolean; userAnswer: string; correctAnswer: string };
@@ -21,8 +22,9 @@ export class CheckAnswerForIrregularVerbCommandHandler
     >
 {
   constructor(
-    private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
+    private readonly transactionRunner: TransactionRunner,
+    private readonly answerExpressionContextReadRepository: AnswerExpressionContextReadRepository,
   ) {}
 
   async execute(
@@ -30,11 +32,12 @@ export class CheckAnswerForIrregularVerbCommandHandler
   ): Promise<CheckAnswerForIrregularVerbCommandResponse> {
     const { answer, expressionContextId, userId } = command;
 
-    return this.prismaService.$transaction(async (prisma) => {
+    return this.transactionRunner.runInTransaction(async (prisma) => {
       const answerExpressionContext =
-        await this.prismaService.answerExpressionContextReadModel.findUnique({
-          where: { expressionContextId },
-        });
+        await this.answerExpressionContextReadRepository.findByExpressionContextId(
+          expressionContextId,
+          prisma,
+        );
 
       if (!answerExpressionContext) {
         throw new AppError(
