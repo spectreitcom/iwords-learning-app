@@ -6,6 +6,7 @@ import { RepetitionApiService } from './services/repetition-api.service';
 import { DeleteAllUserRepetitionsCommandHandler } from './command-handlers/delete-all-user-repetitions.command-handler';
 import { DeleteOneUserRepetitionCommandHandler } from './command-handlers/delete-one-user-repetition.command-handler';
 import { AnswerCheckedEventHandler } from './event-handlers/answer-checked.event-handler';
+import { ClockModule } from '../../common/clock/clock.module';
 
 const EVENT_HANDLERS = [AnswerCheckedEventHandler];
 
@@ -17,7 +18,7 @@ const COMMAND_HANDLERS = [
 const QUERY_HANDLERS = [GetUserRepetitionsQueryHandler];
 
 @Module({
-  imports: [InfrastructureModule, PrismaModule],
+  imports: [InfrastructureModule, PrismaModule, ClockModule],
   providers: [
     ...EVENT_HANDLERS,
     ...COMMAND_HANDLERS,

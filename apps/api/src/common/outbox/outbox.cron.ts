@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from '../prisma/prisma.service';
+import { Clock } from '../clock/clock';
 
 @Injectable()
 export class OutboxCron {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly clock: Clock,
+  ) {}
 
   /**
    * IMPORTANT: The cron schedule is set to run every 10 minutes, because I run server only locally.
@@ -12,7 +16,7 @@ export class OutboxCron {
    */
   @Cron(CronExpression.EVERY_10_MINUTES)
   async handle() {
-    const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000);
+    const threeDaysAgo = this.clock.subtractDaysFromNow(3);
 
     await this.prisma.outboxMessage.deleteMany({
       where: {

@@ -2,6 +2,7 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { IntegrationEvent } from '../../../common/outbox/types';
 import { Logger } from '@nestjs/common';
 import { PrismaService } from '../../../common/prisma/prisma.service';
+import { Clock } from '../../../common/clock/clock';
 
 type EventPayload = {
   boxId: string;
@@ -16,7 +17,10 @@ export class BoxMarkedAsFinishedEventHandler
     `Box Repetition Domain - ${BoxMarkedAsFinishedEventHandler.name}`,
   );
 
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly clock: Clock,
+  ) {}
 
   async handle(event: IntegrationEvent<EventPayload>) {
     if (event.type !== 'box.marked-as-finished') return;
@@ -33,7 +37,7 @@ export class BoxMarkedAsFinishedEventHandler
       },
     });
 
-    const nextRepetition = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    const nextRepetition = this.clock.addDaysFromNow(1);
 
     if (!record) {
       await this.prismaService.boxRepetitionUserData.create({
@@ -42,7 +46,7 @@ export class BoxMarkedAsFinishedEventHandler
           userId,
           count: 1,
           nextRepetition,
-          lastLearned: new Date(),
+          lastLearned: this.clock.now(),
         },
       });
       return;
@@ -60,7 +64,7 @@ export class BoxMarkedAsFinishedEventHandler
         count: {
           increment: 1,
         },
-        lastLearned: new Date(),
+        lastLearned: this.clock.now(),
       },
     });
   }

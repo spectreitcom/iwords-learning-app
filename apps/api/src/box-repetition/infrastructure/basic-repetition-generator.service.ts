@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { GenerateRepetitionService } from '../application/ports/generate-repetition.service';
 import { PrismaService } from '../../common/prisma/prisma.service';
+import { Clock } from '../../common/clock/clock';
 
 @Injectable()
 export class BasicRepetitionGeneratorService
   implements GenerateRepetitionService
 {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly clock: Clock,
+  ) {}
 
   async generate(userId: string): Promise<string[]> {
     const record = await this.prismaService.boxDailyRepetition.findUnique({
@@ -15,7 +19,7 @@ export class BasicRepetitionGeneratorService
 
     const repetitionItems =
       await this.prismaService.boxRepetitionUserData.findMany({
-        where: { userId, nextRepetition: { lte: new Date() } },
+        where: { userId, nextRepetition: { lte: this.clock.now() } },
         orderBy: { lastLearned: 'asc' },
       });
 

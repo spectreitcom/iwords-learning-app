@@ -1,17 +1,21 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUserTodayPointsQuery } from '../queries/get-user-today-points.query';
 import { PrismaService } from '../../../common/prisma/prisma.service';
+import { Clock } from '../../../common/clock/clock';
 
 @QueryHandler(GetUserTodayPointsQuery)
 export class GetUserTodayPointsQueryHandler
   implements IQueryHandler<GetUserTodayPointsQuery, number>
 {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly clock: Clock,
+  ) {}
 
   async execute(query: GetUserTodayPointsQuery): Promise<number> {
     const { userId } = query;
 
-    const startOfDayUtc = new Date();
+    const startOfDayUtc = this.clock.now();
     startOfDayUtc.setUTCHours(0, 0, 0, 0);
     const nextDayUtc = new Date(startOfDayUtc);
     nextDayUtc.setUTCDate(nextDayUtc.getUTCDate() + 1);
