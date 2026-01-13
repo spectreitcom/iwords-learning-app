@@ -13,6 +13,8 @@ import { CheckAnswerForSentenceCommandHandler } from './command-handlers/check-a
 import { AnswerApiService } from './services/answer-api.service';
 import { OutboxModule } from '../../common/outbox/outbox.module';
 import { ValidateSentenceUsingAiCommandHandler } from './command-handlers/validate-sentence-using-ai.command-handler';
+import { DictionaryExpressionUpdatedEventHandler } from './event-handlers/dictionary-expression-updated.event-handler';
+import { DictionaryExpressionDeletedEventHandler } from './event-handlers/dictionary-expression-deleted.event-handler';
 
 const EVENT_HANDLERS = [
   DictionaryExpressionContextCreatedEventHandler,
@@ -21,6 +23,8 @@ const EVENT_HANDLERS = [
   DictionaryExpressionContextDeletedEventHandler,
   DictionarySentenceDeletedEventHandler,
   DictionarySentenceUpdatedEventHandler,
+  DictionaryExpressionUpdatedEventHandler,
+  DictionaryExpressionDeletedEventHandler,
 ];
 
 const COMMAND_HANDLERS = [
