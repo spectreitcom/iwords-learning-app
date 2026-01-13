@@ -15,8 +15,6 @@ export const boxSentenceSchema = z.object({
   translation: z.string(),
 });
 
-export type BoxSentence = z.infer<typeof boxSentenceSchema>;
-
 export const boxItemSchema = z
   .object({
     expressionContextId: z.string(),
@@ -24,7 +22,6 @@ export const boxItemSchema = z
     phrase: z.string(),
     translation: z.string(),
     type: expressionContextTypeSchema,
-    // forms: z.tuple([z.string(), z.string(), z.string()]).nullable(),
     forms: z.array(z.string()).nullable(),
     isCountable: z.boolean(),
     isIrregular: z.boolean(),
@@ -32,12 +29,15 @@ export const boxItemSchema = z
     definition: z.string().nullable(),
     definitionTranslation: z.string().nullable(),
   })
-  .refine((item) => {
-    if (Array.isArray(item.forms)) {
-      if (item.forms.length === 0) return true;
-      if (item.forms.length > 0 && item.forms.length < 3) return false;
-    }
-  });
+  .refine(
+    (item) => {
+      if (Array.isArray(item.forms)) {
+        if (item.forms.length === 0 || item.forms.length === 3) return true;
+        if (item.forms.length > 0 && item.forms.length < 3) return false;
+      }
+    },
+    { message: "Invalid forms" },
+  );
 
 export type BoxItem = z.infer<typeof boxItemSchema>;
 
@@ -47,5 +47,3 @@ export const boxDetailsSchema = boxSchema
     isBoxStarted: z.boolean(),
     items: z.array(boxItemSchema),
   });
-
-export type BoxDetails = z.infer<typeof boxDetailsSchema>;

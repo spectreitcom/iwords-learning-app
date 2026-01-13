@@ -49,6 +49,7 @@ export async function getBoxDetails(boxId: string) {
       return redirect("/");
 
     const data = await response.json();
+
     return boxDetailsSchema.parse(data);
   } catch (error) {
     console.error("Error in getBoxDetails:", error);
