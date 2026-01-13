@@ -2,13 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { ExpressionRepository } from '../../application/ports/expression.repository';
 import { Expression } from '../../domain/expression';
 import { PrismaService } from '../../../common/prisma/prisma.service';
+import { PrismaTx } from '../../../common/types';
 
 @Injectable()
 export class PrismaExpressionRepository implements ExpressionRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async save(expression: Expression): Promise<void> {
-    await this.prismaService.expression.upsert({
+  async save(expression: Expression, tx?: PrismaTx): Promise<void> {
+    const prisma = tx ?? this.prismaService;
+    await prisma.expression.upsert({
       where: { id: expression.getExpressionId().value },
       update: {
         phrase: expression.getPhrase(),
@@ -20,8 +22,9 @@ export class PrismaExpressionRepository implements ExpressionRepository {
     });
   }
 
-  async findById(id: string): Promise<Expression | null> {
-    const expressionData = await this.prismaService.expression.findUnique({
+  async findById(id: string, tx?: PrismaTx): Promise<Expression | null> {
+    const prisma = tx ?? this.prismaService;
+    const expressionData = await prisma.expression.findUnique({
       where: { id },
     });
 
@@ -32,8 +35,9 @@ export class PrismaExpressionRepository implements ExpressionRepository {
     return new Expression(expressionData.id, expressionData.phrase);
   }
 
-  async delete(expressionId: string): Promise<void> {
-    await this.prismaService.expression.delete({
+  async delete(expressionId: string, tx?: PrismaTx): Promise<void> {
+    const prisma = tx ?? this.prismaService;
+    await prisma.expression.delete({
       where: { id: expressionId },
     });
   }
