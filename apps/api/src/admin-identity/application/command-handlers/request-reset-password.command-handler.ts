@@ -1,28 +1,31 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { RequestResetPasswordCommand } from '../commands/request-reset-password.command';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { AppError } from '../../../common/errors';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { ResetPasswordTokensStorage } from '../ports/reset-password-tokens.storage';
 import { randomUUID } from 'node:crypto';
 import { IntegrationEvent } from '../../../common/outbox/types';
 import { AdminUserRepository } from '../ports/admin-user.repository';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(RequestResetPasswordCommand)
 export class RequestResetPasswordCommandHandler
   implements ICommandHandler<RequestResetPasswordCommand, void>
 {
   constructor(
-    private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
     private readonly resetTokensStorage: ResetPasswordTokensStorage,
     private readonly adminUserRepository: AdminUserRepository,
+    private readonly transactionRunner: TransactionRunner,
   ) {}
 
   async execute(command: RequestResetPasswordCommand): Promise<void> {
     const { email } = command;
-    await this.prismaService.$transaction(async (prisma) => {
-      const adminUser = await this.adminUserRepository.findByEmail(email);
+    await this.transactionRunner.runInTransaction(async (prisma) => {
+      const adminUser = await this.adminUserRepository.findByEmail(
+        email,
+        prisma,
+      );
 
       if (!adminUser) {
         throw new AppError(
