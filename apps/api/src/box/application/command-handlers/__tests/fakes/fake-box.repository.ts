@@ -16,6 +16,10 @@ abstract class FakeBoxRepositoryClass extends BoxRepository {
 export class FakeBoxRepository implements FakeBoxRepositoryClass {
   private readonly data = new Map<string, FakeBoxModel>();
 
+  constructor(initialData: FakeBoxModel[] = []) {
+    initialData.forEach((item) => this.data.set(item.id, item));
+  }
+
   async save(box: Box): Promise<void> {
     this.data.set(box.getBoxId().value, {
       id: box.getBoxId().value,
