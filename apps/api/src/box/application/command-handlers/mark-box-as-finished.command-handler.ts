@@ -1,41 +1,34 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { MarkBoxAsFinishedCommand } from '../commands/mark-box-as-finished.command';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { IntegrationEvent } from '../../../common/outbox/types';
-import { Clock } from '../../../common/clock/clock';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
+import { DailyLearnedBoxRepository } from '../ports/daily-learned-box.repository';
+import { DailyLearnedBox } from '../../domain/daily-learned-box';
 
 @CommandHandler(MarkBoxAsFinishedCommand)
 export class MarkBoxAsFinishedCommandHandler
   implements ICommandHandler<MarkBoxAsFinishedCommand, void>
 {
   constructor(
-    private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
-    private readonly clock: Clock,
+    private readonly transactionRunner: TransactionRunner,
+    private readonly dailyLearnedBoxRepository: DailyLearnedBoxRepository,
   ) {}
 
   async execute(command: MarkBoxAsFinishedCommand): Promise<void> {
     const { boxId, userId } = command;
-    const today = this.clock.today();
 
-    await this.prismaService.$transaction(async (prisma) => {
-      let record = await prisma.dailyLearnedBox.findFirst({
-        where: {
-          userId,
-          boxId,
-          createdAt: today,
-        },
-      });
+    await this.transactionRunner.runInTransaction(async (prisma) => {
+      let dailyLearnedBox = await this.dailyLearnedBoxRepository.findForToday(
+        boxId,
+        userId,
+        prisma,
+      );
 
-      if (!record) {
-        record = await prisma.dailyLearnedBox.create({
-          data: {
-            userId,
-            boxId,
-            createdAt: today,
-          },
-        });
+      if (!dailyLearnedBox) {
+        dailyLearnedBox = DailyLearnedBox.create(userId, boxId);
+        await this.dailyLearnedBoxRepository.save(dailyLearnedBox, prisma);
       }
 
       const event = new IntegrationEvent<{
@@ -44,8 +37,8 @@ export class MarkBoxAsFinishedCommandHandler
       }>(
         'box.marked-as-finished',
         {
-          boxId: record.boxId,
-          userId: record.userId,
+          boxId: dailyLearnedBox.getBoxId().value,
+          userId: dailyLearnedBox.getUserId().value,
         },
         {
           aggregateId: boxId,
