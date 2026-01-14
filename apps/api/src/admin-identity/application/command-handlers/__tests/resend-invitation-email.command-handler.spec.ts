@@ -4,7 +4,7 @@ import { FakeResetPasswordTokensStorage } from './fakes/fake-reset-password-toke
 import { ResendInvitationEmailCommand } from '../../commands/resend-invitation-email.command';
 import { AdminUser } from '../../../domain/admin-user';
 import { AppError } from '../../../../common/errors';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import { FakeOutboxService } from '../../../../../__tests/fakes/fake-outbox.service';
 import { FakeTransactionRunner } from '../../../../../__tests/fakes/fake-transaction-runner';
 

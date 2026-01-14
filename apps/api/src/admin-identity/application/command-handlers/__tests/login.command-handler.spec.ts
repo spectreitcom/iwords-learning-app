@@ -6,7 +6,7 @@ import { FakeRefreshTokenStorage } from './fakes/fake-refresh-token.storage';
 import { LoginCommand } from '../../commands/login.command';
 import { AdminUser } from '../../../domain/admin-user';
 import { AppError } from '../../../../common/errors';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 
 describe('LoginCommandHandler', () => {
   let adminUserRepository: FakeAdminUserRepository;

@@ -3,7 +3,7 @@ import { ExpressionValidationService } from '../../../ports/expression-validatio
 export class FakeExpressionValidationService
   implements ExpressionValidationService
 {
-  private existingIds = new Set<string>();
+  private readonly existingIds = new Set<string>();
   private phraseCheckResult: string | null = null;
 
   async checkPhrase(phrase: string): Promise<string | null> {

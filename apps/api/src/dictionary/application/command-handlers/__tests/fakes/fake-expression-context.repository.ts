@@ -76,7 +76,7 @@ export class FakeExpressionContextRepository
   ): Promise<ExpressionContext | null> {
     const context = await this.findById(expressionContextId);
 
-    if (context && context.getType().value === type) {
+    if (context?.getType().value === type) {
       return context;
     }
 
