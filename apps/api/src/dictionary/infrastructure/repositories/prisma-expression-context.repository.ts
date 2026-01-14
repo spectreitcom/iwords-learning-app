@@ -120,4 +120,36 @@ export class PrismaExpressionContextRepository
       record.definitionTranslation,
     );
   }
+
+  async findByExpressionId(
+    expressionId: string,
+    tx?: PrismaTx,
+  ): Promise<ExpressionContext[]> {
+    const prisma = tx ?? this.prismaService;
+
+    const records = await prisma.expressionContext.findMany({
+      where: {
+        expressionId,
+      },
+    });
+
+    return records.map((record) => {
+      const forms =
+        record.forms.length > 0
+          ? VerbForms.fromArray(record.forms as [string, string, string])
+          : null;
+
+      return new ExpressionContext(
+        ExpressionContextId.fromString(record.id),
+        ExpressionId.fromString(record.expressionId),
+        record.translation,
+        record.isCountable,
+        ExpressionType.fromString(record.type),
+        forms,
+        record.isIrregular,
+        record.definition,
+        record.definitionTranslation,
+      );
+    });
+  }
 }

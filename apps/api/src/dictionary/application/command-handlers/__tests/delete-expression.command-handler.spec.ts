@@ -8,6 +8,7 @@ import { DeleteExpressionCommand } from '../../commands/delete-expression.comman
 import { Expression } from '../../../domain/expression';
 import { randomUUID } from 'node:crypto';
 import { AppError } from '../../../../common/errors';
+import { FakeExpressionContextRepository } from './fakes/fake-expression-context.repository';
 
 describe('DeleteExpressionCommandHandler', () => {
   let eventPublisher: EventPublisher & { lastMerged?: any };
@@ -15,17 +16,21 @@ describe('DeleteExpressionCommandHandler', () => {
   let transactionRunner: FakeTransactionRunner;
   let outboxService: FakeOutboxService;
   let handler: DeleteExpressionCommandHandler;
+  let expressionContextRepository: FakeExpressionContextRepository;
 
   beforeEach(() => {
     eventPublisher = new FakeEventPublisher() as unknown as EventPublisher;
     expressionRepository = new FakeExpressionRepository();
     transactionRunner = new FakeTransactionRunner();
     outboxService = new FakeOutboxService();
+    expressionContextRepository = new FakeExpressionContextRepository();
+
     handler = new DeleteExpressionCommandHandler(
       eventPublisher,
       expressionRepository,
       transactionRunner,
       outboxService,
+      expressionContextRepository,
     );
   });
 
