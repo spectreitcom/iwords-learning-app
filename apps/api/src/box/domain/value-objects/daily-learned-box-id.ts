@@ -1,4 +1,3 @@
-// todo: write tests
 import { IsUUID, validateSync } from 'class-validator';
 import { randomUUID } from 'node:crypto';
 

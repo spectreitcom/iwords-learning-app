@@ -2,8 +2,6 @@ import { DailyLearnedBoxId } from './value-objects/daily-learned-box-id';
 import { UserId } from './value-objects/user-id';
 import { BoxId } from './value-objects/box-id';
 
-// todo: write tests
-
 export class DailyLearnedBox {
   private readonly dailyLearnedBoxId: DailyLearnedBoxId;
   private readonly userId: UserId;
