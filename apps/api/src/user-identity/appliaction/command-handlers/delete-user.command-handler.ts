@@ -1,10 +1,10 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { DeleteUserCommand } from '../commands/delete-user.command';
 import { UserRepository } from '../ports/user.repository';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { AppError } from '../../../common/errors';
 import { IntegrationEvent } from '../../../common/outbox/types';
 import { OutboxService } from '../../../common/outbox/outbox.service';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(DeleteUserCommand)
 export class DeleteUserCommandHandler
@@ -12,14 +12,14 @@ export class DeleteUserCommandHandler
 {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
+    private readonly transactionRunner: TransactionRunner,
   ) {}
 
   async execute(command: DeleteUserCommand): Promise<void> {
     const { clerkId } = command;
 
-    await this.prismaService.$transaction(async (prisma) => {
+    await this.transactionRunner.runInTransaction(async (prisma) => {
       const user = await this.userRepository.findByClerkId(clerkId);
       if (!user) throw new AppError('ENTITY_NOT_FOUND', `User not found`);
 
