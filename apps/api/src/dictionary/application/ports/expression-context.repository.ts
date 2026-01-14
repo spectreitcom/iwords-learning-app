@@ -8,10 +8,12 @@ export abstract class ExpressionContextRepository {
   ): Promise<void>;
   abstract findById(
     expressionContextId: string,
+    tx?: PrismaTx,
   ): Promise<ExpressionContext | null>;
   abstract delete(expressionContextId: string, tx?: PrismaTx): Promise<void>;
   abstract findByIdAndType(
     expressionContextId: string,
     type: string,
+    tx?: PrismaTx,
   ): Promise<ExpressionContext | null>;
 }

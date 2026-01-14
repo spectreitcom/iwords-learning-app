@@ -3,9 +3,9 @@ import { UpdateAdverbExpressionContextCommand } from '../commands/update-adverb-
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
 import { ADVERB } from '../../domain/constants';
 import { AppError } from '../../../common/errors';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { IntegrationEvent } from '../../../common/outbox/types';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(UpdateAdverbExpressionContextCommand)
 export class UpdateAdverbExpressionContextCommandHandler
@@ -14,18 +14,19 @@ export class UpdateAdverbExpressionContextCommandHandler
   constructor(
     private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly eventPublisher: EventPublisher,
-    private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
+    private readonly transactionRunner: TransactionRunner,
   ) {}
 
   async execute(command: UpdateAdverbExpressionContextCommand): Promise<void> {
     const { expressionContextId, translation } = command;
 
-    await this.prismaService.$transaction(async (prisma) => {
+    await this.transactionRunner.runInTransaction(async (prisma) => {
       const expressionContext =
         await this.expressionContextRepository.findByIdAndType(
           expressionContextId,
           ADVERB,
+          prisma,
         );
 
       if (!expressionContext) {

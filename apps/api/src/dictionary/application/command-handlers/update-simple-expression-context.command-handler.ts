@@ -3,9 +3,9 @@ import { UpdateSimpleExpressionContextCommand } from '../commands/update-simple-
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
 import { SIMPLE_EXPRESSION } from '../../domain/constants';
 import { AppError } from '../../../common/errors';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { IntegrationEvent } from '../../../common/outbox/types';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(UpdateSimpleExpressionContextCommand)
 export class UpdateSimpleExpressionContextCommandHandler
@@ -14,18 +14,19 @@ export class UpdateSimpleExpressionContextCommandHandler
   constructor(
     private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly eventPublisher: EventPublisher,
-    private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
+    private readonly transactionRunner: TransactionRunner,
   ) {}
 
   async execute(command: UpdateSimpleExpressionContextCommand): Promise<void> {
     const { expressionContextId, translation } = command;
 
-    await this.prismaService.$transaction(async (prisma) => {
+    await this.transactionRunner.runInTransaction(async (prisma) => {
       const expressionContext =
         await this.expressionContextRepository.findByIdAndType(
           expressionContextId,
           SIMPLE_EXPRESSION,
+          prisma,
         );
 
       if (!expressionContext) {

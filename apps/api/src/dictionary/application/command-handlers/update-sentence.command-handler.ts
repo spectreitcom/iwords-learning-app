@@ -2,9 +2,9 @@ import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateSentenceCommand } from '../commands/update-sentence.command';
 import { SentenceRepository } from '../ports/sentece.repository';
 import { AppError } from '../../../common/errors';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { IntegrationEvent } from '../../../common/outbox/types';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(UpdateSentenceCommand)
 export class UpdateSentenceCommandHandler
@@ -13,15 +13,18 @@ export class UpdateSentenceCommandHandler
   constructor(
     private readonly sentenceRepository: SentenceRepository,
     private readonly eventPublisher: EventPublisher,
-    private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
+    private readonly transactionRunner: TransactionRunner,
   ) {}
 
   async execute(command: UpdateSentenceCommand): Promise<void> {
     const { sentenceId, translation, content } = command;
 
-    await this.prismaService.$transaction(async (prisma) => {
-      const sentence = await this.sentenceRepository.findById(sentenceId);
+    await this.transactionRunner.runInTransaction(async (prisma) => {
+      const sentence = await this.sentenceRepository.findById(
+        sentenceId,
+        prisma,
+      );
 
       if (!sentence) {
         throw new AppError(

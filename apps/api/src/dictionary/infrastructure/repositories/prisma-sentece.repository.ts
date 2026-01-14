@@ -29,8 +29,10 @@ export class PrismaSentenceRepository implements SentenceRepository {
     });
   }
 
-  async findById(sentenceId: string): Promise<Sentence | null> {
-    const sentenceData = await this.prismaService.sentence.findUnique({
+  async findById(sentenceId: string, tx?: PrismaTx): Promise<Sentence | null> {
+    const prisma = tx ?? this.prismaService;
+
+    const sentenceData = await prisma.sentence.findUnique({
       where: { id: sentenceId },
     });
 

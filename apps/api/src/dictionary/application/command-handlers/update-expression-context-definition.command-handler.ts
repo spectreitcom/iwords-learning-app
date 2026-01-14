@@ -2,9 +2,9 @@ import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateExpressionContextDefinitionCommand } from '../commands/update-expression-context-definition.command';
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
 import { AppError } from '../../../common/errors';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { IntegrationEvent } from '../../../common/outbox/types';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(UpdateExpressionContextDefinitionCommand)
 export class UpdateExpressionContextDefinitionCommandHandler
@@ -13,8 +13,8 @@ export class UpdateExpressionContextDefinitionCommandHandler
   constructor(
     private readonly eventPublisher: EventPublisher,
     private readonly expressionContextRepository: ExpressionContextRepository,
-    private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
+    private readonly transactionRunner: TransactionRunner,
   ) {}
 
   async execute(
@@ -22,9 +22,11 @@ export class UpdateExpressionContextDefinitionCommandHandler
   ): Promise<void> {
     const { expressionContextId, definition, definitionTranslation } = command;
 
-    await this.prismaService.$transaction(async (prisma) => {
-      const expressionContext =
-        await this.expressionContextRepository.findById(expressionContextId);
+    await this.transactionRunner.runInTransaction(async (prisma) => {
+      const expressionContext = await this.expressionContextRepository.findById(
+        expressionContextId,
+        prisma,
+      );
 
       if (!expressionContext) {
         throw new AppError(

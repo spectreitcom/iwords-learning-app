@@ -3,10 +3,10 @@ import { CreateSentenceCommand } from '../commands/create-sentence.command';
 import { SentenceRepository } from '../ports/sentece.repository';
 import { Sentence } from '../../domain/sentence';
 import { AppError } from '../../../common/errors';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { IntegrationEvent } from '../../../common/outbox/types';
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(CreateSentenceCommand)
 export class CreateSentenceCommandHandler
@@ -16,16 +16,18 @@ export class CreateSentenceCommandHandler
     private readonly sentenceRepository: SentenceRepository,
     private readonly eventPublisher: EventPublisher,
     private readonly expressionContextRepository: ExpressionContextRepository,
-    private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
+    private readonly transactionRunner: TransactionRunner,
   ) {}
 
   async execute(command: CreateSentenceCommand): Promise<void> {
     const { expressionContextId, translation, content } = command;
 
-    await this.prismaService.$transaction(async (prisma) => {
-      const expressionContext =
-        await this.expressionContextRepository.findById(expressionContextId);
+    await this.transactionRunner.runInTransaction(async (prisma) => {
+      const expressionContext = await this.expressionContextRepository.findById(
+        expressionContextId,
+        prisma,
+      );
 
       if (!expressionContext) {
         throw new AppError(

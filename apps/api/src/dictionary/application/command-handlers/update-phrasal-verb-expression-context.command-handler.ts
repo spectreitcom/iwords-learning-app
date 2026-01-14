@@ -3,9 +3,9 @@ import { UpdatePhrasalVerbExpressionContextCommand } from '../commands/update-ph
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
 import { PHRASAL_VERB } from '../../domain/constants';
 import { AppError } from '../../../common/errors';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { IntegrationEvent } from '../../../common/outbox/types';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(UpdatePhrasalVerbExpressionContextCommand)
 export class UpdatePhrasalVerbExpressionContextCommandHandler
@@ -14,8 +14,8 @@ export class UpdatePhrasalVerbExpressionContextCommandHandler
   constructor(
     private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly eventPublisher: EventPublisher,
-    private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
+    private readonly transactionRunner: TransactionRunner,
   ) {}
 
   async execute(
@@ -23,11 +23,12 @@ export class UpdatePhrasalVerbExpressionContextCommandHandler
   ): Promise<void> {
     const { expressionContextId, translation } = command;
 
-    await this.prismaService.$transaction(async (prisma) => {
+    await this.transactionRunner.runInTransaction(async (prisma) => {
       const expressionContext =
         await this.expressionContextRepository.findByIdAndType(
           expressionContextId,
           PHRASAL_VERB,
+          prisma,
         );
 
       if (!expressionContext) {
