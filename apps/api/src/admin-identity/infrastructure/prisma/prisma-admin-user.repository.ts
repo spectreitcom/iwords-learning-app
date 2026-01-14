@@ -33,8 +33,13 @@ export class PrismaAdminUserRepository implements AdminUserRepository {
     });
   }
 
-  async findById(adminUserId: string): Promise<AdminUser | null> {
-    const adminUserData = await this.prismaService.adminUser.findUnique({
+  async findById(
+    adminUserId: string,
+    tx?: PrismaTx,
+  ): Promise<AdminUser | null> {
+    const prisma = tx ?? this.prismaService;
+
+    const adminUserData = await prisma.adminUser.findUnique({
       where: { id: adminUserId },
     });
 
@@ -53,8 +58,10 @@ export class PrismaAdminUserRepository implements AdminUserRepository {
     );
   }
 
-  async findByEmail(email: string): Promise<AdminUser | null> {
-    const adminUserData = await this.prismaService.adminUser.findUnique({
+  async findByEmail(email: string, tx?: PrismaTx): Promise<AdminUser | null> {
+    const prisma = tx ?? this.prismaService;
+
+    const adminUserData = await prisma.adminUser.findUnique({
       where: { email },
     });
     if (!adminUserData) return null;
@@ -70,8 +77,13 @@ export class PrismaAdminUserRepository implements AdminUserRepository {
     );
   }
 
-  async findByResetPasswordToken(token: string): Promise<AdminUser | null> {
-    const adminUserData = await this.prismaService.adminUser.findFirst({
+  async findByResetPasswordToken(
+    token: string,
+    tx?: PrismaTx,
+  ): Promise<AdminUser | null> {
+    const prisma = tx ?? this.prismaService;
+
+    const adminUserData = await prisma.adminUser.findFirst({
       where: {
         resetPasswordToken: token,
       },

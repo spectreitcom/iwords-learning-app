@@ -3,10 +3,10 @@ import { ResendInvitationEmailCommand } from '../commands/resend-invitation-emai
 import { AdminUserRepository } from '../ports/admin-user.repository';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { ResetPasswordTokensStorage } from '../ports/reset-password-tokens.storage';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { AppError } from '../../../common/errors';
 import { randomUUID } from 'node:crypto';
 import { IntegrationEvent } from '../../../common/outbox/types';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(ResendInvitationEmailCommand)
 export class ResendInvitationEmailCommandHandler
@@ -16,13 +16,16 @@ export class ResendInvitationEmailCommandHandler
     private readonly adminUserRepository: AdminUserRepository,
     private readonly outboxService: OutboxService,
     private readonly resetTokensStorage: ResetPasswordTokensStorage,
-    private readonly prismaService: PrismaService,
+    private readonly transactionRunner: TransactionRunner,
   ) {}
 
   async execute(command: ResendInvitationEmailCommand): Promise<void> {
     const { adminUserId } = command;
-    await this.prismaService.$transaction(async (prisma) => {
-      const adminUser = await this.adminUserRepository.findById(adminUserId);
+    await this.transactionRunner.runInTransaction(async (prisma) => {
+      const adminUser = await this.adminUserRepository.findById(
+        adminUserId,
+        prisma,
+      );
       if (!adminUser) {
         throw new AppError(
           'ENTITY_NOT_FOUND',
