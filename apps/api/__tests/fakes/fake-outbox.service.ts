@@ -41,4 +41,11 @@ export class FakeOutboxService implements FakeOutboxServiceClass {
   getLength(): number {
     return this.messages.length;
   }
+
+  getEnqueuedEvents() {
+    return this.messages.map((m) => ({
+      type: m.eventName,
+      payload: m.payload,
+    }));
+  }
 }
