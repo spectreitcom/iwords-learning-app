@@ -2,10 +2,10 @@ import { InviteUserCommandHandler } from '../invite-user.command-handler';
 import { FakeAdminUserRepository } from './fakes/fake-admin-user.repository';
 import { FakeAdminUserValidationService } from './fakes/fake-admin-user-validation.service';
 import { FakeResetPasswordTokensStorage } from './fakes/fake-reset-password-tokens.storage';
-import { FakeTransactionRunner } from '../../../../common/prisma/fake-transaction-runner';
 import { InviteUserCommand } from '../../commands/invite-user.command';
 import { AppError } from '../../../../common/errors';
 import { FakeOutboxService } from '../../../../../__tests/fakes/fake-outbox.service';
+import { FakeTransactionRunner } from '../../../../../__tests/fakes/fake-transaction-runner';
 
 describe('InviteUserCommandHandler', () => {
   let adminUserRepository: FakeAdminUserRepository;

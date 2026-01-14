@@ -1,12 +1,12 @@
 import { ResendInvitationEmailCommandHandler } from '../resend-invitation-email.command-handler';
 import { FakeAdminUserRepository } from './fakes/fake-admin-user.repository';
 import { FakeResetPasswordTokensStorage } from './fakes/fake-reset-password-tokens.storage';
-import { FakeTransactionRunner } from '../../../../common/prisma/fake-transaction-runner';
 import { ResendInvitationEmailCommand } from '../../commands/resend-invitation-email.command';
 import { AdminUser } from '../../../domain/admin-user';
 import { AppError } from '../../../../common/errors';
 import { randomUUID } from 'crypto';
 import { FakeOutboxService } from '../../../../../__tests/fakes/fake-outbox.service';
+import { FakeTransactionRunner } from '../../../../../__tests/fakes/fake-transaction-runner';
 
 describe('ResendInvitationEmailCommandHandler', () => {
   let adminUserRepository: FakeAdminUserRepository;

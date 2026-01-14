@@ -1,11 +1,11 @@
 import { RequestResetPasswordCommandHandler } from '../request-reset-password.command-handler';
 import { FakeResetPasswordTokensStorage } from './fakes/fake-reset-password-tokens.storage';
 import { FakeAdminUserRepository } from './fakes/fake-admin-user.repository';
-import { FakeTransactionRunner } from '../../../../common/prisma/fake-transaction-runner';
 import { RequestResetPasswordCommand } from '../../commands/request-reset-password.command';
 import { AdminUser } from '../../../domain/admin-user';
 import { AppError } from '../../../../common/errors';
 import { FakeOutboxService } from '../../../../../__tests/fakes/fake-outbox.service';
+import { FakeTransactionRunner } from '../../../../../__tests/fakes/fake-transaction-runner';
 
 describe('RequestResetPasswordCommandHandler', () => {
   let outboxService: FakeOutboxService;

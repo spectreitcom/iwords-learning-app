@@ -46,6 +46,9 @@ export class FakeOutboxService implements FakeOutboxServiceClass {
     return this.messages.map((m) => ({
       type: m.eventName,
       payload: m.payload,
+      meta: {
+        aggregateId: m.aggregateId,
+      },
     }));
   }
 }
