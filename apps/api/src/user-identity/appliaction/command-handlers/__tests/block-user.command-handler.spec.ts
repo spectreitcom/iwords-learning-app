@@ -3,7 +3,7 @@ import { FakeUserRepository } from './fakes/fake-user.repository';
 import { BlockUserCommand } from '../../commands/block-user.command';
 import { User } from '../../../domain/user';
 import { AppError } from '../../../../common/errors';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 
 describe('BlockUserCommandHandler', () => {
   let repository: FakeUserRepository;

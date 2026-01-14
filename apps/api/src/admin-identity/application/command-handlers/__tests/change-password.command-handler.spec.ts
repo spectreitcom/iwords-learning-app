@@ -4,7 +4,7 @@ import { FakeHashingService } from './fakes/fake-hashing.service';
 import { ChangePasswordCommand } from '../../commands/change-password.command';
 import { AdminUser } from '../../../domain/admin-user';
 import { AdminUserId } from '../../../domain/value-objects/admin-user-id';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import { AppError } from '../../../../common/errors';
 
 describe('ChangePasswordCommandHandler', () => {

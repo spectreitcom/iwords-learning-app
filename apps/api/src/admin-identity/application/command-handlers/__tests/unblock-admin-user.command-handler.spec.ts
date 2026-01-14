@@ -3,7 +3,7 @@ import { FakeAdminUserRepository } from './fakes/fake-admin-user.repository';
 import { FakeAdminUserValidationService } from './fakes/fake-admin-user-validation.service';
 import { UnblockAdminUserCommand } from '../../commands/unblock-admin-user.command';
 import { AdminUser } from '../../../domain/admin-user';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import { AppError } from '../../../../common/errors';
 
 describe('UnblockAdminUserCommandHandler', () => {

@@ -3,8 +3,8 @@ import { AdminUserValidationService } from '../../../ports/admin-user-validation
 export class FakeAdminUserValidationService
   implements AdminUserValidationService
 {
-  private takenEmails: Set<string> = new Set();
-  private superUsers: Set<string> = new Set();
+  private readonly takenEmails: Set<string> = new Set();
+  private readonly superUsers: Set<string> = new Set();
 
   async isEmailTaken(email: string): Promise<boolean> {
     return this.takenEmails.has(email);

@@ -1,7 +1,7 @@
 import { CreateUserCommandHandler } from '../create-user.command-handler';
 import { FakeUserRepository } from './fakes/fake-user.repository';
 import { CreateUserCommand } from '../../commands/create-user.command';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 
 describe('CreateUserCommandHandler', () => {
   let repository: FakeUserRepository;

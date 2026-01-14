@@ -3,7 +3,7 @@ import { FakeUserRepository } from './fakes/fake-user.repository';
 import { DeleteUserCommand } from '../../commands/delete-user.command';
 import { User } from '../../../domain/user';
 import { AppError } from '../../../../common/errors';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import { FakeOutboxService } from '../../../../../__tests/fakes/fake-outbox.service';
 import { FakeTransactionRunner } from '../../../../../__tests/fakes/fake-transaction-runner';
 
