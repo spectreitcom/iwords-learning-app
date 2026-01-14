@@ -54,17 +54,7 @@ export class ExpressionContext extends AggregateRoot {
       null,
     );
 
-    expressionContext.apply(
-      new ExpressionContextCreatedEvent(
-        expressionContext.getExpressionContextId().value,
-        expressionContext.getExpressionId().value,
-        expressionContext.getTranslation(),
-        false,
-        expressionContext.getType().value,
-        null,
-        false,
-      ),
-    );
+    this.applyCreateEvent(expressionContext);
 
     return expressionContext;
   }
@@ -74,8 +64,6 @@ export class ExpressionContext extends AggregateRoot {
     forms: [string, string, string],
     expressionId: string,
   ) {
-    const verbForms = VerbForms.fromArray(forms);
-
     const expressionContext = new ExpressionContext(
       ExpressionContextId.create(),
       ExpressionId.fromString(expressionId),
@@ -88,17 +76,7 @@ export class ExpressionContext extends AggregateRoot {
       null,
     );
 
-    expressionContext.apply(
-      new ExpressionContextCreatedEvent(
-        expressionContext.getExpressionContextId().value,
-        expressionContext.getExpressionId().value,
-        expressionContext.getTranslation(),
-        false,
-        expressionContext.getType().value,
-        verbForms.value,
-        true,
-      ),
-    );
+    this.applyCreateEvent(expressionContext);
 
     return expressionContext;
   }
@@ -116,17 +94,7 @@ export class ExpressionContext extends AggregateRoot {
       null,
     );
 
-    expressionContext.apply(
-      new ExpressionContextCreatedEvent(
-        expressionContext.getExpressionContextId().value,
-        expressionContext.getExpressionId().value,
-        expressionContext.getTranslation(),
-        false,
-        expressionContext.getType().value,
-        null,
-        false,
-      ),
-    );
+    this.applyCreateEvent(expressionContext);
 
     return expressionContext;
   }
@@ -144,17 +112,7 @@ export class ExpressionContext extends AggregateRoot {
       null,
     );
 
-    expressionContext.apply(
-      new ExpressionContextCreatedEvent(
-        expressionContext.getExpressionContextId().value,
-        expressionContext.getExpressionId().value,
-        expressionContext.getTranslation(),
-        false,
-        expressionContext.getType().value,
-        null,
-        false,
-      ),
-    );
+    this.applyCreateEvent(expressionContext);
 
     return expressionContext;
   }
@@ -176,17 +134,7 @@ export class ExpressionContext extends AggregateRoot {
       null,
     );
 
-    expressionContext.apply(
-      new ExpressionContextCreatedEvent(
-        expressionContext.getExpressionContextId().value,
-        expressionContext.getExpressionId().value,
-        expressionContext.getTranslation(),
-        false,
-        expressionContext.getType().value,
-        null,
-        false,
-      ),
-    );
+    this.applyCreateEvent(expressionContext);
 
     return expressionContext;
   }
@@ -204,17 +152,7 @@ export class ExpressionContext extends AggregateRoot {
       null,
     );
 
-    expressionContext.apply(
-      new ExpressionContextCreatedEvent(
-        expressionContext.getExpressionContextId().value,
-        expressionContext.getExpressionId().value,
-        expressionContext.getTranslation(),
-        false,
-        expressionContext.getType().value,
-        null,
-        false,
-      ),
-    );
+    this.applyCreateEvent(expressionContext);
 
     return expressionContext;
   }
@@ -232,17 +170,7 @@ export class ExpressionContext extends AggregateRoot {
       null,
     );
 
-    expressionContext.apply(
-      new ExpressionContextCreatedEvent(
-        expressionContext.getExpressionContextId().value,
-        expressionContext.getExpressionId().value,
-        expressionContext.getTranslation(),
-        false,
-        expressionContext.getType().value,
-        null,
-        false,
-      ),
-    );
+    this.applyCreateEvent(expressionContext);
 
     return expressionContext;
   }
@@ -258,142 +186,45 @@ export class ExpressionContext extends AggregateRoot {
 
   updateVerb(translation: string) {
     this.translation = translation;
-    this.apply(
-      new ExpressionContextUpdatedEvent(
-        this.expressionContextId.value,
-        this.expressionId.value,
-        this.translation,
-        false,
-        this.type.value,
-        null,
-        false,
-        this.definition,
-        this.definitionTranslation,
-      ),
-    );
+    this.applyUpdateEvent();
   }
 
   updateIrregularVerb(translation: string, forms: [string, string, string]) {
     this.translation = translation;
     this.forms = VerbForms.fromArray(forms);
-    this.apply(
-      new ExpressionContextUpdatedEvent(
-        this.expressionContextId.value,
-        this.expressionId.value,
-        this.translation,
-        false,
-        this.type.value,
-        this.forms.value,
-        true,
-        this.definition,
-        this.definitionTranslation,
-      ),
-    );
+    this.applyUpdateEvent();
   }
 
   updateAdverb(translation: string) {
     this.translation = translation;
-    this.apply(
-      new ExpressionContextUpdatedEvent(
-        this.expressionContextId.value,
-        this.expressionId.value,
-        this.translation,
-        false,
-        this.type.value,
-        null,
-        false,
-        this.definition,
-        this.definitionTranslation,
-      ),
-    );
+    this.applyUpdateEvent();
   }
 
   updateAdjective(translation: string) {
     this.translation = translation;
-    this.apply(
-      new ExpressionContextUpdatedEvent(
-        this.expressionContextId.value,
-        this.expressionId.value,
-        this.translation,
-        false,
-        this.type.value,
-        null,
-        false,
-        this.definition,
-        this.definitionTranslation,
-      ),
-    );
+    this.applyUpdateEvent();
   }
 
   updateNoun(translation: string, isCountable: boolean) {
     this.translation = translation;
     this.isCountable = isCountable;
-    this.apply(
-      new ExpressionContextUpdatedEvent(
-        this.expressionContextId.value,
-        this.expressionId.value,
-        this.translation,
-        isCountable,
-        this.type.value,
-        null,
-        false,
-        this.definition,
-        this.definitionTranslation,
-      ),
-    );
+    this.applyUpdateEvent();
   }
 
   updatePhrasalVerb(translation: string) {
     this.translation = translation;
-    this.apply(
-      new ExpressionContextUpdatedEvent(
-        this.expressionContextId.value,
-        this.expressionId.value,
-        this.translation,
-        false,
-        this.type.value,
-        null,
-        false,
-        this.definition,
-        this.definitionTranslation,
-      ),
-    );
+    this.applyUpdateEvent();
   }
 
   updateSimpleExpression(translation: string) {
     this.translation = translation;
-    this.apply(
-      new ExpressionContextUpdatedEvent(
-        this.expressionContextId.value,
-        this.expressionId.value,
-        this.translation,
-        false,
-        this.type.value,
-        null,
-        false,
-        this.definition,
-        this.definitionTranslation,
-      ),
-    );
+    this.applyUpdateEvent();
   }
 
   updateDefinition(definition: string, definitionTranslation: string) {
     this.definition = definition;
     this.definitionTranslation = definitionTranslation;
-
-    this.apply(
-      new ExpressionContextUpdatedEvent(
-        this.expressionContextId.value,
-        this.expressionId.value,
-        this.translation,
-        this.isCountable,
-        this.type.value,
-        this.forms?.value ?? null,
-        this.isIrregular,
-        this.definition,
-        this.definitionTranslation,
-      ),
-    );
+    this.applyUpdateEvent();
   }
 
   getExpressionContextId() {
@@ -430,5 +261,35 @@ export class ExpressionContext extends AggregateRoot {
 
   getDefinitionTranslation() {
     return this.definitionTranslation;
+  }
+
+  private static applyCreateEvent(expressionContext: ExpressionContext) {
+    expressionContext.apply(
+      new ExpressionContextCreatedEvent(
+        expressionContext.getExpressionContextId().value,
+        expressionContext.getExpressionId().value,
+        expressionContext.getTranslation(),
+        expressionContext.getIsCountable(),
+        expressionContext.getType().value,
+        expressionContext.getForms()?.value ?? null,
+        expressionContext.getIsIrregular(),
+      ),
+    );
+  }
+
+  private applyUpdateEvent() {
+    this.apply(
+      new ExpressionContextUpdatedEvent(
+        this.expressionContextId.value,
+        this.expressionId.value,
+        this.translation,
+        this.isCountable,
+        this.type.value,
+        this.forms?.value ?? null,
+        this.isIrregular,
+        this.definition,
+        this.definitionTranslation,
+      ),
+    );
   }
 }
