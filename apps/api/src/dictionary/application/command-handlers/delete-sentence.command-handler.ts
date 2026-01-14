@@ -2,9 +2,9 @@ import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { DeleteSentenceCommand } from '../commands/delete-sentence.command';
 import { SentenceRepository } from '../ports/sentece.repository';
 import { AppError } from '../../../common/errors';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { IntegrationEvent } from '../../../common/outbox/types';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(DeleteSentenceCommand)
 export class DeleteSentenceCommandHandler
@@ -13,15 +13,18 @@ export class DeleteSentenceCommandHandler
   constructor(
     private readonly sentenceRepository: SentenceRepository,
     private readonly eventPublisher: EventPublisher,
-    private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
+    private readonly transactionRunner: TransactionRunner,
   ) {}
 
   async execute(command: DeleteSentenceCommand): Promise<void> {
     const { sentenceId } = command;
 
-    await this.prismaService.$transaction(async (prisma) => {
-      const sentence = await this.sentenceRepository.findById(sentenceId);
+    await this.transactionRunner.runInTransaction(async (prisma) => {
+      const sentence = await this.sentenceRepository.findById(
+        sentenceId,
+        prisma,
+      );
 
       if (!sentence) {
         throw new AppError(

@@ -3,9 +3,9 @@ import { UpdateNounExpressionContextCommand } from '../commands/update-noun-expr
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
 import { NOUN } from '../../domain/constants';
 import { AppError } from '../../../common/errors';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { IntegrationEvent } from '../../../common/outbox/types';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(UpdateNounExpressionContextCommand)
 export class UpdateNounExpressionContextCommandHandler
@@ -14,18 +14,19 @@ export class UpdateNounExpressionContextCommandHandler
   constructor(
     private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly eventPublisher: EventPublisher,
-    private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
+    private readonly transactionRunner: TransactionRunner,
   ) {}
 
   async execute(command: UpdateNounExpressionContextCommand): Promise<void> {
     const { expressionContextId, translation, isCountable } = command;
 
-    await this.prismaService.$transaction(async (prisma) => {
+    await this.transactionRunner.runInTransaction(async (prisma) => {
       const expressionContext =
         await this.expressionContextRepository.findByIdAndType(
           expressionContextId,
           NOUN,
+          prisma,
         );
 
       if (!expressionContext) {

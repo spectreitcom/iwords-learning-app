@@ -72,6 +72,7 @@ export class FakeExpressionContextRepository
   async findByIdAndType(
     expressionContextId: string,
     type: string,
+    tx?: any,
   ): Promise<ExpressionContext | null> {
     const context = await this.findById(expressionContextId);
 

@@ -3,10 +3,10 @@ import { CreateVerbExpressionContextCommand } from '../commands/create-verb-expr
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
 import { ExpressionContext } from '../../domain/expression-context';
 import { AppError } from '../../../common/errors';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { IntegrationEvent } from '../../../common/outbox/types';
 import { ExpressionRepository } from '../ports/expression.repository';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 export type CreateVerbExpressionContextCommandResponse = {
   id: string;
@@ -24,8 +24,8 @@ export class CreateVerbExpressionContextCommandHandler
     private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly eventPublisher: EventPublisher,
     private readonly expressionRepository: ExpressionRepository,
-    private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
+    private readonly transactionRunner: TransactionRunner,
   ) {}
 
   async execute(
@@ -33,8 +33,11 @@ export class CreateVerbExpressionContextCommandHandler
   ): Promise<CreateVerbExpressionContextCommandResponse> {
     const { expressionId, translation } = command;
 
-    return this.prismaService.$transaction(async (prisma) => {
-      const expression = await this.expressionRepository.findById(expressionId);
+    return this.transactionRunner.runInTransaction(async (prisma) => {
+      const expression = await this.expressionRepository.findById(
+        expressionId,
+        prisma,
+      );
 
       if (!expression) {
         throw new AppError(

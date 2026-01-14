@@ -51,8 +51,11 @@ export class PrismaExpressionContextRepository
 
   async findById(
     expressionContextId: string,
+    tx?: PrismaTx,
   ): Promise<ExpressionContext | null> {
-    const record = await this.prismaService.expressionContext.findUnique({
+    const prisma = tx ?? this.prismaService;
+
+    const record = await prisma.expressionContext.findUnique({
       where: { id: expressionContextId },
     });
 
@@ -88,8 +91,11 @@ export class PrismaExpressionContextRepository
   async findByIdAndType(
     expressionContextId: string,
     type: string,
+    tx?: PrismaTx,
   ): Promise<ExpressionContext | null> {
-    const record = await this.prismaService.expressionContext.findUnique({
+    const prisma = tx ?? this.prismaService;
+
+    const record = await prisma.expressionContext.findUnique({
       where: { id: expressionContextId, type },
     });
 

@@ -2,9 +2,9 @@ import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { DeleteExpressionContextCommand } from '../commands/delete-expression-context.command';
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
 import { AppError } from '../../../common/errors';
-import { PrismaService } from '../../../common/prisma/prisma.service';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { IntegrationEvent } from '../../../common/outbox/types';
+import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(DeleteExpressionContextCommand)
 export class DeleteExpressionContextCommandHandler
@@ -13,16 +13,18 @@ export class DeleteExpressionContextCommandHandler
   constructor(
     private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly eventPublisher: EventPublisher,
-    private readonly prismaService: PrismaService,
     private readonly outboxService: OutboxService,
+    private readonly transactionRunner: TransactionRunner,
   ) {}
 
   async execute(command: DeleteExpressionContextCommand): Promise<void> {
     const { expressionContextId } = command;
 
-    await this.prismaService.$transaction(async (prisma) => {
-      const expressionContext =
-        await this.expressionContextRepository.findById(expressionContextId);
+    await this.transactionRunner.runInTransaction(async (prisma) => {
+      const expressionContext = await this.expressionContextRepository.findById(
+        expressionContextId,
+        prisma,
+      );
 
       if (!expressionContext) {
         throw new AppError(
