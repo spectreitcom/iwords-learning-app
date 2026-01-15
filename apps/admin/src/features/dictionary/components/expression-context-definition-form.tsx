@@ -102,9 +102,8 @@ export function ExpressionContextDefinitionForm({
           />
           <div className={"flex justify-end"}>
             <Button
-              className={"btn btn-primary"}
               type={"submit"}
-              disabled={form.formState.isSubmitting || generatingDefinition}
+              loading={form.formState.isSubmitting || generatingDefinition}
             >
               Zapisz
             </Button>

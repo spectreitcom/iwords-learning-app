@@ -6,7 +6,6 @@ import {
   createSentence,
   generateSentencesForExpressionContext,
 } from "@/features/dictionary/actions";
-import { Loader2 } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -72,8 +71,7 @@ export function GenerateSentences({
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
-        <Button onClick={handleGenerate} disabled={isGenerating}>
-          {isGenerating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        <Button onClick={handleGenerate} loading={isGenerating}>
           Generuj zdania
         </Button>
       </div>
@@ -98,11 +96,8 @@ export function GenerateSentences({
                     <Button
                       size="sm"
                       onClick={() => handleAddSentence(index, sentence)}
-                      disabled={addingStates[index]}
+                      loading={addingStates[index]}
                     >
-                      {addingStates[index] && (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      )}
                       Dodaj
                     </Button>
                   </TableCell>

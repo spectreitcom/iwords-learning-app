@@ -71,7 +71,7 @@ export function ChangePasswordForm() {
         />
 
         <div className={"flex justify-end"}>
-          <Button type={"submit"} disabled={form.formState.isSubmitting}>
+          <Button type={"submit"} loading={form.formState.isSubmitting}>
             Zapisz
           </Button>
         </div>

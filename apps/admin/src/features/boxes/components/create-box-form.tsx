@@ -50,7 +50,7 @@ export function CreateBoxForm({ onSubmitted, defaultValues, pending }: Props) {
         <div className={"flex justify-end"}>
           <Button
             type={"submit"}
-            disabled={form.formState.isSubmitting || pending}
+            loading={form.formState.isSubmitting || pending}
           >
             Zapisz
           </Button>

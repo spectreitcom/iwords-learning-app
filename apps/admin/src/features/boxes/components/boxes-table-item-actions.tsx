@@ -92,7 +92,7 @@ function Alert({
           <AlertDialogCancel onClick={() => onClose()}>
             Anuluj
           </AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete} disabled={removing}>
+          <AlertDialogAction onClick={handleDelete} loading={removing}>
             Usuń
           </AlertDialogAction>
         </AlertDialogFooter>
