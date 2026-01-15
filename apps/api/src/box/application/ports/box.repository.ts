@@ -6,5 +6,8 @@ export abstract class BoxRepository {
   abstract findByExpressionContextId(
     expressionContextId: string,
   ): Promise<Box[]>;
+  abstract findByExpressionContextIds(
+    expressionContextIds: string[],
+  ): Promise<Box[]>;
   abstract delete(boxId: string): Promise<void>;
 }

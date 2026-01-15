@@ -4,15 +4,16 @@ import { Logger } from '@nestjs/common';
 import { BoxRepository } from '../ports/box.repository';
 
 type EventPayload = {
-  expressionContextId: string;
+  id: string;
+  expressionContextIds: string[];
 };
 
 @EventsHandler(IntegrationEvent)
-export class DictionaryExpressionContextDeletedEventHandler
+export class DictionaryExpressionDeletedEventHandler
   implements IEventHandler<IntegrationEvent<EventPayload>>
 {
   private readonly logger = new Logger(
-    `Box Domain - ${DictionaryExpressionContextDeletedEventHandler.name}`,
+    `Box Domain - ${DictionaryExpressionDeletedEventHandler.name}`,
   );
 
   constructor(
@@ -21,18 +22,19 @@ export class DictionaryExpressionContextDeletedEventHandler
   ) {}
 
   async handle(event: IntegrationEvent<EventPayload>) {
-    if (event.type !== 'dictionary.expression-context-deleted') return;
+    if (event.type !== 'dictionary.expression-deleted') return;
     this.logger.debug(JSON.stringify(event));
 
-    const { expressionContextId } = event.payload;
+    const { expressionContextIds } = event.payload;
 
     const boxes =
-      await this.boxRepository.findByExpressionContextId(expressionContextId);
+      await this.boxRepository.findByExpressionContextIds(expressionContextIds);
 
-    // this is acceptable, no more than one box can have the same expression context id
     for (const box of boxes) {
       this.eventPublisher.mergeObjectContext(box);
-      box.removeExpressionContextId(expressionContextId);
+      for (const expressionContextId of expressionContextIds) {
+        box.removeExpressionContextId(expressionContextId);
+      }
       await this.boxRepository.save(box);
       box.commit();
     }

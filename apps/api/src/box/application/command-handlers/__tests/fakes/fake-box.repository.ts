@@ -57,4 +57,16 @@ export class FakeBoxRepository implements FakeBoxRepositoryClass {
   getLength(): number {
     return this.data.size;
   }
+
+  async findByExpressionContextIds(
+    expressionContextIds: string[],
+  ): Promise<Box[]> {
+    return Array.from(this.data.values())
+      .filter((data) =>
+        data.expressionContextIds.some((id) =>
+          expressionContextIds.includes(id),
+        ),
+      )
+      .map((data) => this.mapToDomain(data));
+  }
 }

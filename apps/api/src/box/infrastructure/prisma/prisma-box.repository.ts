@@ -72,4 +72,16 @@ export class PrismaBoxRepository implements BoxRepository {
       where: { id: boxId },
     });
   }
+
+  async findByExpressionContextIds(expressionContextIds: string[]) {
+    const records = await this.prismaService.box.findMany({
+      where: {
+        expressionContextIds: {
+          hasSome: expressionContextIds,
+        },
+      },
+    });
+
+    return records.map((record) => this.mapToDomain(record));
+  }
 }
