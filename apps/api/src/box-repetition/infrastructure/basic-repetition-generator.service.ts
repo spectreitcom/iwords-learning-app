@@ -21,6 +21,7 @@ export class BasicRepetitionGeneratorService
       await this.prismaService.boxRepetitionUserData.findMany({
         where: { userId, nextRepetition: { lte: this.clock.now() } },
         orderBy: { lastLearned: 'asc' },
+        take: 10,
       });
 
     let boxIds: string[] = [];
