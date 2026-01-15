@@ -6,7 +6,6 @@ import {
   createSentence,
   generateSentencesForExpressionContext,
 } from "@/features/dictionary/actions";
-import { Loader2 } from "lucide-react";
 import {
   Table,
   TableBody,
