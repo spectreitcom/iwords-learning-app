@@ -33,6 +33,16 @@ export class FakeBoxRepository implements FakeBoxRepositoryClass {
 
     if (!data) return null;
 
+    return this.mapToDomain(data);
+  }
+
+  async findByExpressionContextId(expressionContextId: string): Promise<Box[]> {
+    return Array.from(this.data.values())
+      .filter((data) => data.expressionContextIds.includes(expressionContextId))
+      .map((data) => this.mapToDomain(data));
+  }
+
+  private mapToDomain(data: FakeBoxModel): Box {
     return new Box(
       BoxId.fromString(data.id),
       data.title,
@@ -46,5 +56,17 @@ export class FakeBoxRepository implements FakeBoxRepositoryClass {
 
   getLength(): number {
     return this.data.size;
+  }
+
+  async findByExpressionContextIds(
+    expressionContextIds: string[],
+  ): Promise<Box[]> {
+    return Array.from(this.data.values())
+      .filter((data) =>
+        data.expressionContextIds.some((id) =>
+          expressionContextIds.includes(id),
+        ),
+      )
+      .map((data) => this.mapToDomain(data));
   }
 }

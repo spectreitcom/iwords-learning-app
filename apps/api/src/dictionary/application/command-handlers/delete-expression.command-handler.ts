@@ -5,6 +5,7 @@ import { AppError } from '../../../common/errors';
 import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { IntegrationEvent } from '../../../common/outbox/types';
+import { ExpressionContextRepository } from '../ports/expression-context.repository';
 
 @CommandHandler(DeleteExpressionCommand)
 export class DeleteExpressionCommandHandler
@@ -15,6 +16,7 @@ export class DeleteExpressionCommandHandler
     private readonly expressionRepository: ExpressionRepository,
     private readonly transactionRunner: TransactionRunner,
     private readonly outboxService: OutboxService,
+    private readonly expressionContextRepository: ExpressionContextRepository,
   ) {}
 
   async execute(command: DeleteExpressionCommand): Promise<void> {
@@ -33,6 +35,12 @@ export class DeleteExpressionCommandHandler
         );
       }
 
+      const expressionContexts =
+        await this.expressionContextRepository.findByExpressionId(
+          expressionId,
+          prisma,
+        );
+
       this.eventPublisher.mergeObjectContext(expression);
 
       expression.delete();
@@ -41,9 +49,17 @@ export class DeleteExpressionCommandHandler
         prisma,
       );
 
-      const event = new IntegrationEvent<{ id: string }>(
+      const event = new IntegrationEvent<{
+        id: string;
+        expressionContextIds: string[];
+      }>(
         'dictionary.expression-deleted',
-        { id: expression.getExpressionId().value },
+        {
+          id: expression.getExpressionId().value,
+          expressionContextIds: expressionContexts.map(
+            (ec) => ec.getExpressionContextId().value,
+          ),
+        },
         { aggregateId: expressionId },
       );
 

@@ -23,6 +23,8 @@ import { OutboxModule } from '../../common/outbox/outbox.module';
 import { GetBoxesByIdsQueryHandler } from './query-handlers/get-boxes-by-ids.query-handler';
 import { GetInformationIfBoxAlreadyStartedByBoxIdsQueryHandler } from './query-handlers/get-information-if-box-already-started-by-box-ids.query-handler';
 import { ClockModule } from '../../common/clock/clock.module';
+import { DictionaryExpressionContextDeletedEventHandler } from './event-handlers/dictionary-expression-context-deleted.event-handler';
+import { DictionaryExpressionDeletedEventHandler } from './event-handlers/dictionary-expression-deleted.event-handler';
 
 const EVENT_HANDLERS = [
   BoxCreatedEventHandler,
@@ -30,6 +32,8 @@ const EVENT_HANDLERS = [
   ExpressionContextIdAddedEventHandler,
   ExpressionContextIdRemovedEventHandler,
   BoxDeletedEventHandler,
+  DictionaryExpressionContextDeletedEventHandler,
+  DictionaryExpressionDeletedEventHandler,
 ];
 
 const COMMAND_HANDLERS = [

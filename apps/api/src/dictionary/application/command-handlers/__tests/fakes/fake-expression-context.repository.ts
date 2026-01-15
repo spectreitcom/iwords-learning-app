@@ -4,6 +4,7 @@ import { ExpressionContextId } from '../../../../domain/value-objects/expression
 import { ExpressionId } from '../../../../domain/value-objects/expression-id';
 import { ExpressionType } from '../../../../domain/value-objects/expression-type';
 import { VerbForms } from '../../../../domain/value-objects/verb-forms';
+import { PrismaTx } from '../../../../../common/types';
 
 type FakeExpressionContextModel = {
   expressionContextId: string;
@@ -81,6 +82,34 @@ export class FakeExpressionContextRepository
     }
 
     return null;
+  }
+
+  async findByExpressionId(
+    expressionId: string,
+    tx?: PrismaTx,
+  ): Promise<ExpressionContext[]> {
+    const contexts: ExpressionContext[] = [];
+
+    for (const data of this.data.values()) {
+      if (data.expressionId === expressionId) {
+        const context = new ExpressionContext(
+          ExpressionContextId.fromString(data.expressionContextId),
+          ExpressionId.fromString(data.expressionId),
+          data.translation,
+          data.isCountable ?? false,
+          ExpressionType.fromString(data.type),
+          data.forms.length > 0
+            ? VerbForms.fromArray(data.forms as [string, string, string])
+            : null,
+          data.isIrregular ?? false,
+          data.definition,
+          data.definitionTranslation,
+        );
+        contexts.push(context);
+      }
+    }
+
+    return contexts;
   }
 
   getLength(): number {

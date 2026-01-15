@@ -39,6 +39,26 @@ export class PrismaBoxRepository implements BoxRepository {
       return null;
     }
 
+    return this.mapToDomain(boxRecord);
+  }
+
+  async findByExpressionContextId(expressionContextId: string): Promise<Box[]> {
+    const boxRecords = await this.prismaService.box.findMany({
+      where: {
+        expressionContextIds: {
+          has: expressionContextId,
+        },
+      },
+    });
+
+    return boxRecords.map((record) => this.mapToDomain(record));
+  }
+
+  private mapToDomain(boxRecord: {
+    id: string;
+    title: string;
+    expressionContextIds: string[];
+  }): Box {
     const boxIdValueObject = BoxId.fromString(boxRecord.id);
     const expressionContextIds = boxRecord.expressionContextIds.map((id) =>
       ExpressionContextId.fromString(id),
@@ -51,5 +71,17 @@ export class PrismaBoxRepository implements BoxRepository {
     await this.prismaService.box.delete({
       where: { id: boxId },
     });
+  }
+
+  async findByExpressionContextIds(expressionContextIds: string[]) {
+    const records = await this.prismaService.box.findMany({
+      where: {
+        expressionContextIds: {
+          hasSome: expressionContextIds,
+        },
+      },
+    });
+
+    return records.map((record) => this.mapToDomain(record));
   }
 }
