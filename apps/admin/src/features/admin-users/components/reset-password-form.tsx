@@ -102,7 +102,7 @@ export function ResetPasswordForm({ token }: Props) {
         <div className={"flex justify-end"}>
           <Button
             type={"submit"}
-            disabled={
+            loading={
               form.formState.isSubmitting ||
               resettingPassword ||
               validatingToken

@@ -97,7 +97,7 @@ function Alert({
           <AlertDialogCancel onClick={() => onClose()}>
             Anuluj
           </AlertDialogCancel>
-          <AlertDialogAction onClick={handle} disabled={pending}>
+          <AlertDialogAction onClick={handle} loading={pending}>
             {user.blocked ? "Odblokuj" : "Blokuj"}
           </AlertDialogAction>
         </AlertDialogFooter>

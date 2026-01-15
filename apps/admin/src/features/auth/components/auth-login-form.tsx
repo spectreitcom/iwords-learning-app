@@ -83,7 +83,7 @@ export function AuthLoginForm() {
         <Button
           type={"submit"}
           className={"w-full"}
-          disabled={form.formState.isSubmitting}
+          loading={form.formState.isSubmitting}
         >
           Zaloguj
         </Button>
