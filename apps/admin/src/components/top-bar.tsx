@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getSession } from "@/lib/session";
+import { ModeToggle } from "@/components/mode-toggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +14,7 @@ export async function TopBar() {
   const session = await getSession();
   return (
     <div className={"p-4 flex justify-end items-center gap-2"}>
+      <ModeToggle />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant={"ghost"} size={"sm"}>
