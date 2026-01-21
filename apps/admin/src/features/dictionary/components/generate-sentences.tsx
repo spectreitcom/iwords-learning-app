@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { v4 } from "uuid";
 
 type GeneratedSentence = {
   sentence: string;
@@ -88,7 +89,7 @@ export function GenerateSentences({
             </TableHeader>
             <TableBody>
               {generatedSentences.map((sentence, index) => (
-                <TableRow key={`sentence_${index}`}>
+                <TableRow key={v4()}>
                   <TableCell>{sentence.sentence}</TableCell>
                   <TableCell>{sentence.translation}</TableCell>
                   <TableCell className="flex justify-end">
