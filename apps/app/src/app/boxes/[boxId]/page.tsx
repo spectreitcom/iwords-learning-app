@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { CopyBoxToClipboardButton } from "@/features/boxes/components/copy-box-to-clipboard-button";
 
 type Props = Readonly<{
   params: Promise<{ boxId: string }>;
@@ -43,7 +44,10 @@ async function AwaitedContent({ boxId }: Readonly<{ boxId: string }>) {
   return (
     <div>
       <div className={"flex justify-between items-center"}>
-        <h2 className={"text-2xl"}>Box - {boxDetails.title}</h2>
+        <div className={"flex items-center gap-2"}>
+          <h2 className={"text-2xl"}>Box - {boxDetails.title}</h2>
+          <CopyBoxToClipboardButton items={boxDetails.items} />
+        </div>
         <StartLearningButton
           boxId={boxDetails.boxId}
           isBoxStarted={boxDetails.isBoxStarted}
