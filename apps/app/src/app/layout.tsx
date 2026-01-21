@@ -8,6 +8,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { QueryClientProvider } from "@/services/tanstack/components/query-client-provider";
 import { Topbar } from "@/components/topbar";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,18 +36,25 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <QueryClientProvider>
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
           <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
-            <SidebarProvider>
-              <AppSidebar />
-              <div className={"w-full"}>
-                <Topbar />
-                <main className={"p-8"}>{children}</main>
-                <Toaster position={"top-center"} />
-              </div>
-            </SidebarProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <SidebarProvider>
+                <AppSidebar />
+                <div className={"w-full"}>
+                  <Topbar />
+                  <main className={"p-8"}>{children}</main>
+                  <Toaster position={"top-center"} />
+                </div>
+              </SidebarProvider>
+            </ThemeProvider>
           </body>
         </html>
       </QueryClientProvider>
