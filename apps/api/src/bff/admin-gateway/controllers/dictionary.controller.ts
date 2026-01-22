@@ -36,7 +36,7 @@ import { UpdateNounExpressionContextDto } from '../dtos/update-noun-expression-c
 import { UpdateAdverbExpressionContextDto } from '../dtos/update-adverb-expression-context.dto';
 import { UpdatePhrasalVerbExpressionContextDto } from '../dtos/update-phrasal-verb-expression-context.dto';
 import { UpdateIrregularVerbExpressionContextDto } from '../dtos/update-irregular-verb-expression-context.dto';
-import { SearchDictionaryQueryDto } from '../dtos/search-dictionary-query.dto';
+import { SearchDictionaryQueryDto } from '../../shared/dtos/search-dictionary-query.dto';
 import { GetExpressionsListQueryDto } from '../dtos/get-expressions-list-query.dto';
 import { GetExpressionContextsListQueryDto } from '../dtos/get-expression-contexts-list-query.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
