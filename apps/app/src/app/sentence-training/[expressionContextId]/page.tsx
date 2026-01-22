@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import { Spinner } from "@/components/ui/spinner";
-import { getExpressionContext } from "@/features/sentence-training/actions";
 import { notFound } from "next/navigation";
 import { SentenceTrainer } from "@/features/sentence-training/components/sentence-trainer";
+import { getExpressionContext } from "@/features/dictionary/actions";
 
 type Props = Readonly<{
   params: Promise<{ expressionContextId: string }>;
