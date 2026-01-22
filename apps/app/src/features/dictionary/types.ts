@@ -21,3 +21,10 @@ export const expressionContextSchema = z.object({
 });
 
 export type ExpressionContext = z.infer<typeof expressionContextSchema>;
+
+export const searchedExpressionContextSchema = expressionContextSchema.pick({
+  phrase: true,
+  translation: true,
+  expressionContextId: true,
+  expressionId: true,
+});
