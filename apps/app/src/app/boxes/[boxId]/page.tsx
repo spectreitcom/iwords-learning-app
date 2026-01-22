@@ -13,17 +13,10 @@ import {
 } from "@/components/ui/table";
 import { expressionTypeMap } from "@/features/boxes/utils";
 import { capitalizeFirstLetter } from "@/lib/utils";
-import { MoreVertical, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { StartLearningButton } from "@/features/learning/components/start-learning-button";
-import Link from "next/link";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import { CopyBoxToClipboardButton } from "@/features/boxes/components/copy-box-to-clipboard-button";
+import { BoxItemDropdownMenu } from "@/features/boxes/components/box-item-dropdown-menu";
 
 type Props = Readonly<{
   params: Promise<{ boxId: string }>;
@@ -78,26 +71,7 @@ function BoxItemPreview({ item }: Readonly<{ item: BoxItem }>) {
           <h3 className={"text-lg"}>
             <strong>{item.phrase}</strong> - {item.translation}
           </h3>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                className="opacity-0 group-hover:opacity-100 transition-opacity"
-                aria-label="Akcje pozycji"
-              >
-                <MoreVertical className="text-muted-foreground" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem asChild>
-                <Link href={`/sentence-training/${item.expressionContextId}`}>
-                  Trenuj wyrażenie w zdaniach
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <BoxItemDropdownMenu expressionContextId={item.expressionContextId} />
         </div>
 
         <div className={"mt-2"}>
