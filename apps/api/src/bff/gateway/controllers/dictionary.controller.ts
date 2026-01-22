@@ -36,6 +36,19 @@ export class DictionaryController {
         forms: { type: 'array', items: { type: 'string' } },
         isIrregular: { type: 'boolean' },
         isCountable: { type: 'boolean' },
+        definition: { type: 'string' },
+        definitionTranslation: { type: 'string' },
+        sentences: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              sentenceId: { type: 'string', format: 'uuid' },
+              content: { type: 'string' },
+              translation: { type: 'string' },
+            },
+          },
+        },
       },
     },
   })
@@ -57,6 +70,16 @@ export class DictionaryController {
       expressionContext.expressionId,
     );
 
+    const sentences: {
+      sentenceId: string;
+      content: string;
+      translation: string;
+    }[] = expressionContext.sentences.map((s) => ({
+      sentenceId: s.sentenceId,
+      content: s.content,
+      translation: s.translation,
+    }));
+
     return {
       expressionContextId,
       expressionId: expression.expressionId,
@@ -66,6 +89,9 @@ export class DictionaryController {
       forms: expressionContext.forms,
       isIrregular: expressionContext.isIrregular,
       isCountable: expressionContext.isCountable,
+      definition: expressionContext.definition,
+      definitionTranslation: expressionContext.definitionTranslation,
+      sentences,
     };
   }
 }
