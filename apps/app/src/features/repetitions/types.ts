@@ -29,10 +29,6 @@ export const repetitionExpressionContextSchema = z
     { message: "Invalid forms" },
   );
 
-export type RepetitionExpressionContext = z.infer<
-  typeof repetitionExpressionContextSchema
->;
-
 export const repetitionSchema = z.object({
   repetitionId: z.string(),
   expressionContext: repetitionExpressionContextSchema,
