@@ -1,3 +1,4 @@
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -21,12 +22,6 @@ export function TableSkeletonLoader({
   showPagination = false,
   cellWidths = [],
 }: Props) {
-  const shimmerStyle = {
-    background: "linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)",
-    backgroundSize: "200% 100%",
-    animation: "shimmer 1.5s ease-in-out infinite",
-  };
-
   const getSkeletonWidth = (index: number, isLast: boolean) => {
     if (cellWidths[index]) {
       return typeof cellWidths[index] === "string"
@@ -60,11 +55,10 @@ export function TableSkeletonLoader({
                     <div
                       className={`flex items-center ${isLast ? "" : "space-x-3"}`}
                     >
-                      <div
-                        className={`h-4 bg-gray-200 animate-pulse rounded ${isLast ? "ml-auto" : ""}`}
+                      <Skeleton
+                        className={`h-4 ${isLast ? "ml-auto" : ""}`}
                         style={{
                           width,
-                          ...shimmerStyle,
                         }}
                       />
                     </div>
@@ -79,11 +73,7 @@ export function TableSkeletonLoader({
         <div className="flex justify-end mt-6">
           <div className="flex items-center space-x-2">
             {Array.from({ length: 3 }).map(() => (
-              <div
-                key={randomUUID()}
-                className="w-8 h-8 bg-gray-200 animate-pulse rounded"
-                style={shimmerStyle}
-              />
+              <Skeleton key={randomUUID()} className="w-8 h-8" />
             ))}
           </div>
         </div>
