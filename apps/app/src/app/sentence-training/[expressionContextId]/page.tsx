@@ -44,9 +44,5 @@ async function AwaitedContent({
 }
 
 function Loader() {
-  return (
-    <div className="flex h-48 items-center justify-center">
-      <Spinner className="w-8 h-8" />
-    </div>
-  );
+  return <Spinner className="w-8 h-8" />;
 }
