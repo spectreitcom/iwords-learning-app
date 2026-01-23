@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getSession } from "@/lib/session";
-import { ModeToggle } from "@/components/mode-toggle";
+import { ModeToggle } from "@repo/ui/components/mode-toggle";
 import {
   DropdownMenu,
   DropdownMenuContent,

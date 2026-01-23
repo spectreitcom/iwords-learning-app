@@ -1,7 +1,7 @@
 import { UserDropdownMenu } from "@/components/user-dropdown-menu";
 import { getMe } from "@/features/auth/actions";
 import { UserGoalWidget } from "@/features/gamification/components/user-goal-widget";
-import { ModeToggle } from "@/components/mode-toggle";
+import { ModeToggle } from "@repo/ui/components/mode-toggle";
 import { DictionarySearch } from "@/features/dictionary/components/dictionary-search";
 
 export async function Topbar() {
