@@ -1,3 +1,5 @@
+"use server";
+
 import { authFetch } from "@/lib/auth-fetch";
 import { BACKEND_URL } from "@/lib/constants";
 import {

@@ -28,3 +28,7 @@ export const searchedExpressionContextSchema = expressionContextSchema.pick({
   expressionContextId: true,
   expressionId: true,
 });
+
+export type SearchedExpressionContext = z.infer<
+  typeof searchedExpressionContextSchema
+>;
