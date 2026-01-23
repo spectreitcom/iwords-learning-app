@@ -11,6 +11,7 @@ import {
 import { createExpression } from "@/features/dictionary/actions";
 import { useState } from "react";
 import { CreateExpressionForm } from "@/features/dictionary/components/create-expression-form";
+import { toast } from "sonner";
 
 export function AddExpressionModal() {
   const [show, setShow] = useState(false);
@@ -31,15 +32,22 @@ export function AddExpressionModal() {
         <CreateExpressionForm
           pending={pending}
           onSubmitted={async (data) => {
-            setPending(true);
-            const responseData = await createExpression(data);
-            setPending(false);
-            if (responseData.existingExpressionId) {
-              setExistingExpressionId(responseData.existingExpressionId);
-              return;
-            }
-            if (responseData.expressionId) {
-              setShow(false);
+            try {
+              setPending(true);
+              const responseData = await createExpression(data);
+              setPending(false);
+              if (responseData.existingExpressionId) {
+                setExistingExpressionId(responseData.existingExpressionId);
+                toast.error("To wyrażenie już istnieje");
+                return;
+              }
+              if (responseData.expressionId) {
+                toast.success("Wyrażenie zostało dodane");
+                setShow(false);
+              }
+            } catch (error) {
+              setPending(false);
+              toast.error("Wystąpił błąd podczas dodawania wyrażenia");
             }
           }}
           showInfoPanel={!!existingExpressionId}

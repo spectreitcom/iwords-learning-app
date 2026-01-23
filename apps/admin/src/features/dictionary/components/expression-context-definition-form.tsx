@@ -43,7 +43,12 @@ export function ExpressionContextDefinitionForm({
   });
 
   const submit = async (data: CreateExpressionContextDefinitionData) => {
-    await updateExpressionContextDefinition(expressionContextId, data);
+    try {
+      await updateExpressionContextDefinition(expressionContextId, data);
+      toast.success("Definicja została zapisana");
+    } catch (error) {
+      toast.error("Wystąpił błąd podczas zapisywania definicji");
+    }
   };
 
   const handleGenerateDefinition = async () => {

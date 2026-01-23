@@ -26,6 +26,7 @@ import {
 } from "@/features/dictionary/actions";
 import { CreateNounExpressionContextForm } from "@/features/dictionary/components/create-noun-translation-expression-context-form";
 import { CreateIrregularVerbExpressionContextForm } from "@/features/dictionary/components/create-irregular-verb-expression-context-form";
+import { toast } from "sonner";
 
 type Props = Readonly<{
   expressionId: string;
@@ -154,10 +155,16 @@ function AddVerbModal({
       <CreateOnlyTranslationExpressionContextForm
         pending={pending}
         onSubmitted={async (data) => {
-          setPending(true);
-          await createVerbExpressionContext(expressionId, data);
-          setPending(false);
-          onClose();
+          try {
+            setPending(true);
+            await createVerbExpressionContext(expressionId, data);
+            setPending(false);
+            toast.success("Czasownik został dodany");
+            onClose();
+          } catch (error) {
+            setPending(false);
+            toast.error("Wystąpił błąd podczas dodawania czasownika");
+          }
         }}
       />
     </Modal>
@@ -178,10 +185,16 @@ function AddPhrasalVerbModal({
       <CreateOnlyTranslationExpressionContextForm
         pending={pending}
         onSubmitted={async (data) => {
-          setPending(true);
-          await createPhrasalVerbExpressionContext(expressionId, data);
-          setPending(false);
-          onClose();
+          try {
+            setPending(true);
+            await createPhrasalVerbExpressionContext(expressionId, data);
+            setPending(false);
+            toast.success("Czasownik frazowy został dodany");
+            onClose();
+          } catch (error) {
+            setPending(false);
+            toast.error("Wystąpił błąd podczas dodawania czasownika frazowego");
+          }
         }}
       />
     </Modal>
@@ -202,10 +215,16 @@ function AddNounModal({
       <CreateNounExpressionContextForm
         pending={pending}
         onSubmitted={async (data) => {
-          setPending(true);
-          await createNounExpressionContext(expressionId, data);
-          setPending(false);
-          onClose();
+          try {
+            setPending(true);
+            await createNounExpressionContext(expressionId, data);
+            setPending(false);
+            toast.success("Rzeczownik został dodany");
+            onClose();
+          } catch (error) {
+            setPending(false);
+            toast.error("Wystąpił błąd podczas dodawania rzeczownika");
+          }
         }}
       />
     </Modal>
@@ -226,10 +245,16 @@ function AddAdverbModal({
       <CreateOnlyTranslationExpressionContextForm
         pending={pending}
         onSubmitted={async (data) => {
-          setPending(true);
-          await createAdverbExpressionContext(expressionId, data);
-          setPending(false);
-          onClose();
+          try {
+            setPending(true);
+            await createAdverbExpressionContext(expressionId, data);
+            setPending(false);
+            toast.success("Przysłówek został dodany");
+            onClose();
+          } catch (error) {
+            setPending(false);
+            toast.error("Wystąpił błąd podczas dodawania przysłówka");
+          }
         }}
       />
     </Modal>
@@ -250,10 +275,18 @@ function AddIrregularVerbModal({
       <CreateIrregularVerbExpressionContextForm
         pending={pending}
         onSubmitted={async (data) => {
-          setPending(true);
-          await createIrregularVerbExpressionContext(expressionId, data);
-          setPending(false);
-          onClose();
+          try {
+            setPending(true);
+            await createIrregularVerbExpressionContext(expressionId, data);
+            setPending(false);
+            toast.success("Czasownik nieregularny został dodany");
+            onClose();
+          } catch (error) {
+            setPending(false);
+            toast.error(
+              "Wystąpił błąd podczas dodawania czasownika nieregularnego",
+            );
+          }
         }}
       />
     </Modal>
@@ -274,10 +307,16 @@ function AddAdjectiveModal({
       <CreateOnlyTranslationExpressionContextForm
         pending={pending}
         onSubmitted={async (data) => {
-          setPending(true);
-          await createAdjectiveExpressionContext(expressionId, data);
-          setPending(false);
-          onClose();
+          try {
+            setPending(true);
+            await createAdjectiveExpressionContext(expressionId, data);
+            setPending(false);
+            toast.success("Przymiotnik został dodany");
+            onClose();
+          } catch (error) {
+            setPending(false);
+            toast.error("Wystąpił błąd podczas dodawania przymiotnika");
+          }
         }}
       />
     </Modal>
@@ -298,10 +337,16 @@ function AddSimpleExpressionModal({
       <CreateOnlyTranslationExpressionContextForm
         pending={pending}
         onSubmitted={async (data) => {
-          setPending(true);
-          await createSimpleExpressionExpressionContext(expressionId, data);
-          setPending(false);
-          onClose();
+          try {
+            setPending(true);
+            await createSimpleExpressionExpressionContext(expressionId, data);
+            setPending(false);
+            toast.success("Wyrażenie zostało dodane");
+            onClose();
+          } catch (error) {
+            setPending(false);
+            toast.error("Wystąpił błąd podczas dodawania wyrażenia");
+          }
         }}
       />
     </Modal>

@@ -11,6 +11,7 @@ import {
 import { Button } from "@repo/ui/components/ui/button";
 import { CreateSentenceForm } from "@/features/dictionary/components/create-sentence-form";
 import { createSentence } from "@/features/dictionary/actions";
+import { toast } from "sonner";
 
 type Props = Readonly<{
   expressionId: string;
@@ -33,10 +34,16 @@ export function AddSentenceModal({ expressionContextId, expressionId }: Props) {
         <CreateSentenceForm
           pending={pending}
           onSubmitted={async (data) => {
-            setPending(true);
-            await createSentence(expressionId, expressionContextId, data);
-            setPending(false);
-            setShow(false);
+            try {
+              setPending(true);
+              await createSentence(expressionId, expressionContextId, data);
+              toast.success("Zdanie zostało dodane");
+              setPending(false);
+              setShow(false);
+            } catch (error) {
+              setPending(false);
+              toast.error("Wystąpił błąd podczas dodawania zdania");
+            }
           }}
         />
       </DialogContent>

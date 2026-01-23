@@ -28,6 +28,7 @@ import {
   DialogTitle,
 } from "@repo/ui/components/ui/dialog";
 import { CreateSentenceForm } from "@/features/dictionary/components/create-sentence-form";
+import { toast } from "sonner";
 
 type Props = Readonly<{
   sentence: Sentence;
@@ -92,12 +93,18 @@ function Alert({
   const [removing, setRemoving] = useState(false);
 
   const handleDelete = async () => {
-    setRemoving(true);
-    await deleteSentence(
-      sentence.sentenceId,
-      expressionId,
-      expressionContextId,
-    );
+    try {
+      setRemoving(true);
+      await deleteSentence(
+        sentence.sentenceId,
+        expressionId,
+        expressionContextId,
+      );
+      toast.success("Zdanie zostało usunięte");
+    } catch (error) {
+      setRemoving(false);
+      toast.error("Wystąpił błąd podczas usuwania zdania");
+    }
   };
 
   return (
@@ -164,15 +171,21 @@ function EditModal({
         pending={pending}
         defaultValues={sentence}
         onSubmitted={async (data) => {
-          setPending(true);
-          await updateSentence(
-            sentence.sentenceId,
-            expressionId,
-            expressionContextId,
-            data,
-          );
-          setPending(false);
-          onClose();
+          try {
+            setPending(true);
+            await updateSentence(
+              sentence.sentenceId,
+              expressionId,
+              expressionContextId,
+              data,
+            );
+            setPending(false);
+            toast.success("Zdanie zostało zaktualizowane");
+            onClose();
+          } catch (error) {
+            setPending(false);
+            toast.error("Wystąpił błąd podczas aktualizacji zdania");
+          }
         }}
       />
     </Modal>

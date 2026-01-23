@@ -22,6 +22,7 @@ import {
 import { Box } from "@/features/boxes/types";
 import { deleteBox } from "@/features/boxes/actions";
 import { EditBoxModal } from "@/features/boxes/components/edit-box-modal";
+import { toast } from "sonner";
 
 type Props = Readonly<{
   box: Box;
@@ -70,9 +71,15 @@ function Alert({
   const [removing, setRemoving] = useState(false);
 
   const handleDelete = async () => {
-    setRemoving(true);
-    await deleteBox(box.boxId);
-    onClose();
+    try {
+      setRemoving(true);
+      await deleteBox(box.boxId);
+      toast.success("Box został usunięty");
+      onClose();
+    } catch (error) {
+      setRemoving(false);
+      toast.error("Wystąpił błąd podczas usuwania boxa");
+    }
   };
 
   return (
