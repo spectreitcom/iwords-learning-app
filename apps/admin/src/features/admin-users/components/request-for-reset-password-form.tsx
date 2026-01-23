@@ -17,7 +17,11 @@ import {
 import { Input } from "@repo/ui/components/ui/input";
 import { Button } from "@repo/ui/components/ui/button";
 import { useState } from "react";
-import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/ui/alert";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@repo/ui/components/ui/alert";
 import { requestForResetPassword } from "@/features/admin-users/actions";
 
 type FormMsg = {

@@ -7,7 +7,12 @@ import { checkAnswerSimpleTranslation } from "@/features/learning/actions";
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { Form, FormField, FormItem, FormMessage } from "@repo/ui/components/ui/form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@repo/ui/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
