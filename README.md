@@ -8,6 +8,13 @@ This repository contains the IWords learning platform built as a Turborepo monor
 
 Supporting services are provisioned with Docker (PostgreSQL, Redis, Mailhog). Commit workflow is standardized with Husky, Commitlint, and Commitizen.
 
+## Screenshots
+
+| ![Screenshot 1](screenshots/screenshot_01.png) | ![Screenshot 2](screenshots/screenshot_02.png) |
+| :--------------------------------------------: | :--------------------------------------------: |
+| ![Screenshot 3](screenshots/screenshot_03.png) | ![Screenshot 4](screenshots/screenshot_04.png) |
+| ![Screenshot 5](screenshots/screenshot_05.png) |                                                |
+
 ## Tech Stack
 
 - Monorepo & DX
