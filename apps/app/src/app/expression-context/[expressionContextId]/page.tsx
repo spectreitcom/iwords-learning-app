@@ -22,9 +22,9 @@ export default async function ExpressionContextPage({ params }: Props) {
 
 async function AwaitedContent({
   expressionContextId,
-}: {
+}: Readonly<{
   expressionContextId: string;
-}) {
+}>) {
   const context = await getExpressionContext(expressionContextId);
 
   return (
