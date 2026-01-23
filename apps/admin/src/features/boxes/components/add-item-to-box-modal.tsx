@@ -13,11 +13,11 @@ import { SearchedDictionaryExpression } from "@/features/dictionary/types";
 import { Input } from "@repo/ui/components/ui/input";
 import { searchDictionaryExpressions } from "@/features/dictionary/actions";
 import { Card, CardContent } from "@repo/ui/components/ui/card";
-import { expressionTypeMap } from "@/features/dictionary/utils";
 import { cn } from "@/lib/utils";
 import { Badge } from "@repo/ui/components/ui/badge";
 import { useDebounceCallback } from "usehooks-ts";
 import { addItemToBox } from "@/features/boxes/actions";
+import { expressionTypeMap } from "@repo/shared/utils";
 
 type Props = Readonly<{
   boxId: string;

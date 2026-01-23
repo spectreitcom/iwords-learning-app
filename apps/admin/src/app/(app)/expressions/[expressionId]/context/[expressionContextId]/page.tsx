@@ -3,7 +3,6 @@ import {
   getExpression,
   getExpressionContextDetails,
 } from "@/features/dictionary/actions";
-import { expressionTypeMap } from "@/features/dictionary/utils";
 import {
   Table,
   TableBody,
@@ -19,6 +18,7 @@ import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 import { PageHeader } from "@/components/page-header";
 import { GenerateSentences } from "@/features/dictionary/components/generate-sentences";
+import { expressionTypeMap } from "@repo/shared/utils";
 
 type Props = Readonly<{
   params: Promise<
@@ -77,7 +77,7 @@ async function AwaitedContent({
       </div>
       <div className={"mt-4"}>
         <SentencesList
-          sentences={expressionContext.sentences ?? []}
+          sentences={(expressionContext.sentences ?? []) as Sentence[]}
           expressionId={expressionId}
           expressionContextId={expressionContextId}
         />

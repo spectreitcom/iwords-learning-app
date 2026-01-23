@@ -1,4 +1,4 @@
-import { ExpressionContextType } from "@/lib/types";
+import { ExpressionContextType } from "./types";
 
 const expressionTypeMap = new Map<ExpressionContextType, string>();
 expressionTypeMap.set("verb", "czasownik");

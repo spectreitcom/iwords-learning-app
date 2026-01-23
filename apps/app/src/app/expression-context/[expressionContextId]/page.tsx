@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/components/ui/card";
+import { expressionTypeMap } from "@repo/shared/utils";
 
 type Props = Readonly<{
   params: Promise<{ expressionContextId: string }>;
@@ -46,7 +47,9 @@ async function AwaitedContent({
               </p>
             </div>
             <div className="flex flex-col gap-2 items-end">
-              <Badge variant="secondary">{context.type}</Badge>
+              <Badge variant="secondary">
+                {expressionTypeMap.get(context.type)}
+              </Badge>
               {context.isIrregular && (
                 <Badge variant="destructive">Nieregularny</Badge>
               )}

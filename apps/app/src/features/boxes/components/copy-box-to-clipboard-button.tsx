@@ -1,7 +1,5 @@
 "use client";
 
-import { boxItemSchema } from "@/features/boxes/types";
-import { z } from "zod";
 import { Button } from "@repo/ui/components/ui/button";
 import { ClipboardCopy } from "lucide-react";
 import { toast } from "sonner";
@@ -12,7 +10,7 @@ import {
 } from "@repo/ui/components/ui/tooltip";
 
 type Props = Readonly<{
-  items: Pick<z.infer<typeof boxItemSchema>, "phrase" | "translation">[];
+  items: { phrase: string; translation: string }[];
 }>;
 
 export function CopyBoxToClipboardButton({ items }: Props) {

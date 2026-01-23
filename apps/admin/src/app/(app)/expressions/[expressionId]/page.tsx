@@ -14,12 +14,12 @@ import {
 } from "@repo/ui/components/ui/table";
 import { Pagination } from "@/components/pagination";
 import { ExpressionContext } from "@/features/dictionary/types";
-import { expressionTypeMap } from "@/features/dictionary/utils";
 import { AddExpressionContextMenu } from "@/features/dictionary/components/add-expression-context-menu";
 import { ExpressionContextsTableItemActions } from "@/features/dictionary/components/expression-contexts-table-item-actions";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 import { PageHeader } from "@/components/page-header";
+import { expressionTypeMap } from "@repo/shared/utils";
 
 const TAKE = 10;
 
