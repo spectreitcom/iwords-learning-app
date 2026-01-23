@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { validateSentence } from "@/features/sentence-training/actions";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { randomUUID } from "node:crypto";
+import { v4 } from "uuid";
 
 type Props = Readonly<{
   expressionContextId: string;
@@ -47,7 +47,9 @@ export function SentenceTrainer({
         },
       ]);
       setInputValue("");
-      inputRef.current && (inputRef.current.value = "");
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
     },
     onError: () => {
       toast.error("Ups! Coś poszło nie tak");
@@ -95,10 +97,7 @@ export function SentenceTrainer({
                 ? "bg-amber-100 text-amber-800"
                 : "bg-rose-100 text-rose-800";
           return (
-            <div
-              key={randomUUID()}
-              className="rounded-md border p-3 hover:bg-muted/40"
-            >
+            <div key={v4()} className="rounded-md border p-3 hover:bg-muted/40">
               <div className="mb-1 flex items-center justify-between gap-3">
                 <span className="text-sm font-medium">Twoje zdanie</span>
                 <span
