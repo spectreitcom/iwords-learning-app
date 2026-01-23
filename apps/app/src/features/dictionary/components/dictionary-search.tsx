@@ -6,7 +6,7 @@ import { Search, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { searchExpressionContexts } from "@/features/dictionary/actions";
 import { SearchedExpressionContext } from "@/features/dictionary/types";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { useClickOutside } from "@/lib/hooks";
 
@@ -25,7 +25,7 @@ export function DictionarySearch() {
     enabled: debouncedSearchText.length > 2,
   });
 
-  const results = data?.data ?? [];
+  const results = useMemo(() => data?.data ?? [], [data?.data]);
 
   useEffect(() => {
     if (results.length && searchText.length > 2) setOpen(true);
