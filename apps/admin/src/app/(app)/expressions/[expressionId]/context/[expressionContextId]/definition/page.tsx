@@ -5,7 +5,7 @@ import {
 } from "@/features/dictionary/actions";
 import { expressionTypeMap } from "@/features/dictionary/utils";
 import { ExpressionContextDefinitionForm } from "@/features/dictionary/components/expression-context-definition-form";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@repo/ui/components/ui/skeleton";
 import { PageHeader } from "@/components/page-header";
 
 type Props = Readonly<{

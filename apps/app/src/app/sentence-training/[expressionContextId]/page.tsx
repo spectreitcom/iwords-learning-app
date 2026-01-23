@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Spinner } from "@/components/ui/spinner";
+import { Spinner } from "@repo/ui/components/ui/spinner";
 import { notFound } from "next/navigation";
 import { SentenceTrainer } from "@/features/sentence-training/components/sentence-trainer";
 import { getExpressionContext } from "@/features/dictionary/actions";

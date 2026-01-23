@@ -12,10 +12,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
+} from "@repo/ui/components/ui/form";
+import { Textarea } from "@repo/ui/components/ui/textarea";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/components/ui/button";
 import {
   generateExpressionContextDefinition,
   updateExpressionContextDefinition,

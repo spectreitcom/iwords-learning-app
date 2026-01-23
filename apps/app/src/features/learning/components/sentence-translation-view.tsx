@@ -1,13 +1,13 @@
 import { GeneralAnswer, LearningViewType } from "@/features/learning/types";
 import { SENTENCE_TRANSLATION_VIEW } from "@/features/learning/constants";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/components/ui/button";
 import { useEffect, useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { checkAnswerSentenceTranslation } from "@/features/learning/actions";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
+import { Form, FormField, FormItem, FormMessage } from "@repo/ui/components/ui/form";
+import { Textarea } from "@repo/ui/components/ui/textarea";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 

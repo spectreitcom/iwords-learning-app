@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { getRepetitions } from "@/features/repetitions/actions";
 import { LearningMain } from "@/features/learning/components/learning-main";
-import { Spinner } from "@/components/ui/spinner";
+import { Spinner } from "@repo/ui/components/ui/spinner";
 import { redirect } from "next/navigation";
 
 export default async function RepetitionsLearningPage() {

@@ -3,8 +3,8 @@ import {
   LearningViewType,
 } from "@/features/learning/types";
 import { IRREGULAR_VERB_TRANSLATION_VIEW } from "@/features/learning/constants";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Input } from "@repo/ui/components/ui/input";
+import { Button } from "@repo/ui/components/ui/button";
 import { useEffect, useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { checkAnswerIrregularVerbTranslation } from "@/features/learning/actions";
@@ -15,7 +15,7 @@ import {
   FormLabel,
   Form,
   FormMessage,
-} from "@/components/ui/form";
+} from "@repo/ui/components/ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

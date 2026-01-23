@@ -2,13 +2,13 @@
 
 import { useAuth } from "@clerk/nextjs";
 import { CurrentLoggedUser } from "@/features/auth/types";
+import { Button } from "@repo/ui/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "admin/src/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+} from "@repo/ui/components/ui/dropdown-menu";
 
 type Props = Readonly<{
   loggedUser: CurrentLoggedUser;

@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import { getBoxDetails } from "@/features/boxes/actions";
 import { BoxItem } from "@/features/boxes/types";
-import { Spinner } from "@/components/ui/spinner";
-import { Card, CardContent } from "@/components/ui/card";
+import { Spinner } from "@repo/ui/components/ui/spinner";
+import { Card, CardContent } from "@repo/ui/components/ui/card";
 import {
   Table,
   TableBody,
@@ -10,7 +10,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@repo/ui/components/ui/table";
 import { expressionTypeMap } from "@/features/boxes/utils";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { Search } from "lucide-react";

@@ -4,9 +4,9 @@ import {
   removeAllRepetitions,
   removeRepetition,
 } from "@/features/repetitions/actions";
-import { Card, CardContent } from "@/components/ui/card";
-import { Spinner } from "@/components/ui/spinner";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@repo/ui/components/ui/card";
+import { Spinner } from "@repo/ui/components/ui/spinner";
+import { Button } from "@repo/ui/components/ui/button";
 import { expressionTypeMap } from "@/features/boxes/utils";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { Search, Trash2 } from "lucide-react";

@@ -7,13 +7,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@repo/ui/components/ui/table";
 import { User } from "@/features/users/types";
 import { Pagination } from "@/components/pagination";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";
 import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 import { UsersTableItemActions } from "@/features/users/components/users-table-item-actions";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@repo/ui/components/ui/badge";
 import { PageHeader } from "@/components/page-header";
 
 const TAKE = 10;

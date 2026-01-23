@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/components/ui/button";
 import { redirect } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { beginBox } from "@/features/learning/actions";

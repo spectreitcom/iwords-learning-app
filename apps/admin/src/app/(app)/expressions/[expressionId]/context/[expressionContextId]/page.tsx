@@ -11,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@repo/ui/components/ui/table";
 import { Sentence } from "@/features/dictionary/types";
 import { SentencesTableItemActions } from "@/features/dictionary/components/sentences-table-item-actions";
 import { AddSentenceModal } from "@/features/dictionary/components/add-sentence-modal";

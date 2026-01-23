@@ -4,10 +4,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@repo/ui/components/ui/card";
 import { getUsersNumber } from "@/features/users/actions";
 import { Users as UsersIcon } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@repo/ui/components/ui/skeleton";
 
 export async function UsersNumberWidget() {
   const { usersNumber } = await getUsersNumber();

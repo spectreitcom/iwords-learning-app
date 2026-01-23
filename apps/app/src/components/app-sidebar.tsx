@@ -10,7 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
+} from "@repo/ui/components/ui/sidebar";
 import Link from "next/link";
 import { SidebarBoxesList } from "@/features/boxes/components/sidebar-boxes-list";
 import { usePathname } from "next/navigation";

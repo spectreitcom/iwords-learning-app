@@ -1,8 +1,8 @@
 import { Suspense } from "react";
-import { Spinner } from "@/components/ui/spinner";
+import { Spinner } from "@repo/ui/components/ui/spinner";
 import { getExpressionContext } from "@/features/dictionary/actions";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@repo/ui/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
 
 type Props = Readonly<{
   params: Promise<{ expressionContextId: string }>;

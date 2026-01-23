@@ -1,13 +1,13 @@
 import { GeneralAnswer, LearningViewType } from "@/features/learning/types";
 import { SIMPLE_TRANSLATION_VIEW } from "@/features/learning/constants";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Input } from "@repo/ui/components/ui/input";
+import { Button } from "@repo/ui/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { checkAnswerSimpleTranslation } from "@/features/learning/actions";
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Form, FormField, FormItem, FormMessage } from "@repo/ui/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 

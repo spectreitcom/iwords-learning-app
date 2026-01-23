@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/components/ui/button";
 import Link from "next/link";
 import { getSession } from "@/lib/session";
 import { ModeToggle } from "@repo/ui/components/mode-toggle";
@@ -8,7 +8,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@repo/ui/components/ui/dropdown-menu";
 
 export async function TopBar() {
   const session = await getSession();

@@ -1,12 +1,12 @@
 "use client";
 
 import { getBoxRepetitions } from "@/features/box-repetition/actions";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
 import { CheckCircle2, Circle, Layers, RefreshCw } from "lucide-react";
 import { useEffect, useState, useCallback } from "react";
 import { BoxRepetition } from "@/features/box-repetition/types";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@repo/ui/components/ui/button";
+import { Spinner } from "@repo/ui/components/ui/spinner";
 import Link from "next/link";
 
 export function BoxRepetitionsWidget() {

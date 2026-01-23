@@ -6,16 +6,16 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from "@repo/ui/components/ui/dialog";
+import { Button } from "@repo/ui/components/ui/button";
 import { useEffect, useState } from "react";
 import { SearchedDictionaryExpression } from "@/features/dictionary/types";
-import { Input } from "@/components/ui/input";
+import { Input } from "@repo/ui/components/ui/input";
 import { searchDictionaryExpressions } from "@/features/dictionary/actions";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@repo/ui/components/ui/card";
 import { expressionTypeMap } from "@/features/dictionary/utils";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@repo/ui/components/ui/badge";
 import { useDebounceCallback } from "usehooks-ts";
 import { addItemToBox } from "@/features/boxes/actions";
 

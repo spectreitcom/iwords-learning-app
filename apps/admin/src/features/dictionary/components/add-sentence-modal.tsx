@@ -7,8 +7,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from "@repo/ui/components/ui/dialog";
+import { Button } from "@repo/ui/components/ui/button";
 import { CreateSentenceForm } from "@/features/dictionary/components/create-sentence-form";
 import { createSentence } from "@/features/dictionary/actions";
 

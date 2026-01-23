@@ -1,13 +1,13 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@repo/ui/components/ui/dialog";
 import { createExpression } from "@/features/dictionary/actions";
 import { useState } from "react";
 import { CreateExpressionForm } from "@/features/dictionary/components/create-expression-form";

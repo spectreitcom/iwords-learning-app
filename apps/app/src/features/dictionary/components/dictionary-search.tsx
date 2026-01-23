@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
+import { Input } from "@repo/ui/components/ui/input";
 import { Search, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { searchExpressionContexts } from "@/features/dictionary/actions";

@@ -2,14 +2,14 @@
 
 import { boxItemSchema } from "@/features/boxes/types";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/components/ui/button";
 import { ClipboardCopy } from "lucide-react";
 import { toast } from "sonner";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@repo/ui/components/ui/tooltip";
 
 type Props = Readonly<{
   items: Pick<z.infer<typeof boxItemSchema>, "phrase" | "translation">[];

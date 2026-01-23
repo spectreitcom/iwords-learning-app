@@ -11,12 +11,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+} from "@repo/ui/components/ui/form";
+import { Input } from "@repo/ui/components/ui/input";
+import { Button } from "@repo/ui/components/ui/button";
+import { Checkbox } from "@repo/ui/components/ui/checkbox";
 import { useId } from "react";
-import { Label } from "@/components/ui/label";
+import { Label } from "@repo/ui/components/ui/label";
 
 type Props = Readonly<{
   onSubmitted: (data: CreateNounExpressionContextData) => void;
