@@ -22,6 +22,7 @@ import { useState } from "react";
 import { deleteExpression } from "@/features/dictionary/actions";
 import { EditExpressionModal } from "@/features/dictionary/components/edit-expression-modal";
 import { Expression } from "@/features/dictionary/types";
+import { toast } from "sonner";
 
 type Props = Readonly<{
   expression: Expression;
@@ -73,8 +74,14 @@ function Alert({
   const [removing, setRemoving] = useState(false);
 
   const handleDelete = async () => {
-    setRemoving(true);
-    await deleteExpression(expression.expressionId);
+    try {
+      setRemoving(true);
+      await deleteExpression(expression.expressionId);
+      toast.success("Wyrażenie zostało usunięte");
+    } catch (error) {
+      setRemoving(false);
+      toast.error("Wystąpił błąd podczas usuwania wyrażenia");
+    }
   };
 
   return (

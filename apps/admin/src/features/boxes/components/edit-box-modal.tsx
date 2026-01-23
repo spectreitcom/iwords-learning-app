@@ -10,6 +10,7 @@ import { updateBox } from "@/features/boxes/actions";
 import { CreateBoxForm } from "@/features/boxes/components/create-box-form";
 import { Box } from "@/features/boxes/types";
 import { useState } from "react";
+import { toast } from "sonner";
 
 type Props = Readonly<{
   box: Box;
@@ -30,10 +31,16 @@ export function EditBoxModal({ box, open, onClose }: Props) {
           defaultValues={{ ...box }}
           pending={pending}
           onSubmitted={async (data) => {
-            setPending(true);
-            await updateBox(box.boxId, data);
-            setPending(false);
-            onClose();
+            try {
+              setPending(true);
+              await updateBox(box.boxId, data);
+              setPending(false);
+              toast.success("Box został zaktualizowany");
+              onClose();
+            } catch (error) {
+              setPending(false);
+              toast.error("Wystąpił błąd podczas aktualizacji boxa");
+            }
           }}
         />
       </DialogContent>

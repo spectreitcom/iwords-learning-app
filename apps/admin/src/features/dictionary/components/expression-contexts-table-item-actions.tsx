@@ -44,6 +44,7 @@ import { CreateOnlyTranslationExpressionContextForm } from "@/features/dictionar
 import { CreateNounExpressionContextForm } from "@/features/dictionary/components/create-noun-translation-expression-context-form";
 import { CreateIrregularVerbExpressionContextForm } from "@/features/dictionary/components/create-irregular-verb-expression-context-form";
 import Link from "next/link";
+import { toast } from "sonner";
 
 type Props = Readonly<{
   expressionContext: ExpressionContext;
@@ -230,15 +231,21 @@ function EditVerbModal({
             translation: expressionContextDetails.translation,
           }}
           onSubmitted={async (data) => {
-            setPending(true);
-            await updateVerbExpressionContext(
-              expressionContextId,
-              expressionContextDetails.expressionId,
-              data,
-            );
-            setPending(false);
-            setExpressionContextDetails(null);
-            onClose();
+            try {
+              setPending(true);
+              await updateVerbExpressionContext(
+                expressionContextId,
+                expressionContextDetails.expressionId,
+                data,
+              );
+              setPending(false);
+              toast.success("Kontekst został zaktualizowany");
+              setExpressionContextDetails(null);
+              onClose();
+            } catch (error) {
+              setPending(false);
+              toast.error("Wystąpił błąd podczas aktualizacji kontekstu");
+            }
           }}
         />
       )}
@@ -284,15 +291,21 @@ function EditIrregularVerbModal({
             form3: expressionContextDetails?.forms?.at(2) ?? "",
           }}
           onSubmitted={async (data) => {
-            setPending(true);
-            await updateIrregularVerbExpressionContext(
-              expressionContextId,
-              expressionContextDetails.expressionId,
-              data,
-            );
-            setPending(false);
-            setExpressionContextDetails(null);
-            onClose();
+            try {
+              setPending(true);
+              await updateIrregularVerbExpressionContext(
+                expressionContextId,
+                expressionContextDetails.expressionId,
+                data,
+              );
+              setPending(false);
+              toast.success("Kontekst został zaktualizowany");
+              setExpressionContextDetails(null);
+              onClose();
+            } catch (error) {
+              setPending(false);
+              toast.error("Wystąpił błąd podczas aktualizacji kontekstu");
+            }
           }}
         />
       )}
@@ -332,15 +345,21 @@ function EditNounModal({
             isCountable: expressionContextDetails.isCountable,
           }}
           onSubmitted={async (data) => {
-            setPending(true);
-            await updateNounExpressionContext(
-              expressionContextId,
-              expressionContextDetails.expressionId,
-              data,
-            );
-            setPending(false);
-            setExpressionContextDetails(null);
-            onClose();
+            try {
+              setPending(true);
+              await updateNounExpressionContext(
+                expressionContextId,
+                expressionContextDetails.expressionId,
+                data,
+              );
+              setPending(false);
+              toast.success("Kontekst został zaktualizowany");
+              setExpressionContextDetails(null);
+              onClose();
+            } catch (error) {
+              setPending(false);
+              toast.error("Wystąpił błąd podczas aktualizacji kontekstu");
+            }
           }}
         />
       )}
@@ -379,15 +398,21 @@ function EditPhrasalVerbModal({
             translation: expressionContextDetails.translation,
           }}
           onSubmitted={async (data) => {
-            setPending(true);
-            await updatePhrasalAdverbExpressionContext(
-              expressionContextId,
-              expressionContextDetails.expressionId,
-              data,
-            );
-            setPending(false);
-            setExpressionContextDetails(null);
-            onClose();
+            try {
+              setPending(true);
+              await updatePhrasalAdverbExpressionContext(
+                expressionContextId,
+                expressionContextDetails.expressionId,
+                data,
+              );
+              setPending(false);
+              toast.success("Kontekst został zaktualizowany");
+              setExpressionContextDetails(null);
+              onClose();
+            } catch (error) {
+              setPending(false);
+              toast.error("Wystąpił błąd podczas aktualizacji kontekstu");
+            }
           }}
         />
       )}
@@ -426,15 +451,21 @@ function EditAdverbModal({
             translation: expressionContextDetails.translation,
           }}
           onSubmitted={async (data) => {
-            setPending(true);
-            await updateAdverbExpressionContext(
-              expressionContextId,
-              expressionContextDetails.expressionId,
-              data,
-            );
-            setPending(false);
-            setExpressionContextDetails(null);
-            onClose();
+            try {
+              setPending(true);
+              await updateAdverbExpressionContext(
+                expressionContextId,
+                expressionContextDetails.expressionId,
+                data,
+              );
+              setPending(false);
+              toast.success("Kontekst został zaktualizowany");
+              setExpressionContextDetails(null);
+              onClose();
+            } catch (error) {
+              setPending(false);
+              toast.error("Wystąpił błąd podczas aktualizacji kontekstu");
+            }
           }}
         />
       )}
@@ -473,15 +504,21 @@ function EditSimpleExpressionModal({
             translation: expressionContextDetails.translation,
           }}
           onSubmitted={async (data) => {
-            setPending(true);
-            await updateSimpleExpressionExpressionContext(
-              expressionContextId,
-              expressionContextDetails.expressionId,
-              data,
-            );
-            setPending(false);
-            setExpressionContextDetails(null);
-            onClose();
+            try {
+              setPending(true);
+              await updateSimpleExpressionExpressionContext(
+                expressionContextId,
+                expressionContextDetails.expressionId,
+                data,
+              );
+              setPending(false);
+              toast.success("Kontekst został zaktualizowany");
+              setExpressionContextDetails(null);
+              onClose();
+            } catch (error) {
+              setPending(false);
+              toast.error("Wystąpił błąd podczas aktualizacji kontekstu");
+            }
           }}
         />
       )}
@@ -520,15 +557,21 @@ function EditAdjectiveModal({
             translation: expressionContextDetails.translation,
           }}
           onSubmitted={async (data) => {
-            setPending(true);
-            await updateAdjectiveExpressionContext(
-              expressionContextId,
-              expressionContextDetails.expressionId,
-              data,
-            );
-            setPending(false);
-            setExpressionContextDetails(null);
-            onClose();
+            try {
+              setPending(true);
+              await updateAdjectiveExpressionContext(
+                expressionContextId,
+                expressionContextDetails.expressionId,
+                data,
+              );
+              setPending(false);
+              toast.success("Kontekst został zaktualizowany");
+              setExpressionContextDetails(null);
+              onClose();
+            } catch (error) {
+              setPending(false);
+              toast.error("Wystąpił błąd podczas aktualizacji kontekstu");
+            }
           }}
         />
       )}
@@ -552,9 +595,15 @@ function Alert({
   const [removing, setRemoving] = useState(false);
 
   const handleDelete = async () => {
-    setRemoving(true);
-    await deleteExpressionContext(expressionContext.expressionContextId);
-    onClose();
+    try {
+      setRemoving(true);
+      await deleteExpressionContext(expressionContext.expressionContextId);
+      toast.success("Kontekst został usunięty");
+      onClose();
+    } catch (error) {
+      setRemoving(false);
+      toast.error("Wystąpił błąd podczas usuwania kontekstu");
+    }
   };
 
   return (

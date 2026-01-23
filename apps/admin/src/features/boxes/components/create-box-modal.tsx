@@ -11,6 +11,7 @@ import {
 import { Button } from "@repo/ui/components/ui/button";
 import { CreateBoxForm } from "@/features/boxes/components/create-box-form";
 import { createBox } from "@/features/boxes/actions";
+import { toast } from "sonner";
 
 export function CreateBoxModal() {
   const [show, setShow] = useState(false);
@@ -28,10 +29,16 @@ export function CreateBoxModal() {
         <CreateBoxForm
           pending={pending}
           onSubmitted={async (data) => {
-            setPending(true);
-            await createBox(data);
-            setShow(false);
-            setPending(false);
+            try {
+              setPending(true);
+              await createBox(data);
+              toast.success("Box został utworzony");
+              setShow(false);
+              setPending(false);
+            } catch (error) {
+              setPending(false);
+              toast.error("Wystąpił błąd podczas tworzenia boxa");
+            }
           }}
         />
       </DialogContent>

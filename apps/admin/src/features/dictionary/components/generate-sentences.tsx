@@ -15,6 +15,7 @@ import {
   TableRow,
 } from "@repo/ui/components/ui/table";
 import { v4 } from "uuid";
+import { toast } from "sonner";
 
 type GeneratedSentence = {
   sentence: string;
@@ -42,8 +43,10 @@ export function GenerateSentences({
       const sentences =
         await generateSentencesForExpressionContext(expressionContextId);
       setGeneratedSentences(sentences);
+      toast.success("Zdania zostały wygenerowane");
     } catch (error) {
       console.error("Failed to generate sentences:", error);
+      toast.error("Wystąpił błąd podczas generowania zdań");
     } finally {
       setIsGenerating(false);
     }
@@ -61,8 +64,10 @@ export function GenerateSentences({
       });
       // Remove the added sentence from the list
       setGeneratedSentences((prev) => prev.filter((_, i) => i !== index));
+      toast.success("Zdanie zostało dodane");
     } catch (error) {
       console.error("Failed to add sentence:", error);
+      toast.error("Wystąpił błąd podczas dodawania zdania");
     } finally {
       setAddingStates((prev) => ({ ...prev, [index]: false }));
     }

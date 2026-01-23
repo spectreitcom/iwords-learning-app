@@ -11,6 +11,7 @@ import {
 import { Button } from "@repo/ui/components/ui/button";
 import { InviteAdminUserForm } from "@/features/admin-users/components/invite-admin-user-form";
 import { inviteAdminUser } from "@/features/admin-users/actions";
+import { toast } from "sonner";
 
 export function InviteAdminUserModal() {
   const [show, setShow] = useState(false);
@@ -26,8 +27,13 @@ export function InviteAdminUserModal() {
         </DialogHeader>
         <InviteAdminUserForm
           onSubmitted={async (data) => {
-            await inviteAdminUser(data);
-            setShow(false);
+            try {
+              await inviteAdminUser(data);
+              toast.success("Administrator został zaproszony");
+              setShow(false);
+            } catch (error) {
+              toast.error("Wystąpił błąd podczas zapraszania administratora");
+            }
           }}
         />
       </DialogContent>

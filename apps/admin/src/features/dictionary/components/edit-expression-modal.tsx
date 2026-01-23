@@ -10,6 +10,7 @@ import { updateExpression } from "@/features/dictionary/actions";
 import { CreateExpressionForm } from "@/features/dictionary/components/create-expression-form";
 import { Expression } from "@/features/dictionary/types";
 import { useState } from "react";
+import { toast } from "sonner";
 
 type Props = Readonly<{
   expression: Expression;
@@ -30,10 +31,16 @@ export function EditExpressionModal({ expression, open, onClose }: Props) {
           defaultValues={{ ...expression }}
           pending={pending}
           onSubmitted={async (data) => {
-            setPending(true);
-            await updateExpression(expression.expressionId, data);
-            setPending(false);
-            onClose();
+            try {
+              setPending(true);
+              await updateExpression(expression.expressionId, data);
+              setPending(false);
+              toast.success("Wyrażenie zostało zaktualizowane");
+              onClose();
+            } catch (error) {
+              setPending(false);
+              toast.error("Wystąpił błąd podczas aktualizacji wyrażenia");
+            }
           }}
         />
       </DialogContent>
