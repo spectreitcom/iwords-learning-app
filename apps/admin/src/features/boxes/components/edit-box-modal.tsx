@@ -37,7 +37,7 @@ export function EditBoxModal({ box, open, onClose }: Props) {
               setPending(false);
               toast.success("Box został zaktualizowany");
               onClose();
-            } catch (error) {
+            } catch {
               setPending(false);
               toast.error("Wystąpił błąd podczas aktualizacji boxa");
             }

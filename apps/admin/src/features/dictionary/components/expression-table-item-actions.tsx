@@ -78,7 +78,7 @@ function Alert({
       setRemoving(true);
       await deleteExpression(expression.expressionId);
       toast.success("Wyrażenie zostało usunięte");
-    } catch (error) {
+    } catch {
       setRemoving(false);
       toast.error("Wystąpił błąd podczas usuwania wyrażenia");
     }

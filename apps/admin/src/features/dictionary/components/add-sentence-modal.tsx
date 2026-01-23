@@ -40,7 +40,7 @@ export function AddSentenceModal({ expressionContextId, expressionId }: Props) {
               toast.success("Zdanie zostało dodane");
               setPending(false);
               setShow(false);
-            } catch (error) {
+            } catch {
               setPending(false);
               toast.error("Wystąpił błąd podczas dodawania zdania");
             }

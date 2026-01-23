@@ -46,7 +46,7 @@ export function ExpressionContextDefinitionForm({
     try {
       await updateExpressionContextDefinition(expressionContextId, data);
       toast.success("Definicja została zapisana");
-    } catch (error) {
+    } catch {
       toast.error("Wystąpił błąd podczas zapisywania definicji");
     }
   };

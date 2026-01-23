@@ -161,7 +161,7 @@ function AddVerbModal({
             setPending(false);
             toast.success("Czasownik został dodany");
             onClose();
-          } catch (error) {
+          } catch {
             setPending(false);
             toast.error("Wystąpił błąd podczas dodawania czasownika");
           }
@@ -191,7 +191,7 @@ function AddPhrasalVerbModal({
             setPending(false);
             toast.success("Czasownik frazowy został dodany");
             onClose();
-          } catch (error) {
+          } catch {
             setPending(false);
             toast.error("Wystąpił błąd podczas dodawania czasownika frazowego");
           }
@@ -221,7 +221,7 @@ function AddNounModal({
             setPending(false);
             toast.success("Rzeczownik został dodany");
             onClose();
-          } catch (error) {
+          } catch {
             setPending(false);
             toast.error("Wystąpił błąd podczas dodawania rzeczownika");
           }
@@ -251,7 +251,7 @@ function AddAdverbModal({
             setPending(false);
             toast.success("Przysłówek został dodany");
             onClose();
-          } catch (error) {
+          } catch {
             setPending(false);
             toast.error("Wystąpił błąd podczas dodawania przysłówka");
           }
@@ -281,7 +281,7 @@ function AddIrregularVerbModal({
             setPending(false);
             toast.success("Czasownik nieregularny został dodany");
             onClose();
-          } catch (error) {
+          } catch {
             setPending(false);
             toast.error(
               "Wystąpił błąd podczas dodawania czasownika nieregularnego",
@@ -313,7 +313,7 @@ function AddAdjectiveModal({
             setPending(false);
             toast.success("Przymiotnik został dodany");
             onClose();
-          } catch (error) {
+          } catch {
             setPending(false);
             toast.error("Wystąpił błąd podczas dodawania przymiotnika");
           }
@@ -343,7 +343,7 @@ function AddSimpleExpressionModal({
             setPending(false);
             toast.success("Wyrażenie zostało dodane");
             onClose();
-          } catch (error) {
+          } catch {
             setPending(false);
             toast.error("Wystąpił błąd podczas dodawania wyrażenia");
           }
