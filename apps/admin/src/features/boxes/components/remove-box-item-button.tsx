@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/components/ui/button";
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { removeItemFromBox } from "@/features/boxes/actions";
@@ -13,7 +13,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from "@repo/ui/components/ui/alert-dialog";
 
 type Props = Readonly<{
   boxId: string;

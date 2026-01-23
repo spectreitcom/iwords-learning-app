@@ -4,10 +4,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@repo/ui/components/ui/card";
 import { getBoxesNumber } from "@/features/boxes/actions";
 import { Boxes as BoxesIcon } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@repo/ui/components/ui/skeleton";
 
 export async function BoxesNumberWidget() {
   const { boxesNumber } = await getBoxesNumber();

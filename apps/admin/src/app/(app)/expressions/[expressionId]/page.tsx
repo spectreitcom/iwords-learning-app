@@ -11,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@repo/ui/components/ui/table";
 import { Pagination } from "@/components/pagination";
 import { ExpressionContext } from "@/features/dictionary/types";
 import { expressionTypeMap } from "@/features/dictionary/utils";

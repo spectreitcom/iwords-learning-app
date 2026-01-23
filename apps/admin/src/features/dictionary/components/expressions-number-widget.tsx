@@ -4,10 +4,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@repo/ui/components/ui/card";
 import { getExpressionsNumber } from "@/features/dictionary/actions";
 import { Quote as ExpressionsIcon } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@repo/ui/components/ui/skeleton";
 
 export async function ExpressionsNumberWidget() {
   const { expressionsNumber } = await getExpressionsNumber();

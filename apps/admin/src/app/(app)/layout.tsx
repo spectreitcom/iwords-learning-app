@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@repo/ui/components/ui/sidebar";
 import { TopBar } from "@/components/top-bar";
 
 export const dynamic = "force-dynamic";

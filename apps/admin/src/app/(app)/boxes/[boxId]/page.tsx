@@ -6,7 +6,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@repo/ui/components/ui/table";
 import { getBoxDetails } from "@/features/boxes/actions";
 import { BoxDetails, BoxItem } from "@/features/boxes/types";
 import { NoDataPlaceholder } from "@/components/no-data-placeholder";

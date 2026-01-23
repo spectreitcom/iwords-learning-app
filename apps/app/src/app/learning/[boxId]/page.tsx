@@ -1,4 +1,4 @@
-import { Spinner } from "@/components/ui/spinner";
+import { Spinner } from "@repo/ui/components/ui/spinner";
 import { Suspense } from "react";
 import { getBoxDetails } from "@/features/boxes/actions";
 import { LearningMain } from "@/features/learning/components/learning-main";

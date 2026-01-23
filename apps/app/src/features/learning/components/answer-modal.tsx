@@ -8,8 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from "@repo/ui/components/ui/dialog";
+import { Button } from "@repo/ui/components/ui/button";
 import { BadgeCheck, CheckCircle2, XCircle } from "lucide-react";
 import { GeneralAnswer, IrregularVerbAnswer } from "@/features/learning/types";
 

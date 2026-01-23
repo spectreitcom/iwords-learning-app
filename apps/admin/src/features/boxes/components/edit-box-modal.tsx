@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@repo/ui/components/ui/dialog";
 import { updateBox } from "@/features/boxes/actions";
 import { CreateBoxForm } from "@/features/boxes/components/create-box-form";
 import { Box } from "@/features/boxes/types";

@@ -1,12 +1,17 @@
 "use client";
 
 import { getBoxRepetitions } from "@/features/box-repetition/actions";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@repo/ui/components/ui/card";
 import { CheckCircle2, Circle, Layers, RefreshCw } from "lucide-react";
 import { useEffect, useState, useCallback } from "react";
 import { BoxRepetition } from "@/features/box-repetition/types";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@repo/ui/components/ui/button";
+import { Spinner } from "@repo/ui/components/ui/spinner";
 import Link from "next/link";
 
 export function BoxRepetitionsWidget() {
@@ -61,7 +66,7 @@ export function BoxRepetitionsWidget() {
               <Link
                 href={`/boxes/${box.boxId}`}
                 key={box.boxId}
-                className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-zinc-200 bg-white p-4 transition-all hover:border-indigo-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-indigo-700"
+                className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50/50 p-4 transition-all hover:border-indigo-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:border-indigo-700"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="space-y-1">
@@ -89,7 +94,7 @@ export function BoxRepetitionsWidget() {
                     </span>
                   </div>
                   {!box.isFinished && (
-                    <div className="h-1.5 w-16 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+                    <div className="h-1.5 w-16 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
                       <div
                         className="h-full bg-indigo-500 transition-all"
                         style={{

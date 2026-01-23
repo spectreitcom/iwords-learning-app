@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@repo/ui/components/ui/table";
 import { Box } from "@/features/boxes/types";
 import { Pagination } from "@/components/pagination";
 import Link from "next/link";

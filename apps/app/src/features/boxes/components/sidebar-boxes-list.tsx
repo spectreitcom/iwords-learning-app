@@ -6,13 +6,13 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/components/ui/sidebar";
+} from "@repo/ui/components/ui/sidebar";
 import Link from "next/link";
 import { useBoxesListQuery } from "@/features/boxes/hooks";
-import { Spinner } from "@/components/ui/spinner";
+import { Spinner } from "@repo/ui/components/ui/spinner";
 import { usePathname } from "next/navigation";
 import { CheckCircle } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@repo/ui/components/ui/badge";
 
 export function SidebarBoxesList() {
   const {

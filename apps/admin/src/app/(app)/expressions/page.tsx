@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@repo/ui/components/ui/table";
 import { Expression } from "@/features/dictionary/types";
 import { Pagination } from "@/components/pagination";
 import { SearchExpressionsInput } from "@/features/dictionary/components/search-expressions-input";

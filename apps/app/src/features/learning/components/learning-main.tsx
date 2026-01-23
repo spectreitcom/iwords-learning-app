@@ -1,6 +1,6 @@
 "use client";
 
-import { Progress } from "@/components/ui/progress";
+import { Progress } from "@repo/ui/components/ui/progress";
 import { SimpleTranslationView } from "@/features/learning/components/simple-translation-view";
 import { LinkedList, LinkedListNode } from "@/lib/linked-list";
 import { useEffect, useRef, useState } from "react";
@@ -15,10 +15,10 @@ import {
   AnswerModal,
   IrregularVerbAnswerModal,
 } from "@/features/learning/components/answer-modal";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@repo/ui/components/ui/card";
 import { Trophy } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/components/ui/button";
 import { ExpressionContextType } from "@/lib/types";
 import { expressionTypeMap } from "@/features/boxes/utils";
 import { finishBox } from "@/features/boxes/actions";

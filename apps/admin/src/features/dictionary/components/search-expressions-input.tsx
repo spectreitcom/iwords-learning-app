@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
+import { Input } from "@repo/ui/components/ui/input";
 import { useState, useMemo, useCallback } from "react";
 import { redirect } from "next/navigation";
 import { useDebounceCallback } from "usehooks-ts";

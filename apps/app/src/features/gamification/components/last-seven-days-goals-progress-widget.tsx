@@ -1,7 +1,7 @@
 "use client";
 
 import { RefreshCw } from "lucide-react";
-import { Spinner } from "@/components/ui/spinner";
+import { Spinner } from "@repo/ui/components/ui/spinner";
 import { useLastSevenDaysGoalsProgress } from "@/features/gamification/hooks";
 
 function formatWeekday(dateStr: string) {

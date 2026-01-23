@@ -4,7 +4,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@repo/ui/components/ui/card";
 import { AuthLoginForm } from "@/features/auth/components/auth-login-form";
 
 export default function SignInPage() {

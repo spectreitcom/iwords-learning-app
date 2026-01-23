@@ -7,8 +7,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from "@repo/ui/components/ui/dialog";
+import { Button } from "@repo/ui/components/ui/button";
 import { InviteAdminUserForm } from "@/features/admin-users/components/invite-admin-user-form";
 import { inviteAdminUser } from "@/features/admin-users/actions";
 

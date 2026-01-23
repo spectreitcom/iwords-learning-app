@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@repo/ui/components/ui/dialog";
 import { updateExpression } from "@/features/dictionary/actions";
 import { CreateExpressionForm } from "@/features/dictionary/components/create-expression-form";
 import { Expression } from "@/features/dictionary/types";
