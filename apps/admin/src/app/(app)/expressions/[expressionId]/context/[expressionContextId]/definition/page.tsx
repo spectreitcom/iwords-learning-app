@@ -3,10 +3,11 @@ import {
   getExpression,
   getExpressionContextDetails,
 } from "@/features/dictionary/actions";
-import { expressionTypeMap } from "@/features/dictionary/utils";
+import { CreateExpressionContextDefinitionData } from "@/features/dictionary/schemas";
 import { ExpressionContextDefinitionForm } from "@/features/dictionary/components/expression-context-definition-form";
 import { Skeleton } from "@repo/ui/components/ui/skeleton";
 import { PageHeader } from "@/components/page-header";
+import { expressionTypeMap } from "@repo/shared/utils";
 
 type Props = Readonly<{
   params: Promise<{ expressionId: string; expressionContextId: string }>;
@@ -47,10 +48,13 @@ async function AwaitedContent({
       />
       <ExpressionContextDefinitionForm
         expressionContextId={expressionContextId}
-        defaultValues={{
-          definition: expressionContext.definition ?? "",
-          definitionTranslation: expressionContext.definitionTranslation ?? "",
-        }}
+        defaultValues={
+          {
+            definition: expressionContext.definition ?? "",
+            definitionTranslation:
+              expressionContext.definitionTranslation ?? "",
+          } as CreateExpressionContextDefinitionData
+        }
       />
     </div>
   );

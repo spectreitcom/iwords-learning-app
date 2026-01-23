@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const inviteAdminUserSchema = z.object({
-  email: z.string().email({
+  email: z.email({
     message: "Nieprawidłowy adres email",
   }),
   name: z.string().min(1, {

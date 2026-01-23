@@ -31,7 +31,7 @@ type FormMsg = {
 export function RequestForResetPasswordForm() {
   const [formMessage, setFormMessage] = useState<FormMsg | null>(null);
 
-  const form = useForm({
+  const form = useForm<RequestForResetPasswordData>({
     resolver: zodResolver(requestForResetPasswordSchema),
     defaultValues: {
       email: "",

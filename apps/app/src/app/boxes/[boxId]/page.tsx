@@ -11,12 +11,12 @@ import {
   TableHeader,
   TableRow,
 } from "@repo/ui/components/ui/table";
-import { expressionTypeMap } from "@/features/boxes/utils";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { Search } from "lucide-react";
 import { StartLearningButton } from "@/features/learning/components/start-learning-button";
 import { CopyBoxToClipboardButton } from "@/features/boxes/components/copy-box-to-clipboard-button";
 import { BoxItemDropdownMenu } from "@/features/boxes/components/box-item-dropdown-menu";
+import { expressionTypeMap } from "@repo/shared/utils";
 
 type Props = Readonly<{
   params: Promise<{ boxId: string }>;

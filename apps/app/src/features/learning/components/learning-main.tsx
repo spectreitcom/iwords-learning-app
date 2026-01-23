@@ -20,9 +20,9 @@ import { Trophy } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@repo/ui/components/ui/button";
 import { ExpressionContextType } from "@/lib/types";
-import { expressionTypeMap } from "@/features/boxes/utils";
 import { finishBox } from "@/features/boxes/actions";
 import { BoxItem } from "@/features/boxes/types";
+import { expressionTypeMap } from "@repo/shared/utils";
 
 type Props = Readonly<{
   boxItems: Omit<BoxItem, "definition" | "definitionTranslation">[];

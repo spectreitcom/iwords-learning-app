@@ -7,11 +7,11 @@ import {
 import { Card, CardContent } from "@repo/ui/components/ui/card";
 import { Spinner } from "@repo/ui/components/ui/spinner";
 import { Button } from "@repo/ui/components/ui/button";
-import { expressionTypeMap } from "@/features/boxes/utils";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { Search, Trash2 } from "lucide-react";
 import { Repetition } from "@/features/repetitions/types";
 import Link from "next/link";
+import { expressionTypeMap } from "@repo/shared/utils";
 
 export default async function RepetitionsPage() {
   return (

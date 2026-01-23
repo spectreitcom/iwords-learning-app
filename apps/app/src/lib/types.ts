@@ -14,14 +14,7 @@ export const collectionWithPaginationSchema = <T extends z.ZodTypeAny>(
     currentPage: z.number(),
   });
 
-export const expressionContextTypeSchema = z.enum([
-  "verb",
-  "noun",
-  "adjective",
-  "adverb",
-  "phrasal_verb",
-  "irregular_verb",
-  "simple_expression",
-]);
-
-export type ExpressionContextType = z.infer<typeof expressionContextTypeSchema>;
+export {
+  expressionContextTypeSchema,
+  type ExpressionContextType,
+} from "@repo/shared/types";

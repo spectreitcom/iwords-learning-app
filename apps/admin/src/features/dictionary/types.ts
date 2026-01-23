@@ -1,3 +1,4 @@
+import { expressionContextTypeSchema } from "@repo/shared/types";
 import { z } from "zod";
 
 export const expressionSchema = z.object({
@@ -16,17 +17,10 @@ export type CreateExpressionResponse = z.infer<
   typeof createExpressionResponseSchema
 >;
 
-export const expressionContextTypeSchema = z.enum([
-  "verb",
-  "noun",
-  "adjective",
-  "adverb",
-  "phrasal_verb",
-  "irregular_verb",
-  "simple_expression",
-]);
-
-export type ExpressionContextType = z.infer<typeof expressionContextTypeSchema>;
+export {
+  expressionContextTypeSchema,
+  type ExpressionContextType,
+} from "@repo/shared/types";
 
 export const expressionContextSchema = z.object({
   expressionContextId: z.string(),
@@ -40,10 +34,6 @@ export type ExpressionContext = z.infer<typeof expressionContextSchema>;
 export const createExpressionContextResponseSchema = z.object({
   id: z.string(),
 });
-
-export type CreateExpressionContextResponse = z.infer<
-  typeof createExpressionContextResponseSchema
->;
 
 export const sentenceSchema = z.object({
   sentenceId: z.string(),
@@ -87,17 +77,9 @@ export const generateExpressionContextDefinitionResponseSchema = z.object({
   translation: z.string(),
 });
 
-export type GenerateExpressionContextDefinitionResponse = z.infer<
-  typeof generateExpressionContextDefinitionResponseSchema
->;
-
 export const generateSentencesForExpressionContextResponseSchema = z.array(
   z.object({
     sentence: z.string(),
     translation: z.string(),
   }),
 );
-
-export type GenerateSentencesForExpressionContextResponse = z.infer<
-  typeof generateSentencesForExpressionContextResponseSchema
->;
