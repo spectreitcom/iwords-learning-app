@@ -2,6 +2,7 @@ import { UserDropdownMenu } from "@/components/user-dropdown-menu";
 import { getMe } from "@/features/auth/actions";
 import { UserGoalWidget } from "@/features/gamification/components/user-goal-widget";
 import { ModeToggle } from "@/components/mode-toggle";
+import { DictionarySearch } from "@/features/dictionary/components/dictionary-search";
 
 export async function Topbar() {
   const currentLoggedUser = await getMe();
@@ -11,6 +12,7 @@ export async function Topbar() {
       <div className={"flex items-center justify-between gap-4"}>
         <UserGoalWidget />
         <div className="flex items-center gap-4">
+          <DictionarySearch />
           <ModeToggle />
           <UserDropdownMenu loggedUser={currentLoggedUser} />
         </div>
