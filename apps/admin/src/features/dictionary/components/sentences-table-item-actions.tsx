@@ -101,7 +101,7 @@ function Alert({
         expressionContextId,
       );
       toast.success("Zdanie zostało usunięte");
-    } catch (error) {
+    } catch {
       setRemoving(false);
       toast.error("Wystąpił błąd podczas usuwania zdania");
     }
@@ -182,7 +182,7 @@ function EditModal({
             setPending(false);
             toast.success("Zdanie zostało zaktualizowane");
             onClose();
-          } catch (error) {
+          } catch {
             setPending(false);
             toast.error("Wystąpił błąd podczas aktualizacji zdania");
           }

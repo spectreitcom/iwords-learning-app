@@ -45,7 +45,7 @@ export function AddExpressionModal() {
                 toast.success("Wyrażenie zostało dodane");
                 setShow(false);
               }
-            } catch (error) {
+            } catch {
               setPending(false);
               toast.error("Wystąpił błąd podczas dodawania wyrażenia");
             }

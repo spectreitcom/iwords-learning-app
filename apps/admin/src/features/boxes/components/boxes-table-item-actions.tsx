@@ -76,7 +76,7 @@ function Alert({
       await deleteBox(box.boxId);
       toast.success("Box został usunięty");
       onClose();
-    } catch (error) {
+    } catch {
       setRemoving(false);
       toast.error("Wystąpił błąd podczas usuwania boxa");
     }

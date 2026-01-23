@@ -35,7 +35,7 @@ export function CreateBoxModal() {
               toast.success("Box został utworzony");
               setShow(false);
               setPending(false);
-            } catch (error) {
+            } catch {
               setPending(false);
               toast.error("Wystąpił błąd podczas tworzenia boxa");
             }

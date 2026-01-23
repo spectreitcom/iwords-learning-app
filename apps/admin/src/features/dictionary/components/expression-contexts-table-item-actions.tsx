@@ -242,7 +242,7 @@ function EditVerbModal({
               toast.success("Kontekst został zaktualizowany");
               setExpressionContextDetails(null);
               onClose();
-            } catch (error) {
+            } catch {
               setPending(false);
               toast.error("Wystąpił błąd podczas aktualizacji kontekstu");
             }
@@ -302,7 +302,7 @@ function EditIrregularVerbModal({
               toast.success("Kontekst został zaktualizowany");
               setExpressionContextDetails(null);
               onClose();
-            } catch (error) {
+            } catch {
               setPending(false);
               toast.error("Wystąpił błąd podczas aktualizacji kontekstu");
             }
@@ -356,7 +356,7 @@ function EditNounModal({
               toast.success("Kontekst został zaktualizowany");
               setExpressionContextDetails(null);
               onClose();
-            } catch (error) {
+            } catch {
               setPending(false);
               toast.error("Wystąpił błąd podczas aktualizacji kontekstu");
             }
@@ -409,7 +409,7 @@ function EditPhrasalVerbModal({
               toast.success("Kontekst został zaktualizowany");
               setExpressionContextDetails(null);
               onClose();
-            } catch (error) {
+            } catch {
               setPending(false);
               toast.error("Wystąpił błąd podczas aktualizacji kontekstu");
             }
@@ -462,7 +462,7 @@ function EditAdverbModal({
               toast.success("Kontekst został zaktualizowany");
               setExpressionContextDetails(null);
               onClose();
-            } catch (error) {
+            } catch {
               setPending(false);
               toast.error("Wystąpił błąd podczas aktualizacji kontekstu");
             }
@@ -515,7 +515,7 @@ function EditSimpleExpressionModal({
               toast.success("Kontekst został zaktualizowany");
               setExpressionContextDetails(null);
               onClose();
-            } catch (error) {
+            } catch {
               setPending(false);
               toast.error("Wystąpił błąd podczas aktualizacji kontekstu");
             }
@@ -568,7 +568,7 @@ function EditAdjectiveModal({
               toast.success("Kontekst został zaktualizowany");
               setExpressionContextDetails(null);
               onClose();
-            } catch (error) {
+            } catch {
               setPending(false);
               toast.error("Wystąpił błąd podczas aktualizacji kontekstu");
             }
@@ -600,7 +600,7 @@ function Alert({
       await deleteExpressionContext(expressionContext.expressionContextId);
       toast.success("Kontekst został usunięty");
       onClose();
-    } catch (error) {
+    } catch {
       setRemoving(false);
       toast.error("Wystąpił błąd podczas usuwania kontekstu");
     }

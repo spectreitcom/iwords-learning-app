@@ -31,7 +31,7 @@ export function InviteAdminUserModal() {
               await inviteAdminUser(data);
               toast.success("Administrator został zaproszony");
               setShow(false);
-            } catch (error) {
+            } catch {
               toast.error("Wystąpił błąd podczas zapraszania administratora");
             }
           }}

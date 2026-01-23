@@ -37,7 +37,7 @@ export function EditExpressionModal({ expression, open, onClose }: Props) {
               setPending(false);
               toast.success("Wyrażenie zostało zaktualizowane");
               onClose();
-            } catch (error) {
+            } catch {
               setPending(false);
               toast.error("Wystąpił błąd podczas aktualizacji wyrażenia");
             }
