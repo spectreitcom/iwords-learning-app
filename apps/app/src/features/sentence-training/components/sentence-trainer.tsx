@@ -73,7 +73,7 @@ export function SentenceTrainer({
 
   return (
     <div className="mx-auto w-full max-w-2xl">
-      <div className="mb-6 rounded-lg border bg-white p-4 shadow-sm">
+      <div className="mb-6 rounded-lg border bg-card p-4 shadow-sm">
         <div className="mb-2 text-sm text-muted-foreground">
           Trenujesz słówko
         </div>
@@ -82,7 +82,7 @@ export function SentenceTrainer({
         </div>
       </div>
 
-      <div className="mb-6 max-h-72 space-y-3 overflow-auto rounded-lg border bg-white p-4">
+      <div className="mb-6 max-h-72 space-y-3 overflow-auto rounded-lg border bg-card p-4">
         {items.length === 0 && (
           <p className="text-sm text-muted-foreground">
             Zatwierdź pierwsze zdanie, aby zobaczyć podpowiedź i wynik.
@@ -92,10 +92,10 @@ export function SentenceTrainer({
         {items.map((item) => {
           const scoreColor =
             item.score >= 80
-              ? "bg-emerald-100 text-emerald-800"
+              ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400"
               : item.score >= 50
-                ? "bg-amber-100 text-amber-800"
-                : "bg-rose-100 text-rose-800";
+                ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
+                : "bg-rose-100 text-rose-800 dark:bg-rose-900/30 dark:text-rose-400";
           return (
             <div key={v4()} className="rounded-md border p-3 hover:bg-muted/40">
               <div className="mb-1 flex items-center justify-between gap-3">
