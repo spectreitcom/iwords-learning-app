@@ -17,12 +17,14 @@ The core of the iWords vocabulary learning system. A backend application built o
 ## 🏗️ Architecture
 
 The project is designed based on **Modular Monolith** and **Domain-Driven Design (DDD)** principles. Each business module (Bounded Context) has its own structure:
+
 - `domain`: Business logic, entities, aggregates.
 - `application`: Application services, commands, queries (CQRS).
 - `infrastructure`: Repository implementation (Prisma), external integrations.
 - `views`: Read Models optimized for queries.
 
 ### Communication Patterns:
+
 - **CQRS:** Separation of write and read operations.
 - **Outbox/Inbox Pattern:** Ensuring eventual consistency and reliable asynchronous communication between modules.
 
@@ -40,6 +42,7 @@ The project is designed based on **Modular Monolith** and **Domain-Driven Design
 ## 🛠️ Installation and Setup
 
 ### Requirements:
+
 - Node.js (v20+)
 - Docker (for database and Redis)
 - OpenAI API Key
@@ -48,6 +51,7 @@ The project is designed based on **Modular Monolith** and **Domain-Driven Design
 ### Steps:
 
 1. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -56,11 +60,13 @@ The project is designed based on **Modular Monolith** and **Domain-Driven Design
    Copy `.env.example` (if it exists) or create your own based on the "Environment Variables" section.
 
 3. Start infrastructure (Docker):
+
    ```bash
    docker-compose up -d
    ```
 
 4. Generate Prisma client and run migrations:
+
    ```bash
    npm run prisma:generate
    npm run prisma:migrate
@@ -75,16 +81,16 @@ The project is designed based on **Modular Monolith** and **Domain-Driven Design
 
 Key variables required for operation (defined in `env-schema.ts`):
 
-| Variable | Description |
-|----------|-------------|
-| `DATABASE_URL` | PostgreSQL connection URL |
-| `REDIS_URI` | Redis connection URL |
-| `JWT_SECRET` | Private key for signing JWT tokens |
-| `CLERK_SECRET_KEY` | Clerk secret key |
-| `CLERK_WEBHOOK_SECRET`| Secret for verifying Clerk webhooks |
-| `OPENAI_API_KEY` | OpenAI API key |
-| `OPENAI_BASE_URL` | Base URL for OpenAI (optional proxy) |
-| `OPENAI_MODEL` | OpenAI model name (e.g., `gpt-4o`) |
+| Variable               | Description                          |
+| ---------------------- | ------------------------------------ |
+| `DATABASE_URL`         | PostgreSQL connection URL            |
+| `REDIS_URI`            | Redis connection URL                 |
+| `JWT_SECRET`           | Private key for signing JWT tokens   |
+| `CLERK_SECRET_KEY`     | Clerk secret key                     |
+| `CLERK_WEBHOOK_SECRET` | Secret for verifying Clerk webhooks  |
+| `OPENAI_API_KEY`       | OpenAI API key                       |
+| `OPENAI_BASE_URL`      | Base URL for OpenAI (optional proxy) |
+| `OPENAI_MODEL`         | OpenAI model name (e.g., `gpt-4o`)   |
 
 ## 🧪 Testing
 
@@ -95,7 +101,9 @@ Key variables required for operation (defined in `env-schema.ts`):
 ## 💻 CLI
 
 The project includes a command-line interface for administrative tasks:
+
 - `npm run create:superuser` - Create a system administrator.
 
 ---
+
 iWords API Project - 2026.
