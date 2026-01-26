@@ -49,12 +49,14 @@ src/
 ### Prerequisites
 
 Ensure you have the following installed:
+
 - Node.js (Latest LTS recommended)
 - `npm` or `pnpm`
 
 ### Installation
 
 1. Install dependencies from the project root:
+
    ```bash
    npm install
    ```
@@ -84,5 +86,6 @@ The application requires the following environment variables:
 ## 📦 Related Packages
 
 This application depends on shared packages within the monorepo:
+
 - `@repo/shared`: Shared types and business logic.
 - `@repo/ui`: Common UI components library.
