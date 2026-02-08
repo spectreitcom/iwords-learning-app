@@ -38,7 +38,17 @@ jobs:
         env:
           CI: true
 
-      - name: Build
-        run: npm run build
+      - name: Build Api
+        run: cd apps/api && npm run build
+        env:
+          CI: true
+
+      - name: Build Admin
+        run: cd apps/admin && npm run build
+        env:
+          CI: true
+
+      - name: Build App
+        run: cd apps/app && npm run build
         env:
           CI: true
