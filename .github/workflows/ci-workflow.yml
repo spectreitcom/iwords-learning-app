@@ -25,8 +25,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate Prisma Client
+        run: cd apps/api && npm run prisma:generate
+
       - name: Run linter
-        run: npm run lint
+        run: npm run lint -- --no-cache
         env:
           CI: true
 
