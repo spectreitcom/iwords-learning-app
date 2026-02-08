@@ -21,14 +21,14 @@ export class BasicRepetitionGeneratorService
       await this.prismaService.boxRepetitionUserData.findMany({
         where: { userId, nextRepetition: { lte: this.clock.now() } },
         orderBy: { lastLearned: 'asc' },
-        take: 10,
+        take: 6,
       });
 
     let boxIds: string[] = [];
 
     if (!repetitionItems.length) {
       const boxes = await this.prismaService.box.findMany({
-        take: 10,
+        take: 6,
       });
       boxIds = boxes.map((box) => box.id);
     } else {
