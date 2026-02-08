@@ -48,8 +48,13 @@ jobs:
         env:
           CI: true
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          SELF_URL: ${{ secrets.SELF_URL }}
 
       - name: Build App
         run: cd apps/app && npm run build
         env:
           CI: true
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: {{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          CLERK_SECRET_KEY: {{ secrets.CLERK_SECRET_KEY }}
