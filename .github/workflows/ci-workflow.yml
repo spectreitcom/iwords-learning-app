@@ -47,6 +47,7 @@ jobs:
         run: cd apps/admin && npm run build
         env:
           CI: true
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
       - name: Build App
         run: cd apps/app && npm run build
