@@ -28,6 +28,9 @@ jobs:
       - name: Generate Prisma Client
         run: cd apps/api && npm run prisma:generate
 
+      - name: Prettier Check
+        run: npx prettier --check .
+
       - name: Run linter
         run: npm run lint -- --no-cache
         env:
