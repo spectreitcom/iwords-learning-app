@@ -6,7 +6,10 @@ import { BoxUpdatedEvent } from '../events/box-updated.event';
 import { ExpressionContextIdAddedEvent } from '../events/expression-context-id-added.event';
 import { ExpressionContextIdRemovedEvent } from '../events/expression-context-id-removed.event';
 import { BoxDeletedEvent } from '../events/box-deleted.event';
-import { ExpressionContextIdAlreadyExists } from '../errors';
+import {
+  ExpressionContextIdAlreadyExists,
+  ExpressionContextsQuantityExceeded,
+} from '../errors';
 
 describe('Box', () => {
   describe('create', () => {
@@ -106,6 +109,32 @@ describe('Box', () => {
       expect(box.getExpressionContextIds()[0].value).toBe(contextId1);
       expect(box.getExpressionContextIds()[1].value).toBe(contextId2);
       expect(box.getUncommittedEvents()).toHaveLength(3); // Creation + 2 Add events
+    });
+
+    it('should allow adding exactly 5 expression context ids', () => {
+      const box = Box.create('Test Box');
+
+      box.addExpressionContextId('550e8400-e29b-41d4-a716-446655440001');
+      box.addExpressionContextId('550e8400-e29b-41d4-a716-446655440002');
+      box.addExpressionContextId('550e8400-e29b-41d4-a716-446655440003');
+      box.addExpressionContextId('550e8400-e29b-41d4-a716-446655440004');
+      box.addExpressionContextId('550e8400-e29b-41d4-a716-446655440005');
+
+      expect(box.getExpressionContextIds()).toHaveLength(5);
+    });
+
+    it('should throw ExpressionContextsQuantityExceeded when adding more than 5 expression context ids', () => {
+      const box = Box.create('Test Box');
+
+      box.addExpressionContextId('550e8400-e29b-41d4-a716-446655440001');
+      box.addExpressionContextId('550e8400-e29b-41d4-a716-446655440002');
+      box.addExpressionContextId('550e8400-e29b-41d4-a716-446655440003');
+      box.addExpressionContextId('550e8400-e29b-41d4-a716-446655440004');
+      box.addExpressionContextId('550e8400-e29b-41d4-a716-446655440005');
+
+      expect(() => {
+        box.addExpressionContextId('550e8400-e29b-41d4-a716-446655440006');
+      }).toThrow(ExpressionContextsQuantityExceeded);
     });
   });
 

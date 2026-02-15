@@ -3,3 +3,9 @@ export class ExpressionContextIdAlreadyExists extends Error {
     super(`ExpressionContextIdAlreadyExists: ${expressionContextId}`);
   }
 }
+
+export class ExpressionContextsQuantityExceeded extends Error {
+  constructor(boxId: string) {
+    super(`ExpressionContextsAmountExeeded: ${boxId}`);
+  }
+}

@@ -2,7 +2,10 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { BoxId } from './value-objects/box-id';
 import { ExpressionContextId } from './value-objects/expression-context-id';
 import { BoxCreatedEvent } from './events/box-created.event';
-import { ExpressionContextIdAlreadyExists } from './errors';
+import {
+  ExpressionContextIdAlreadyExists,
+  ExpressionContextsQuantityExceeded,
+} from './errors';
 import { ExpressionContextIdAddedEvent } from './events/expression-context-id-added.event';
 import { BoxUpdatedEvent } from './events/box-updated.event';
 import { ExpressionContextIdRemovedEvent } from './events/expression-context-id-removed.event';
@@ -39,6 +42,10 @@ export class Box extends AggregateRoot {
   }
 
   addExpressionContextId(expressionContextId: string) {
+    if (this.expressionContextIds.length >= 5) {
+      throw new ExpressionContextsQuantityExceeded(this.boxId.value);
+    }
+
     const expressionContextIdValueObject =
       ExpressionContextId.fromString(expressionContextId);
 
