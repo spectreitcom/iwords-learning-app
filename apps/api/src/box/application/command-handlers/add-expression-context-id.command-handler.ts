@@ -2,7 +2,10 @@ import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { AddExpressionContextIdCommand } from '../commands/add-expression-context-id.command';
 import { BoxRepository } from '../ports/box.repository';
 import { AppError } from '../../../common/errors';
-import { ExpressionContextIdAlreadyExists } from '../../domain/errors';
+import {
+  ExpressionContextIdAlreadyExists,
+  ExpressionContextsQuantityExceeded,
+} from '../../domain/errors';
 
 @CommandHandler(AddExpressionContextIdCommand)
 export class AddExpressionContextIdCommandHandler
@@ -32,6 +35,11 @@ export class AddExpressionContextIdCommandHandler
         throw new AppError(
           'ALREADY_EXISTS',
           `Expression context id ${expressionContextId} already exists`,
+        );
+      } else if (e instanceof ExpressionContextsQuantityExceeded) {
+        throw new AppError(
+          'VALIDATION_ERROR',
+          'Expression contexts quantity exceeded',
         );
       }
       throw e;
