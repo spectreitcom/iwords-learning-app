@@ -14,6 +14,9 @@ import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 import { AddItemToBoxModal } from "@/features/boxes/components/add-item-to-box-modal";
 import { RemoveBoxItemButton } from "@/features/boxes/components/remove-box-item-button";
 import { PageHeader } from "@/components/page-header";
+import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/ui/alert";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { Badge } from "@repo/ui/components/ui/badge";
 
 type Props = Readonly<{
   params: Promise<Readonly<{ boxId: string }>>;
@@ -22,6 +25,9 @@ type Props = Readonly<{
 export default async function BoxDetailPage({ params }: Props) {
   const { boxId } = await params;
   const boxDetails = await getBoxDetails(boxId);
+  const itemsCount = boxDetails.boxItems?.length ?? 0;
+  const maxItems = 5;
+  const isOverLimit = itemsCount > maxItems;
 
   return (
     <div>
@@ -29,7 +35,27 @@ export default async function BoxDetailPage({ params }: Props) {
         title={`Box - ${boxDetails.title}`}
         backLink={{ href: "/boxes" }}
       />
-      <div className={"flex justify-end"}>
+      <div className={"mt-4"}>
+        <Alert variant={isOverLimit ? "destructive" : "default"}>
+          {isOverLimit ? (
+            <AlertCircle className="h-4 w-4" />
+          ) : (
+            <CheckCircle2 className="h-4 w-4" />
+          )}
+          <AlertTitle className="flex items-center gap-2">
+            Limit elementów w pudełku
+            <Badge variant={isOverLimit ? "destructive" : "secondary"}>
+              {itemsCount} / {maxItems}
+            </Badge>
+          </AlertTitle>
+          <AlertDescription>
+            {isOverLimit
+              ? `Przekroczono maksymalny limit ${maxItems} elementów. Usuń ${itemsCount - maxItems} ${itemsCount - maxItems === 1 ? "element" : "elementy"}, aby kontynuować.`
+              : `Możesz dodać jeszcze ${maxItems - itemsCount} ${maxItems - itemsCount === 1 ? "element" : "elementów"} do tego pudełka.`}
+          </AlertDescription>
+        </Alert>
+      </div>
+      <div className={"flex justify-end mt-4"}>
         <AddItemToBoxModal
           boxId={boxDetails.boxId}
           chosenExpressionContextIds={
