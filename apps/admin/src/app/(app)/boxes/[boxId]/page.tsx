@@ -14,7 +14,11 @@ import { TableSkeletonLoader } from "@/components/table-skeleton-loader";
 import { AddItemToBoxModal } from "@/features/boxes/components/add-item-to-box-modal";
 import { RemoveBoxItemButton } from "@/features/boxes/components/remove-box-item-button";
 import { PageHeader } from "@/components/page-header";
-import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/ui/alert";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@repo/ui/components/ui/alert";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { Badge } from "@repo/ui/components/ui/badge";
 
