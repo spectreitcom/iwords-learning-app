@@ -3,9 +3,10 @@ import { GetExpressionsNumberQuery } from '../queries/get-expressions-number.que
 import { PrismaService } from '../../../common/prisma/prisma.service';
 
 @QueryHandler(GetExpressionsNumberQuery)
-export class GetExpressionsNumberQueryHandler
-  implements IQueryHandler<GetExpressionsNumberQuery, number>
-{
+export class GetExpressionsNumberQueryHandler implements IQueryHandler<
+  GetExpressionsNumberQuery,
+  number
+> {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(): Promise<number> {

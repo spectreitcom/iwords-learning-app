@@ -4,9 +4,10 @@ import { PrismaService } from '../../../common/prisma/prisma.service';
 import { Clock } from '../../../common/clock/clock';
 
 @QueryHandler(GetUserTodayPointsQuery)
-export class GetUserTodayPointsQueryHandler
-  implements IQueryHandler<GetUserTodayPointsQuery, number>
-{
+export class GetUserTodayPointsQueryHandler implements IQueryHandler<
+  GetUserTodayPointsQuery,
+  number
+> {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly clock: Clock,

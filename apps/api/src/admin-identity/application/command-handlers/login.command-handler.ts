@@ -15,9 +15,10 @@ export type LoginCommandResponse = {
 };
 
 @CommandHandler(LoginCommand)
-export class LoginCommandHandler
-  implements ICommandHandler<LoginCommand, LoginCommandResponse>
-{
+export class LoginCommandHandler implements ICommandHandler<
+  LoginCommand,
+  LoginCommandResponse
+> {
   constructor(
     private readonly adminUserRepository: AdminUserRepository,
     private readonly accessTokenService: AccessTokenService,

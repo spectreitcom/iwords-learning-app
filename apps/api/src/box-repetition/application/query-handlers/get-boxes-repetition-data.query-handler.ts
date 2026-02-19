@@ -4,9 +4,10 @@ import { BoxRepetitionUserView } from '../../views/box-repetition-user.view';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 
 @QueryHandler(GetBoxesRepetitionDataQuery)
-export class GetBoxesRepetitionDataQueryHandler
-  implements IQueryHandler<GetBoxesRepetitionDataQuery, BoxRepetitionUserView[]>
-{
+export class GetBoxesRepetitionDataQueryHandler implements IQueryHandler<
+  GetBoxesRepetitionDataQuery,
+  BoxRepetitionUserView[]
+> {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(

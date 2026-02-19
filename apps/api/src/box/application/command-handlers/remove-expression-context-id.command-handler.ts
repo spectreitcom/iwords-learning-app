@@ -4,9 +4,10 @@ import { BoxRepository } from '../ports/box.repository';
 import { AppError } from '../../../common/errors';
 
 @CommandHandler(RemoveExpressionContextIdCommand)
-export class RemoveExpressionContextIdCommandHandler
-  implements ICommandHandler<RemoveExpressionContextIdCommand, void>
-{
+export class RemoveExpressionContextIdCommandHandler implements ICommandHandler<
+  RemoveExpressionContextIdCommand,
+  void
+> {
   constructor(
     private readonly boxRepository: BoxRepository,
     private readonly eventPublisher: EventPublisher,

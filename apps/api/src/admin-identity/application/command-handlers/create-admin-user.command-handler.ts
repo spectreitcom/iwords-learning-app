@@ -7,9 +7,10 @@ import { AdminUser } from '../../domain/admin-user';
 import { AppError } from '../../../common/errors';
 
 @CommandHandler(CreateAdminUserCommand)
-export class CreateAdminUserCommandHandler
-  implements ICommandHandler<CreateAdminUserCommand, void>
-{
+export class CreateAdminUserCommandHandler implements ICommandHandler<
+  CreateAdminUserCommand,
+  void
+> {
   constructor(
     private readonly adminUserRepository: AdminUserRepository,
     private readonly hashingService: HashingService,

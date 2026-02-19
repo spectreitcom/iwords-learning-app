@@ -7,9 +7,10 @@ import { IntegrationEvent } from '../../../common/outbox/types';
 import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(DeleteExpressionContextCommand)
-export class DeleteExpressionContextCommandHandler
-  implements ICommandHandler<DeleteExpressionContextCommand, void>
-{
+export class DeleteExpressionContextCommandHandler implements ICommandHandler<
+  DeleteExpressionContextCommand,
+  void
+> {
   constructor(
     private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly eventPublisher: EventPublisher,

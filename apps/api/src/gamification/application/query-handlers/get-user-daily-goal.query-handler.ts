@@ -3,9 +3,10 @@ import { GetUserDailyGoalQuery } from '../queries/get-user-daily-goal.query';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 
 @QueryHandler(GetUserDailyGoalQuery)
-export class GetUserDailyGoalQueryHandler
-  implements IQueryHandler<GetUserDailyGoalQuery, number>
-{
+export class GetUserDailyGoalQueryHandler implements IQueryHandler<
+  GetUserDailyGoalQuery,
+  number
+> {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(query: GetUserDailyGoalQuery): Promise<number> {

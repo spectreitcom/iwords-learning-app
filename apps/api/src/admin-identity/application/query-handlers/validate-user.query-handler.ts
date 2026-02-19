@@ -6,9 +6,10 @@ import { HashingService } from '../ports/hashing.service';
 import { AppError } from '../../../common/errors';
 
 @QueryHandler(ValidateUserQuery)
-export class ValidateUserQueryHandler
-  implements IQueryHandler<ValidateUserQuery, AdminUserView>
-{
+export class ValidateUserQueryHandler implements IQueryHandler<
+  ValidateUserQuery,
+  AdminUserView
+> {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly hashingService: HashingService,

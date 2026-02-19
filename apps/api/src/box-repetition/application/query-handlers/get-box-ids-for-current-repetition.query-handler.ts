@@ -5,9 +5,10 @@ import { GenerateRepetitionService } from '../ports/generate-repetition.service'
 import { Clock } from '../../../common/clock/clock';
 
 @QueryHandler(GetBoxIdsForCurrentRepetitionQuery)
-export class GetBoxIdsForCurrentRepetitionQueryHandler
-  implements IQueryHandler<GetBoxIdsForCurrentRepetitionQuery, string[]>
-{
+export class GetBoxIdsForCurrentRepetitionQueryHandler implements IQueryHandler<
+  GetBoxIdsForCurrentRepetitionQuery,
+  string[]
+> {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly generateRepetitionService: GenerateRepetitionService,

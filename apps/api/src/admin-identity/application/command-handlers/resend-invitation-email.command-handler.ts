@@ -9,9 +9,10 @@ import { IntegrationEvent } from '../../../common/outbox/types';
 import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(ResendInvitationEmailCommand)
-export class ResendInvitationEmailCommandHandler
-  implements ICommandHandler<ResendInvitationEmailCommand, void>
-{
+export class ResendInvitationEmailCommandHandler implements ICommandHandler<
+  ResendInvitationEmailCommand,
+  void
+> {
   constructor(
     private readonly adminUserRepository: AdminUserRepository,
     private readonly outboxService: OutboxService,

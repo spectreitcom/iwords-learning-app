@@ -7,9 +7,10 @@ import { PrismaService } from '../../../common/prisma/prisma.service';
 export type GetBoxesListQueryResponse = CollectionWithPagination<BoxView>;
 
 @QueryHandler(GetBoxesListQuery)
-export class GetBoxesListQueryHandler
-  implements IQueryHandler<GetBoxesListQuery, GetBoxesListQueryResponse>
-{
+export class GetBoxesListQueryHandler implements IQueryHandler<
+  GetBoxesListQuery,
+  GetBoxesListQueryResponse
+> {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(query: GetBoxesListQuery): Promise<GetBoxesListQueryResponse> {

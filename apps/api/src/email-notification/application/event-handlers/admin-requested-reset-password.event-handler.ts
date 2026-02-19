@@ -11,9 +11,9 @@ type EventPayload = {
 };
 
 @EventsHandler(IntegrationEvent)
-export class AdminRequestedResetPasswordEventHandler
-  implements IEventHandler<IntegrationEvent<EventPayload>>
-{
+export class AdminRequestedResetPasswordEventHandler implements IEventHandler<
+  IntegrationEvent<EventPayload>
+> {
   private readonly logger = new Logger(
     `Email Notification Domain - ${AdminRequestedResetPasswordEventHandler.name}`,
   );

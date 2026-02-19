@@ -7,9 +7,10 @@ import { DailyLearnedBoxRepository } from '../ports/daily-learned-box.repository
 import { DailyLearnedBox } from '../../domain/daily-learned-box';
 
 @CommandHandler(MarkBoxAsFinishedCommand)
-export class MarkBoxAsFinishedCommandHandler
-  implements ICommandHandler<MarkBoxAsFinishedCommand, void>
-{
+export class MarkBoxAsFinishedCommandHandler implements ICommandHandler<
+  MarkBoxAsFinishedCommand,
+  void
+> {
   constructor(
     private readonly outboxService: OutboxService,
     private readonly transactionRunner: TransactionRunner,

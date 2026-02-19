@@ -10,13 +10,10 @@ export type GenerateDefinitionOfTheExpressionContextQueryResponse = {
 };
 
 @QueryHandler(GenerateDefinitionOfTheExpressionContextQuery)
-export class GenerateDefinitionOfTheExpressionContextQueryHandler
-  implements
-    IQueryHandler<
-      GenerateDefinitionOfTheExpressionContextQuery,
-      GenerateDefinitionOfTheExpressionContextQueryResponse
-    >
-{
+export class GenerateDefinitionOfTheExpressionContextQueryHandler implements IQueryHandler<
+  GenerateDefinitionOfTheExpressionContextQuery,
+  GenerateDefinitionOfTheExpressionContextQueryResponse
+> {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly aiService: AiService,

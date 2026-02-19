@@ -4,9 +4,7 @@ import { Logger } from '@nestjs/common';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 
 @EventsHandler(ExpressionContextCreatedEvent)
-export class ExpressionContextCreatedEventHandler
-  implements IEventHandler<ExpressionContextCreatedEvent>
-{
+export class ExpressionContextCreatedEventHandler implements IEventHandler<ExpressionContextCreatedEvent> {
   private readonly logger = new Logger(
     `Dictionary Domain - ${ExpressionContextCreatedEventHandler.name}`,
   );

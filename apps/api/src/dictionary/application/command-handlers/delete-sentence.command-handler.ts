@@ -7,9 +7,10 @@ import { IntegrationEvent } from '../../../common/outbox/types';
 import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(DeleteSentenceCommand)
-export class DeleteSentenceCommandHandler
-  implements ICommandHandler<DeleteSentenceCommand, void>
-{
+export class DeleteSentenceCommandHandler implements ICommandHandler<
+  DeleteSentenceCommand,
+  void
+> {
   constructor(
     private readonly sentenceRepository: SentenceRepository,
     private readonly eventPublisher: EventPublisher,

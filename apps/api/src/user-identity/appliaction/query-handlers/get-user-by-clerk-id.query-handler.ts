@@ -4,9 +4,10 @@ import { UserView } from '../../views/user.view';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 
 @QueryHandler(GetUserByClerkIdQuery)
-export class GetUserByClerkIdQueryHandler
-  implements IQueryHandler<GetUserByClerkIdQuery, UserView | null>
-{
+export class GetUserByClerkIdQueryHandler implements IQueryHandler<
+  GetUserByClerkIdQuery,
+  UserView | null
+> {
   constructor(private readonly prisma: PrismaService) {}
 
   async execute(query: GetUserByClerkIdQuery): Promise<UserView | null> {

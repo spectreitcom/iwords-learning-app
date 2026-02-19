@@ -9,9 +9,10 @@ import { ExpressionContextRepository } from '../ports/expression-context.reposit
 import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(CreateSentenceCommand)
-export class CreateSentenceCommandHandler
-  implements ICommandHandler<CreateSentenceCommand, void>
-{
+export class CreateSentenceCommandHandler implements ICommandHandler<
+  CreateSentenceCommand,
+  void
+> {
   constructor(
     private readonly sentenceRepository: SentenceRepository,
     private readonly eventPublisher: EventPublisher,

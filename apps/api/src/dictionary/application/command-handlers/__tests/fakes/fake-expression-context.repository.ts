@@ -18,9 +18,7 @@ type FakeExpressionContextModel = {
   definitionTranslation: string | null;
 };
 
-export class FakeExpressionContextRepository
-  implements ExpressionContextRepository
-{
+export class FakeExpressionContextRepository implements ExpressionContextRepository {
   private readonly data = new Map<string, FakeExpressionContextModel>();
 
   constructor(initialData: FakeExpressionContextModel[] = []) {

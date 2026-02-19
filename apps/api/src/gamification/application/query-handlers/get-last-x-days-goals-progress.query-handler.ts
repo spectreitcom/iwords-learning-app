@@ -4,9 +4,10 @@ import { DailyProgressView } from '../../views/daily-progress.view';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 
 @QueryHandler(GetLastXDaysGoalsProgressQuery)
-export class GetLastXDaysGoalsProgressQueryHandler
-  implements IQueryHandler<GetLastXDaysGoalsProgressQuery, DailyProgressView[]>
-{
+export class GetLastXDaysGoalsProgressQueryHandler implements IQueryHandler<
+  GetLastXDaysGoalsProgressQuery,
+  DailyProgressView[]
+> {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(

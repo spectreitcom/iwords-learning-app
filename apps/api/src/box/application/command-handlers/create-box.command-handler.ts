@@ -4,9 +4,10 @@ import { BoxRepository } from '../ports/box.repository';
 import { Box } from '../../domain/box';
 
 @CommandHandler(CreateBoxCommand)
-export class CreateBoxCommandHandler
-  implements ICommandHandler<CreateBoxCommand, void>
-{
+export class CreateBoxCommandHandler implements ICommandHandler<
+  CreateBoxCommand,
+  void
+> {
   constructor(
     private readonly boxRepository: BoxRepository,
     private readonly eventPublisher: EventPublisher,

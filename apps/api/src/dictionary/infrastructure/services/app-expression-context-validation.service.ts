@@ -3,9 +3,7 @@ import { PrismaService } from '../../../common/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class AppExpressionContextValidationService
-  implements ExpressionContextValidationService
-{
+export class AppExpressionContextValidationService implements ExpressionContextValidationService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async exists(expressionContextId: string): Promise<boolean> {

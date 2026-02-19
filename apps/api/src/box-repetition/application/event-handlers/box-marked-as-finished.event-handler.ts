@@ -10,9 +10,9 @@ type EventPayload = {
 };
 
 @EventsHandler(IntegrationEvent)
-export class BoxMarkedAsFinishedEventHandler
-  implements IEventHandler<IntegrationEvent<EventPayload>>
-{
+export class BoxMarkedAsFinishedEventHandler implements IEventHandler<
+  IntegrationEvent<EventPayload>
+> {
   private readonly logger = new Logger(
     `Box Repetition Domain - ${BoxMarkedAsFinishedEventHandler.name}`,
   );

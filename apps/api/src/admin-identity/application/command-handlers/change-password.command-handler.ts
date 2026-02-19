@@ -5,9 +5,10 @@ import { AppError } from '../../../common/errors';
 import { HashingService } from '../ports/hashing.service';
 
 @CommandHandler(ChangePasswordCommand)
-export class ChangePasswordCommandHandler
-  implements ICommandHandler<ChangePasswordCommand, void>
-{
+export class ChangePasswordCommandHandler implements ICommandHandler<
+  ChangePasswordCommand,
+  void
+> {
   constructor(
     private readonly adminUserRepository: AdminUserRepository,
     private readonly hashingService: HashingService,

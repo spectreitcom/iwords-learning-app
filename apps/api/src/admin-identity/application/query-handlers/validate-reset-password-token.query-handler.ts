@@ -6,13 +6,10 @@ import { ResetPasswordTokensStorage } from '../ports/reset-password-tokens.stora
 export type ValidateResetPasswordTokenQueryResponse = { valid: boolean };
 
 @QueryHandler(ValidateResetPasswordTokenQuery)
-export class ValidateResetPasswordTokenQueryHandler
-  implements
-    IQueryHandler<
-      ValidateResetPasswordTokenQuery,
-      ValidateResetPasswordTokenQueryResponse
-    >
-{
+export class ValidateResetPasswordTokenQueryHandler implements IQueryHandler<
+  ValidateResetPasswordTokenQuery,
+  ValidateResetPasswordTokenQueryResponse
+> {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly resetTokensStorage: ResetPasswordTokensStorage,

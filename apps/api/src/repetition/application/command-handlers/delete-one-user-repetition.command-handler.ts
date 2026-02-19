@@ -3,9 +3,10 @@ import { DeleteOneUserRepetitionCommand } from '../commands/delete-one-user-repe
 import { RepetitionRepository } from '../ports/repetition.repository';
 
 @CommandHandler(DeleteOneUserRepetitionCommand)
-export class DeleteOneUserRepetitionCommandHandler
-  implements ICommandHandler<DeleteOneUserRepetitionCommand, void>
-{
+export class DeleteOneUserRepetitionCommandHandler implements ICommandHandler<
+  DeleteOneUserRepetitionCommand,
+  void
+> {
   constructor(private readonly repetitionRepository: RepetitionRepository) {}
 
   async execute(command: DeleteOneUserRepetitionCommand): Promise<void> {

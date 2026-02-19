@@ -5,13 +5,10 @@ import { BoxIsFinishedView } from '../../view/box-is-finished.view';
 import { Clock } from '../../../common/clock/clock';
 
 @QueryHandler(GetInformationIfBoxIsFinishedByBoxIdsQuery)
-export class GetInformationIfBoxIsFinishedByBoxIdsQueryHandler
-  implements
-    IQueryHandler<
-      GetInformationIfBoxIsFinishedByBoxIdsQuery,
-      BoxIsFinishedView[]
-    >
-{
+export class GetInformationIfBoxIsFinishedByBoxIdsQueryHandler implements IQueryHandler<
+  GetInformationIfBoxIsFinishedByBoxIdsQuery,
+  BoxIsFinishedView[]
+> {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly clock: Clock,

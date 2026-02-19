@@ -4,9 +4,10 @@ import { BoxRepository } from '../ports/box.repository';
 import { AppError } from '../../../common/errors';
 
 @CommandHandler(DeleteBoxCommand)
-export class DeleteBoxCommandHandler
-  implements ICommandHandler<DeleteBoxCommand, void>
-{
+export class DeleteBoxCommandHandler implements ICommandHandler<
+  DeleteBoxCommand,
+  void
+> {
   constructor(
     private readonly boxRepository: BoxRepository,
     private readonly eventPublisher: EventPublisher,

@@ -5,9 +5,10 @@ import { PrismaService } from '../../../common/prisma/prisma.service';
 import { AppError } from '../../../common/errors';
 
 @QueryHandler(GetUserByIdQuery)
-export class GetUserByIdQueryHandler
-  implements IQueryHandler<GetUserByIdQuery, UserView>
-{
+export class GetUserByIdQueryHandler implements IQueryHandler<
+  GetUserByIdQuery,
+  UserView
+> {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(query: GetUserByIdQuery): Promise<UserView> {

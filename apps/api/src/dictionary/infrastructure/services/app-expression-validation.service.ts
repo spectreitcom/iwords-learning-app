@@ -3,9 +3,7 @@ import { ExpressionValidationService } from '../../application/ports/expression-
 import { PrismaService } from '../../../common/prisma/prisma.service';
 
 @Injectable()
-export class AppExpressionValidationService
-  implements ExpressionValidationService
-{
+export class AppExpressionValidationService implements ExpressionValidationService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async checkPhrase(phrase: string): Promise<string | null> {

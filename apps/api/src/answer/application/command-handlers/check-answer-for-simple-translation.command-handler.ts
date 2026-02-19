@@ -13,13 +13,10 @@ export type CheckAnswerForSimpleTranslationCommandResponse = {
 };
 
 @CommandHandler(CheckAnswerForSimpleTranslationCommand)
-export class CheckAnswerForSimpleTranslationCommandHandler
-  implements
-    ICommandHandler<
-      CheckAnswerForSimpleTranslationCommand,
-      CheckAnswerForSimpleTranslationCommandResponse
-    >
-{
+export class CheckAnswerForSimpleTranslationCommandHandler implements ICommandHandler<
+  CheckAnswerForSimpleTranslationCommand,
+  CheckAnswerForSimpleTranslationCommandResponse
+> {
   constructor(
     private readonly outboxService: OutboxService,
     private readonly transactionRunner: TransactionRunner,

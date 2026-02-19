@@ -10,10 +10,10 @@ export type CreateExpressionCommandResponse = {
 };
 
 @CommandHandler(CreateExpressionCommand)
-export class CreateExpressionCommandHandler
-  implements
-    ICommandHandler<CreateExpressionCommand, CreateExpressionCommandResponse>
-{
+export class CreateExpressionCommandHandler implements ICommandHandler<
+  CreateExpressionCommand,
+  CreateExpressionCommandResponse
+> {
   constructor(
     private readonly eventPublisher: EventPublisher,
     private readonly expressionRepository: ExpressionRepository,

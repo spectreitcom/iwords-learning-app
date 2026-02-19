@@ -7,9 +7,7 @@ import { PrismaTx } from '../../../common/types';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 
 @Injectable()
-export class PrismaAnswerExpressionContextReadRepository
-  implements AnswerExpressionContextReadRepository
-{
+export class PrismaAnswerExpressionContextReadRepository implements AnswerExpressionContextReadRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async findByExpressionContextId(

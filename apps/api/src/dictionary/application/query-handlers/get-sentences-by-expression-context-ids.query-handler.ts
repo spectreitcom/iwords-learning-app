@@ -4,10 +4,10 @@ import { SentenceView } from '../../views/sentence.view';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 
 @QueryHandler(GetSentencesByExpressionContextIdsQuery)
-export class GetSentencesByExpressionContextIdsQueryHandler
-  implements
-    IQueryHandler<GetSentencesByExpressionContextIdsQuery, SentenceView[]>
-{
+export class GetSentencesByExpressionContextIdsQueryHandler implements IQueryHandler<
+  GetSentencesByExpressionContextIdsQuery,
+  SentenceView[]
+> {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(

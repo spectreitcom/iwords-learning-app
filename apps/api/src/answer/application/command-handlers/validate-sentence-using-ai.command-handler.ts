@@ -12,13 +12,10 @@ export type ValidateSentenceUsingAiCommandResponse = {
 };
 
 @CommandHandler(ValidateSentenceUsingAiCommand)
-export class ValidateSentenceUsingAiCommandHandler
-  implements
-    ICommandHandler<
-      ValidateSentenceUsingAiCommand,
-      ValidateSentenceUsingAiCommandResponse
-    >
-{
+export class ValidateSentenceUsingAiCommandHandler implements ICommandHandler<
+  ValidateSentenceUsingAiCommand,
+  ValidateSentenceUsingAiCommandResponse
+> {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly aiService: AiService,

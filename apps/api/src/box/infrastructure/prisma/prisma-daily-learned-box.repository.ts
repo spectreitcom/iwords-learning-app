@@ -9,9 +9,7 @@ import { BoxId } from '../../domain/value-objects/box-id';
 import { DailyLearnedBoxId } from '../../domain/value-objects/daily-learned-box-id';
 
 @Injectable()
-export class PrismaDailyLearnedBoxRepository
-  implements DailyLearnedBoxRepository
-{
+export class PrismaDailyLearnedBoxRepository implements DailyLearnedBoxRepository {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly clock: Clock,

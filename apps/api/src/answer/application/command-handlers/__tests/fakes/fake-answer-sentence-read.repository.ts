@@ -7,9 +7,7 @@ export abstract class FakeAnswerSentenceReadRepositoryClass extends AnswerSenten
   abstract getLength(): number;
 }
 
-export class FakeAnswerSentenceReadRepository
-  implements FakeAnswerSentenceReadRepositoryClass
-{
+export class FakeAnswerSentenceReadRepository implements FakeAnswerSentenceReadRepositoryClass {
   private readonly data = new Map<string, AnswerSentenceReadModel>();
 
   constructor(initRecords: AnswerSentenceReadModel[] = []) {

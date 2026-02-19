@@ -8,10 +8,10 @@ export type GetExpressionListQueryResponse =
   CollectionWithPagination<ExpressionView>;
 
 @QueryHandler(GetExpressionsListQuery)
-export class GetExpressionsListQueryHandler
-  implements
-    IQueryHandler<GetExpressionsListQuery, GetExpressionListQueryResponse>
-{
+export class GetExpressionsListQueryHandler implements IQueryHandler<
+  GetExpressionsListQuery,
+  GetExpressionListQueryResponse
+> {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(

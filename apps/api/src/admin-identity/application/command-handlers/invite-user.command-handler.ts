@@ -11,9 +11,10 @@ import { IntegrationEvent } from '../../../common/outbox/types';
 import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(InviteUserCommand)
-export class InviteUserCommandHandler
-  implements ICommandHandler<InviteUserCommand, void>
-{
+export class InviteUserCommandHandler implements ICommandHandler<
+  InviteUserCommand,
+  void
+> {
   constructor(
     private readonly adminUserRepository: AdminUserRepository,
     private readonly resetPasswordTokensStorage: ResetPasswordTokensStorage,

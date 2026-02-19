@@ -8,13 +8,10 @@ export type SearchDictionaryReadModelQueryResponse =
   CollectionWithPagination<DictionaryReadModel>;
 
 @QueryHandler(SearchDictionaryReadModelQuery)
-export class SearchDictionaryReadModelQueryHandler
-  implements
-    IQueryHandler<
-      SearchDictionaryReadModelQuery,
-      SearchDictionaryReadModelQueryResponse
-    >
-{
+export class SearchDictionaryReadModelQueryHandler implements IQueryHandler<
+  SearchDictionaryReadModelQuery,
+  SearchDictionaryReadModelQueryResponse
+> {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(
