@@ -4,9 +4,10 @@ import { BoxRepository } from '../ports/box.repository';
 import { AppError } from '../../../common/errors';
 
 @CommandHandler(UpdateBoxCommand)
-export class UpdateBoxCommandHandler
-  implements ICommandHandler<UpdateBoxCommand, void>
-{
+export class UpdateBoxCommandHandler implements ICommandHandler<
+  UpdateBoxCommand,
+  void
+> {
   constructor(
     private readonly boxRepository: BoxRepository,
     private readonly eventPublisher: EventPublisher,

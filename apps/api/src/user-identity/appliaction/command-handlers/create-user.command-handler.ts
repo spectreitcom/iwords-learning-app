@@ -4,9 +4,10 @@ import { UserRepository } from '../ports/user.repository';
 import { User } from '../../domain/user';
 
 @CommandHandler(CreateUserCommand)
-export class CreateUserCommandHandler
-  implements ICommandHandler<CreateUserCommand, void>
-{
+export class CreateUserCommandHandler implements ICommandHandler<
+  CreateUserCommand,
+  void
+> {
   constructor(private readonly userRepository: UserRepository) {}
 
   async execute(command: CreateUserCommand): Promise<void> {

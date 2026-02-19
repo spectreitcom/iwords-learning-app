@@ -9,9 +9,7 @@ import { VerbForms } from '../../domain/value-objects/verb-forms';
 import { PrismaTx } from '../../../common/types';
 
 @Injectable()
-export class PrismaExpressionContextRepository
-  implements ExpressionContextRepository
-{
+export class PrismaExpressionContextRepository implements ExpressionContextRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async save(

@@ -3,9 +3,10 @@ import { SignOutCommand } from '../commands/sign-out.command';
 import { RefreshTokenStorage } from '../ports/refresh-token.storage';
 
 @CommandHandler(SignOutCommand)
-export class SignOutCommandHandler
-  implements ICommandHandler<SignOutCommand, void>
-{
+export class SignOutCommandHandler implements ICommandHandler<
+  SignOutCommand,
+  void
+> {
   constructor(private readonly refreshTokenStorage: RefreshTokenStorage) {}
 
   async execute(command: SignOutCommand): Promise<void> {

@@ -1,8 +1,6 @@
 import { ResetPasswordTokensStorage } from '../../../ports/reset-password-tokens.storage';
 
-export class FakeResetPasswordTokensStorage
-  implements ResetPasswordTokensStorage
-{
+export class FakeResetPasswordTokensStorage implements ResetPasswordTokensStorage {
   private readonly storage = new Map<string, string>();
 
   async insert(userId: string, token: string): Promise<void> {

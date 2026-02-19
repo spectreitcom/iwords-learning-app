@@ -7,9 +7,10 @@ import { IntegrationEvent } from '../../../common/outbox/types';
 import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(UpdateSentenceCommand)
-export class UpdateSentenceCommandHandler
-  implements ICommandHandler<UpdateSentenceCommand, void>
-{
+export class UpdateSentenceCommandHandler implements ICommandHandler<
+  UpdateSentenceCommand,
+  void
+> {
   constructor(
     private readonly sentenceRepository: SentenceRepository,
     private readonly eventPublisher: EventPublisher,

@@ -8,9 +8,9 @@ type EventPayload = {
 };
 
 @EventsHandler(IntegrationEvent)
-export class DictionaryExpressionDeletedEventHandler
-  implements IEventHandler<IntegrationEvent<EventPayload>>
-{
+export class DictionaryExpressionDeletedEventHandler implements IEventHandler<
+  IntegrationEvent<EventPayload>
+> {
   private readonly logger = new Logger(
     `Answer Domain - ${DictionaryExpressionDeletedEventHandler.name}`,
   );

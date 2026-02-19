@@ -13,13 +13,10 @@ export type CreateSimpleExpressionContextCommandResponse = {
 };
 
 @CommandHandler(CreateSimpleExpressionContextCommand)
-export class CreateSimpleExpressionContextCommandHandler
-  implements
-    ICommandHandler<
-      CreateSimpleExpressionContextCommand,
-      CreateSimpleExpressionContextCommandResponse
-    >
-{
+export class CreateSimpleExpressionContextCommandHandler implements ICommandHandler<
+  CreateSimpleExpressionContextCommand,
+  CreateSimpleExpressionContextCommandResponse
+> {
   constructor(
     private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly eventPublisher: EventPublisher,

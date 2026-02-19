@@ -4,9 +4,10 @@ import { BoxView } from '../../view/box.view';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 
 @QueryHandler(GetBoxesByIdsQuery)
-export class GetBoxesByIdsQueryHandler
-  implements IQueryHandler<GetBoxesByIdsQuery, BoxView[]>
-{
+export class GetBoxesByIdsQueryHandler implements IQueryHandler<
+  GetBoxesByIdsQuery,
+  BoxView[]
+> {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(query: GetBoxesByIdsQuery): Promise<BoxView[]> {

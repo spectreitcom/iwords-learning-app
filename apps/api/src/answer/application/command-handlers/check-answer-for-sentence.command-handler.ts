@@ -13,13 +13,10 @@ export type CheckAnswerForSentenceCommandResponse = {
 };
 
 @CommandHandler(CheckAnswerForSentenceCommand)
-export class CheckAnswerForSentenceCommandHandler
-  implements
-    ICommandHandler<
-      CheckAnswerForSentenceCommand,
-      CheckAnswerForSentenceCommandResponse
-    >
-{
+export class CheckAnswerForSentenceCommandHandler implements ICommandHandler<
+  CheckAnswerForSentenceCommand,
+  CheckAnswerForSentenceCommandResponse
+> {
   constructor(
     private readonly outboxService: OutboxService,
     private readonly transactionRunner: TransactionRunner,

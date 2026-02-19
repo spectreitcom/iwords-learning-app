@@ -14,9 +14,7 @@ abstract class FakeUserDailyGoalRepositoryClass extends UserDailyGoalRepository 
   abstract getLength(): number;
 }
 
-export class FakeUserDailyGoalRepository
-  implements FakeUserDailyGoalRepositoryClass
-{
+export class FakeUserDailyGoalRepository implements FakeUserDailyGoalRepositoryClass {
   private readonly data = new Map<string, FakeUserDailyGoal>();
 
   constructor(initialData: FakeUserDailyGoal[] = []) {

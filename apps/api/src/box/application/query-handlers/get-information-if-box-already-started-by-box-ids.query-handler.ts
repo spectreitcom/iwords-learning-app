@@ -4,13 +4,10 @@ import { PrismaService } from '../../../common/prisma/prisma.service';
 import { BoxIsStartedView } from '../../view/box-is-started.view';
 
 @QueryHandler(GetInformationIfBoxAlreadyStartedByBoxIdsQuery)
-export class GetInformationIfBoxAlreadyStartedByBoxIdsQueryHandler
-  implements
-    IQueryHandler<
-      GetInformationIfBoxAlreadyStartedByBoxIdsQuery,
-      BoxIsStartedView[]
-    >
-{
+export class GetInformationIfBoxAlreadyStartedByBoxIdsQueryHandler implements IQueryHandler<
+  GetInformationIfBoxAlreadyStartedByBoxIdsQuery,
+  BoxIsStartedView[]
+> {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(

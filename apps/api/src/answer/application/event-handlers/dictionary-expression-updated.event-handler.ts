@@ -9,9 +9,9 @@ type EventPayload = {
 };
 
 @EventsHandler(IntegrationEvent)
-export class DictionaryExpressionUpdatedEventHandler
-  implements IEventHandler<IntegrationEvent<EventPayload>>
-{
+export class DictionaryExpressionUpdatedEventHandler implements IEventHandler<
+  IntegrationEvent<EventPayload>
+> {
   constructor(private readonly prismaService: PrismaService) {}
 
   private readonly logger = new Logger(

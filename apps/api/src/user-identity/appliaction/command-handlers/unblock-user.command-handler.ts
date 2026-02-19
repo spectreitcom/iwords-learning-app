@@ -4,9 +4,10 @@ import { UserRepository } from '../ports/user.repository';
 import { AppError } from '../../../common/errors';
 
 @CommandHandler(UnblockUserCommand)
-export class UnblockUserCommandHandler
-  implements ICommandHandler<UnblockUserCommand, void>
-{
+export class UnblockUserCommandHandler implements ICommandHandler<
+  UnblockUserCommand,
+  void
+> {
   constructor(private readonly userRepository: UserRepository) {}
 
   async execute(command: UnblockUserCommand): Promise<void> {

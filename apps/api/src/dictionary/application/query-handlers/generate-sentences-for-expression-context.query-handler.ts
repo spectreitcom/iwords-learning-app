@@ -10,13 +10,10 @@ export type GenerateSentencesForExpressionContextQueryResponse = {
 }[];
 
 @QueryHandler(GenerateSentencesForExpressionContextQuery)
-export class GenerateSentencesForExpressionContextQueryHandler
-  implements
-    IQueryHandler<
-      GenerateSentencesForExpressionContextQuery,
-      GenerateSentencesForExpressionContextQueryResponse
-    >
-{
+export class GenerateSentencesForExpressionContextQueryHandler implements IQueryHandler<
+  GenerateSentencesForExpressionContextQuery,
+  GenerateSentencesForExpressionContextQueryResponse
+> {
   constructor(
     private readonly aiService: AiService,
     private readonly prismaService: PrismaService,

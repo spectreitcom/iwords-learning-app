@@ -6,9 +6,10 @@ import { AppError } from '../../../common/errors';
 import { SentenceView } from '../../views/sentence.view';
 
 @QueryHandler(GetExpressionContextByIdQuery)
-export class GetExpressionContextByIdQueryHandler
-  implements IQueryHandler<GetExpressionContextByIdQuery, ExpressionContextView>
-{
+export class GetExpressionContextByIdQueryHandler implements IQueryHandler<
+  GetExpressionContextByIdQuery,
+  ExpressionContextView
+> {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(

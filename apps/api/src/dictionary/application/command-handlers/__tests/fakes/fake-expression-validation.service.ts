@@ -1,8 +1,6 @@
 import { ExpressionValidationService } from '../../../ports/expression-validation.service';
 
-export class FakeExpressionValidationService
-  implements ExpressionValidationService
-{
+export class FakeExpressionValidationService implements ExpressionValidationService {
   private readonly existingIds = new Set<string>();
   private phraseCheckResult: string | null = null;
 

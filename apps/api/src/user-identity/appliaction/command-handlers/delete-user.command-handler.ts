@@ -7,9 +7,10 @@ import { OutboxService } from '../../../common/outbox/outbox.service';
 import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(DeleteUserCommand)
-export class DeleteUserCommandHandler
-  implements ICommandHandler<DeleteUserCommand, void>
-{
+export class DeleteUserCommandHandler implements ICommandHandler<
+  DeleteUserCommand,
+  void
+> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly outboxService: OutboxService,

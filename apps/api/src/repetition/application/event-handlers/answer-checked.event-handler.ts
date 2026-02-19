@@ -12,9 +12,9 @@ type EventPayload = {
 };
 
 @EventsHandler(IntegrationEvent)
-export class AnswerCheckedEventHandler
-  implements IEventHandler<IntegrationEvent<EventPayload>>
-{
+export class AnswerCheckedEventHandler implements IEventHandler<
+  IntegrationEvent<EventPayload>
+> {
   private readonly logger = new Logger(
     `Repetition Domain - ${AnswerCheckedEventHandler.name}`,
   );

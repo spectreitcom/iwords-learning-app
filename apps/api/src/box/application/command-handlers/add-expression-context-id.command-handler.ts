@@ -8,9 +8,10 @@ import {
 } from '../../domain/errors';
 
 @CommandHandler(AddExpressionContextIdCommand)
-export class AddExpressionContextIdCommandHandler
-  implements ICommandHandler<AddExpressionContextIdCommand, void>
-{
+export class AddExpressionContextIdCommandHandler implements ICommandHandler<
+  AddExpressionContextIdCommand,
+  void
+> {
   constructor(
     private readonly boxRepository: BoxRepository,
     private readonly eventPublisher: EventPublisher,

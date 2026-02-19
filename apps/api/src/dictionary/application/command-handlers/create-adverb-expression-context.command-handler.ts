@@ -13,13 +13,10 @@ export type CreateAdverbExpressionContextCommandResponse = {
 };
 
 @CommandHandler(CreateAdverbExpressionContextCommand)
-export class CreateAdverbExpressionContextCommandHandler
-  implements
-    ICommandHandler<
-      CreateAdverbExpressionContextCommand,
-      CreateAdverbExpressionContextCommandResponse
-    >
-{
+export class CreateAdverbExpressionContextCommandHandler implements ICommandHandler<
+  CreateAdverbExpressionContextCommand,
+  CreateAdverbExpressionContextCommandResponse
+> {
   constructor(
     private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly eventPublisher: EventPublisher,

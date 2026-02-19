@@ -4,13 +4,10 @@ import { DictionaryReadModel } from '../../read-models/dictionary-read-model';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 
 @QueryHandler(GetDictionaryReadModelsByExpressionContextIdsQuery)
-export class GetDictionaryReadModelsByExpressionContextIdsQueryHandler
-  implements
-    IQueryHandler<
-      GetDictionaryReadModelsByExpressionContextIdsQuery,
-      DictionaryReadModel[]
-    >
-{
+export class GetDictionaryReadModelsByExpressionContextIdsQueryHandler implements IQueryHandler<
+  GetDictionaryReadModelsByExpressionContextIdsQuery,
+  DictionaryReadModel[]
+> {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(

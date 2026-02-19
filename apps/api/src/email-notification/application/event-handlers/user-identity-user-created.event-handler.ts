@@ -9,9 +9,9 @@ type EventPayload = {
 };
 
 @EventsHandler(IntegrationEvent)
-export class UserIdentityUserCreatedEventHandler
-  implements IEventHandler<IntegrationEvent<EventPayload>>
-{
+export class UserIdentityUserCreatedEventHandler implements IEventHandler<
+  IntegrationEvent<EventPayload>
+> {
   private readonly logger = new Logger(
     `Email Notification Domain - ${UserIdentityUserCreatedEventHandler.name}`,
   );

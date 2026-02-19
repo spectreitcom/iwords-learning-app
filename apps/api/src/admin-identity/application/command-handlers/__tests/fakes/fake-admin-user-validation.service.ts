@@ -1,8 +1,6 @@
 import { AdminUserValidationService } from '../../../ports/admin-user-validation.service';
 
-export class FakeAdminUserValidationService
-  implements AdminUserValidationService
-{
+export class FakeAdminUserValidationService implements AdminUserValidationService {
   private readonly takenEmails: Set<string> = new Set();
   private readonly superUsers: Set<string> = new Set();
 

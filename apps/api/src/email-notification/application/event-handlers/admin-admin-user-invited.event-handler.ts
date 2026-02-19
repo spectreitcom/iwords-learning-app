@@ -11,9 +11,9 @@ type EventPayload = {
 };
 
 @EventsHandler(IntegrationEvent)
-export class AdminAdminUserInvitedEventHandler
-  implements IEventHandler<IntegrationEvent<EventPayload>>
-{
+export class AdminAdminUserInvitedEventHandler implements IEventHandler<
+  IntegrationEvent<EventPayload>
+> {
   private readonly logger = new Logger(
     `Email Notification Domain - ${AdminAdminUserInvitedEventHandler.name}`,
   );

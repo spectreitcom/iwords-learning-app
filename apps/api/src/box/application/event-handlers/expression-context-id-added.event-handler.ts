@@ -3,9 +3,7 @@ import { ExpressionContextIdAddedEvent } from '../../domain/events/expression-co
 import { Logger } from '@nestjs/common';
 
 @EventsHandler(ExpressionContextIdAddedEvent)
-export class ExpressionContextIdAddedEventHandler
-  implements IEventHandler<ExpressionContextIdAddedEvent>
-{
+export class ExpressionContextIdAddedEventHandler implements IEventHandler<ExpressionContextIdAddedEvent> {
   private readonly logger = new Logger(
     `Box Domain - ${ExpressionContextIdAddedEventHandler.name}`,
   );

@@ -7,9 +7,7 @@ export abstract class FakeAnswerExpressionContextReadRepositoryClass extends Ans
   abstract getLength(): number;
 }
 
-export class FakeAnswerExpressionContextReadRepository
-  implements FakeAnswerExpressionContextReadRepositoryClass
-{
+export class FakeAnswerExpressionContextReadRepository implements FakeAnswerExpressionContextReadRepositoryClass {
   private readonly data = new Map<string, AnswerExpressionContextReadModel>();
 
   constructor(data: AnswerExpressionContextReadModel[] = []) {

@@ -14,13 +14,10 @@ export type CheckAnswerForIrregularVerbCommandResponse = {
 };
 
 @CommandHandler(CheckAnswerForIrregularVerbCommand)
-export class CheckAnswerForIrregularVerbCommandHandler
-  implements
-    ICommandHandler<
-      CheckAnswerForIrregularVerbCommand,
-      CheckAnswerForIrregularVerbCommandResponse
-    >
-{
+export class CheckAnswerForIrregularVerbCommandHandler implements ICommandHandler<
+  CheckAnswerForIrregularVerbCommand,
+  CheckAnswerForIrregularVerbCommandResponse
+> {
   constructor(
     private readonly outboxService: OutboxService,
     private readonly transactionRunner: TransactionRunner,

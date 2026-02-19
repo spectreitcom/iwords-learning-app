@@ -15,9 +15,10 @@ export type RefreshTokenCommandResponse = {
 };
 
 @CommandHandler(RefreshTokenCommand)
-export class RefreshTokenCommandHandler
-  implements ICommandHandler<RefreshTokenCommand, RefreshTokenCommandResponse>
-{
+export class RefreshTokenCommandHandler implements ICommandHandler<
+  RefreshTokenCommand,
+  RefreshTokenCommandResponse
+> {
   constructor(
     private readonly refreshTokenService: RefreshTokenService,
     private readonly accessTokenService: AccessTokenService,

@@ -5,9 +5,10 @@ import { AppError } from '../../../common/errors';
 import { AdminUserValidationService } from '../ports/admin-user-validation.service';
 
 @CommandHandler(UnblockAdminUserCommand)
-export class UnblockAdminUserCommandHandler
-  implements ICommandHandler<UnblockAdminUserCommand, void>
-{
+export class UnblockAdminUserCommandHandler implements ICommandHandler<
+  UnblockAdminUserCommand,
+  void
+> {
   constructor(
     private readonly adminUserRepository: AdminUserRepository,
     private readonly adminUserValidationService: AdminUserValidationService,

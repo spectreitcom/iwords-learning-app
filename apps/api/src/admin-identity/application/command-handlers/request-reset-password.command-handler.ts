@@ -9,9 +9,10 @@ import { AdminUserRepository } from '../ports/admin-user.repository';
 import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(RequestResetPasswordCommand)
-export class RequestResetPasswordCommandHandler
-  implements ICommandHandler<RequestResetPasswordCommand, void>
-{
+export class RequestResetPasswordCommandHandler implements ICommandHandler<
+  RequestResetPasswordCommand,
+  void
+> {
   constructor(
     private readonly outboxService: OutboxService,
     private readonly resetTokensStorage: ResetPasswordTokensStorage,

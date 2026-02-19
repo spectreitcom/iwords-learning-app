@@ -6,9 +6,10 @@ import { AdminUserRepository } from '../ports/admin-user.repository';
 import { AppError } from '../../../common/errors';
 
 @CommandHandler(ResetPasswordCommand)
-export class ResetPasswordCommandHandler
-  implements ICommandHandler<ResetPasswordCommand, void>
-{
+export class ResetPasswordCommandHandler implements ICommandHandler<
+  ResetPasswordCommand,
+  void
+> {
   constructor(
     private readonly hashingService: HashingService,
     private readonly resetPasswordTokensStorage: ResetPasswordTokensStorage,

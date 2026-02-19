@@ -3,9 +3,7 @@ import { ExpressionCreatedEvent } from '../../domain/events/expression-created.e
 import { Logger } from '@nestjs/common';
 
 @EventsHandler(ExpressionCreatedEvent)
-export class ExpressionCreatedEventHandler
-  implements IEventHandler<ExpressionCreatedEvent>
-{
+export class ExpressionCreatedEventHandler implements IEventHandler<ExpressionCreatedEvent> {
   private readonly logger = new Logger(
     `Dictionary Domain - ${ExpressionCreatedEventHandler.name}`,
   );

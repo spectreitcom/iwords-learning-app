@@ -4,9 +4,7 @@ import { PrismaService } from '../../../common/prisma/prisma.service';
 import { PrismaTx } from '../../../common/types';
 
 @Injectable()
-export class AppAdminUserValidationService
-  implements AdminUserValidationService
-{
+export class AppAdminUserValidationService implements AdminUserValidationService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async isEmailTaken(email: string, tx?: PrismaTx): Promise<boolean> {

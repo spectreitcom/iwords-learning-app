@@ -5,9 +5,10 @@ import { RepetitionView } from '../../views/repetition.view';
 import { Clock } from '../../../common/clock/clock';
 
 @QueryHandler(GetUserRepetitionsQuery)
-export class GetUserRepetitionsQueryHandler
-  implements IQueryHandler<GetUserRepetitionsQuery, RepetitionView[]>
-{
+export class GetUserRepetitionsQueryHandler implements IQueryHandler<
+  GetUserRepetitionsQuery,
+  RepetitionView[]
+> {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly clock: Clock,

@@ -13,13 +13,10 @@ export type CreateNounExpressionContextCommandResponse = {
 };
 
 @CommandHandler(CreateNounExpressionContextCommand)
-export class CreateNounExpressionContextCommandHandler
-  implements
-    ICommandHandler<
-      CreateNounExpressionContextCommand,
-      CreateNounExpressionContextCommandResponse
-    >
-{
+export class CreateNounExpressionContextCommandHandler implements ICommandHandler<
+  CreateNounExpressionContextCommand,
+  CreateNounExpressionContextCommandResponse
+> {
   constructor(
     private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly eventPublisher: EventPublisher,

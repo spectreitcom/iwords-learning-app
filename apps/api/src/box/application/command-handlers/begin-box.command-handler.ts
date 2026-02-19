@@ -4,9 +4,10 @@ import { BeginBoxRepository } from '../ports/begin-box.repository';
 import { BeginBox } from '../../domain/begin-box';
 
 @CommandHandler(BeginBoxCommand)
-export class BeginBoxCommandHandler
-  implements ICommandHandler<BeginBoxCommand, void>
-{
+export class BeginBoxCommandHandler implements ICommandHandler<
+  BeginBoxCommand,
+  void
+> {
   constructor(private readonly beginBoxRepository: BeginBoxRepository) {}
 
   async execute(command: BeginBoxCommand): Promise<void> {

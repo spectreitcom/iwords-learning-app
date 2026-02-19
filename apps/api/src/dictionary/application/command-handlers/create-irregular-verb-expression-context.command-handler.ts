@@ -13,13 +13,10 @@ export type CreateIrregularVerbExpressionContextCommandResponse = {
 };
 
 @CommandHandler(CreateIrregularVerbExpressionContextCommand)
-export class CreateIrregularVerbExpressionContextCommandHandler
-  implements
-    ICommandHandler<
-      CreateIrregularVerbExpressionContextCommand,
-      CreateIrregularVerbExpressionContextCommandResponse
-    >
-{
+export class CreateIrregularVerbExpressionContextCommandHandler implements ICommandHandler<
+  CreateIrregularVerbExpressionContextCommand,
+  CreateIrregularVerbExpressionContextCommandResponse
+> {
   constructor(
     private readonly eventPublisher: EventPublisher,
     private readonly expressionContextRepository: ExpressionContextRepository,

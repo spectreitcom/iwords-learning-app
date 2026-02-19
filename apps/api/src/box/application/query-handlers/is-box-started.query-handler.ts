@@ -3,9 +3,10 @@ import { IsBoxStartedQuery } from '../queries/is-box-started.query';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 
 @QueryHandler(IsBoxStartedQuery)
-export class IsBoxStartedQueryHandler
-  implements IQueryHandler<IsBoxStartedQuery, boolean>
-{
+export class IsBoxStartedQueryHandler implements IQueryHandler<
+  IsBoxStartedQuery,
+  boolean
+> {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(query: IsBoxStartedQuery): Promise<boolean> {

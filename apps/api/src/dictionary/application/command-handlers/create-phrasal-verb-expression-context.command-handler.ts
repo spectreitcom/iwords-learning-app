@@ -13,13 +13,10 @@ export type CreatePhrasalVerbExpressionContextCommandResponse = {
 };
 
 @CommandHandler(CreatePhrasalVerbExpressionContextCommand)
-export class CreatePhrasalVerbExpressionContextCommandHandler
-  implements
-    ICommandHandler<
-      CreatePhrasalVerbExpressionContextCommand,
-      CreatePhrasalVerbExpressionContextCommandResponse
-    >
-{
+export class CreatePhrasalVerbExpressionContextCommandHandler implements ICommandHandler<
+  CreatePhrasalVerbExpressionContextCommand,
+  CreatePhrasalVerbExpressionContextCommandResponse
+> {
   constructor(
     private readonly eventPublisher: EventPublisher,
     private readonly expressionContextRepository: ExpressionContextRepository,

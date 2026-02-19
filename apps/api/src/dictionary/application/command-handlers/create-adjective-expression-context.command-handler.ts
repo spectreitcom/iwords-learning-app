@@ -13,13 +13,10 @@ export type CreateAdjectiveExpressionContextCommandResponse = {
 };
 
 @CommandHandler(CreateAdjectiveExpressionContextCommand)
-export class CreateAdjectiveExpressionContextCommandHandler
-  implements
-    ICommandHandler<
-      CreateAdjectiveExpressionContextCommand,
-      CreateAdjectiveExpressionContextCommandResponse
-    >
-{
+export class CreateAdjectiveExpressionContextCommandHandler implements ICommandHandler<
+  CreateAdjectiveExpressionContextCommand,
+  CreateAdjectiveExpressionContextCommandResponse
+> {
   constructor(
     private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly eventPublisher: EventPublisher,

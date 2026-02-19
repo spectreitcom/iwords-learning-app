@@ -1,8 +1,9 @@
 import { AsyncContext, EventPublisher } from '@nestjs/cqrs';
 
-export class FakeEventPublisher
-  implements Pick<EventPublisher, 'mergeObjectContext'>
-{
+export class FakeEventPublisher implements Pick<
+  EventPublisher,
+  'mergeObjectContext'
+> {
   public lastMerged: any | null = null;
 
   mergeObjectContext<T>(

@@ -4,9 +4,7 @@ import { PrismaService } from '../../common/prisma/prisma.service';
 import { Clock } from '../../common/clock/clock';
 
 @Injectable()
-export class BasicRepetitionGeneratorService
-  implements GenerateRepetitionService
-{
+export class BasicRepetitionGeneratorService implements GenerateRepetitionService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly clock: Clock,

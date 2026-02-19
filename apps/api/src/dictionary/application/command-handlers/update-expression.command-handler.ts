@@ -8,9 +8,10 @@ import { OutboxService } from '../../../common/outbox/outbox.service';
 import { IntegrationEvent } from '../../../common/outbox/types';
 
 @CommandHandler(UpdateExpressionCommand)
-export class UpdateExpressionCommandHandler
-  implements ICommandHandler<UpdateExpressionCommand, void>
-{
+export class UpdateExpressionCommandHandler implements ICommandHandler<
+  UpdateExpressionCommand,
+  void
+> {
   constructor(
     private readonly expressionRepository: ExpressionRepository,
     private readonly expressionValidationService: ExpressionValidationService,

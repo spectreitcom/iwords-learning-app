@@ -8,9 +8,10 @@ import { IntegrationEvent } from '../../../common/outbox/types';
 import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 
 @CommandHandler(UpdateVerbExpressionContextCommand)
-export class UpdateVerbExpressionContextCommandHandler
-  implements ICommandHandler<UpdateVerbExpressionContextCommand, void>
-{
+export class UpdateVerbExpressionContextCommandHandler implements ICommandHandler<
+  UpdateVerbExpressionContextCommand,
+  void
+> {
   constructor(
     private readonly expressionContextRepository: ExpressionContextRepository,
     private readonly eventPublisher: EventPublisher,

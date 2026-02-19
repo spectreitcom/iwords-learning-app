@@ -7,9 +7,10 @@ import { PrismaService } from '../../../common/prisma/prisma.service';
 export type GetUsersListQueryResponse = CollectionWithPagination<UserView>;
 
 @QueryHandler(GetUsersListQuery)
-export class GetUsersListQueryHandler
-  implements IQueryHandler<GetUsersListQuery, GetUsersListQueryResponse>
-{
+export class GetUsersListQueryHandler implements IQueryHandler<
+  GetUsersListQuery,
+  GetUsersListQueryResponse
+> {
   constructor(private readonly prisma: PrismaService) {}
 
   async execute(query: GetUsersListQuery): Promise<GetUsersListQueryResponse> {

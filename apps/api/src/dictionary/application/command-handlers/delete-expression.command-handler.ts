@@ -8,9 +8,10 @@ import { IntegrationEvent } from '../../../common/outbox/types';
 import { ExpressionContextRepository } from '../ports/expression-context.repository';
 
 @CommandHandler(DeleteExpressionCommand)
-export class DeleteExpressionCommandHandler
-  implements ICommandHandler<DeleteExpressionCommand, void>
-{
+export class DeleteExpressionCommandHandler implements ICommandHandler<
+  DeleteExpressionCommand,
+  void
+> {
   constructor(
     private readonly eventPublisher: EventPublisher,
     private readonly expressionRepository: ExpressionRepository,

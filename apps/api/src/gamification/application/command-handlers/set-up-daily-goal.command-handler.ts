@@ -4,9 +4,10 @@ import { UserDailyGoalRepository } from '../ports/user-daily-goal.repository';
 import { UserDailyGoal } from '../../domain/user-daily-goal';
 
 @CommandHandler(SetUpDailyGoalCommand)
-export class SetUpDailyGoalCommandHandler
-  implements ICommandHandler<SetUpDailyGoalCommand, void>
-{
+export class SetUpDailyGoalCommandHandler implements ICommandHandler<
+  SetUpDailyGoalCommand,
+  void
+> {
   constructor(
     private readonly userDailyGoalRepository: UserDailyGoalRepository,
   ) {}
