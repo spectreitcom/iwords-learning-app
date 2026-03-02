@@ -32,7 +32,7 @@ export const envSchema = Joi.object({
     .description('Clerk publishable key'),
 
   // OpenAi
-  OPENAI_BASE_URL: Joi.string().required().description('OpenAi base URL'),
+  OPENAI_BASE_URL: Joi.string().optional().description('OpenAi base URL'),
 
   OPENAI_API_KEY: Joi.string().required().description('OpenAi API key'),
 
