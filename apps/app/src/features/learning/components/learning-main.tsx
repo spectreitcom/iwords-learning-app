@@ -64,6 +64,8 @@ export function LearningMain({
   const [currentItem, setCurrentItem] =
     useState<LinkedListNode<ListData> | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [incorrectCount, setIncorrectCount] = useState(0);
   const [answerData, setAnswerData] = useState<GeneralAnswer | null>(null);
   const [irregularVerbAnswerData, setIrregularVerbAnswerData] =
     useState<IrregularVerbAnswer | null>(null);
@@ -90,6 +92,8 @@ export function LearningMain({
       //     sentenceId: sentence.sentenceId,
       //     translation: sentence.translation,
       //     learningViewType: "SENTENCE_TRANSLATION_VIEW",
+      //     expressionContextType: item.type,
+      //     expressionContextId: item.expressionContextId,
       //   });
       // }
     }
@@ -107,11 +111,15 @@ export function LearningMain({
         title={title ?? ""}
         learned={currentIndex}
         total={linkedListRef.current.length}
+        correctCount={correctCount}
+        incorrectCount={incorrectCount}
         boxId={boxId}
         onBackToBox={() => router.push(`/boxes/${boxId}`)}
         onRestart={() => {
           setCurrentItem(linkedListRef.current.getHead());
           setCurrentIndex(0);
+          setCorrectCount(0);
+          setIncorrectCount(0);
         }}
       />
     );
@@ -201,6 +209,13 @@ export function LearningMain({
       <AnswerModal
         answerData={answerData}
         onOk={() => {
+          if (answerData) {
+            if (answerData.correct) {
+              setCorrectCount((prev) => prev + 1);
+            } else {
+              setIncorrectCount((prev) => prev + 1);
+            }
+          }
           setAnswerData(null);
           if (!currentItem) return;
           if (currentItem.next) {
@@ -213,6 +228,13 @@ export function LearningMain({
       <IrregularVerbAnswerModal
         answerData={irregularVerbAnswerData}
         onOk={() => {
+          if (irregularVerbAnswerData) {
+            if (irregularVerbAnswerData.allCorrect) {
+              setCorrectCount((prev) => prev + 1);
+            } else {
+              setIncorrectCount((prev) => prev + 1);
+            }
+          }
           setIrregularVerbAnswerData(null);
           if (!currentItem) return;
           if (currentItem.next) {
@@ -229,6 +251,8 @@ function LearningSummary({
   title,
   learned,
   total,
+  correctCount,
+  incorrectCount,
   onBackToBox,
   onRestart,
   repetitionMode,
@@ -237,6 +261,8 @@ function LearningSummary({
   title: string;
   learned: number;
   total: number;
+  correctCount: number;
+  incorrectCount: number;
   onBackToBox: () => void;
   onRestart: () => void;
   repetitionMode?: boolean;
@@ -267,6 +293,24 @@ function LearningSummary({
             <div className="text-5xl font-bold tracking-tight">{percent}%</div>
             <div className="text-sm text-muted-foreground mt-1">
               Ukończono {learned} z {total} kroków
+            </div>
+            <div className="mt-4 flex justify-center gap-6">
+              <div className="flex flex-col">
+                <span className="text-2xl font-semibold text-emerald-600">
+                  {correctCount}
+                </span>
+                <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
+                  Poprawne
+                </span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-2xl font-semibold text-rose-600">
+                  {incorrectCount}
+                </span>
+                <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
+                  Błędne
+                </span>
+              </div>
             </div>
           </div>
 
