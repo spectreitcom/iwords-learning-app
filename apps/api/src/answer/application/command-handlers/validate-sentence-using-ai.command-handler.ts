@@ -63,7 +63,8 @@ export class ValidateSentenceUsingAiCommandHandler implements ICommandHandler<
       await this.outboxService.enqueue(event, this.prismaService);
 
       return aiAnswer;
-    } catch {
+    } catch (e) {
+      console.log(e); // todo;
       throw new AppError('SIMPLE_ERROR', 'Error validating sentence using AI.');
     }
   }
