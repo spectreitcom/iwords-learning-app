@@ -6,6 +6,9 @@ export const usePronunciation = (lang: PronunciationLang) => {
   const [isAvailable, setIsAvailable] = useState(false);
 
   const speak = (text: string) => {
+    if (!("speechSynthesis" in window)) {
+      return;
+    }
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = lang;
     utterance.pitch = 1;
