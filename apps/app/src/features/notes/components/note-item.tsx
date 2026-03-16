@@ -21,9 +21,6 @@ export function NoteItem({ note }: { note: Note }) {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground line-clamp-2">
-              {note.content?.slice(0, 160) || "Brak treści"}
-            </p>
             <p className="text-xs text-muted-foreground mt-4">
               {note.updatedAt.toLocaleDateString("pl-PL")}
             </p>

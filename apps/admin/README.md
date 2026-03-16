@@ -65,7 +65,7 @@ The application will be available at [http://localhost:3000](http://localhost:30
 
 - **Session Storage**: JWT tokens are stored in secure, `httpOnly` cookies.
 - **Server Requests**: All requests to the backend API use the `authFetch` utility (`src/lib/auth-fetch.ts`), which automatically handles authorization headers and 401 redirects.
-- **Protection**: Private routes are protected via Next.js Middleware.
+- **Protection**: Private routes are protected via Next.js Proxy.
 
 ## 🏗 Build and Deployment
 

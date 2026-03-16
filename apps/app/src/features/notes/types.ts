@@ -12,15 +12,15 @@ export const noteSchema = z.object({
 
 export type Note = z.infer<typeof noteSchema>;
 
-const createNoteSchema = z.object({
+export const createNoteSchema = z.object({
   title: z.string().min(3).max(120),
   expressionContextId: z.string().uuid(),
 });
 
-const updateNoteTitleSchema = z.object({
+export const updateNoteTitleSchema = z.object({
   title: z.string().min(3).max(120),
 });
 
-const updateNoteContentSchema = z.object({
+export const updateNoteContentSchema = z.object({
   content: z.string().optional(),
 });

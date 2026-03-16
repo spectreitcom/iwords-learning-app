@@ -7,6 +7,23 @@ import { noteSchema } from "@/features/notes/types";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 
+export async function getNote(noteId: string) {
+  try {
+    const response = await authFetch(`${BACKEND_URL}/notes/${noteId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+
+    return noteSchema.parse(data);
+  } catch (error) {
+    console.error("Error in getNote:", error);
+    throw error;
+  }
+}
+
 export async function getNotes(
   expressionContextId: string,
   page = 1,
@@ -28,9 +45,6 @@ export async function getNotes(
     );
 
     const data = await response.json();
-
-    console.log("data", data); // todo;
-
     return collectionWithPaginationSchema(noteSchema).parse(data);
   } catch (error) {
     console.error("Error in getNotes:", error);
@@ -71,7 +85,11 @@ export async function deleteNote(expressionContextId: string, noteId: string) {
   }
 }
 
-export async function updateNoteTitle(noteId: string, title: string) {
+export async function updateNoteTitle(
+  noteId: string,
+  title: string,
+  expressionContextId?: string,
+) {
   try {
     await authFetch(`${BACKEND_URL}/notes/${noteId}/title`, {
       method: "PATCH",
@@ -80,12 +98,19 @@ export async function updateNoteTitle(noteId: string, title: string) {
       },
       body: JSON.stringify({ title }),
     });
+    if (expressionContextId) {
+      revalidatePath(`/expression-context/${expressionContextId}/notes`);
+    }
   } catch (error) {
     console.error("Error in updateNoteTitle:", error);
   }
 }
 
-export async function updateNoteContent(noteId: string, content: string) {
+export async function updateNoteContent(
+  noteId: string,
+  content: string,
+  expressionContextId?: string,
+) {
   try {
     await authFetch(`${BACKEND_URL}/notes/${noteId}/content`, {
       method: "PATCH",
@@ -94,6 +119,9 @@ export async function updateNoteContent(noteId: string, content: string) {
       },
       body: JSON.stringify({ content }),
     });
+    if (expressionContextId) {
+      revalidatePath(`/expression-context/${expressionContextId}/notes`);
+    }
   } catch (error) {
     console.error("Error in updateNoteContent:", error);
   }
