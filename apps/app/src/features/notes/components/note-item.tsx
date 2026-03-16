@@ -7,8 +7,11 @@ import {
 } from "@repo/ui/components/ui/card";
 import Link from "next/link";
 import { NoteItemDropdownMenu } from "@/features/notes/components/note-item-dropdown-menu";
+import DOMPurify from "dompurify";
 
 export function NoteItem({ note }: { note: Note }) {
+  const cleanContent = note.content ? DOMPurify.sanitize(note.content) : "";
+
   return (
     <div className="group relative">
       <Link
@@ -25,7 +28,7 @@ export function NoteItem({ note }: { note: Note }) {
               <div
                 className="text-sm text-muted-foreground line-clamp-3 prose prose-sm prose-muted max-w-none 
                 [&_p]:mb-0 [&_ul]:my-0 [&_ol]:my-0 [&_li]:my-0"
-                dangerouslySetInnerHTML={{ __html: note.content }}
+                dangerouslySetInnerHTML={{ __html: cleanContent }}
               />
             )}
             <p className="text-xs text-muted-foreground">
