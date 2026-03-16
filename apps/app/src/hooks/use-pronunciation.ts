@@ -15,11 +15,8 @@ export const usePronunciation = (lang: PronunciationLang) => {
   };
 
   useEffect(() => {
-    console.log("loading", window);
-
     if ("speechSynthesis" in window) {
       setIsAvailable(true);
-      console.log("available", speechSynthesis.getVoices());
     }
   }, []);
 
