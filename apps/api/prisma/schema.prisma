@@ -258,3 +258,20 @@ model BoxDailyRepetition {
 }
 
 //----------------------------------
+
+// Note Bounded Context
+
+model Note {
+  id                  String   @id @default(uuid())
+  userId              String   @db.Uuid
+  expressionContextId String   @db.Uuid
+  title               String   @db.VarChar(120)
+  content             String?  @db.Text
+  createdAt           DateTime @default(now()) @db.Date
+  updatedAt           DateTime @updatedAt @db.Date
+
+  @@unique([id, userId])
+  @@index([title])
+}
+
+//----------------------------------
