@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@repo/ui/components/ui/card";
 import { expressionTypeMap } from "@repo/shared/utils";
+import { PronunciationButton } from "@/components/pronunciation-button";
 
 type Props = Readonly<{
   params: Promise<{ expressionContextId: string }>;
@@ -39,9 +40,12 @@ async function AwaitedContent({
         <CardHeader>
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle className="text-3xl font-bold">
-                {context.phrase}
-              </CardTitle>
+              <div className="flex items-center gap-2">
+                <CardTitle className="text-3xl font-bold">
+                  {context.phrase}
+                </CardTitle>
+                <PronunciationButton text={context.phrase} />
+              </div>
               <p className="text-xl text-muted-foreground mt-1">
                 {context.translation}
               </p>
