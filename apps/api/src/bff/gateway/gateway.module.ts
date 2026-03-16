@@ -13,6 +13,8 @@ import { RepetitionsController } from './controllers/repetitions.controller';
 import { RepetitionModule } from '../../repetition/application/repetition.module';
 import { DictionaryController } from './controllers/dictionary.controller';
 import { BoxRepetitionModule } from '../../box-repetition/application/box-repetition.module';
+import { NoteModule } from '../../note/application/note.module';
+import { NoteController } from './controllers/note.controller';
 
 @Module({
   imports: [
@@ -23,6 +25,7 @@ import { BoxRepetitionModule } from '../../box-repetition/application/box-repeti
     GamificationModule,
     RepetitionModule,
     BoxRepetitionModule,
+    NoteModule,
   ],
   controllers: [
     AnswerController,
@@ -31,6 +34,7 @@ import { BoxRepetitionModule } from '../../box-repetition/application/box-repeti
     GamificationController,
     RepetitionsController,
     DictionaryController,
+    NoteController,
   ],
   providers: [ClerkAuthGuard],
 })
