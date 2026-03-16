@@ -23,14 +23,25 @@ async function AwaitedContent({
 }: {
   params: Promise<{ expressionContextId: string; noteId: string }>;
 }) {
-  const { noteId, expressionContextId } = await params;
+  const { noteId } = await params;
   const note = await getNote(noteId);
+
+  if (!note) {
+    return (
+      <div className="container mx-auto max-w-4xl p-4">
+        <p>Notatka nie została znaleziona.</p>
+        <Button variant="outline" asChild className="mt-4">
+          <Link href="/">Wróć do strony głównej</Link>
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto max-w-4xl space-y-4 p-4">
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" asChild>
-          <Link href={`/expression-context/${expressionContextId}/notes`}>
+          <Link href={`/expression-context/${note.expressionContextId}/notes`}>
             <ArrowLeft className="h-4 w-4" />
           </Link>
         </Button>

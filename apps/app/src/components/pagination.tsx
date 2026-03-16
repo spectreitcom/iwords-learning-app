@@ -18,6 +18,10 @@ export function Pagination({
 }: Props) {
   const pages = Math.ceil(total / take);
 
+  if (take <= 0) {
+    return null;
+  }
+
   if (pages <= 1) {
     return null;
   }

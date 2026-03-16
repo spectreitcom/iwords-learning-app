@@ -15,6 +15,12 @@ export async function getNote(noteId: string) {
       },
     });
 
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch note: ${response.status} ${response.statusText}`,
+      );
+    }
+
     const data = await response.json();
 
     return noteSchema.parse(data);
@@ -44,6 +50,12 @@ export async function getNotes(
       },
     );
 
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch notes: ${response.status} ${response.statusText}`,
+      );
+    }
+
     const data = await response.json();
     return collectionWithPaginationSchema(noteSchema).parse(data);
   } catch (error) {
@@ -62,6 +74,12 @@ export async function createNote(expressionContextId: string, title: string) {
       body: JSON.stringify({ expressionContextId, title }),
     });
 
+    if (!response.ok) {
+      throw new Error(
+        `Failed to create note: ${response.status} ${response.statusText}`,
+      );
+    }
+
     const data = await response.json();
     revalidatePath(`/expression-context/${expressionContextId}/notes`);
     return z.object({ noteId: z.string().uuid() }).parse(data);
@@ -73,15 +91,23 @@ export async function createNote(expressionContextId: string, title: string) {
 
 export async function deleteNote(expressionContextId: string, noteId: string) {
   try {
-    await authFetch(`${BACKEND_URL}/notes/${noteId}`, {
+    const response = await authFetch(`${BACKEND_URL}/notes/${noteId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
     });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to delete note: ${response.status} ${response.statusText}`,
+      );
+    }
+
     revalidatePath(`/expression-context/${expressionContextId}/notes`);
   } catch (error) {
     console.error("Error in deleteNote:", error);
+    throw error;
   }
 }
 
@@ -91,13 +117,20 @@ export async function updateNoteTitle(
   expressionContextId?: string,
 ) {
   try {
-    await authFetch(`${BACKEND_URL}/notes/${noteId}/title`, {
+    const response = await authFetch(`${BACKEND_URL}/notes/${noteId}/title`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ title }),
     });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to update note title: ${response.status} ${response.statusText}`,
+      );
+    }
+
     if (expressionContextId) {
       revalidatePath(`/expression-context/${expressionContextId}/notes`);
     }
@@ -112,13 +145,20 @@ export async function updateNoteContent(
   expressionContextId?: string,
 ) {
   try {
-    await authFetch(`${BACKEND_URL}/notes/${noteId}/content`, {
+    const response = await authFetch(`${BACKEND_URL}/notes/${noteId}/content`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ content }),
     });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to update note content: ${response.status} ${response.statusText}`,
+      );
+    }
+
     if (expressionContextId) {
       revalidatePath(`/expression-context/${expressionContextId}/notes`);
     }

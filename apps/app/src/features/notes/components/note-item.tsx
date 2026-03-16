@@ -20,8 +20,15 @@ export function NoteItem({ note }: { note: Note }) {
               {note.title}
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground mt-4">
+          <CardContent className="space-y-4">
+            {note.content && (
+              <div
+                className="text-sm text-muted-foreground line-clamp-3 prose prose-sm prose-muted max-w-none 
+                [&_p]:mb-0 [&_ul]:my-0 [&_ol]:my-0 [&_li]:my-0"
+                dangerouslySetInnerHTML={{ __html: note.content }}
+              />
+            )}
+            <p className="text-xs text-muted-foreground">
               {note.updatedAt.toLocaleDateString("pl-PL")}
             </p>
           </CardContent>

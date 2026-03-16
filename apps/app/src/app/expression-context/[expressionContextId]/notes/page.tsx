@@ -50,8 +50,15 @@ async function AwaitedContent({
   const { expressionContextId } = await params;
   const searchParamsValue = await searchParams;
   const { page: pageStr, take: takeStr } = searchParamsValue;
-  const page = pageStr ? parseInt(pageStr) : 1;
-  const take = takeStr ? parseInt(takeStr) : 20;
+
+  const parsedPage = pageStr ? parseInt(pageStr, 10) : 1;
+  const page = isNaN(parsedPage) || parsedPage < 1 ? 1 : parsedPage;
+
+  const parsedTake = takeStr ? parseInt(takeStr, 10) : 20;
+  let take = isNaN(parsedTake) || parsedTake < 1 ? 20 : parsedTake;
+  if (take > 100) {
+    take = 100;
+  }
 
   const notes = await getNotes(expressionContextId, page, take);
   const expressionContext = await getExpressionContext(expressionContextId);

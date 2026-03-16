@@ -10,6 +10,7 @@ import { EditorView } from "prosemirror-view";
 import { schema } from "prosemirror-schema-basic";
 import { exampleSetup } from "prosemirror-example-setup";
 import { DOMParser, DOMSerializer } from "prosemirror-model";
+import DOMPurify from "dompurify";
 
 import "prosemirror-view/style/prosemirror.css";
 import "prosemirror-menu/style/menu.css";
@@ -49,9 +50,8 @@ export function NoteEditorView({ note }: NoteEditorViewProps) {
   useEffect(() => {
     if (!editorRef.current || viewRef.current) return;
 
-    // Create initial state
     const contentElement = document.createElement("div");
-    contentElement.innerHTML = note.content || "";
+    contentElement.innerHTML = DOMPurify.sanitize(note.content || "");
 
     const state = EditorState.create({
       doc: DOMParser.fromSchema(schema).parse(contentElement),
