@@ -17,6 +17,7 @@ import { StartLearningButton } from "@/features/learning/components/start-learni
 import { CopyBoxToClipboardButton } from "@/features/boxes/components/copy-box-to-clipboard-button";
 import { BoxItemDropdownMenu } from "@/features/boxes/components/box-item-dropdown-menu";
 import { expressionTypeMap } from "@repo/shared/utils";
+import { PronunciationButton } from "@/components/pronunciation-button";
 
 type Props = Readonly<{
   params: Promise<{ boxId: string }>;
@@ -68,9 +69,12 @@ function BoxItemPreview({ item }: Readonly<{ item: BoxItem }>) {
     <Card className={"group"}>
       <CardContent>
         <div className={"flex items-start justify-between gap-2"}>
-          <h3 className={"text-lg"}>
-            <strong>{item.phrase}</strong> - {item.translation}
-          </h3>
+          <div className={"flex items-center gap-2"}>
+            <PronunciationButton text={item.phrase} />
+            <h3 className={"text-lg"}>
+              <strong>{item.phrase}</strong> - {item.translation}
+            </h3>
+          </div>
           <BoxItemDropdownMenu expressionContextId={item.expressionContextId} />
         </div>
 
@@ -108,6 +112,7 @@ function BoxItemPreview({ item }: Readonly<{ item: BoxItem }>) {
             {item.sentences.map((sentence) => (
               <div key={sentence.sentenceId}>
                 <span className={"font-semibold"}>
+                  <PronunciationButton text={sentence.content} />
                   {capitalizeFirstLetter(sentence.content)}
                 </span>{" "}
                 - {capitalizeFirstLetter(sentence.translation)}
