@@ -3,6 +3,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { NoteApi } from './ports/note.api';
 import { CreateNoteCommand } from './commands/create-note.command';
 import { CreateNoteCommandResponse } from './command-handlers/create-note.command-handler';
+import { DeleteNoteCommand } from './commands/delete-note.command';
 import { UpdateNoteContentCommand } from './commands/update-note-content.command';
 import { UpdateNoteTitleCommand } from './commands/update-note-title.command';
 import { GetNoteQuery } from './queries/get-note.query';
@@ -45,6 +46,10 @@ export class NoteApiService implements NoteApi {
     await this.commandBus.execute(
       new UpdateNoteTitleCommand(noteId, userId, title),
     );
+  }
+
+  async deleteNote(noteId: string, userId: string): Promise<void> {
+    await this.commandBus.execute(new DeleteNoteCommand(noteId, userId));
   }
 
   async getNote(noteId: string, userId: string): Promise<NoteView> {

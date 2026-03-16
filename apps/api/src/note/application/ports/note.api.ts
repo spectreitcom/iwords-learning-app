@@ -21,6 +21,8 @@ export abstract class NoteApi {
     title: string,
   ): Promise<void>;
 
+  abstract deleteNote(noteId: string, userId: string): Promise<void>;
+
   abstract getNote(noteId: string, userId: string): Promise<NoteView>;
 
   abstract getNotesForExpressionContext(

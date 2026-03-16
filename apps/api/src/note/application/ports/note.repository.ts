@@ -4,4 +4,5 @@ import { PrismaTx } from '../../../common/types';
 export abstract class NoteRepository {
   abstract save(note: Note, tx?: PrismaTx): Promise<void>;
   abstract findById(noteId: string, tx?: PrismaTx): Promise<Note | null>;
+  abstract delete(noteId: string, tx?: PrismaTx): Promise<void>;
 }

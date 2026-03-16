@@ -33,6 +33,11 @@ export function BoxItemDropdownMenu({ expressionContextId }: Props) {
             Trenuj wyrażenie w zdaniach
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href={`/expression-context/${expressionContextId}/notes`}>
+            Notatki
+          </Link>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
