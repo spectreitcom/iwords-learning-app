@@ -90,7 +90,10 @@ async function AwaitedContent({
                   key={sentence.sentenceId}
                   className="border-l-4 border-primary pl-4 py-1"
                 >
-                  <p className="text-lg mb-1">{sentence.content}</p>
+                  <div className="flex items-center gap-2 mb-1">
+                    <PronunciationButton text={sentence.content} />
+                    <p className="text-lg">{sentence.content}</p>
+                  </div>
                   <p className="text-sm text-muted-foreground">
                     {sentence.translation}
                   </p>
