@@ -48,4 +48,11 @@ export class PrismaNoteRepository implements NoteRepository {
       record.content ?? undefined,
     );
   }
+
+  async delete(noteId: string, tx?: PrismaTx): Promise<void> {
+    const prisma = tx ?? this.prismaService;
+    await prisma.note.delete({
+      where: { id: noteId },
+    });
+  }
 }

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -27,7 +28,7 @@ import { GetNoteListQueryDto } from '../dtos/get-note-list-query.dto';
 
 @UseGuards(ClerkAuthGuard)
 @ApiTags('App - Notes')
-@Controller('note')
+@Controller('notes')
 export class NoteController {
   constructor(private readonly noteApiService: NoteApiService) {}
 
@@ -96,6 +97,24 @@ export class NoteController {
     await this.noteApiService.updateNoteTitle(noteId, userId, dto.title);
   }
 
+  @ApiBearerAuth('app-auth')
+  @ApiOperation({ summary: 'Delete a note' })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'The note has been successfully deleted.',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Note not found or user is not the owner.',
+  })
+  @Delete(':noteId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteNote(
+    @CurrentUserId() userId: string,
+    @Param('noteId', new ParseUUIDPipe()) noteId: string,
+  ) {
+    await this.noteApiService.deleteNote(noteId, userId);
+  }
   @ApiBearerAuth('app-auth')
   @ApiOperation({ summary: 'Get a note by id' })
   @ApiResponse({

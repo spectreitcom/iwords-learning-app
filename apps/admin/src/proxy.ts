@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const publicPaths = new Set(["/auth/sign-in", "/auth/reset-password"]);
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   if (
     request.nextUrl.pathname.startsWith("/") &&
     !publicPaths.has(request.nextUrl.pathname)

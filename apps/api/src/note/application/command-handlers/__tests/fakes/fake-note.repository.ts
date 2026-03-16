@@ -13,6 +13,10 @@ export class FakeNoteRepository implements NoteRepository {
     return this.notes.get(noteId) || null;
   }
 
+  async delete(noteId: string, _tx?: PrismaTx): Promise<void> {
+    this.notes.delete(noteId);
+  }
+
   getLength(): number {
     return this.notes.size;
   }
