@@ -88,14 +88,16 @@ async function AwaitedContent({
             </div>
           )}
 
-          {context.isIrregular && context.forms && (
-            <div>
-              <h3 className="font-semibold mb-3 text-sm uppercase text-muted-foreground tracking-wider">
-                Formy nieregularne
-              </h3>
-              <IrregularVerbTable forms={context.forms} />
-            </div>
-          )}
+          {context.isIrregular &&
+            Array.isArray(context.forms) &&
+            context.forms.length >= 3 && (
+              <div>
+                <h3 className="font-semibold mb-3 text-sm uppercase text-muted-foreground tracking-wider">
+                  Formy nieregularne
+                </h3>
+                <IrregularVerbTable forms={context.forms} />
+              </div>
+            )}
 
           <div>
             <h3 className="font-semibold mb-3 text-sm uppercase text-muted-foreground tracking-wider">
@@ -136,6 +138,10 @@ function Loader() {
 }
 
 function IrregularVerbTable({ forms }: Readonly<{ forms: string[] }>) {
+  if (forms.length < 3) {
+    return null;
+  }
+
   return (
     <Table>
       <TableHeader>
@@ -149,19 +155,19 @@ function IrregularVerbTable({ forms }: Readonly<{ forms: string[] }>) {
         <TableRow>
           <TableCell>
             <div className="flex items-center gap-2">
-              <PronunciationButton text={forms[0]} />
+              <PronunciationButton text={forms[0]!} />
               {forms[0]}
             </div>
           </TableCell>
           <TableCell>
             <div className="flex items-center gap-2">
-              <PronunciationButton text={forms[1]} />
+              <PronunciationButton text={forms[1]!} />
               {forms[1]}
             </div>
           </TableCell>
           <TableCell>
             <div className="flex items-center gap-2">
-              <PronunciationButton text={forms[2]} />
+              <PronunciationButton text={forms[2]!} />
               {forms[2]}
             </div>
           </TableCell>
