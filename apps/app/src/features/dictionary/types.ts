@@ -14,6 +14,7 @@ export const expressionContextSchema = z.object({
   translation: z.string(),
   type: expressionContextTypeSchema,
   isIrregular: z.boolean(),
+  forms: z.array(z.string()).nullable().optional(),
   isCountable: z.boolean(),
   definition: z.string().nullable(),
   definitionTranslation: z.string().nullable(),

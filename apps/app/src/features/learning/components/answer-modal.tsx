@@ -12,6 +12,7 @@ import {
 import { Button } from "@repo/ui/components/ui/button";
 import { BadgeCheck, CheckCircle2, XCircle } from "lucide-react";
 import { GeneralAnswer, IrregularVerbAnswer } from "@/features/learning/types";
+import { usePronunciation } from "@/hooks/use-pronunciation";
 
 function useEnterToContinue(enabled: boolean, onOk: () => void) {
   useEffect(() => {
@@ -36,14 +37,26 @@ export function AnswerModal({
   onOk: () => void;
 }>) {
   const open = !!answerData;
-  useEnterToContinue(open, onOk);
+  const { isAvailable, speak, isSpeaking } = usePronunciation("en-US");
+
+  const handleOk = () => {
+    if (isSpeaking) return;
+    onOk();
+  };
+
+  useEnterToContinue(open && !isSpeaking, onOk);
+
+  useEffect(() => {
+    if (isAvailable && answerData?.correctAnswer)
+      speak(answerData.correctAnswer);
+  }, [isAvailable, answerData]);
 
   if (!answerData) return null;
 
   const isCorrect = answerData.correct;
 
   return (
-    <Dialog open={open} onOpenChange={() => onOk()}>
+    <Dialog open={open} onOpenChange={() => handleOk()}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <div className="flex items-center gap-3">
@@ -95,7 +108,7 @@ export function AnswerModal({
         )}
 
         <DialogFooter>
-          <Button onClick={onOk} size="sm">
+          <Button onClick={handleOk} size="sm" disabled={isSpeaking}>
             Dalej (ENTER)
           </Button>
         </DialogFooter>
@@ -112,7 +125,27 @@ export function IrregularVerbAnswerModal({
   onOk: () => void;
 }>) {
   const open = !!answerData;
-  useEnterToContinue(open, onOk);
+  const { isAvailable, speak, isSpeaking } = usePronunciation("en-US");
+
+  const handleOk = () => {
+    if (isSpeaking) return;
+    onOk();
+  };
+
+  useEnterToContinue(open && !isSpeaking, onOk);
+
+  useEffect(() => {
+    if (
+      isAvailable &&
+      answerData?.form1 &&
+      answerData?.form2 &&
+      answerData?.form3
+    ) {
+      speak(answerData.form1.correctAnswer);
+      speak(answerData.form2.correctAnswer);
+      speak(answerData.form3.correctAnswer);
+    }
+  }, [isAvailable, answerData]);
 
   if (!answerData) return null;
 
@@ -125,7 +158,7 @@ export function IrregularVerbAnswerModal({
   ];
 
   return (
-    <Dialog open={open} onOpenChange={() => onOk()}>
+    <Dialog open={open} onOpenChange={() => handleOk()}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <div className="flex items-center gap-3">
@@ -205,7 +238,7 @@ export function IrregularVerbAnswerModal({
         </div>
 
         <DialogFooter>
-          <Button onClick={onOk} size="sm">
+          <Button onClick={handleOk} size="sm" disabled={isSpeaking}>
             Dalej (ENTER)
           </Button>
         </DialogFooter>

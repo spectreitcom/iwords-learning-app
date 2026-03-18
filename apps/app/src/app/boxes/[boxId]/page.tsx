@@ -139,9 +139,24 @@ function IrregularVerbTable({ forms }: Readonly<{ forms: string[] }>) {
       </TableHeader>
       <TableBody>
         <TableRow>
-          <TableCell>{forms[0]}</TableCell>
-          <TableCell>{forms[1]}</TableCell>
-          <TableCell>{forms[2]}</TableCell>
+          <TableCell>
+            <div className="flex items-center gap-2">
+              <PronunciationButton text={forms[0]} />
+              {forms[0]}
+            </div>
+          </TableCell>
+          <TableCell>
+            <div className="flex items-center gap-2">
+              <PronunciationButton text={forms[1]} />
+              {forms[1]}
+            </div>
+          </TableCell>
+          <TableCell>
+            <div className="flex items-center gap-2">
+              <PronunciationButton text={forms[2]} />
+              {forms[2]}
+            </div>
+          </TableCell>
         </TableRow>
       </TableBody>
     </Table>
