@@ -1,7 +1,10 @@
 import { Suspense } from "react";
+import Link from "next/link";
+import { NotebookPen, GraduationCap } from "lucide-react";
 import { Spinner } from "@repo/ui/components/ui/spinner";
 import { getExpressionContext } from "@/features/dictionary/actions";
 import { Badge } from "@repo/ui/components/ui/badge";
+import { Button } from "@repo/ui/components/ui/button";
 import {
   Card,
   CardContent,
@@ -72,6 +75,21 @@ async function AwaitedContent({
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
+          <div className="flex gap-2 pb-2">
+            <Button asChild variant="outline" size="sm">
+              <Link href={`/expression-context/${expressionContextId}/notes`}>
+                <NotebookPen className="w-4 h-4 mr-2" />
+                Notatki
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link href={`/sentence-training/${expressionContextId}`}>
+                <GraduationCap className="w-4 h-4 mr-2" />
+                Ucz się zdań
+              </Link>
+            </Button>
+          </div>
+
           {(context.definition || context.definitionTranslation) && (
             <div className="bg-muted p-4 rounded-lg">
               <h3 className="font-semibold mb-1 text-sm uppercase text-muted-foreground tracking-wider">
