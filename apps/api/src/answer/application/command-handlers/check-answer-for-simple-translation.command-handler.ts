@@ -5,11 +5,16 @@ import { IntegrationEvent } from '../../../common/outbox/types';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 import { AnswerExpressionContextReadRepository } from '../ports/answer-expression-context-read.repository';
+import {
+  AnswerSentenceReadModel,
+  AnswerSentenceReadRepository,
+} from '../ports/answer-sentence-read.repository';
 
 export type CheckAnswerForSimpleTranslationCommandResponse = {
   correct: boolean;
   userAnswer: string;
   correctAnswer: string;
+  sentences: AnswerSentenceReadModel[];
 };
 
 @CommandHandler(CheckAnswerForSimpleTranslationCommand)
@@ -21,6 +26,7 @@ export class CheckAnswerForSimpleTranslationCommandHandler implements ICommandHa
     private readonly outboxService: OutboxService,
     private readonly transactionRunner: TransactionRunner,
     private readonly answerExpressionContextReadRepository: AnswerExpressionContextReadRepository,
+    private readonly answerSentenceReadRepository: AnswerSentenceReadRepository,
   ) {}
 
   async execute(
@@ -41,6 +47,12 @@ export class CheckAnswerForSimpleTranslationCommandHandler implements ICommandHa
           `Answer expression context with id ${expressionContextId} not found`,
         );
       }
+
+      const sentences =
+        await this.answerSentenceReadRepository.findByExpressionContextId(
+          expressionContextId,
+          prisma,
+        );
 
       const correct = answer === answerExpressionContext.phrase;
 
@@ -67,6 +79,7 @@ export class CheckAnswerForSimpleTranslationCommandHandler implements ICommandHa
         correct,
         userAnswer: answer,
         correctAnswer: answerExpressionContext.phrase,
+        sentences,
       };
     });
   }

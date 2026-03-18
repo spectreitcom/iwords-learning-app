@@ -1,6 +1,7 @@
 import { FakeOutboxService } from '../../../../../__tests/fakes/fake-outbox.service';
 import { FakeTransactionRunner } from '../../../../../__tests/fakes/fake-transaction-runner';
 import { FakeAnswerExpressionContextReadRepository } from './fakes/fake-answer-expression-context-read.repository';
+import { FakeAnswerSentenceReadRepository } from './fakes/fake-answer-sentence-read.repository';
 import { CheckAnswerForIrregularVerbCommandHandler } from '../check-answer-for-irregular-verb.command-handler';
 import { randomUUID } from 'node:crypto';
 import { AppError } from '../../../../common/errors';
@@ -30,10 +31,13 @@ describe('CheckAnswerForIrregularVerbCommandHandler', () => {
         },
       ]);
 
+    const answerSentenceReadRepository = new FakeAnswerSentenceReadRepository();
+
     const handler = new CheckAnswerForIrregularVerbCommandHandler(
       outboxService,
       transactionRunner,
       answerExpressionContextReadRepository,
+      answerSentenceReadRepository,
     );
 
     const result = await handler.execute({
@@ -59,6 +63,7 @@ describe('CheckAnswerForIrregularVerbCommandHandler', () => {
         correctAnswer: FORMS[2],
       },
       allCorrect: true,
+      sentences: [],
     });
 
     expect(outboxService.getLength()).toEqual(1);
@@ -89,10 +94,13 @@ describe('CheckAnswerForIrregularVerbCommandHandler', () => {
         },
       ]);
 
+    const answerSentenceReadRepository = new FakeAnswerSentenceReadRepository();
+
     const handler = new CheckAnswerForIrregularVerbCommandHandler(
       outboxService,
       transactionRunner,
       answerExpressionContextReadRepository,
+      answerSentenceReadRepository,
     );
 
     const result = await handler.execute({
@@ -118,6 +126,7 @@ describe('CheckAnswerForIrregularVerbCommandHandler', () => {
         correctAnswer: FORMS[2],
       },
       allCorrect: false,
+      sentences: [],
     });
 
     expect(outboxService.getLength()).toEqual(1);
@@ -133,10 +142,13 @@ describe('CheckAnswerForIrregularVerbCommandHandler', () => {
     const answerExpressionContextReadRepository =
       new FakeAnswerExpressionContextReadRepository([]);
 
+    const answerSentenceReadRepository = new FakeAnswerSentenceReadRepository();
+
     const handler = new CheckAnswerForIrregularVerbCommandHandler(
       outboxService,
       transactionRunner,
       answerExpressionContextReadRepository,
+      answerSentenceReadRepository,
     );
 
     await expect(

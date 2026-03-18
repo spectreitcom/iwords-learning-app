@@ -1,6 +1,7 @@
 import { FakeOutboxService } from '../../../../../__tests/fakes/fake-outbox.service';
 import { FakeTransactionRunner } from '../../../../../__tests/fakes/fake-transaction-runner';
 import { FakeAnswerExpressionContextReadRepository } from './fakes/fake-answer-expression-context-read.repository';
+import { FakeAnswerSentenceReadRepository } from './fakes/fake-answer-sentence-read.repository';
 import { CheckAnswerForSimpleTranslationCommandHandler } from '../check-answer-for-simple-translation.command-handler';
 import { randomUUID } from 'node:crypto';
 import { AppError } from '../../../../common/errors';
@@ -30,10 +31,13 @@ describe('CheckAnswerForSimpleTranslationCommandHandler', () => {
         },
       ]);
 
+    const answerSentenceReadRepository = new FakeAnswerSentenceReadRepository();
+
     const handler = new CheckAnswerForSimpleTranslationCommandHandler(
       outboxService,
       transactionRunner,
       answerExpressionContextReadRepository,
+      answerSentenceReadRepository,
     );
 
     const result = await handler.execute({
@@ -46,6 +50,7 @@ describe('CheckAnswerForSimpleTranslationCommandHandler', () => {
       correct: true,
       userAnswer: PHRASE,
       correctAnswer: PHRASE,
+      sentences: [],
     });
 
     expect(outboxService.getLength()).toEqual(1);
@@ -76,10 +81,13 @@ describe('CheckAnswerForSimpleTranslationCommandHandler', () => {
         },
       ]);
 
+    const answerSentenceReadRepository = new FakeAnswerSentenceReadRepository();
+
     const handler = new CheckAnswerForSimpleTranslationCommandHandler(
       outboxService,
       transactionRunner,
       answerExpressionContextReadRepository,
+      answerSentenceReadRepository,
     );
 
     const result = await handler.execute({
@@ -92,6 +100,7 @@ describe('CheckAnswerForSimpleTranslationCommandHandler', () => {
       correct: false,
       userAnswer: USER_ANSWER,
       correctAnswer: PHRASE,
+      sentences: [],
     });
 
     expect(outboxService.getLength()).toEqual(1);
@@ -108,10 +117,13 @@ describe('CheckAnswerForSimpleTranslationCommandHandler', () => {
     const answerExpressionContextReadRepository =
       new FakeAnswerExpressionContextReadRepository([]);
 
+    const answerSentenceReadRepository = new FakeAnswerSentenceReadRepository();
+
     const handler = new CheckAnswerForSimpleTranslationCommandHandler(
       outboxService,
       transactionRunner,
       answerExpressionContextReadRepository,
+      answerSentenceReadRepository,
     );
 
     await expect(

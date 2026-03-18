@@ -16,4 +16,9 @@ export abstract class AnswerSentenceReadRepository {
     sentenceId: string,
     tx?: PrismaTx,
   ): Promise<AnswerSentenceReadModel | null>;
+
+  abstract findByExpressionContextId(
+    expressionContextId: string,
+    tx?: PrismaTx,
+  ): Promise<AnswerSentenceReadModel[]>;
 }

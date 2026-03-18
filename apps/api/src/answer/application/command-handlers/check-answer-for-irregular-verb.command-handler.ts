@@ -5,12 +5,17 @@ import { IntegrationEvent } from '../../../common/outbox/types';
 import { OutboxService } from '../../../common/outbox/outbox.service';
 import { TransactionRunner } from '../../../common/prisma/transaction-runner';
 import { AnswerExpressionContextReadRepository } from '../ports/answer-expression-context-read.repository';
+import {
+  AnswerSentenceReadModel,
+  AnswerSentenceReadRepository,
+} from '../ports/answer-sentence-read.repository';
 
 export type CheckAnswerForIrregularVerbCommandResponse = {
   form1: { correct: boolean; userAnswer: string; correctAnswer: string };
   form2: { correct: boolean; userAnswer: string; correctAnswer: string };
   form3: { correct: boolean; userAnswer: string; correctAnswer: string };
   allCorrect: boolean;
+  sentences: AnswerSentenceReadModel[];
 };
 
 @CommandHandler(CheckAnswerForIrregularVerbCommand)
@@ -22,6 +27,7 @@ export class CheckAnswerForIrregularVerbCommandHandler implements ICommandHandle
     private readonly outboxService: OutboxService,
     private readonly transactionRunner: TransactionRunner,
     private readonly answerExpressionContextReadRepository: AnswerExpressionContextReadRepository,
+    private readonly answerSentenceReadRepository: AnswerSentenceReadRepository,
   ) {}
 
   async execute(
@@ -42,6 +48,12 @@ export class CheckAnswerForIrregularVerbCommandHandler implements ICommandHandle
           `Answer expression context with id ${expressionContextId} not found`,
         );
       }
+
+      const sentences =
+        await this.answerSentenceReadRepository.findByExpressionContextId(
+          expressionContextId,
+          prisma,
+        );
 
       const { forms } = answerExpressionContext;
 
@@ -88,6 +100,7 @@ export class CheckAnswerForIrregularVerbCommandHandler implements ICommandHandle
           correctAnswer: form3,
         },
         allCorrect,
+        sentences,
       };
     });
   }
