@@ -14,6 +14,16 @@ export const generalAnswerSchema = z.object({
   correct: z.boolean(),
   userAnswer: z.string(),
   correctAnswer: z.string(),
+  sentences: z.array(
+    z.object({
+      id: z.string(),
+      sentenceId: z.string(),
+      content: z.string(),
+      translation: z.string(),
+      expressionContextId: z.string(),
+      expressionId: z.string(),
+    }),
+  ),
 });
 
 export type GeneralAnswer = z.infer<typeof generalAnswerSchema>;
@@ -23,6 +33,16 @@ export const irregularVerbAnswerSchema = z.object({
   form2: generalAnswerSchema,
   form3: generalAnswerSchema,
   allCorrect: z.boolean(),
+  sentences: z.array(
+    z.object({
+      id: z.string(),
+      sentenceId: z.string(),
+      content: z.string(),
+      translation: z.string(),
+      expressionContextId: z.string(),
+      expressionId: z.string(),
+    }),
+  ),
 });
 
 export type IrregularVerbAnswer = z.infer<typeof irregularVerbAnswerSchema>;

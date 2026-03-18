@@ -2,6 +2,7 @@ import {
   AnswerSentenceReadModel,
   AnswerSentenceReadRepository,
 } from '../../../ports/answer-sentence-read.repository';
+import { PrismaTx } from '../../../../../common/types';
 
 export abstract class FakeAnswerSentenceReadRepositoryClass extends AnswerSentenceReadRepository {
   abstract getLength(): number;
@@ -24,6 +25,19 @@ export class FakeAnswerSentenceReadRepository implements FakeAnswerSentenceReadR
       }
     }
     return null;
+  }
+
+  async findByExpressionContextId(
+    expressionContextId: string,
+    tx?: PrismaTx,
+  ): Promise<AnswerSentenceReadModel[]> {
+    const results: AnswerSentenceReadModel[] = [];
+    for (const [_, value] of this.data.entries()) {
+      if (value.expressionContextId === expressionContextId) {
+        results.push(value);
+      }
+    }
+    return results;
   }
 
   getLength(): number {

@@ -37,6 +37,20 @@ export class AnswerController {
         correct: { type: 'boolean' },
         userAnswer: { type: 'string' },
         correctAnswer: { type: 'string' },
+        sentences: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              sentenceId: { type: 'string' },
+              content: { type: 'string' },
+              translation: { type: 'string' },
+              expressionContextId: { type: 'string' },
+              expressionId: { type: 'string' },
+            },
+          },
+        },
       },
     },
   })
@@ -94,6 +108,20 @@ export class AnswerController {
           },
         },
         allCorrect: { type: 'boolean' },
+        sentences: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              sentenceId: { type: 'string' },
+              content: { type: 'string' },
+              translation: { type: 'string' },
+              expressionContextId: { type: 'string' },
+              expressionId: { type: 'string' },
+            },
+          },
+        },
       },
     },
   })

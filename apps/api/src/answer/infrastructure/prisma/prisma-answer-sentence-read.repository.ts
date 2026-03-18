@@ -30,4 +30,25 @@ export class PrismaAnswerSentenceReadRepository implements AnswerSentenceReadRep
       record.expressionId,
     );
   }
+
+  async findByExpressionContextId(
+    expressionContextId: string,
+    tx?: PrismaTx,
+  ): Promise<AnswerSentenceReadModel[]> {
+    const prisma = tx ?? this.prismaService;
+    const records = await prisma.answerSentenceReadModel.findMany({
+      where: { expressionContextId },
+    });
+    return records.map(
+      (record) =>
+        new AnswerSentenceReadModel(
+          record.id,
+          record.sentenceId,
+          record.content,
+          record.translation,
+          record.expressionContextId,
+          record.expressionId,
+        ),
+    );
+  }
 }
