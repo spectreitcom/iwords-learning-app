@@ -12,6 +12,7 @@ import {
 import { Button } from "@repo/ui/components/ui/button";
 import { BadgeCheck, CheckCircle2, XCircle } from "lucide-react";
 import { GeneralAnswer, IrregularVerbAnswer } from "@/features/learning/types";
+import { usePronunciation } from "@/hooks/use-pronunciation";
 
 function useEnterToContinue(enabled: boolean, onOk: () => void) {
   useEffect(() => {
@@ -36,7 +37,13 @@ export function AnswerModal({
   onOk: () => void;
 }>) {
   const open = !!answerData;
+  const { isAvailable, speak, isSpeaking } = usePronunciation("en-US");
   useEnterToContinue(open, onOk);
+
+  useEffect(() => {
+    if (isAvailable && answerData?.correctAnswer)
+      speak(answerData.correctAnswer);
+  }, [isAvailable, answerData]);
 
   if (!answerData) return null;
 
@@ -95,7 +102,7 @@ export function AnswerModal({
         )}
 
         <DialogFooter>
-          <Button onClick={onOk} size="sm">
+          <Button onClick={onOk} size="sm" disabled={isSpeaking}>
             Dalej (ENTER)
           </Button>
         </DialogFooter>
@@ -112,7 +119,21 @@ export function IrregularVerbAnswerModal({
   onOk: () => void;
 }>) {
   const open = !!answerData;
+  const { isAvailable, speak, isSpeaking } = usePronunciation("en-US");
   useEnterToContinue(open, onOk);
+
+  useEffect(() => {
+    if (
+      isAvailable &&
+      answerData?.form1 &&
+      answerData?.form2 &&
+      answerData?.form3
+    ) {
+      speak(answerData.form1.correctAnswer);
+      speak(answerData.form2.correctAnswer);
+      speak(answerData.form3.correctAnswer);
+    }
+  }, [isAvailable, answerData]);
 
   if (!answerData) return null;
 
@@ -205,7 +226,7 @@ export function IrregularVerbAnswerModal({
         </div>
 
         <DialogFooter>
-          <Button onClick={onOk} size="sm">
+          <Button onClick={onOk} size="sm" disabled={isSpeaking}>
             Dalej (ENTER)
           </Button>
         </DialogFooter>

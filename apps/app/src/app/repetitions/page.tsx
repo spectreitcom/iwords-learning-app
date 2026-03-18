@@ -5,6 +5,7 @@ import {
   removeRepetition,
 } from "@/features/repetitions/actions";
 import { Card, CardContent } from "@repo/ui/components/ui/card";
+import { PronunciationButton } from "@/components/pronunciation-button";
 import { Spinner } from "@repo/ui/components/ui/spinner";
 import { Button } from "@repo/ui/components/ui/button";
 import { capitalizeFirstLetter } from "@/lib/utils";
@@ -71,10 +72,13 @@ function RepetitionItem({
       <CardContent>
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
-            <h3 className="text-lg">
-              <strong>{expressionContext.phrase}</strong> -{" "}
-              {expressionContext.translation}
-            </h3>
+            <div className="flex items-center gap-2">
+              <PronunciationButton text={expressionContext.phrase} />
+              <h3 className="text-lg">
+                <strong>{expressionContext.phrase}</strong> -{" "}
+                {expressionContext.translation}
+              </h3>
+            </div>
 
             <div className="mt-2">
               <p>
@@ -119,6 +123,7 @@ function RepetitionItem({
                 {expressionContext.sentences.map((s) => (
                   <div key={s.sentenceId}>
                     <span className="font-semibold">
+                      <PronunciationButton text={s.content} />
                       {capitalizeFirstLetter(s.content)}
                     </span>{" "}
                     - {capitalizeFirstLetter(s.translation)}
