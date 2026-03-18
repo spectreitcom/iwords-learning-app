@@ -38,7 +38,13 @@ export function AnswerModal({
 }>) {
   const open = !!answerData;
   const { isAvailable, speak, isSpeaking } = usePronunciation("en-US");
-  useEnterToContinue(open, onOk);
+
+  const handleOk = () => {
+    if (isSpeaking) return;
+    onOk();
+  };
+
+  useEnterToContinue(open && !isSpeaking, onOk);
 
   useEffect(() => {
     if (isAvailable && answerData?.correctAnswer)
@@ -50,7 +56,7 @@ export function AnswerModal({
   const isCorrect = answerData.correct;
 
   return (
-    <Dialog open={open} onOpenChange={() => onOk()}>
+    <Dialog open={open} onOpenChange={() => handleOk()}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <div className="flex items-center gap-3">
@@ -102,7 +108,7 @@ export function AnswerModal({
         )}
 
         <DialogFooter>
-          <Button onClick={onOk} size="sm" disabled={isSpeaking}>
+          <Button onClick={handleOk} size="sm" disabled={isSpeaking}>
             Dalej (ENTER)
           </Button>
         </DialogFooter>
@@ -120,7 +126,13 @@ export function IrregularVerbAnswerModal({
 }>) {
   const open = !!answerData;
   const { isAvailable, speak, isSpeaking } = usePronunciation("en-US");
-  useEnterToContinue(open, onOk);
+
+  const handleOk = () => {
+    if (isSpeaking) return;
+    onOk();
+  };
+
+  useEnterToContinue(open && !isSpeaking, onOk);
 
   useEffect(() => {
     if (
@@ -146,7 +158,7 @@ export function IrregularVerbAnswerModal({
   ];
 
   return (
-    <Dialog open={open} onOpenChange={() => onOk()}>
+    <Dialog open={open} onOpenChange={() => handleOk()}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <div className="flex items-center gap-3">
@@ -226,7 +238,7 @@ export function IrregularVerbAnswerModal({
         </div>
 
         <DialogFooter>
-          <Button onClick={onOk} size="sm" disabled={isSpeaking}>
+          <Button onClick={handleOk} size="sm" disabled={isSpeaking}>
             Dalej (ENTER)
           </Button>
         </DialogFooter>
