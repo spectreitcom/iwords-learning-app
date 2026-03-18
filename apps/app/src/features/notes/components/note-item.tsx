@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Note } from "@/features/notes/types";
 import {
   Card,
@@ -10,7 +13,13 @@ import { NoteItemDropdownMenu } from "@/features/notes/components/note-item-drop
 import DOMPurify from "dompurify";
 
 export function NoteItem({ note }: { note: Note }) {
-  const cleanContent = note.content ? DOMPurify.sanitize(note.content) : "";
+  const [cleanContent, setCleanContent] = useState<string>("");
+
+  useEffect(() => {
+    if (note.content) {
+      setCleanContent(DOMPurify.sanitize(note.content));
+    }
+  }, [note.content]);
 
   return (
     <div className="group relative">
