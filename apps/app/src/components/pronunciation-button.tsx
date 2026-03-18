@@ -9,14 +9,14 @@ type Props = Readonly<{
 }>;
 
 export function PronunciationButton({ text }: Props) {
-  const { isAvailable, speak } = usePronunciation("en-US");
+  const { isAvailable, speak, isSpeaking } = usePronunciation("en-US");
 
   return (
     <Button
       variant="ghost"
       size="icon-sm"
       onClick={() => speak(text)}
-      disabled={!isAvailable}
+      disabled={!isAvailable || isSpeaking}
       title="Pronounce"
       className={"cursor-pointer"}
     >
