@@ -1,3 +1,6 @@
+"use client";
+
+import { useMemo } from "react";
 import { Note } from "@/features/notes/types";
 import {
   Card,
@@ -10,7 +13,10 @@ import { NoteItemDropdownMenu } from "@/features/notes/components/note-item-drop
 import DOMPurify from "dompurify";
 
 export function NoteItem({ note }: { note: Note }) {
-  const cleanContent = note.content ? DOMPurify.sanitize(note.content) : "";
+  const cleanContent = useMemo(
+    () => (note.content ? DOMPurify.sanitize(note.content) : ""),
+    [note.content],
+  );
 
   return (
     <div className="group relative">
