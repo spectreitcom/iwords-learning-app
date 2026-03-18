@@ -114,7 +114,6 @@
   .text-balance {
     text-wrap: balance;
   }
-
 }
 
 /* Animowany, delikatny połysk dla CTA */
@@ -145,5 +144,4 @@
   .btn-shine:hover {
     box-shadow: 0 10px 28px color-mix(in oklch, var(--primary) 24%, transparent);
   }
-
 }
