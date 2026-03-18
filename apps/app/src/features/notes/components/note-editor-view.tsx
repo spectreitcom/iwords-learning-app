@@ -1,7 +1,7 @@
 "use client";
 
 import { Note } from "@/features/notes/types";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, ChangeEvent } from "react";
 import { updateNoteTitle, updateNoteContent } from "@/features/notes/actions";
 import { Input } from "@repo/ui/components/ui/input";
 import { debounce } from "lodash";
@@ -12,7 +12,7 @@ import { exampleSetup } from "prosemirror-example-setup";
 import { DOMParser, DOMSerializer } from "prosemirror-model";
 import DOMPurify from "dompurify";
 
-import "prosemirror-view/style/prosemirror.css";
+// import "prosemirror-view/style/prosemirror.css";
 import "prosemirror-menu/style/menu.css";
 import "prosemirror-example-setup/style/style.css";
 
@@ -33,7 +33,7 @@ export function NoteEditorView({ note }: NoteEditorViewProps) {
     [],
   );
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newTitle = e.target.value;
     setTitle(newTitle);
     debouncedUpdateTitle(note.id, newTitle, note.expressionContextId);
@@ -106,10 +106,10 @@ export function NoteEditorView({ note }: NoteEditorViewProps) {
           className="h-auto border-none bg-transparent px-0 py-2 text-3xl font-bold shadow-none focus-visible:ring-0"
         />
       </div>
-      <div className="prose prose-sm max-w-none sm:prose lg:prose-lg xl:prose-xl">
+      <div className="prose prose-sm max-w-none sm:prose lg:prose-lg xl:prose-xl dark:prose-invert">
         <div
           ref={editorRef}
-          className="prosemirror-editor min-h-[300px] rounded-md border bg-background p-4 focus-within:ring-1 focus-within:ring-ring focus-within:ring-offset-1 [&_.ProseMirror_p]:mb-2 [&_.ProseMirror]:outline-none"
+          className="prose-headings:text-foreground text-foreground"
         />
       </div>
     </div>

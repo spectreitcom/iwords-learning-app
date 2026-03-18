@@ -1,5 +1,7 @@
 @import "@repo/ui/globals.css";
 
+@plugin '@tailwindcss/typography';
+
 @source "../../../packages/ui/src";
 
 @theme inline {
