@@ -30,7 +30,7 @@ export class CreateNounExpressionContextCommandHandler implements ICommandHandle
   ): Promise<CreateNounExpressionContextCommandResponse> {
     const { expressionId, translation, isCountable } = command;
 
-    return this.transactionRunner.runInTransaction(async (prisma) => {
+    return await this.transactionRunner.runInTransaction(async (prisma) => {
       const expression = await this.expressionRepository.findById(
         expressionId,
         prisma,

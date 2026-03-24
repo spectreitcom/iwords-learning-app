@@ -9,7 +9,7 @@ export class GetUsersNumberQueryHandler implements IQueryHandler<
 > {
   constructor(private readonly prisma: PrismaService) {}
 
-  async execute(): Promise<number> {
+  execute(): Promise<number> {
     return this.prisma.user.count();
   }
 }

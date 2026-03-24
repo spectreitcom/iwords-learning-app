@@ -34,7 +34,7 @@ export class CheckAnswerForSimpleTranslationCommandHandler implements ICommandHa
   ): Promise<CheckAnswerForSimpleTranslationCommandResponse> {
     const { answer, expressionContextId, userId } = command;
 
-    return this.transactionRunner.runInTransaction(async (prisma) => {
+    return await this.transactionRunner.runInTransaction(async (prisma) => {
       const answerExpressionContext =
         await this.answerExpressionContextReadRepository.findByExpressionContextId(
           expressionContextId,

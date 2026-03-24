@@ -19,8 +19,8 @@ export class OpenaiAiService implements AiService {
 
   constructor(private readonly configService: ConfigService) {
     this.client = new OpenAI({
-      baseURL: this.configService.get<string>('OPENAI_BASE_URL')!,
-      apiKey: this.configService.get<string>('OPENAI_API_KEY')!,
+      baseURL: this.configService.get<string>('OPENAI_BASE_URL'),
+      apiKey: this.configService.get<string>('OPENAI_API_KEY'),
     });
   }
 
@@ -29,7 +29,7 @@ export class OpenaiAiService implements AiService {
     translation: string,
   ): Promise<{ definition: string; translation: string }> {
     const res = await this.client.chat.completions.create({
-      model: this.configService.get<string>('OPENAI_MODEL')!,
+      model: this.configService.get<string>('OPENAI_MODEL') ?? '',
       stream: false,
       messages: [
         {
@@ -42,11 +42,14 @@ export class OpenaiAiService implements AiService {
       ],
     });
 
+    const content = res.choices[0].message.content;
+
+    if (!content) {
+      throw new Error('Empty response');
+    }
+
     const parsed: unknown = JSON.parse(
-      res.choices[0].message
-        .content!.replace('```json', '')
-        .replace('```', '')
-        .trim(),
+      content.replace('```json', '').replace('```', '').trim(),
     );
 
     const validationResult = generateDefinitionSchema.safeParse(parsed);
@@ -63,7 +66,7 @@ export class OpenaiAiService implements AiService {
     translation: string,
   ): Promise<{ sentence: string; translation: string }[]> {
     const res = await this.client.chat.completions.create({
-      model: this.configService.get<string>('OPENAI_MODEL')!,
+      model: this.configService.get<string>('OPENAI_MODEL') ?? '',
       stream: false,
       messages: [
         {
@@ -75,11 +78,14 @@ export class OpenaiAiService implements AiService {
       ],
     });
 
+    const content = res.choices[0].message.content;
+
+    if (!content) {
+      throw new Error('Empty response');
+    }
+
     const parsed: unknown = JSON.parse(
-      res.choices[0].message
-        .content!.replace('```json', '')
-        .replace('```', '')
-        .trim(),
+      content.replace('```json', '').replace('```', '').trim(),
     );
 
     const validationResult = generateSentencesSchema.safeParse(parsed);

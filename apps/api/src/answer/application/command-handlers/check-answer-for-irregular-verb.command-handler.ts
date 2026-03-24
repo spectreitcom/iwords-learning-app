@@ -35,7 +35,7 @@ export class CheckAnswerForIrregularVerbCommandHandler implements ICommandHandle
   ): Promise<CheckAnswerForIrregularVerbCommandResponse> {
     const { answer, expressionContextId, userId } = command;
 
-    return this.transactionRunner.runInTransaction(async (prisma) => {
+    return await this.transactionRunner.runInTransaction(async (prisma) => {
       const answerExpressionContext =
         await this.answerExpressionContextReadRepository.findByExpressionContextId(
           expressionContextId,

@@ -28,7 +28,7 @@ export class CheckAnswerForSentenceCommandHandler implements ICommandHandler<
   ): Promise<CheckAnswerForSentenceCommandResponse> {
     const { answer, sentenceId, userId } = command;
 
-    return this.transactionRunner.runInTransaction(async (prisma) => {
+    return await this.transactionRunner.runInTransaction(async (prisma) => {
       const answerSentence =
         await this.answerSentenceReadRepository.findBySentenceId(
           sentenceId,
