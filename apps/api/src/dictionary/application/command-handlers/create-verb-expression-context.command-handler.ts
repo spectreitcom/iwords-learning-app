@@ -30,7 +30,7 @@ export class CreateVerbExpressionContextCommandHandler implements ICommandHandle
   ): Promise<CreateVerbExpressionContextCommandResponse> {
     const { expressionId, translation } = command;
 
-    return this.transactionRunner.runInTransaction(async (prisma) => {
+    return await this.transactionRunner.runInTransaction(async (prisma) => {
       const expression = await this.expressionRepository.findById(
         expressionId,
         prisma,

@@ -9,7 +9,7 @@ export class GetBoxesNumberQueryHandler implements IQueryHandler<
 > {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async execute(): Promise<number> {
+  execute(): Promise<number> {
     return this.prismaService.box.count();
   }
 }

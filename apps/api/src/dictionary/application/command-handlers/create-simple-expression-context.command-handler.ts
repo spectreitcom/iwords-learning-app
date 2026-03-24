@@ -30,7 +30,7 @@ export class CreateSimpleExpressionContextCommandHandler implements ICommandHand
   ): Promise<CreateSimpleExpressionContextCommandResponse> {
     const { expressionId, translation } = command;
 
-    return this.transactionRunner.runInTransaction(async (prisma) => {
+    return await this.transactionRunner.runInTransaction(async (prisma) => {
       const expression = await this.expressionRepository.findById(
         expressionId,
         prisma,

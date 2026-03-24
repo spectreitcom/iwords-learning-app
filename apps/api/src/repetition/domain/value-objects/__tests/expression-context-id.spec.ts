@@ -8,7 +8,7 @@ describe('ExpressionContextId (Repetition)', () => {
   });
 
   it('throws for invalid UUID string', () => {
-    expect(() => ExpressionContextId.fromString('not-a-uuid')).toThrowError(
+    expect(() => ExpressionContextId.fromString('not-a-uuid')).toThrow(
       'ExpressionContextId is not valid',
     );
   });

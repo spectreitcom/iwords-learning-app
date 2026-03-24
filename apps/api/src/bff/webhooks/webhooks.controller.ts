@@ -27,7 +27,11 @@ export class WebhooksController {
   ) {
     const webhookSecret = this.configService.get<string>(
       'CLERK_WEBHOOK_SECRET',
-    )!;
+    );
+
+    if (!webhookSecret) {
+      throw new Error('CLERK_WEBHOOK_SECRET is not defined');
+    }
 
     await this.inboxService.receive(
       {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -51,31 +51,27 @@ export function AnswerModal({
 
   useEnterToContinue(open && !isSpeaking, onOk);
 
-  const [selectedSentence, setSelectedSentence] = useState<
-    GeneralAnswer["sentences"][0] | null
-  >(null);
+  const selectedSentence = useMemo(() => {
+    if (!answerData?.sentences?.length) return null;
+    return randomSentence(answerData.sentences);
+  }, [answerData]);
+
   const lastSpokenRef = useRef<GeneralAnswer | null>(null);
 
   useEffect(() => {
     if (isAvailable && answerData && answerData !== lastSpokenRef.current) {
       lastSpokenRef.current = answerData;
 
-      const sentence = answerData.sentences?.length
-        ? randomSentence(answerData.sentences)
-        : null;
-      setSelectedSentence(sentence);
-
       if (answerData.correctAnswer) {
         speak(answerData.correctAnswer);
-        if (sentence) {
-          sleep(1000).then(() => speak(sentence.content));
+        if (selectedSentence) {
+          sleep(1000).then(() => speak(selectedSentence.content));
         }
       }
     } else if (!answerData) {
       lastSpokenRef.current = null;
-      setSelectedSentence(null);
     }
-  }, [isAvailable, answerData, speak]);
+  }, [isAvailable, answerData, speak, selectedSentence]);
 
   if (!answerData) return null;
 
@@ -169,33 +165,29 @@ export function IrregularVerbAnswerModal({
 
   useEnterToContinue(open && !isSpeaking, onOk);
 
-  const [selectedSentence, setSelectedSentence] = useState<
-    IrregularVerbAnswer["sentences"][0] | null
-  >(null);
+  const selectedSentence = useMemo(() => {
+    if (!answerData?.sentences?.length) return null;
+    return randomSentence(answerData.sentences);
+  }, [answerData]);
+
   const lastSpokenRef = useRef<IrregularVerbAnswer | null>(null);
 
   useEffect(() => {
     if (isAvailable && answerData && answerData !== lastSpokenRef.current) {
       lastSpokenRef.current = answerData;
 
-      const sentence = answerData.sentences?.length
-        ? randomSentence(answerData.sentences)
-        : null;
-      setSelectedSentence(sentence);
-
       if (answerData.form1 && answerData.form2 && answerData.form3) {
         speak(answerData.form1.correctAnswer);
         speak(answerData.form2.correctAnswer);
         speak(answerData.form3.correctAnswer);
-        if (sentence) {
-          sleep(1000).then(() => speak(sentence.content));
+        if (selectedSentence) {
+          sleep(1000).then(() => speak(selectedSentence.content));
         }
       }
     } else if (!answerData) {
       lastSpokenRef.current = null;
-      setSelectedSentence(null);
     }
-  }, [isAvailable, answerData, speak]);
+  }, [isAvailable, answerData, speak, selectedSentence]);
 
   if (!answerData) return null;
 

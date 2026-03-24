@@ -6,18 +6,25 @@ import { Search, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { searchExpressionContexts } from "@/features/dictionary/actions";
 import { SearchedExpressionContext } from "@/features/dictionary/types";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { useClickOutside } from "@/lib/hooks";
 
 export function DictionarySearch() {
   const [searchText, setSearchText] = useState("");
   const [debouncedSearchText] = useDebounceValue(searchText, 300);
-  const [open, setOpen] = useState(false);
+  const [isManuallyClosed, setIsManuallyClosed] = useState(false);
+  const [prevDebouncedSearchText, setPrevDebouncedSearchText] =
+    useState(debouncedSearchText);
+
+  if (debouncedSearchText !== prevDebouncedSearchText) {
+    setPrevDebouncedSearchText(debouncedSearchText);
+    setIsManuallyClosed(false);
+  }
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { clickedOutside } = useClickOutside(containerRef.current);
+  useClickOutside(containerRef, () => setIsManuallyClosed(true));
 
   const { data, isLoading } = useQuery({
     queryKey: ["dictionary-search", debouncedSearchText],
@@ -27,16 +34,7 @@ export function DictionarySearch() {
 
   const results = useMemo(() => data?.data ?? [], [data?.data]);
 
-  useEffect(() => {
-    if (results.length && searchText.length > 2) setOpen(true);
-    if (searchText.length <= 2) setOpen(false);
-  }, [results, searchText]);
-
-  useEffect(() => {
-    if (clickedOutside) {
-      setOpen(false);
-    }
-  }, [clickedOutside]);
+  const open = !isManuallyClosed && results.length > 0 && searchText.length > 2;
 
   return (
     <div className={"relative min-w-xs"} ref={containerRef}>
@@ -46,7 +44,7 @@ export function DictionarySearch() {
         items={results}
         open={open}
         onItemSelected={() => {
-          setOpen(false);
+          setIsManuallyClosed(true);
           setSearchText("");
         }}
       />

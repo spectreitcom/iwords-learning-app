@@ -1,4 +1,4 @@
-import { JsonValue } from '@prisma/client/runtime/library';
+import { Prisma } from '@prisma/client';
 
 export type IntegrationEventType =
   | 'admin-identity.requested-reset-password'
@@ -16,7 +16,9 @@ export type IntegrationEventType =
   | 'answer.answer-checked'
   | 'box.marked-as-finished';
 
-export class IntegrationEvent<T extends Record<string, any> | JsonValue> {
+export class IntegrationEvent<
+  T extends Record<string, any> | Prisma.JsonValue,
+> {
   constructor(
     public readonly type: IntegrationEventType,
     public readonly payload: T,

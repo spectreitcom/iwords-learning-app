@@ -16,7 +16,7 @@ describe('UserDailyGoalId', () => {
   });
 
   it('throws for invalid UUID string', () => {
-    expect(() => UserDailyGoalId.fromString('invalid')).toThrowError(
+    expect(() => UserDailyGoalId.fromString('invalid')).toThrow(
       'UserDailyGoalId is not valid',
     );
   });

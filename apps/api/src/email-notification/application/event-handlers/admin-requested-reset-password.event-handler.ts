@@ -27,7 +27,8 @@ export class AdminRequestedResetPasswordEventHandler implements IEventHandler<
     if (event.type !== 'admin-identity.requested-reset-password') return;
     this.logger.debug(JSON.stringify(event));
     const { email, resetPasswordToken } = event.payload;
-    const FRONTEND_URL = this.configService.get<string>('ADMIN_FRONTEND_URL')!;
+    const FRONTEND_URL = this.configService.get<string>('ADMIN_FRONTEND_URL');
+    if (!FRONTEND_URL) throw new Error('FRONTEND_URL is not defined');
     await this.emailService.send(
       new RequestedResetPasswordEmail(email, FRONTEND_URL, resetPasswordToken),
     );

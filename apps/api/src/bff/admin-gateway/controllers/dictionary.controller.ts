@@ -59,7 +59,7 @@ export class DictionaryController {
   @Get('search')
   @HttpCode(HttpStatus.OK)
   async searchDictionary(@Query() query: SearchDictionaryQueryDto) {
-    return this.dictionaryApiService.searchDictionaryReadModel(
+    return await this.dictionaryApiService.searchDictionaryReadModel(
       query.searchText,
       query.take,
       query.page,

@@ -27,7 +27,8 @@ export class AdminAdminUserInvitedEventHandler implements IEventHandler<
     if (event.type !== 'admin-identity.user-invited') return;
     this.logger.debug(JSON.stringify(event));
     const { email, resetPasswordToken } = event.payload;
-    const FRONTEND_URL = this.configService.get<string>('ADMIN_FRONTEND_URL')!;
+    const FRONTEND_URL = this.configService.get<string>('ADMIN_FRONTEND_URL');
+    if (!FRONTEND_URL) throw new Error('FRONTEND_URL is not defined');
     await this.emailService.send(
       new AdminUserInvitedEmail(email, FRONTEND_URL, resetPasswordToken),
     );

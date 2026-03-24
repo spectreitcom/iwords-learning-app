@@ -8,7 +8,7 @@ describe('UserId', () => {
   });
 
   it('throws for invalid UUID string', () => {
-    expect(() => UserId.fromString('not-a-uuid')).toThrowError(
+    expect(() => UserId.fromString('not-a-uuid')).toThrow(
       'UserId is not valid',
     );
   });

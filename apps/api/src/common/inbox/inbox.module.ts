@@ -19,7 +19,7 @@ import { ClockModule } from '../clock/clock.module';
       ): InboxRouterFn => {
         return async (msg) => {
           if (msg.source === 'clerk')
-            return userIdentityInboxRouter.handle(msg);
+            return await userIdentityInboxRouter.handle(msg);
           throw new Error(`No router for source=${String(msg.source)}`);
         };
       },

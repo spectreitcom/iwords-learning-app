@@ -22,16 +22,13 @@ export class BasicRepetitionGeneratorService implements GenerateRepetitionServic
         take: 6,
       });
 
-    let boxIds: string[] = [];
-
-    if (!repetitionItems.length) {
-      const boxes = await this.prismaService.box.findMany({
-        take: 6,
-      });
-      boxIds = boxes.map((box) => box.id);
-    } else {
-      boxIds = repetitionItems.map((item) => item.boxId);
-    }
+    const boxIds: string[] = !repetitionItems.length
+      ? (
+          await this.prismaService.box.findMany({
+            take: 6,
+          })
+        ).map((box) => box.id)
+      : repetitionItems.map((item) => item.boxId);
 
     if (!record) {
       await this.prismaService.boxDailyRepetition.create({

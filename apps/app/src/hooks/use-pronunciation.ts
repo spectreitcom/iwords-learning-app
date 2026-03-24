@@ -1,9 +1,25 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore, useState } from "react";
 
 type PronunciationLang = "en-US";
 
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return typeof window !== "undefined" && "speechSynthesis" in window;
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
 export const usePronunciation = (lang: PronunciationLang) => {
-  const [isAvailable, setIsAvailable] = useState(false);
+  const isAvailable = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   const speak = (text: string) => {
@@ -45,12 +61,6 @@ export const usePronunciation = (lang: PronunciationLang) => {
     utterance.volume = 1;
     speechSynthesis.speak(utterance);
   };
-
-  useEffect(() => {
-    if ("speechSynthesis" in window) {
-      setIsAvailable(true);
-    }
-  }, []);
 
   return {
     isAvailable,

@@ -15,8 +15,8 @@ export class OpenaiAiService implements AiService {
 
   constructor(private readonly configService: ConfigService) {
     this.client = new OpenAI({
-      baseURL: this.configService.get<string>('OPENAI_BASE_URL')!,
-      apiKey: this.configService.get<string>('OPENAI_API_KEY')!,
+      baseURL: this.configService.get<string>('OPENAI_BASE_URL'),
+      apiKey: this.configService.get<string>('OPENAI_API_KEY'),
     });
   }
 
@@ -27,7 +27,7 @@ export class OpenaiAiService implements AiService {
     userSentence: string,
   ): Promise<{ score: number; answer: string }> {
     const res = await this.client.chat.completions.create({
-      model: this.configService.get<string>('OPENAI_MODEL')!,
+      model: this.configService.get<string>('OPENAI_MODEL') ?? '',
       messages: [
         {
           role: 'user',
@@ -41,12 +41,14 @@ export class OpenaiAiService implements AiService {
       stream: false,
     });
 
-    const parsed: unknown = JSON.parse(
-      res.choices[0].message
-        .content!.replace('```json', '')
-        .replace('```', '')
-        .trim(),
-    );
+    const content = res.choices[0]?.message.content;
+
+    if (!content) {
+      throw new Error('Empty response');
+    }
+
+    const choice = content.replace('```json', '').replace('```', '').trim();
+    const parsed: unknown = JSON.parse(choice);
 
     const validationResult = validateSentenceSchema.safeParse(parsed);
 

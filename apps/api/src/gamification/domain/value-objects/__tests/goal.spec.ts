@@ -7,15 +7,15 @@ describe('Goal', () => {
   });
 
   it('throws for zero', () => {
-    expect(() => Goal.create(0)).toThrowError('Goal is not valid');
+    expect(() => Goal.create(0)).toThrow('Goal is not valid');
   });
 
   it('throws for negative numbers', () => {
-    expect(() => Goal.create(-5)).toThrowError('Goal is not valid');
+    expect(() => Goal.create(-5)).toThrow('Goal is not valid');
   });
 
   it('throws for NaN', () => {
-    expect(() => Goal.create(Number.NaN)).toThrowError('Goal is not valid');
+    expect(() => Goal.create(Number.NaN)).toThrow('Goal is not valid');
   });
 
   it('compares equality by value', () => {

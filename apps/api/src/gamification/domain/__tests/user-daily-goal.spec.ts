@@ -25,7 +25,7 @@ describe('UserDailyGoal', () => {
   });
 
   it('throws when creating with invalid userId', () => {
-    expect(() => UserDailyGoal.create(10, 'not-a-uuid')).toThrowError(
+    expect(() => UserDailyGoal.create(10, 'not-a-uuid')).toThrow(
       'UserId is not valid',
     );
   });
@@ -33,15 +33,11 @@ describe('UserDailyGoal', () => {
   it('throws when creating with non-positive or invalid goal', () => {
     const userId = '550e8400-e29b-41d4-a716-446655440000';
 
-    expect(() => UserDailyGoal.create(0, userId)).toThrowError(
-      'Goal is not valid',
-    );
+    expect(() => UserDailyGoal.create(0, userId)).toThrow('Goal is not valid');
 
-    expect(() => UserDailyGoal.create(-3, userId)).toThrowError(
-      'Goal is not valid',
-    );
+    expect(() => UserDailyGoal.create(-3, userId)).toThrow('Goal is not valid');
 
-    expect(() => UserDailyGoal.create(Number.NaN, userId)).toThrowError(
+    expect(() => UserDailyGoal.create(Number.NaN, userId)).toThrow(
       'Goal is not valid',
     );
   });
