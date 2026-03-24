@@ -1,5 +1,5 @@
 import { DailyLearnedBoxId } from '../daily-learned-box-id';
-import { validate as validateUuid } from 'uuid';
+import { isUUID } from 'class-validator';
 
 describe('DailyLearnedBoxId', () => {
   describe('create', () => {
@@ -7,7 +7,7 @@ describe('DailyLearnedBoxId', () => {
       const dailyLearnedBoxId = DailyLearnedBoxId.create();
 
       expect(dailyLearnedBoxId).toBeInstanceOf(DailyLearnedBoxId);
-      expect(validateUuid(dailyLearnedBoxId.value)).toBe(true);
+      expect(isUUID(dailyLearnedBoxId.value)).toBe(true);
     });
   });
 

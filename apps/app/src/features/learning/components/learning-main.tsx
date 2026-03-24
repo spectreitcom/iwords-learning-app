@@ -64,6 +64,7 @@ export function LearningMain({
   const [currentItem, setCurrentItem] =
     useState<LinkedListNode<ListData> | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [incorrectCount, setIncorrectCount] = useState(0);
   const [answerData, setAnswerData] = useState<GeneralAnswer | null>(null);
@@ -99,10 +100,10 @@ export function LearningMain({
     }
 
     setCurrentItem(linkedList.getHead());
+    setTotalItems(linkedList.length);
   }, [boxId, boxItems]);
 
-  const canShowSummary =
-    currentIndex > 0 && currentIndex > linkedListRef.current.length - 1;
+  const canShowSummary = currentIndex > 0 && currentIndex > totalItems - 1;
 
   if (canShowSummary) {
     return (
@@ -110,7 +111,7 @@ export function LearningMain({
         repetitionMode={repetitionMode}
         title={title ?? ""}
         learned={currentIndex}
-        total={linkedListRef.current.length}
+        total={totalItems}
         correctCount={correctCount}
         incorrectCount={incorrectCount}
         boxId={boxId}
@@ -131,12 +132,8 @@ export function LearningMain({
       <div className="text-center">
         <div className="text-2xl font-semibold tracking-tight">{title}</div>
         <div className="mt-1 text-sm text-muted-foreground">
-          Krok{" "}
-          {Math.min(
-            currentIndex + 1,
-            Math.max(linkedListRef.current.length, 1),
-          )}{" "}
-          z {linkedListRef.current.length}
+          Krok {Math.min(currentIndex + 1, Math.max(totalItems, 1))} z{" "}
+          {totalItems}
         </div>
       </div>
 
@@ -144,13 +141,9 @@ export function LearningMain({
       <div className="mt-6">
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
           <span>Postęp</span>
-          <span>
-            {calcProgress(currentIndex, linkedListRef.current.length)}%
-          </span>
+          <span>{calcProgress(currentIndex, totalItems)}%</span>
         </div>
-        <Progress
-          value={calcProgress(currentIndex, linkedListRef.current.length)}
-        />
+        <Progress value={calcProgress(currentIndex, totalItems)} />
       </div>
 
       {/* Exercise card */}

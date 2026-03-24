@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, type RefObject } from "react";
 
-export function useClickOutside(elem: HTMLElement | null | undefined) {
-  const [clickedOutside, setClickedOutside] = useState(false);
-
+export function useClickOutside(
+  ref: RefObject<HTMLElement | null>,
+  onClickOutside: () => void,
+) {
   useEffect(() => {
+    const elem = ref.current;
     if (!elem) return;
 
     const abortController = new AbortController();
@@ -11,15 +13,13 @@ export function useClickOutside(elem: HTMLElement | null | undefined) {
     document.addEventListener(
       "click",
       (e) => {
-        setClickedOutside(!elem.contains(e.target as Node));
+        if (!elem.contains(e.target as Node)) {
+          onClickOutside();
+        }
       },
       { signal: abortController.signal },
     );
 
     return () => abortController.abort();
-  }, [elem]);
-
-  return {
-    clickedOutside: clickedOutside,
-  };
+  }, [ref, onClickOutside]);
 }

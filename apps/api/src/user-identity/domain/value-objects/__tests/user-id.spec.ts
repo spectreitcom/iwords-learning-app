@@ -1,5 +1,5 @@
 import { UserId } from '../user-id';
-import { validate as isValidUUID } from 'uuid';
+import { isUUID } from 'class-validator';
 
 describe('UserId', () => {
   describe('create', () => {
@@ -8,8 +8,7 @@ describe('UserId', () => {
 
       expect(userId.value).toBeDefined();
       expect(typeof userId.value).toBe('string');
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      expect(isValidUUID(userId.value)).toBe(true);
+      expect(isUUID(userId.value)).toBe(true);
     });
 
     it('should create different UUIDs on multiple calls', () => {
@@ -17,10 +16,8 @@ describe('UserId', () => {
       const userId2 = UserId.create();
 
       expect(userId1.value).not.toBe(userId2.value);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      expect(isValidUUID(userId1.value)).toBe(true);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      expect(isValidUUID(userId2.value)).toBe(true);
+      expect(isUUID(userId1.value)).toBe(true);
+      expect(isUUID(userId2.value)).toBe(true);
     });
 
     it('should create UUID version 4', () => {
