@@ -3,7 +3,7 @@
 import { BoxItemPreview } from "@/features/boxes/components/box-item-preview";
 import { boxItemSchema } from "@/features/boxes/types";
 import { z } from "zod";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Field, FieldLabel } from "@/components/ui/field";
 
@@ -15,26 +15,31 @@ export function BoxItemPreviewList({ boxDetailsItems }: Props) {
   const [hidePhrase, setHidePhrase] = useState(false);
   const [hideTranslation, setHideTranslation] = useState(false);
 
+  const hidePhraseId = useId();
+  const hideTranslationId = useId();
+
   return (
     <div className={"mt-8"}>
       <div className={"inline-flex width-full"}>
         <Field orientation={"horizontal"}>
           <Switch
+            id={hidePhraseId}
             checked={hidePhrase}
             onCheckedChange={(checked) => {
               setHidePhrase(checked);
             }}
           />
-          <FieldLabel>Ukryj frazę</FieldLabel>
+          <FieldLabel htmlFor={hidePhraseId}>Ukryj frazę</FieldLabel>
         </Field>
         <Field orientation={"horizontal"}>
           <Switch
+            id={hideTranslationId}
             checked={hideTranslation}
             onCheckedChange={(checked) => {
               setHideTranslation(checked);
             }}
           />
-          <FieldLabel>Ukryj tłumaczenie</FieldLabel>
+          <FieldLabel htmlFor={hideTranslationId}>Ukryj tłumaczenie</FieldLabel>
         </Field>
       </div>
 
