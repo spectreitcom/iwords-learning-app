@@ -1,23 +1,11 @@
 import { Suspense } from "react";
 import { getBoxDetails } from "@/features/boxes/actions";
-import { BoxItem } from "@/features/boxes/types";
 import { Spinner } from "@repo/ui/components/ui/spinner";
 import { Card, CardContent } from "@repo/ui/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@repo/ui/components/ui/table";
-import { capitalizeFirstLetter } from "@/lib/utils";
 import { Search } from "lucide-react";
 import { StartLearningButton } from "@/features/learning/components/start-learning-button";
 import { CopyBoxToClipboardButton } from "@/features/boxes/components/copy-box-to-clipboard-button";
-import { BoxItemDropdownMenu } from "@/features/boxes/components/box-item-dropdown-menu";
-import { expressionTypeMap } from "@repo/shared/utils";
-import { PronunciationButton } from "@/components/pronunciation-button";
+import { BoxItemPreviewList } from "@/features/boxes/components/box-item-preview-list";
 
 type Props = Readonly<{
   params: Promise<{ boxId: string }>;
@@ -50,116 +38,13 @@ async function AwaitedContent({ boxId }: Readonly<{ boxId: string }>) {
       </div>
 
       {boxDetails.items.length ? (
-        <div className={"mt-8 flex flex-col gap-4"}>
-          {boxDetails.items.map((item) => (
-            <BoxItemPreview key={item.expressionContextId} item={item} />
-          ))}
-        </div>
+        <BoxItemPreviewList boxDetailsItems={boxDetails.items} />
       ) : (
         <div className={"mt-8"}>
           <NoItems />
         </div>
       )}
     </div>
-  );
-}
-
-function BoxItemPreview({ item }: Readonly<{ item: BoxItem }>) {
-  return (
-    <Card className={"group"}>
-      <CardContent>
-        <div className={"flex items-start justify-between gap-2"}>
-          <div className={"flex items-center gap-2"}>
-            <PronunciationButton text={item.phrase} />
-            <h3 className={"text-lg"}>
-              <strong>{item.phrase}</strong> - {item.translation}
-            </h3>
-          </div>
-          <BoxItemDropdownMenu expressionContextId={item.expressionContextId} />
-        </div>
-
-        <div className={"mt-2"}>
-          <p>Typ wyrażenia: {expressionTypeMap.get(item.type)}</p>
-          {item.type === "noun" && (
-            <p>Policzalny: {item.isCountable ? "Tak" : "Nie"}</p>
-          )}
-        </div>
-
-        {item.definition ? (
-          <div className={"mt-4"}>
-            <p>
-              <strong>Definicja:</strong> {item.definition}
-            </p>
-            {item.definitionTranslation && (
-              <p className={"mt-4"}>
-                <strong>Tłumaczenie definicji:</strong>{" "}
-                {item.definitionTranslation}
-              </p>
-            )}
-          </div>
-        ) : (
-          ""
-        )}
-
-        {item.type === "irregular_verb" && (
-          <div className={"mt-4"}>
-            <IrregularVerbTable forms={item.forms ?? []} />
-          </div>
-        )}
-
-        {item.sentences.length ? (
-          <div className={"mt-4 flex flex-col gap-1"}>
-            {item.sentences.map((sentence) => (
-              <div key={sentence.sentenceId}>
-                <span className={"font-semibold"}>
-                  <PronunciationButton text={sentence.content} />
-                  {capitalizeFirstLetter(sentence.content)}
-                </span>{" "}
-                - {capitalizeFirstLetter(sentence.translation)}
-              </div>
-            ))}
-          </div>
-        ) : (
-          ""
-        )}
-      </CardContent>
-    </Card>
-  );
-}
-
-function IrregularVerbTable({ forms }: Readonly<{ forms: string[] }>) {
-  return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>I forma</TableHead>
-          <TableHead>II forma</TableHead>
-          <TableHead>III forma</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <TableRow>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <PronunciationButton text={forms[0]} />
-              {forms[0]}
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <PronunciationButton text={forms[1]} />
-              {forms[1]}
-            </div>
-          </TableCell>
-          <TableCell>
-            <div className="flex items-center gap-2">
-              <PronunciationButton text={forms[2]} />
-              {forms[2]}
-            </div>
-          </TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
   );
 }
 
