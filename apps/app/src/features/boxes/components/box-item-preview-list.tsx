@@ -13,7 +13,7 @@ type Props = Readonly<{
 
 export function BoxItemPreviewList({ boxDetailsItems }: Props) {
   const [hidePhrase, setHidePhrase] = useState(false);
-  const [hideTranslation, setHideTranslation] = useState(false);
+  const [hideTranslation, setHideTranslation] = useState(true);
 
   const hidePhraseId = useId();
   const hideTranslationId = useId();
