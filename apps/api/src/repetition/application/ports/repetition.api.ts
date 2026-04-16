@@ -7,4 +7,8 @@ export abstract class RepetitionApi {
     userId: string,
     repetitionId: string,
   ): Promise<void>;
+  abstract addExpressionContextToRepetition(
+    expressionContextId: string,
+    userId: string,
+  ): Promise<void>;
 }

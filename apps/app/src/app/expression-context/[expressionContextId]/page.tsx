@@ -21,6 +21,7 @@ import {
 } from "@repo/ui/components/ui/table";
 import { expressionTypeMap } from "@repo/shared/utils";
 import { PronunciationButton } from "@/components/pronunciation-button";
+import { AddToRepetitionButton } from "@/features/dictionary/components/add-to-repetition-button";
 
 type Props = Readonly<{
   params: Promise<{ expressionContextId: string }>;
@@ -88,6 +89,7 @@ async function AwaitedContent({
                 Ucz się zdań
               </Link>
             </Button>
+            <AddToRepetitionButton expressionContextId={expressionContextId} />
           </div>
 
           {(context.definition || context.definitionTranslation) && (

@@ -5,6 +5,7 @@ import { GetUserRepetitionsQuery } from '../queries/get-user-repetitions.query';
 import { DeleteAllUserRepetitionsCommand } from '../commands/delete-all-user-repetitions.command';
 import { DeleteOneUserRepetitionCommand } from '../commands/delete-one-user-repetition.command';
 import { RepetitionView } from '../../views/repetition.view';
+import { AddExpressionContextToRepetitionCommand } from '../commands/add-expression-context-to-repetition.command';
 
 @Injectable()
 export class RepetitionApiService implements RepetitionApi {
@@ -28,6 +29,17 @@ export class RepetitionApiService implements RepetitionApi {
     repetitionId: string,
   ): Promise<void> {
     const command = new DeleteOneUserRepetitionCommand(userId, repetitionId);
+    return await this.commandBus.execute(command);
+  }
+
+  async addExpressionContextToRepetition(
+    expressionContextId: string,
+    userId: string,
+  ): Promise<void> {
+    const command = new AddExpressionContextToRepetitionCommand(
+      expressionContextId,
+      userId,
+    );
     return await this.commandBus.execute(command);
   }
 }

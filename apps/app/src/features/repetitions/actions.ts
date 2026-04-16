@@ -54,3 +54,22 @@ export async function removeRepetition(repetitionId: string) {
     throw error;
   }
 }
+
+export async function addExpressionContextToRepetition(
+  expressionContextId: string,
+) {
+  try {
+    await authFetch(`${BACKEND_URL}/repetitions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ expressionContextId }),
+    });
+
+    revalidatePath("/repetitions");
+  } catch (error) {
+    console.error("Error in addExpressionContextToRepetition:", error);
+    throw error;
+  }
+}

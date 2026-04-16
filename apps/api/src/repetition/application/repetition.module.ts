@@ -7,12 +7,14 @@ import { DeleteAllUserRepetitionsCommandHandler } from './command-handlers/delet
 import { DeleteOneUserRepetitionCommandHandler } from './command-handlers/delete-one-user-repetition.command-handler';
 import { AnswerCheckedEventHandler } from './event-handlers/answer-checked.event-handler';
 import { ClockModule } from '../../common/clock/clock.module';
+import { AddExpressionContextToRepetitionCommandHandler } from './command-handlers/add-expression-context-to-repetition.command-handler';
 
 const EVENT_HANDLERS = [AnswerCheckedEventHandler];
 
 const COMMAND_HANDLERS = [
   DeleteAllUserRepetitionsCommandHandler,
   DeleteOneUserRepetitionCommandHandler,
+  AddExpressionContextToRepetitionCommandHandler,
 ];
 
 const QUERY_HANDLERS = [GetUserRepetitionsQueryHandler];

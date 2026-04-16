@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -6,6 +7,7 @@ import {
   HttpStatus,
   Param,
   ParseUUIDPipe,
+  Post,
   UseGuards,
 } from '@nestjs/common';
 import { ClerkAuthGuard } from '../auth/clerk-auth.guard';
@@ -18,6 +20,7 @@ import {
 import { RepetitionApiService } from '../../../repetition/application/services/repetition-api.service';
 import { CurrentUserId } from '../auth/current-user-id.decorator';
 import { DictionaryApiService } from '../../../dictionary/application/services/dictionary-api.service';
+import { AddExpressionContextToRepetitionDto } from '../dtos/add-expression-context-to-repetition.dto';
 
 @UseGuards(ClerkAuthGuard)
 @ApiTags('App - Repetitions')
@@ -27,6 +30,24 @@ export class RepetitionsController {
     private readonly repetitionApiService: RepetitionApiService,
     private readonly dictionaryApiService: DictionaryApiService,
   ) {}
+
+  @ApiBearerAuth('app-auth')
+  @ApiOperation({ summary: 'Add expression context to repetition' })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'Repetition added successfully',
+  })
+  @Post()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async addExpressionContextToRepetition(
+    @CurrentUserId() userId: string,
+    @Body() dto: AddExpressionContextToRepetitionDto,
+  ) {
+    return await this.repetitionApiService.addExpressionContextToRepetition(
+      dto.expressionContextId,
+      userId,
+    );
+  }
 
   @ApiBearerAuth('app-auth')
   @ApiOperation({ summary: 'Get user repetitions' })
