@@ -9,12 +9,23 @@ import {
 import { Button } from "@repo/ui/components/ui/button";
 import { MoreVertical } from "lucide-react";
 import Link from "next/link";
+import { addExpressionContextToRepetition } from "@/features/repetitions/actions";
+import { toast } from "sonner";
 
 type Props = Readonly<{
   expressionContextId: string;
 }>;
 
 export function BoxItemDropdownMenu({ expressionContextId }: Props) {
+  const handleAddToRepetitions = async () => {
+    try {
+      await addExpressionContextToRepetition(expressionContextId);
+      toast.success("Wyrażenie dodane do powtórek");
+    } catch {
+      toast.error("Wystąpił błąd podczas dodawania wyrażenia do powtórek");
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -37,6 +48,9 @@ export function BoxItemDropdownMenu({ expressionContextId }: Props) {
           <Link href={`/expression-context/${expressionContextId}/notes`}>
             Notatki
           </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={handleAddToRepetitions}>
+          Dodaj do powtórek
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
