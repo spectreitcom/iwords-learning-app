@@ -49,7 +49,7 @@ export function SidebarBoxesList() {
                   {boxItem.isNew && (
                     <Badge
                       variant="default"
-                      className="h-4 px-1 text-[10px] bg-blue-500 hover:bg-blue-600"
+                      className="h-4 px-1 text-[10px] bg-primary text-primary-foreground hover:bg-primary/90"
                     >
                       Nowy
                     </Badge>
@@ -57,14 +57,14 @@ export function SidebarBoxesList() {
                   {!boxItem.isAlreadyStarted && (
                     <Badge
                       variant="secondary"
-                      className="h-4 px-1 text-[10px] bg-amber-500 text-white hover:bg-amber-600"
+                      className="status-warning h-4 px-1 text-[10px]"
                     >
                       Nie rozpoczęty
                     </Badge>
                   )}
                 </div>
                 {boxItem.isFinished && (
-                  <CheckCircle className={"stroke-green-600"} />
+                  <CheckCircle className={"stroke-[oklch(0.62_0.14_158)] dark:stroke-[oklch(0.78_0.13_158)]"} />
                 )}
               </Link>
             </SidebarMenuSubButton>

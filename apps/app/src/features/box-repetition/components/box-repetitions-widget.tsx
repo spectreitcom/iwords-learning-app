@@ -39,7 +39,7 @@ export function BoxRepetitionsWidget() {
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-bold flex items-center gap-2">
-            <Layers className="h-5 w-5 text-indigo-500" />
+            <Layers className="h-5 w-5 text-primary" />
             Powtórki
           </CardTitle>
           <Button
@@ -66,37 +66,37 @@ export function BoxRepetitionsWidget() {
               <Link
                 href={`/boxes/${box.boxId}`}
                 key={box.boxId}
-                className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50/50 p-4 transition-all hover:border-indigo-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:border-indigo-700"
+                className="surface-subtle surface-hover group relative flex flex-col justify-between overflow-hidden rounded-xl border p-4 transition-all hover:border-primary/40 hover:shadow-md"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="space-y-1">
-                    <h4 className="font-semibold leading-none tracking-tight text-zinc-900 dark:text-zinc-100">
+                    <h4 className="font-semibold leading-none tracking-tight text-foreground">
                       {box.title}
                     </h4>
-                    <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    <p className="text-sm text-muted-foreground">
                       {box.expressionsCount} wyrażeń
                     </p>
                   </div>
                   {box.isFinished ? (
-                    <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />
+                    <CheckCircle2 className="h-5 w-5 text-success shrink-0" />
                   ) : (
-                    <Circle className="h-5 w-5 text-zinc-300 dark:text-zinc-700 shrink-0" />
+                    <Circle className="h-5 w-5 text-muted-foreground/55 shrink-0" />
                   )}
                 </div>
 
                 <div className="mt-4 flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+                    <span className="text-2xl font-bold text-foreground">
                       {box.repetitionCount}
                     </span>
-                    <span className="text-xs uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                    <span className="text-xs uppercase tracking-wider text-muted-foreground">
                       Powtórek
                     </span>
                   </div>
                   {!box.isFinished && (
-                    <div className="h-1.5 w-16 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
+                    <div className="h-1.5 w-16 overflow-hidden rounded-full bg-muted">
                       <div
-                        className="h-full bg-indigo-500 transition-all"
+                        className="h-full bg-primary transition-all"
                         style={{
                           width: `${Math.min((box.repetitionCount / 20) * 100, 100)}%`,
                         }}
@@ -108,8 +108,8 @@ export function BoxRepetitionsWidget() {
                 <div
                   className={`absolute inset-x-0 bottom-0 h-1 transition-colors ${
                     box.isFinished
-                      ? "bg-emerald-500"
-                      : "bg-indigo-500 opacity-0 group-hover:opacity-100"
+                      ? "bg-[oklch(0.72_0.13_158)]"
+                      : "bg-primary opacity-0 group-hover:opacity-100"
                   }`}
                 />
               </Link>

@@ -88,7 +88,7 @@ export function UserGoalWidget() {
   return (
     <div className="flex items-center gap-3 min-w-[260px]">
       <Badge className="gap-2 px-3 py-1 rounded-md">
-        <Trophy className="text-yellow-500" />
+        <Trophy className="text-[oklch(0.78_0.15_78)]" />
         <span className="font-medium">Dzienny cel</span>
       </Badge>
 
