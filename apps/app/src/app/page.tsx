@@ -4,9 +4,7 @@ import { BoxRepetitionsWidget } from "@/features/box-repetition/components/box-r
 export default async function Home() {
   return (
     <div className=" px-4 py-6">
-      <h1 className="mb-4 text-xl font-semibold text-zinc-800 dark:text-zinc-100">
-        Dashboard
-      </h1>
+      <h1 className="mb-4 text-xl font-semibold text-foreground">Dashboard</h1>
 
       <div className="grid gap-6">
         <section className={"max-w-5xl"}>

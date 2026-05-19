@@ -84,15 +84,13 @@ export function AnswerModal({
           <div className="flex items-center gap-3">
             <div
               className={`rounded-full p-2 border ${
-                isCorrect
-                  ? "bg-emerald-50 border-emerald-200"
-                  : "bg-rose-50 border-rose-200"
+                isCorrect ? "status-success" : "status-danger"
               }`}
             >
               {isCorrect ? (
-                <CheckCircle2 className="h-6 w-6 text-emerald-600" />
+                <CheckCircle2 className="h-6 w-6 text-success" />
               ) : (
-                <XCircle className="h-6 w-6 text-rose-600" />
+                <XCircle className="h-6 w-6 text-danger" />
               )}
             </div>
             <div>
@@ -114,21 +112,21 @@ export function AnswerModal({
           {!isCorrect && (
             <div className="text-sm">
               <span className="text-muted-foreground">Twoja odpowiedź: </span>
-              <span className="font-medium line-through decoration-rose-500/60">
+              <span className="font-medium line-through decoration-destructive/60">
                 {answerData.userAnswer || "(puste)"}
               </span>
             </div>
           )}
           <div className="text-sm">
             <span className="text-muted-foreground">Poprawna odpowiedź: </span>
-            <span className="font-semibold text-emerald-700">
+            <span className="font-semibold text-success">
               {answerData.correctAnswer}
             </span>
           </div>
 
           {selectedSentence && (
             <div className="mt-4 border-t pt-4 space-y-2">
-              <div className="text-sm font-medium leading-relaxed italic text-emerald-900">
+              <div className="text-sm font-medium leading-relaxed italic text-foreground">
                 &quot;{selectedSentence.content}&quot;
               </div>
               <div className="text-xs text-muted-foreground">
@@ -206,15 +204,13 @@ export function IrregularVerbAnswerModal({
           <div className="flex items-center gap-3">
             <div
               className={`rounded-full p-2 border ${
-                isAllCorrect
-                  ? "bg-emerald-50 border-emerald-200"
-                  : "bg-rose-50 border-rose-200"
+                isAllCorrect ? "status-success" : "status-danger"
               }`}
             >
               {isAllCorrect ? (
-                <CheckCircle2 className="h-6 w-6 text-emerald-600" />
+                <CheckCircle2 className="h-6 w-6 text-success" />
               ) : (
-                <XCircle className="h-6 w-6 text-rose-600" />
+                <XCircle className="h-6 w-6 text-danger" />
               )}
             </div>
             <div>
@@ -239,14 +235,12 @@ export function IrregularVerbAnswerModal({
               <div
                 key={f.label}
                 className={`rounded-md border p-3 text-sm flex items-start gap-3 ${
-                  ok
-                    ? "bg-emerald-50/50 border-emerald-200"
-                    : "bg-rose-50/40 border-rose-200"
+                  ok ? "status-success" : "status-danger"
                 }`}
               >
                 <BadgeCheck
                   className={`h-4 w-4 mt-0.5 shrink-0 ${
-                    ok ? "text-emerald-600" : "text-rose-600"
+                    ok ? "text-success" : "text-danger"
                   }`}
                 />
                 <div className="flex-1">
@@ -257,14 +251,14 @@ export function IrregularVerbAnswerModal({
                         <span className="text-muted-foreground text-xs">
                           Twoja odpowiedź:
                         </span>
-                        <span className="font-medium line-through decoration-rose-500/60 pl-1 text-xs">
+                        <span className="font-medium line-through decoration-destructive/60 pl-1 text-xs">
                           {f.data.userAnswer || "(puste)"}
                         </span>
                       </div>
                     )}
                     <div className="text-sm">
                       <span className="text-muted-foreground">Poprawna: </span>
-                      <span className="font-semibold text-emerald-700">
+                      <span className="font-semibold text-success">
                         {f.data.correctAnswer}
                       </span>
                     </div>
@@ -277,7 +271,7 @@ export function IrregularVerbAnswerModal({
 
         {selectedSentence && (
           <div className="mt-2 border-t pt-4 space-y-2">
-            <div className="text-sm font-medium leading-relaxed italic text-emerald-900">
+            <div className="text-sm font-medium leading-relaxed italic text-foreground">
               &quot;{selectedSentence.content}&quot;
             </div>
             <div className="text-xs text-muted-foreground">

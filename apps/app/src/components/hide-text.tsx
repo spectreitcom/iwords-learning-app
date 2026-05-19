@@ -10,7 +10,7 @@ export function HideText({ text, isHidden }: Props) {
       {isHidden && (
         <span
           className={
-            "absolute inset-0 bg-gray-500 z-10 group-hover/item:bg-transparent"
+            "absolute inset-0 bg-muted-foreground z-10 group-hover/item:bg-transparent"
           }
         />
       )}

@@ -140,7 +140,7 @@ function RepetitionItem({
               type="submit"
               variant="ghost"
               size="sm"
-              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              className="text-danger hover:text-danger hover:bg-destructive/10"
               onClick={removeRepetition.bind(null, repetitionId)}
             >
               <Trash2 className="w-4 h-4 mr-2" /> Usuń
@@ -160,13 +160,13 @@ function NoItems() {
   return (
     <Card className="w-full mx-auto">
       <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
-          <Search className="w-8 h-8 text-gray-400" />
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center border">
+          <Search className="w-8 h-8 text-muted-foreground" />
         </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+        <h3 className="text-lg font-semibold text-foreground mb-2">
           Brak powtórek
         </h3>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted-foreground">
           Nie masz żadnych zaplanowanych powtórek.
         </p>
       </CardContent>

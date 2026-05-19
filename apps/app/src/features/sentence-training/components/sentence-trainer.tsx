@@ -92,10 +92,10 @@ export function SentenceTrainer({
         {items.map((item) => {
           const scoreColor =
             item.score >= 80
-              ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400"
+              ? "status-success"
               : item.score >= 50
-                ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
-                : "bg-rose-100 text-rose-800 dark:bg-rose-900/30 dark:text-rose-400";
+                ? "status-warning"
+                : "status-danger";
           return (
             <div key={v4()} className="rounded-md border p-3 hover:bg-muted/40">
               <div className="mb-1 flex items-center justify-between gap-3">

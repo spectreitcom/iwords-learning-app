@@ -23,9 +23,9 @@ export function LastSevenDaysGoalsProgressWidget() {
     useLastSevenDaysGoalsProgress();
 
   return (
-    <div className="w-full rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="w-full rounded-xl border bg-card p-4 text-card-foreground shadow-sm">
       <div className="mb-4 flex items-baseline justify-between">
-        <h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-200">
+        <h3 className="text-sm font-semibold text-foreground">
           Ostatnie 7 dni
         </h3>
         <div className="flex items-center gap-2">
@@ -35,7 +35,7 @@ export function LastSevenDaysGoalsProgressWidget() {
           <button
             type="button"
             onClick={() => refetch()}
-            className="inline-flex items-center gap-1 rounded-md border border-zinc-200 px-2 py-1 text-xs text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
             title="Odśwież"
             aria-label="Refresh last 7 days progress"
           >
@@ -66,7 +66,7 @@ export function LastSevenDaysGoalsProgressWidget() {
                   style={{ height: 120 }}
                 >
                   <div
-                    className="w-full rounded-md bg-gradient-to-t from-emerald-500 to-emerald-400/80 shadow-sm dark:from-emerald-600 dark:to-emerald-500"
+                    className="w-full rounded-md bg-gradient-to-t from-[oklch(0.58_0.15_158)] to-[oklch(0.74_0.13_158)] shadow-sm dark:from-[oklch(0.55_0.12_158)] dark:to-[oklch(0.78_0.12_158)]"
                     style={{
                       height: `${heightPct}%`,
                       minHeight: 6,
@@ -74,12 +74,12 @@ export function LastSevenDaysGoalsProgressWidget() {
                   />
                 </div>
                 <div
-                  className="text-[10px] font-medium tracking-wide text-zinc-600 dark:text-zinc-300"
+                  className="text-[10px] font-medium tracking-wide text-foreground"
                   aria-label={`Progress for ${formatDate(d.date)}: ${heightPct}%`}
                 >
                   {heightPct}%
                 </div>
-                <div className="text-[10px] font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+                <div className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
                   {label}
                 </div>
               </div>
