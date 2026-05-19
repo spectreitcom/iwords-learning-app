@@ -64,7 +64,11 @@ export function SidebarBoxesList() {
                   )}
                 </div>
                 {boxItem.isFinished && (
-                  <CheckCircle className={"stroke-[oklch(0.62_0.14_158)] dark:stroke-[oklch(0.78_0.13_158)]"} />
+                  <CheckCircle
+                    className={
+                      "stroke-[oklch(0.62_0.14_158)] dark:stroke-[oklch(0.78_0.13_158)]"
+                    }
+                  />
                 )}
               </Link>
             </SidebarMenuSubButton>
