@@ -133,7 +133,11 @@
   }
 
   * {
-    scrollbar-color: color-mix(in oklch, var(--muted-foreground) 42%, transparent)
+    scrollbar-color: color-mix(
+        in oklch,
+        var(--muted-foreground) 42%,
+        transparent
+      )
       transparent;
   }
 }
@@ -269,7 +273,9 @@
     margin-bottom: 0;
   }
 
-  .note-prosemirror[data-placeholder]:has(> p:first-child:last-child:empty)::before {
+  .note-prosemirror[data-placeholder]:has(
+      > p:first-child:last-child:empty
+    )::before {
     content: attr(data-placeholder);
     position: absolute;
     top: 0;
