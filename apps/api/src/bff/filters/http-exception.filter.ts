@@ -21,7 +21,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     if (exception instanceof HttpException) {
       // Cast to HttpStatus enum to avoid unsafe enum comparison warnings
-      const status: HttpStatus = exception.getStatus() as HttpStatus;
+      const status: HttpStatus = exception.getStatus();
 
       // Explicit handling for auth/permission errors with constant messages
       if (status === HttpStatus.UNAUTHORIZED) {
