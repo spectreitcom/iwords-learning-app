@@ -162,10 +162,9 @@ export function NoteEditorView({ note }: NoteEditorViewProps) {
         setEditorState(newState);
 
         if (transaction.docChanged) {
-          const fragment =
-            DOMSerializer.fromSchema(editorSchema).serializeFragment(
-              newState.doc.content,
-            );
+          const fragment = DOMSerializer.fromSchema(
+            editorSchema,
+          ).serializeFragment(newState.doc.content);
           const tempDiv = document.createElement("div");
           tempDiv.appendChild(fragment);
           debouncedUpdateContent(
