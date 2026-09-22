@@ -49,6 +49,7 @@ export class CheckAnswerForSentenceCommandHandler implements ICommandHandler<
         sentenceId?: string;
         correct: boolean;
         userId: string;
+        expressionId: string;
       }> = new IntegrationEvent(
         'answer.answer-checked',
         {
@@ -56,6 +57,7 @@ export class CheckAnswerForSentenceCommandHandler implements ICommandHandler<
           correct,
           sentenceId,
           userId,
+          expressionId: answerSentence.expressionId,
         },
         {
           aggregateId: answerSentence.sentenceId,
