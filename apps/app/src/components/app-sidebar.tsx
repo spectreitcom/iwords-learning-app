@@ -35,6 +35,14 @@ export function AppSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
+                  isActive={pathname === "/memory-scan"}
+                >
+                  <Link href={"/memory-scan"}>Skan pamięci</Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
                   isActive={pathname === "/repetitions"}
                 >
                   <Link href={"/repetitions"}>Powtórki</Link>
