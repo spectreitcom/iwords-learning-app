@@ -6,7 +6,7 @@ export const memoryScanViewSchema = z.object({
       itemsCount: z.int(),
       rememberedItemsCount: z.int(),
       rememberingTime: z.int(),
-      createdAt: z.string().transform((val) => new Date(val)),
+      createdAt: z.iso.datetime().transform((val) => new Date(val)),
     }),
   ),
   learnedItems: z.array(
