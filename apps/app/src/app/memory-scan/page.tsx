@@ -3,7 +3,10 @@ import { Brain } from "lucide-react";
 import { Card, CardContent } from "@repo/ui/components/ui/card";
 import { Spinner } from "@repo/ui/components/ui/spinner";
 import { getMemoryScanView } from "@/features/memory-scan/actions";
-import { MemoryScanViewLogic } from "@/features/memory-scan/components/memory-scan-view-logic";
+import {
+  MemoryScanViewLogic,
+  ScanResults,
+} from "@/features/memory-scan/components/memory-scan-view-logic";
 
 export default async function MemoryScanPage() {
   return (
@@ -20,7 +23,14 @@ async function AwaitedContent() {
     throw new Error("Nie udało się wczytać danych skanu pamięci.");
   }
 
-  if (viewData.data.learnedItems.length === 0) return <NoLearnedItems />;
+  if (viewData.data.learnedItems.length === 0) {
+    return (
+      <div className="mx-auto w-full max-w-2xl">
+        <NoLearnedItems />
+        <ScanResults results={viewData.data.scanResults} />
+      </div>
+    );
+  }
 
   return <MemoryScanViewLogic viewData={viewData.data} />;
 }

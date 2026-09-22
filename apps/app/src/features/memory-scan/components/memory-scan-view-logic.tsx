@@ -45,6 +45,7 @@ export function MemoryScanViewLogic({ viewData }: Props) {
     DEFAULT_DURATION * 60,
   );
   const [showItems, setShowItems] = useState(false);
+  const [isBrowsing, setIsBrowsing] = useState(false);
   const [endsAt, setEndsAt] = useState<number | null>(null);
   const [rememberedItemIds, setRememberedItemIds] = useState<Set<string>>(
     () => new Set(),
@@ -58,6 +59,7 @@ export function MemoryScanViewLogic({ viewData }: Props) {
     setEndsAt(null);
     setRemainingSeconds(duration * 60);
     setShowItems(false);
+    setIsBrowsing(false);
     setRememberedItemIds(new Set());
     setIsSaved(false);
   }
@@ -102,18 +104,28 @@ export function MemoryScanViewLogic({ viewData }: Props) {
     .padStart(2, "0");
   const seconds = (remainingSeconds % 60).toString().padStart(2, "0");
 
-  if (showItems) {
+  if (showItems || isBrowsing) {
     return (
       <Card className="mx-auto w-full max-w-2xl">
         <CardHeader>
           <CardTitle>Wyuczone elementy</CardTitle>
           <CardDescription>
-            Zaznacz wyrażenia, które udało Ci się przypomnieć.
+            {isBrowsing
+              ? "Przeglądaj wyuczone słówka i historię wyników bez odliczania."
+              : "Zaznacz wyrażenia, które udało Ci się przypomnieć."}
           </CardDescription>
-          <p role="status" className="text-sm font-medium text-primary">
-            Przypomniane: {rememberedItemIds.size} z{" "}
-            {viewData.learnedItems.length}
-          </p>
+          {!isBrowsing && (
+            <p role="status" className="text-sm font-medium text-primary">
+              Przypomniane: {rememberedItemIds.size} z{" "}
+              {viewData.learnedItems.length}
+            </p>
+          )}
+          {isBrowsing && (
+            <Button variant="outline" onClick={handleRestart}>
+              <Timer aria-hidden="true" />
+              Wróć do timera
+            </Button>
+          )}
         </CardHeader>
         <CardContent>
           {viewData.learnedItems.length === 0 ? (
@@ -132,23 +144,30 @@ export function MemoryScanViewLogic({ viewData }: Props) {
                         "border-primary/40 bg-primary/5",
                     )}
                   >
-                    <label className="flex cursor-pointer items-start gap-3 p-4">
-                      <Checkbox
-                        className="mt-1"
-                        disabled={isSaving || isSaved}
-                        checked={rememberedItemIds.has(expressionContext.id)}
-                        onCheckedChange={(checked) => {
-                          setRememberedItemIds((previous) => {
-                            const next = new Set(previous);
-                            if (checked === true) {
-                              next.add(expressionContext.id);
-                            } else {
-                              next.delete(expressionContext.id);
-                            }
-                            return next;
-                          });
-                        }}
-                      />
+                    <label
+                      className={cn(
+                        "flex items-start gap-3 p-4",
+                        !isBrowsing && "cursor-pointer",
+                      )}
+                    >
+                      {!isBrowsing && (
+                        <Checkbox
+                          className="mt-1"
+                          disabled={isSaving || isSaved}
+                          checked={rememberedItemIds.has(expressionContext.id)}
+                          onCheckedChange={(checked) => {
+                            setRememberedItemIds((previous) => {
+                              const next = new Set(previous);
+                              if (checked === true) {
+                                next.add(expressionContext.id);
+                              } else {
+                                next.delete(expressionContext.id);
+                              }
+                              return next;
+                            });
+                          }}
+                        />
+                      )}
                       <span className="min-w-0 space-y-1">
                         <span className="block break-words font-medium">
                           {expression.phrase}
@@ -163,7 +182,7 @@ export function MemoryScanViewLogic({ viewData }: Props) {
               )}
             </ul>
           )}
-          {viewData.learnedItems.length > 0 && (
+          {!isBrowsing && viewData.learnedItems.length > 0 && (
             <Button
               className="mt-6 w-full"
               onClick={handleSave}
@@ -174,15 +193,17 @@ export function MemoryScanViewLogic({ viewData }: Props) {
               {isSaved ? "Zapisano" : isSaving ? "Zapisywanie…" : "Save"}
             </Button>
           )}
-          <Button
-            variant="outline"
-            className="mt-3 w-full"
-            onClick={handleRestart}
-            disabled={isSaving}
-          >
-            <RotateCcw aria-hidden="true" />
-            Restart
-          </Button>
+          {!isBrowsing && (
+            <Button
+              variant="outline"
+              className="mt-3 w-full"
+              onClick={handleRestart}
+              disabled={isSaving}
+            >
+              <RotateCcw aria-hidden="true" />
+              Restart
+            </Button>
+          )}
           <ScanResults results={viewData.scanResults} />
         </CardContent>
       </Card>
@@ -264,12 +285,22 @@ export function MemoryScanViewLogic({ viewData }: Props) {
             Restart
           </Button>
         )}
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={() => {
+            handleRestart();
+            setIsBrowsing(true);
+          }}
+        >
+          Pokaż słówka i historię wyników
+        </Button>
       </CardContent>
     </Card>
   );
 }
 
-function ScanResults({
+export function ScanResults({
   results,
 }: Readonly<{ results: MemoryScanView["scanResults"] }>) {
   const sortedResults = [...results].sort(
