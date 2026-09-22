@@ -44,10 +44,7 @@ function NoLearnedItems() {
     <Card className="mx-auto w-full max-w-md">
       <CardContent className="flex flex-col items-center gap-4 py-12 text-center">
         <div className="flex size-16 items-center justify-center rounded-full border bg-muted">
-          <Brain
-            className="size-8 text-muted-foreground"
-            aria-hidden="true"
-          />
+          <Brain className="size-8 text-muted-foreground" aria-hidden="true" />
         </div>
         <div className="space-y-2">
           <h1 className="text-lg font-semibold">Brak wyuczonych wyrażeń</h1>
