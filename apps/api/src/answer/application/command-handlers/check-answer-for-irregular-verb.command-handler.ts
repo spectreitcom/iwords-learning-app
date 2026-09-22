@@ -69,12 +69,14 @@ export class CheckAnswerForIrregularVerbCommandHandler implements ICommandHandle
         sentenceId?: string;
         correct: boolean;
         userId: string;
+        expressionId: string;
       }> = new IntegrationEvent(
         'answer.answer-checked',
         {
           correct: allCorrect,
           expressionContextId,
           userId,
+          expressionId: answerExpressionContext.expressionId,
         },
         {
           aggregateId: answerExpressionContext.expressionContextId,

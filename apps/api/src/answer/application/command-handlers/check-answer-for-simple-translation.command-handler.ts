@@ -61,12 +61,14 @@ export class CheckAnswerForSimpleTranslationCommandHandler implements ICommandHa
         sentenceId?: string;
         correct: boolean;
         userId: string;
+        expressionId: string;
       }> = new IntegrationEvent(
         'answer.answer-checked',
         {
           correct,
           expressionContextId,
           userId,
+          expressionId: answerExpressionContext.expressionId,
         },
         {
           aggregateId: answerExpressionContext.expressionContextId,

@@ -274,3 +274,27 @@ model Note {
 }
 
 //----------------------------------
+
+// Memory Scan Bounded Context
+model MemoryScanLearnedItems {
+  id                  String   @id @default(uuid())
+  userId              String   @db.Uuid
+  expressionContextId String   @db.Uuid
+  expressionId        String   @db.Uuid
+  createdAt           DateTime @default(now()) @db.Date
+
+  @@index([userId, createdAt])
+}
+
+model MemoryScanResults {
+  id                   String   @id @default(uuid())
+  userId               String   @db.Uuid
+  itemsCount           Int
+  rememberedItemsCount Int
+  rememberingTime      Int
+  createdAt            DateTime @default(now()) @db.Date
+
+  @@index([createdAt, userId])
+}
+
+//----------------------------------

@@ -15,6 +15,8 @@ import { DictionaryController } from './controllers/dictionary.controller';
 import { BoxRepetitionModule } from '../../box-repetition/application/box-repetition.module';
 import { NoteModule } from '../../note/application/note.module';
 import { NoteController } from './controllers/note.controller';
+import { MemoryScanModule } from '../../memory-scan/application/memory-scan.module';
+import { MemoryScanController } from './controllers/memory-scan.controller';
 
 @Module({
   imports: [
@@ -26,6 +28,7 @@ import { NoteController } from './controllers/note.controller';
     RepetitionModule,
     BoxRepetitionModule,
     NoteModule,
+    MemoryScanModule,
   ],
   controllers: [
     AnswerController,
@@ -35,6 +38,7 @@ import { NoteController } from './controllers/note.controller';
     RepetitionsController,
     DictionaryController,
     NoteController,
+    MemoryScanController,
   ],
   providers: [ClerkAuthGuard],
 })
