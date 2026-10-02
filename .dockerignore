@@ -1,0 +1,16 @@
+node_modules
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+apps/*/dist
+apps/*/.next
+apps/*/out
+coverage
+.turbo
+.idea
+.vscode
+README.md
+screenshots
+npm-debug.log*
