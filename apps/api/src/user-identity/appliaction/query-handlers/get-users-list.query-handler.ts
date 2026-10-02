@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUsersListQuery } from '../queries/get-users-list.query';
-import { CollectionWithPagination } from 'admin/src/lib/types';
+import { CollectionWithPagination } from '../../../common/types';
 import { UserView } from '../../views/user.view';
 import { PrismaService } from '../../../common/prisma/prisma.service';
 
